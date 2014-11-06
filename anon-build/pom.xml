@@ -14,6 +14,9 @@
 
 	<modules>
 		<module>
+			../anon-test
+		</module>
+		<module>
 			../anon-core
 		</module>
 		<module>
