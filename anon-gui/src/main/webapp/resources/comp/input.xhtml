@@ -1,0 +1,31 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:comp="http://java.sun.com/jsf/composite">
+
+	<comp:interface>
+		<comp:attribute name="id" />
+		<comp:attribute name="label" />
+		<comp:attribute name="value" />
+		<comp:attribute name="required" />
+		<comp:attribute name="minimum" />
+		<comp:attribute name="disabled" />
+		<comp:attribute name="display" />
+	</comp:interface>
+	
+	<comp:implementation>
+		<h:panelGrid columns="3">
+			<h:outputLabel value="#{cc.attrs.label}" for="#{cc.attrs.id}-txt" style="display: block; width:100px;"/>
+			<p:inputText id="#{cc.attrs.id}-txt" value="#{cc.attrs.value}" disabled="#{cc.attrs.disabled}"
+				required="#{cc.attrs.required}" label="#{cc.attrs.label}">
+				<f:validateLength minimum="#{cc.attrs.minimum}" for="#{cc.attrs.id}-txt"/>		
+				<comp:insertChildren />
+			</p:inputText>
+			<p:message id="#{cc.attrs.id}MSG" for="#{cc.attrs.id}-txt" display="#{cc.attrs.display}" />
+		</h:panelGrid>
+	</comp:implementation>
+
+</html>

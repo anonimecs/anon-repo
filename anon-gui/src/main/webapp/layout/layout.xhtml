@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html">
+<f:view contentType="text/html">
+
+	<h:head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<title><ui:insert name="insert-headtitle">Anon Application</ui:insert></title>
+		<h:outputStylesheet library="css" name="basic.css" />
+	</h:head>
+
+	<h:body>
+		<h:form>
+			<p:growl id="msgs" showDetail="true" autoUpdate="true" globalOnly="false"/>
+		</h:form>
+		
+		<ui:include src="/components/menu.xhtml"/>
+		
+		<ui:insert name="insert-content"/>
+		 
+	</h:body>
+</f:view>
+</html>

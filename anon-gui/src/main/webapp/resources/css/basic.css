@@ -1,0 +1,7 @@
+.ui-widget, .ui-widget .ui-widget {
+    font-size: 10px !important;
+}
+
+.outputLabel{
+	font-weight: bold;
+}

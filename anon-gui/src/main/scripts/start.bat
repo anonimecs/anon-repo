@@ -1,0 +1,1 @@
+java -Dspring.profiles.active=derby_embedded -jar anon-gui-0.1-SNAPSHOT.war 

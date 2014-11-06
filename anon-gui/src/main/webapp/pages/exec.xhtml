@@ -1,0 +1,66 @@
+<ui:composition 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+	template="/layout/layout.xhtml">
+
+
+	<ui:define name="insert-content">
+	
+        <h2><h:outputText value="Run your current anonymisation" /></h2>
+        
+        <style>
+        	.panelBgColor_ANONYMISED{
+        		background-color: #CCEECC;
+        	}        	
+        	.panelBgColor_FAILED{
+        		background-color: #EEAAAA;
+        	}
+        </style>
+
+		<h:form id="execForm">
+			<p:dataGrid columns="1" value="#{anonConfig.anonMethods}" var="anonMethod">
+			
+			
+				<f:facet name="header">
+		            <h:outputText value="Anonimisation Methods: #{anonConfig.anonMethods.size()}" />
+		        </f:facet>
+	
+				<p:panel id="anonPanel" header="Anonymisation: #{anonMethod.type}" style="text-align:left;width:800px;" styleClass="panelBgColor_#{anonConfig.getMethodExecution(anonMethod).getStatus()}">
+		            <h:panelGrid columns="1">
+		                <p:dataTable value="#{anonMethod.applyedToColumns}" var="anonColumnInfo">
+				        	
+			        		<p:column headerText="On Column">
+			        			<h:outputText value="#{anonColumnInfo.name}"/>
+			        		</p:column>
+			        		<p:column headerText="of Table">
+			        			<h:outputText value="#{anonColumnInfo.table.name}"/>
+			        		</p:column>
+			        		<p:column headerText="Last Anonimisation Info">
+			        			<h:outputText value="#{anonConfig.getMethodExecution(anonMethod).getLastRunInfo(anonColumnInfo)}"/>
+			        		</p:column>
+			        	</p:dataTable>
+		
+						<h:outputText value="Status: #{anonConfig.getMethodExecution(anonMethod).getStatus()}"/>
+						<h:outputText value="Last Finished: #{anonConfig.getMethodExecution(anonMethod).getFinishedTime()}"/>
+						<h:outputText value="Error: #{anonConfig.getMethodExecution(anonMethod).getLastException()}" rendered="#{null != anonConfig.getMethodExecution(anonMethod).getLastException()}"/>
+		
+				        <p:commandButton value="Run" action="#{execBacking.onRunSingle(anonMethod)}" update="anonPanel"/>
+		
+		            </h:panelGrid>
+		        </p:panel>
+		        
+			
+			</p:dataGrid>
+		
+            <p:commandButton value="Run All" action="#{execBacking.onRun()}" update="execForm"/>
+            
+            <p:poll interval="2" update=":execForm" />
+		</h:form>		
+	
+	</ui:define>
+
+</ui:composition>

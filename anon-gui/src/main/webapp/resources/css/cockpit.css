@@ -1,0 +1,17 @@
+.leftPanelStyle {
+	width: 450px;
+	vertical-align: top;
+}
+
+.rightPanelStyle {
+	width: 700px;
+	vertical-align: top;
+}
+
+.anonymisedColumn{
+	background-color: #AAFFAA; /*green*/
+}
+
+.anonCandidate{
+	background-color: #FFE2C9; /*orange*/
+}

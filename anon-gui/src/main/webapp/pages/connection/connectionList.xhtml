@@ -1,0 +1,48 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	template="/layout/layout.xhtml">
+	<ui:define name="insert-content">
+	
+
+		<h:form id="showConnectionForm">
+			<p:panel id="panel" header="Connection list">
+			
+				<p:messages id="infoMessage" for="infoMessage" showDetail="true" closable="true"/>
+				
+				<p:dataTable id="configTable" var="config" value="#{databaseConfigBacking.configList}" rowKey="#{config.id}"
+						selection="#{databaseConfigBacking.configBean}" >
+						
+					<p:column headerText="Url" filterBy="#{config.url}" width="400">
+						<h:outputText value="#{config.url}"/>
+					</p:column>
+					
+					<p:column headerText="Login" filterBy="#{config.login}">
+						<h:outputText value="#{config.login}"/>
+					</p:column>
+					
+					<p:column headerText="Vendor" filterBy="#{config.vendor}">
+						<h:outputText value="#{config.vendor}"/>
+					</p:column>	
+					
+					<p:column headerText="Version" filterBy="#{config.version}">
+						<h:outputText value="#{config.version}"/>
+					</p:column>	
+					
+					<p:column style="width:10%">					
+			        	<p:commandButton id="deleteButton" update=":showConnectionForm:panel,:menuForm:menuBar" icon="ui-icon-close" 
+			        		title="Delete" actionListener="#{databaseConfigBacking.deleteDatabaseConfig(config)}" />           	
+			        </p:column>
+				
+				</p:dataTable>
+	
+			</p:panel>
+		</h:form>
+		<p:link outcome="/pages/connection/connectionAdd.xhtml" value="Add New"/>
+	</ui:define>
+</ui:composition>

@@ -1,0 +1,56 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:comp="http://java.sun.com/jsf/composite/comp"
+	template="/layout/layout.xhtml">
+	<ui:define name="insert-content">
+	
+		<h:form id="addConnectionForm">
+			<p:panel id="panel" header="Add Connection">	
+			
+				<h:panelGrid id="grid" columns="3">
+
+					<p:outputLabel for="vendor" value="Vendor" />
+				    <p:selectOneMenu id="vendor" value="#{databaseConfigBacking.configBean.vendor}" required="true">
+				    	<f:selectItem itemValue="" itemLabel="Select one"/>
+				    	<f:selectItems value="#{databaseConfigBacking.supportedDatabases}" 
+				    		var="db" itemLabel="#{db.name}" itemValue="#{db.name}"/>
+				    	<p:ajax event="change" update="urlPrefix" />
+				   	</p:selectOneMenu>
+				   	<p:message id="vendorMSG" for="vendor" />
+
+					<p:outputLabel id="urlPrefix" for="url" value="URL: #{databaseConfigServiceImpl.getUrlPrefix(databaseConfigBacking.configBean)}" />
+					<p:inputText id="url" value="#{databaseConfigBacking.configBean.url}" required="true" size="70"/>
+					<p:message for="url" />
+					
+					<p:outputLabel for="guiName" value="GUI Name:" />
+					<p:inputText id="guiName" value="#{databaseConfigBacking.configBean.guiName}" required="true"/>
+					<p:message for="guiName" />
+					
+					<p:outputLabel for="login" value="Login:" />
+					<p:inputText id="login" value="#{databaseConfigBacking.configBean.login}" required="true"/>
+					<p:message for="login" />
+						
+					<p:outputLabel for="password" value="Password"/>
+					<p:password id="password" value="#{databaseConfigBacking.configBean.password}" required="true" 
+						label="Password">
+					</p:password>
+					<p:message id="passwordMsg" for="password"/>
+
+					
+					<h:panelGrid columns="3">
+						<p:commandButton id="addConnection" value="Save" 
+							actionListener="#{databaseConfigBacking.addDatabaseConfig}" update="panel,:menuForm:menuBar" />
+					</h:panelGrid>
+					
+				</h:panelGrid>
+	
+			</p:panel>
+		</h:form>
+	</ui:define>
+</ui:composition>

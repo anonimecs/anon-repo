@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+						http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd
+						http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.1.xsd">
+	
+	<context:property-placeholder  location="classpath:local.test.properties"  />
+	
+	
+	<bean id="dataSourceSybase" class="org.apache.commons.dbcp.BasicDataSource" >
+		<property name="driverClassName" value="com.sybase.jdbc4.jdbc.SybDriver" />
+		<property name="url" value="${sybase.test.url}" />
+		<property name="username" value="${sybase.test.user}" />
+		<property name="password" value="${sybase.test.passwd}" />
+		<property name="maxActive" value="5" />
+		<property name="maxWait" value="1000" />
+	</bean>
+
+	<bean id="dataSourceOracle" class="org.apache.commons.dbcp.BasicDataSource">
+		<property name="driverClassName" value="oracle.jdbc.driver.OracleDriver" />
+		<property name="url" value="${oracle.test.url}" />
+		<property name="username" value="${oracle.test.user}" />
+		<property name="password" value="${oracle.test.passwd}" />
+		<property name="maxActive" value="5" />
+		<property name="maxWait" value="1000" />
+	</bean>
+
+</beans>

@@ -1,0 +1,12 @@
+- handle foreign key constraints: 
+	-sybase drop constraint, and possibly recreate them afterwards
+	-oracle ALTER TABLE a1 NOCHECK CONSTRAINT a1_TestConstraint
+	
+- support more methods in oracle
+
+- support for uploaded phone book anonymisation for sybase and oracle
+
+- support multi-schema anonymisations 
+- support multi-database anonymisations 
+
+- support for corporate specific column name (hint comsi_id)

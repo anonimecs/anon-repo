@@ -1,0 +1,9 @@
+sybase.test.url=jdbc:sybase:Tds:localhost:45000
+sybase.test.user=sa
+sybase.test.passwd=aaa
+sybase.test.schema=limex
+
+oracle.test.url=jdbc:oracle:thin:@localhost:31521
+oracle.test.user=ecap
+oracle.test.passwd=aaa
+oracle.test.schema=ECAP

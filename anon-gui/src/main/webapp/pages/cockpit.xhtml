@@ -1,0 +1,288 @@
+<ui:composition 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+	template="/layout/layout.xhtml">
+
+
+	<ui:define name="insert-content">
+
+		<h:outputStylesheet library="css" name="cockpit.css" />
+
+
+		<h:panelGrid columns="2" columnClasses="leftPanelStyle,rightPanelStyle" cellspacing="20">
+			<p:outputPanel id="leftPanel">	
+				<h:form id="selectConnectionForm">
+			        <h:panelGrid columns="3" >
+	
+						<p:outputLabel for="connection" value="Connection" style="display: block; width:100px;"/>
+						
+						<p:selectOneMenu id="connection" value="#{databasePanelBacking.selectedConnectionId}" disabled="#{databasePanelBacking.connected}">
+						   	<f:selectItems value="#{databasePanelBacking.dbConfigs}" 
+						   		var="db" itemValue="#{db.id}" itemLabel="#{db.guiName}"/>
+						 	<p:ajax event="change" update=":leftPanel"/>
+						</p:selectOneMenu>
+						
+						<p:commandButton actionListener="#{databasePanelBacking.connectDb()}" 
+			            	value="Connect DB" update=":leftPanel,:menuForm:menuBar" rendered="#{not databasePanelBacking.connected}"  />
+			            	
+			            <p:commandButton actionListener="#{databasePanelBacking.disconnectDb()}" 
+			            	value="Disconnect DB" update=":leftPanel, :rightPanel,:menuForm:menuBar" rendered="#{databasePanelBacking.connected}"  />
+			        
+			            <h:outputLabel for="databaseUrl">URL</h:outputLabel>
+			            <h:outputText id="databaseUrl" value="#{databasePanelBacking.databaseConfig.url}" />
+			            <h:outputText/>
+		
+			            <h:outputLabel for="databaseType">Type</h:outputLabel>
+			            <h:outputText id="databaseType" value="#{databasePanelBacking.databaseConfig.vendor} #{databasePanelBacking.databaseConfig.version}" />
+			            <h:outputText/>
+			            
+			            <h:outputLabel for="databaseUser">Login</h:outputLabel>
+			            <h:outputText id="databaseUser" value="#{databasePanelBacking.databaseConfig.login}" />
+			            <h:outputText/>
+			            
+			            
+			            		  
+			            
+			            	
+			        </h:panelGrid>
+		        
+		        </h:form>
+
+
+				<h:form id="databaseTableListForm" rendered="#{databasePanelBacking.connected}" >
+	
+				    <h:panelGrid columns="2" >
+				    	<h:form rendered="#{databasePanelBacking.connected}" >
+							<h:panelGrid columns="2" cellpadding="5">
+					            <p:outputLabel for="schemaId" value="Anonymising Schema:" />
+					            <p:selectOneMenu id="schemaId" value="#{databasePanelBacking.selectedSchema}" style="width:150px">
+					                <p:ajax update=":databaseTableListForm, :rightPanel" listener="#{databasePanelBacking.onSchemaChanged}"/>
+					                <f:selectItems value="#{databasePanelBacking.schemas}" />
+					            </p:selectOneMenu>				
+		                  	</h:panelGrid>
+		
+						</h:form>
+			            <h:outputText id="tableCount" value="#{databasePanelBacking.tableCount} tables" rendered="#{databasePanelBacking.connected}"/>
+				    </h:panelGrid>
+		            
+								       
+					
+					<p:dataTable 
+							id="databaseTableList"
+							value="#{databasePanelBacking.tableList}" 
+							var="databaseTableInfo"  
+							selectionMode="single" selection="#{editedTableBacking.editedTable}" rowKey="#{databaseTableInfo.name}"
+							filteredValue="#{databasePanelBacking.filteredTables}"
+							scrollable="true" scrollHeight="600"
+							rowStyleClass="#{not empty databaseTableInfo.anonymisedColumnsList() ? 'anonymisedColumn' : not empty databaseTableInfo.getActiveAnonCandidateList() ? 'anonCandidate' : null}"
+							styleClass="myTable" rowIndexVar="rowIndex">
+						<p:ajax event="rowSelect" listener="#{editedTableBacking.onTableSelect}" update=":rightPanel"/>
+						
+						<p:column headerText="Table" filterBy="#{databaseTableInfo.name}" filterMatchMode="contains" sortBy="#{databaseTableInfo.name}" width="200">
+		        			<h:outputText value="#{databaseTableInfo.name}" />
+							<p:tooltip for="@(.myTable tr[role=row][data-ri=#{rowIndex}])" rendered="#{not empty databaseTableInfo.getActiveAnonCandidateList()}">
+								<p:dataList value="#{databaseTableInfo.getAnonCandidateList()}" var="anonCandidate">
+									<f:facet name="header">
+                    					<h:outputText value="Anonymisation Suggestions"/>
+                					</f:facet>
+									<h:outputText value="#{anonCandidate.getMessage()}"/>
+								</p:dataList>
+							</p:tooltip>  
+		    			</p:column>
+		    			<p:column headerText="Cols" sortBy="#{databaseTableInfo.getColumns().size()}" width="50">
+		        			<h:outputText value="#{databaseTableInfo.getColumns().size()}" />
+		    			</p:column>
+		    			<p:column headerText="Rows" sortBy="#{databaseTableInfo.rowCount}" width="50">
+		        			<h:outputText value="#{databaseTableInfo.rowCount}" />
+		    			</p:column>
+		    			<p:column headerText="Anonymised Columns" width="80">
+		        			<h:outputText value="#{databasePanelBacking.concatColumns(databaseTableInfo.anonymisedColumnsList())}" />
+		    			</p:column>
+		    			
+					</p:dataTable>
+				</h:form>
+				
+				<h:form  rendered="#{databasePanelBacking.connected}">
+					
+					<p:dataTable id="candidateList" 
+						value="#{anonCandidatesParser.getAnonCandidatesList()}" var="anonCandidate"
+						scrollable="true" scrollHeight="200"
+					>
+						<p:column headerText="Anonymisation Suggestions" >
+							<h:outputText value="#{anonCandidate.getMessage()}"/>
+						</p:column>
+						<p:column width="20" >
+							<h:outputText value="#{anonCandidate.ocurrances}"/>
+						</p:column>
+						<p:column  width="40">
+							<p:commandLink action="#{anonCandidate.setActive(false)}" value="Hide" update=":databaseTableListForm:databaseTableList, :editedTableColumnsForm:editedTableColumns, candidateList" rendered="#{anonCandidate.active}"/>
+							<p:commandLink action="#{anonCandidate.setActive(true)}" value="Highlight"  update=":databaseTableListForm:databaseTableList, :editedTableColumnsForm:editedTableColumns, candidateList" rendered="#{not anonCandidate.active}"/>
+						</p:column>
+					
+					</p:dataTable> 
+					
+					
+				</h:form>
+
+			
+				
+	 		</p:outputPanel>
+
+
+			<p:outputPanel id="rightPanel">
+				<h:form id="editedTableColumnsForm" rendered="#{not empty editedTableBacking.editedTable}">
+				<p:panel header="Anonymize table #{editedTableBacking.editedTable.name} RowCount: #{editedTableBacking.editedTable.rowCount}" >
+					
+					<p:dataTable id="editedTableColumns" value="#{editedTableBacking.editedTable.columns}" var="databaseColumnInfo"
+						selectionMode="single" selection="#{editedTableBacking.editedColumn}" rowKey="#{databaseColumnInfo.name}"
+						scrollable="true" scrollHeight="300"
+						rowStyleClass="#{databaseColumnInfo.getClass().getSimpleName() == 'AnonymisedColumnInfo' ? 'anonymisedColumn' : null!=databaseColumnInfo.getAnonCandidate() and databaseColumnInfo.getAnonCandidate().active ? 'anonCandidate' : null}"
+						>
+						<p:ajax event="rowSelect" listener="#{editedTableBacking.onColumnSelect}" update=":rightPanel"/>
+						<p:column headerText="Column" width="100">
+							<h:outputText value="#{databaseColumnInfo.name}"/>
+						</p:column>
+						<p:column headerText="Type" width="100">
+							<h:outputText value="#{databaseColumnInfo.type}"/>
+						</p:column>
+						<p:column headerText="Example Values">
+							<h:outputText value="#{editedTableBacking.concatExamples(databaseColumnInfo.exampleValues)}"/>
+						</p:column>
+					
+					
+					</p:dataTable>
+				</p:panel>	
+				</h:form>
+					
+				<p:outputPanel id="anonymizePanel" rendered="#{not empty editedTableBacking.editedTable}">
+					<p:panel header="Anonymize Column: #{editedTableBacking.editedColumn.name}" rendered="#{null ne editedTableBacking.editedColumn}"> 
+						<h:panelGrid columns="2" style="width:100%;">
+					        <p:commandButton 
+					        	id="saveColumnSettingsButton" actionListener="#{editedTableBacking.onSaveColumnSettings()}" 
+					        	value="Save Changes" update="anonymizePanel,:leftPanel,:menuForm:menuBar" 
+					        	process="@this" icon="ui-icon-disk"/>
+
+							<h:form>
+							
+						        
+						        <p:selectOneMenu id="anonymizationMethodSelect" value="#{editedTableBacking.anonymisationMethod}" converter="methodConverter"	 var="a">
+						        	<p:ajax event="change" update=":anonymizePanel"
+						        		listener="#{editedTableBacking.onAnonymisatationTypeChanged()}" oncomplete=""/>
+									<f:selectItems value="#{editedTableBacking.supportedAnonymisationMethods}" var="anonMethod" 
+										itemLabel="#{anonMethod.type}" itemValue="#{anonMethod}" />
+						            <p:column>
+               							<h:outputText value="#{a.type}" />
+           							</p:column>
+           
+       							</p:selectOneMenu>
+						    </h:form>
+					        
+							<p:dataTable  value="#{editedTableBacking.editedColumn.exampleValues}" var="exampleValue">
+							    <p:column headerText="Original Values">
+							    	<h:outputText value="#{exampleValue}"/>
+							    </p:column>
+							</p:dataTable>
+					        
+							<p:dataTable id="anonymizedValues" value="#{editedTableBacking.editedColumn.exampleValues}" var="exampleValue">
+							    <p:column headerText="Anonymized Values">
+							    	<h:outputText value="#{editedTableBacking.anonymiseValue(exampleValue)}"/>
+							    </p:column>
+							</p:dataTable>
+					        
+					        <f:facet name="footer">
+									
+								<!-- unselect related -->
+								<h:panelGroup rendered="#{editedTableBacking.anonymisationMethod.type eq 'NONE' and not empty editedTableBacking.selectedRelatedTableColumns}">
+							    	<h:form>
+							    		
+							    		<style>
+							    			.ui-datatable .ui-state-highlight {
+   												background: red !important;
+											}
+							    		</style>
+							    	
+							    		<p:dataTable id="relatedTableColumnsToRemove"  
+								        	value="#{editedTableBacking.selectedRelatedTableColumns}" var="relatedTableColumnInfo"
+								        	selection="#{editedTableBacking.selectedRelatedTableColumnsToRemove}" rowKey="#{relatedTableColumnInfo.key}"
+								        	scrollable="true" scrollHeight="150"
+								        	style="padding-top:20px;"
+								        	>
+								        	<p:ajax event="rowSelectCheckbox"/>
+								        	<p:ajax event="rowUnselectCheckbox"/>
+								        	<p:ajax event="toggleSelect"/>
+								        	<p:ajax event="rowSelect"/>
+								        	<p:ajax event="rowUnselect"/>
+								        	
+								        	<f:facet name="header">Also remove the following related anonymisations</f:facet>
+								        	
+								        	<p:column selectionMode="multiple" style="width:20px;text-align:center"/>
+										    <p:column headerText="Column" >
+										    	<h:outputText value="#{relatedTableColumnInfo.columnName}"/>
+										    </p:column>
+										    <p:column headerText="Related table" >
+										    	<h:outputText value="#{relatedTableColumnInfo.tableName}"/>
+										    </p:column>
+										    <p:column headerText="Relation" >
+										    	<h:outputText value="#{relatedTableColumnInfo.relation}"/>
+										    </p:column>
+										</p:dataTable>
+							    	</h:form>
+							    	
+							    </h:panelGroup>
+
+								<!-- select related -->
+							    <h:panelGroup rendered="#{editedTableBacking.anonymisationMethod.type ne 'NONE'}">
+							    	<h:form>
+								        <p:dataTable id="relatedTableColumns"  
+								        	value="#{editedTableBacking.relatedTableColumns}" var="relatedTableColumnInfo"
+								        	selection="#{editedTableBacking.selectedRelatedTableColumns}" rowKey="#{relatedTableColumnInfo.key}"
+								        	scrollable="true" scrollHeight="150"
+								        	style="padding-top:20px;"
+											filteredValue="#{editedTableBacking.filteredRelatedTableColumns}"
+								        	>
+								        	<p:ajax event="rowSelectCheckbox"/>
+								        	<p:ajax event="rowUnselectCheckbox"/>
+								        	<p:ajax event="toggleSelect"/>
+								        	<p:ajax event="rowSelect"/>
+								        	<p:ajax event="rowUnselect"/>
+								        	
+								        	<f:facet name="header">Also anonymise the following</f:facet>
+								        	
+								        	<p:column selectionMode="multiple" style="width:20px;text-align:center"/>
+										    <p:column headerText="Column" filterBy="#{relatedTableColumnInfo.columnName}" filterMatchMode="contains" sortBy="#{relatedTableColumnInfo.columnName}">
+										    	<h:outputText value="#{relatedTableColumnInfo.columnName}"/>
+										    </p:column>
+										    <p:column headerText="Related table" filterBy="#{relatedTableColumnInfo.tableName}" filterMatchMode="contains" sortBy="#{relatedTableColumnInfo.tableName}">
+										    	<h:outputText value="#{relatedTableColumnInfo.tableName}"/>
+										    </p:column>
+										    <p:column headerText="Relation" sortBy="#{relatedTableColumnInfo.relation}">
+										    	<h:outputText value="#{relatedTableColumnInfo.relation}"/>
+										    </p:column>
+										</p:dataTable>
+									</h:form>	
+							    </h:panelGroup>
+
+								
+								<h:outputText value="#{editedTableBacking.anonymisationMethod}"/>
+						    </f:facet>
+						
+						</h:panelGrid>
+					</p:panel>
+				</p:outputPanel>
+	
+			</p:outputPanel>
+		</h:panelGrid>
+		
+		<p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />
+ 
+		<p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
+		    <h:outputText value="Loading database info" />
+		</p:dialog>
+ 
+	</ui:define>
+
+</ui:composition>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?><project-modules id="moduleCoreId" project-version="1.5.0">
+    <wb-module deploy-name="anon-gui">
+        <wb-resource deploy-path="/" source-path="/target/m2e-wtp/web-resources"/>
+        <wb-resource deploy-path="/" source-path="/src/main/webapp" tag="defaultRootSource"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/java"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/resources"/>
+        <dependent-module archiveName="anon-persistence-0.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/anon-persistence/anon-persistence">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="anon-core-0.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/anon-core/anon-core">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="anon-exec-0.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/anon-exec/anon-exec">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="anon-service-0.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/anon-service/anon-service">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="anon-test-1.0-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/anon-test/anon-test">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <property name="context-root" value="anon-gui"/>
+        <property name="java-output-path" value="/anon-gui/target/classes"/>
+    </wb-module>
+</project-modules>
