@@ -44,8 +44,8 @@
 	
 	</beans>		
 
-	<!--  -Dspring.profiles.active="derby_embedded" to activate -->
-	<beans profile="derby_embedded">
+	<!--  -Dspring.profiles.active="free_edition" to activate the embedded database and database driver -->
+	<beans profile="free_edition">
 		<bean id="DerbyDataSource" 
 			class="org.springframework.jdbc.datasource.DriverManagerDataSource">
 			<property name="driverClassName" value="org.apache.derby.jdbc.EmbeddedDriver" />
