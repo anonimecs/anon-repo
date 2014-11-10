@@ -1,3 +1,3 @@
-start java -Dspring.profiles.active=derby_embedded -jar ..\..\..\target\anon-gui-0.1-SNAPSHOT.war
-sleep 5
+start java -Dspring.profiles.active=free_edition -jar anonimecsFree.war
+ping 192.0.2.2 -n 1 -w 10000 > nul 
 start iexplore http://localhost:8080/anon-gui/pages/cockpit.jsf
