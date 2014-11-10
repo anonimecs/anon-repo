@@ -8,16 +8,16 @@
 	</formats>
 	<files>
 		<file>
-			<source>${project.build.directory}/anon-gui-${project.version}.war</source>
+			<source>../anon-gui/target/anon-gui-${project.version}.war</source>
 			<outputDirectory>/</outputDirectory>
 			<destName>anonimecsFree.war</destName>
 		</file>
 		<file>
-			<source>${project.basedir}/src/main/scripts/start.sh</source>
+			<source>${project.basedir}/scripts/start.sh</source>
 			<outputDirectory>/</outputDirectory>
 		</file>
 		<file>
-			<source>${project.basedir}/src/main/scripts/start.bat</source>
+			<source>${project.basedir}/scripts/start.bat</source>
 			<outputDirectory>/</outputDirectory>
 		</file>
 	</files>
