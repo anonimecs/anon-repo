@@ -36,6 +36,21 @@
 		</module>
 	</modules>
 	
+	<profiles>
+	    <profile>
+	        <id>free</id>
+	        <properties>
+	            <assembly-descriptor>assembly/free_edition.xml</assembly-descriptor>
+	        </properties>
+	    </profile>
+		<profile>
+	        <id>enterprise</id>
+	        <properties>
+	            <assembly-descriptor>assembly/enterprise_edition.xml</assembly-descriptor>
+	        </properties>
+	    </profile>
+	</profiles>
+	
 	<build>
 		<plugins>
 			<plugin>
@@ -47,8 +62,7 @@
 					<outputDirectory>target/distributions</outputDirectory>
 					<finalName>anonimecs</finalName>
 					<descriptors>
-						<descriptor>assembly/free_edition.xml</descriptor>
-						<descriptor>assembly/enterprise_edition.xml</descriptor>
+						<descriptor>${assembly-descriptor}</descriptor>
 					</descriptors>
 				</configuration>
 				<executions>

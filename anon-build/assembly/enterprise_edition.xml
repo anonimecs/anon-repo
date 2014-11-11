@@ -8,7 +8,7 @@
 	</formats>
 	<files>
 		<file>
-			<source>../anon-gui/target/anon-gui-${project.version}.war</source>
+			<source>../anon-gui/target/anon-gui-${project.version}-enterprise.war</source>
 			<outputDirectory>/</outputDirectory>
 			<destName>anonimecsEnterprise.war</destName>
 		</file>
