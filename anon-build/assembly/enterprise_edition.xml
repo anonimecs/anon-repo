@@ -2,7 +2,7 @@
 	xmlns="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2 http://maven.apache.org/xsd/assembly-1.1.2.xsd">
-	<id>free</id>
+	<id>enterprise</id>
 	<formats>
 		<format>zip</format>
 	</formats>
@@ -10,14 +10,14 @@
 		<file>
 			<source>../anon-gui/target/anon-gui-${project.version}.war</source>
 			<outputDirectory>/</outputDirectory>
-			<destName>anonimecsFree.war</destName>
+			<destName>anonimecsEnterprise.war</destName>
 		</file>
 		<file>
-			<source>${project.basedir}/scripts/startFree.sh</source>
+			<source>${project.basedir}/scripts/startEnterprise.sh</source>
 			<outputDirectory>/</outputDirectory>
 		</file>
 		<file>
-			<source>${project.basedir}/scripts/startFree.bat</source>
+			<source>${project.basedir}/scripts/startEnterprise.bat</source>
 			<outputDirectory>/</outputDirectory>
 		</file>
 	</files>

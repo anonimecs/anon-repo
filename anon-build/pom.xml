@@ -41,10 +41,11 @@
 				<version>2.5.1</version>
 
 				<configuration>
-					<outputDirectory>target/distribution</outputDirectory>
-					<finalName>anonimecsFree</finalName>
+					<outputDirectory>target/distributions</outputDirectory>
+					<finalName>anonimecs</finalName>
 					<descriptors>
 						<descriptor>assembly/free_edition.xml</descriptor>
+						<descriptor>assembly/enterprise_edition.xml</descriptor>
 					</descriptors>
 				</configuration>
 				<executions>
