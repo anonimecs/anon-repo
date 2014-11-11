@@ -49,7 +49,7 @@ public class AnonRunner {
 			
 			// Start Spring
 			// AnonRunner assumes standalone database 
-			System.setProperty("spring.profiles.active", "derby_standalone");
+			System.setProperty("spring.profiles.active", "enterprise_edition");
 			ApplicationContext context = new ClassPathXmlApplicationContext("anonRunnerContext.xml");
 			AnonRunner anonRunner = context.getBean(AnonRunner.class);
 			

@@ -1,8 +1,23 @@
-#!/bin/sh
+#!/bin/bash
 
 echo "java 7 is required to run this application"
-echo "logs are in anonimecsFree.log"
+echo "logs are in anonimecs.log"
 
-nohup java -Dspring.profiles.active=free_edition -jar anonimecsFree.war > anonimecsFree.log 2>&1 &
+SCRIPTDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+cd $SCRIPTDIR
+
+export DERBY_HOME=$SCRIPTDIR/db/db-derby-10.4.2.0-bin
+export CLASSPATH=$DERBY_HOME/lib/derbytools.jar:$DERBY_HOME/lib/derbynet.jar:.
+
+nohup $DERBY_HOME/bin/startNetworkServer > anonimecs.log 2>&1 &
+echo "waiting to start the db"
+sleep 5
+echo "database started"
+
+
+nohup java -Dspring.profiles.active=enterprise_edition -jar anonimecsEnterprise.war > anonimecs.log 2>&1 &
+echo "waiting to start the application"
 sleep 10
+echo "application started"
+
 echo "go to http://`hostname`:8080/anon-gui/pages/cockpit.jsf"

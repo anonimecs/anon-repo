@@ -9,16 +9,31 @@
 	<files>
 		<file>
 			<source>../anon-gui/target/anon-gui-${project.version}-enterprise.war</source>
-			<outputDirectory>/</outputDirectory>
+			<outputDirectory>/anonimecs</outputDirectory>
 			<destName>anonimecsEnterprise.war</destName>
 		</file>
 		<file>
 			<source>${project.basedir}/scripts/startEnterprise.sh</source>
-			<outputDirectory>/</outputDirectory>
+			<outputDirectory>/anonimecs</outputDirectory>
+			<lineEnding>unix</lineEnding>
+			<fileMode>0755</fileMode>
 		</file>
 		<file>
 			<source>${project.basedir}/scripts/startEnterprise.bat</source>
-			<outputDirectory>/</outputDirectory>
+			<outputDirectory>/anonimecs</outputDirectory>
 		</file>
 	</files>
+	<fileSets>
+		<fileSet>
+			<directory>${project.basedir}/../../anon-repo-db</directory>
+			<outputDirectory>/</outputDirectory>
+			<includes>
+				<include>db/**</include>
+				<include>anon/**</include>
+			</includes>
+		</fileSet>
+	</fileSets>
 </assembly>
+
+<!-- TODO: startNetworkServer must be runnable -->
+<!-- TODO: do not start if java 7 is not present -->
