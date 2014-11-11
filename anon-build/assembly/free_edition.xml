@@ -9,16 +9,18 @@
 	<files>
 		<file>
 			<source>../anon-gui/target/anon-gui-${project.version}.war</source>
-			<outputDirectory>/</outputDirectory>
+			<outputDirectory>/anonimecs</outputDirectory>
 			<destName>anonimecsFree.war</destName>
 		</file>
 		<file>
 			<source>${project.basedir}/scripts/startFree.sh</source>
-			<outputDirectory>/</outputDirectory>
+			<outputDirectory>/anonimecs</outputDirectory>
+			<lineEnding>unix</lineEnding>
+			<fileMode>0755</fileMode>			
 		</file>
 		<file>
 			<source>${project.basedir}/scripts/startFree.bat</source>
-			<outputDirectory>/</outputDirectory>
+			<outputDirectory>/anonimecs</outputDirectory>
 		</file>
 	</files>
 </assembly>
