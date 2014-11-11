@@ -8,6 +8,10 @@ drop table AnonymisationMethodData
 go
 drop table AnonymisedColumnData
 go
+drop table SecurityUser
+go
+drop table SecurityUserRoles
+go
 
 
 CREATE TABLE DatabaseConfig (	
@@ -61,7 +65,30 @@ create table AnonymisedColumnData (
   	CONSTRAINT primary_key_AnonymisedColumnData PRIMARY KEY (ID)
 )
 go
+
 ALTER TABLE AnonymisedColumnData
 	ADD CONSTRAINT unique_col_anonymisation
 	 UNIQUE (COLUMNNAME, TABLENAME, SCHEMANAME, AnonymisationMethodData_ID) 
 go
+
+CREATE TABLE SecurityUser (
+  ID INT NOT NULL GENERATED ALWAYS AS IDENTITY,
+  USERNAME VARCHAR(255) NOT NULL,
+  PASSWORD VARCHAR(255) NOT NULL,
+  NAME VARCHAR(255),
+  SURNAME VARCHAR(255),
+  ENABLED VARCHAR(1) NOT NULL,
+  ENCRYPTED VARCHAR(1) DEFAULT NULL,
+  CONSTRAINT primary_key_SecurityUser PRIMARY KEY (ID)
+)
+go
+
+CREATE TABLE SecurityUserRoles (
+	ID INT NOT NULL GENERATED ALWAYS AS IDENTITY,
+	USER_ID INT NOT NULL,
+	ROLE VARCHAR(255) NOT NULL,
+	CONSTRAINT primary_key_SecurityUserRoles PRIMARY KEY (ID),
+	CONSTRAINT foreign_key_SecurityUser FOREIGN KEY (USER_ID) REFERENCES SecurityUser (ID)
+)
+go
+
