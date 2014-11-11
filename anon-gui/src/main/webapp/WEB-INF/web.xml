@@ -46,6 +46,18 @@
 	        com.sun.faces.config.ConfigureListener
 	    </listener-class>
 	</listener>
+	
+	<!-- Spring Security Filter Mapping -->
+	<filter>
+		<filter-name>springSecurityFilterChain</filter-name>
+		<filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>springSecurityFilterChain</filter-name>
+		<url-pattern>/*</url-pattern>
+		<dispatcher>FORWARD</dispatcher>
+   		<dispatcher>REQUEST</dispatcher>
+	</filter-mapping>
     
     <context-param>
 		<param-name>contextConfigLocation</param-name>

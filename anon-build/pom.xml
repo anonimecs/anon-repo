@@ -29,6 +29,9 @@
 			../anon-exec
 		</module>
 		<module>
+			../anon-security
+		</module>
+		<module>
 			../anon-gui
 		</module>
 	</modules>

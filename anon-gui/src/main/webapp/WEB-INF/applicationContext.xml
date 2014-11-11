@@ -6,7 +6,8 @@
 						http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd">
 
 	<import resource="classpath:spring-anon.xml"/>
-	<import resource="classpath:spring-anon-persistence.xml"/>			
+	<import resource="classpath:spring-anon-persistence.xml"/>
+	<import resource="classpath:spring-anon-security-config.xml"/>		
 
 	<context:property-placeholder location="classpath:default.properties"  ignore-resource-not-found="true"/>
 

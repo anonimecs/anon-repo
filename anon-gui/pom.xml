@@ -225,6 +225,11 @@
 			<artifactId>anon-service</artifactId>
 			<version>${anon.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>org.anon</groupId>
+			<artifactId>anon-security</artifactId>
+			<version>${anon.version}</version>
+		</dependency>
 	</dependencies>
 
 </project>
