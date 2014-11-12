@@ -7,7 +7,9 @@
 
 	<import resource="classpath:spring-anon.xml"/>
 	<import resource="classpath:spring-anon-persistence.xml"/>
-	<import resource="classpath:spring-anon-security-config.xml"/>		
+	<import resource="classpath:spring-anon-security-config.xml"/>
+	<import resource="classpath:spring-anon-security-beans.xml"/>		
+		
 
 	<context:property-placeholder location="classpath:default.properties"  ignore-resource-not-found="true"/>
 

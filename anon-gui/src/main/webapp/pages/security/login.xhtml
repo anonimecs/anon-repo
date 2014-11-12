@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html">
+<f:view contentType="text/html">
+
+	<h:head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<title><ui:insert name="insert-headtitle">Anon Application</ui:insert></title>
+		<h:outputStylesheet library="css" name="basic.css" />
+	</h:head>
+
+	<h:body>
+		<h:form id="loginForm" prependId="false"> 
+			<p:panel header="Login" style="width: 360px;" styleClass="centered">
+			
+				<h:panelGrid columns="2" cellpadding="5" styleClass="centered">
+		        	<h:outputLabel for="j_username" value="Username:" />
+		            <p:inputText id="j_username" value="#{loginBacking.username}" required="true" />
+		 
+		            <h:outputLabel for="j_password" value="Password:" />
+		            <p:password id="j_password" value="#{loginBacking.password}" required="true" />
+		            
+		            <f:facet name="footer">
+		            	<p:commandButton type="submit" value="Login" ajax="false" id="login"
+		            		actionListener="#{loginBacking.doLogin}" />
+		            </f:facet>	            
+	            
+	     		</h:panelGrid>
+	     	</p:panel>	
+	     </h:form>
+		 
+	</h:body>
+</f:view>
+</html>

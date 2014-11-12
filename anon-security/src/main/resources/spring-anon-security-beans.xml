@@ -5,6 +5,47 @@
 	xmlns:c="http://www.springframework.org/schema/c"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
 						http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.1.xsd
-						http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.1.xsd">
+						http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.2.xsd">
+						
+	<bean id="jdbcUserService" class="org.springframework.security.core.userdetails.jdbc.JdbcDaoImpl">
+        <property name="dataSource" ref="DerbyDataSource"/>
+        <property name="enableAuthorities" value="true"/>
+        <property name="usersByUsernameQuery">
+            <value>
+				SELECT username, password, enabled 
+				FROM SECURITYUSER 
+				WHERE username = ?
+            </value>
+        </property>
+        <property name="authoritiesByUsernameQuery">
+            <value>
+				SELECT u.username, r.role
+				FROM SECURITYUSERROLES r
+				JOIN SECURITYUSER u on r.user_id = u.id
+				WHERE u.username = ? 
+            </value>
+        </property>
+   </bean>
+   
+   <bean id="passwordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder" c:strength="15" />
+   
+   <bean id="databasePasswordEncrypter" class="org.anon.security.DBPasswordEncrypter" init-method="encryptDBPassword" depends-on="DerbyDataSource">
+        <property name="passwordEncoder" ref="passwordEncoder" />
+        <property name="dataSource" ref="DerbyDataSource" />
+        <property name="selectQuery">
+            <value>
+				SELECT username, password, encrypted 
+				FROM SECURITYUSER 
+				WHERE encrypted='N'
+            </value>
+        </property>
+        <property name="updateQuery">
+            <value>
+				UPDATE SECURITYUSER 
+				SET password = ?, encrypted='Y' 
+				WHERE username = ?            	
+            </value>
+        </property>
+    </bean>
 						
 </beans>

@@ -5,3 +5,7 @@
 .outputLabel{
 	font-weight: bold;
 }
+
+.centered {
+	margin: 0 auto;
+}

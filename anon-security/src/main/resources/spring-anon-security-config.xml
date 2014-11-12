@@ -9,13 +9,16 @@
 	<sec:http auto-config="true">
 		<sec:intercept-url pattern="/pages/cockpit**" access="ROLE_ADMIN"/>
 		<sec:intercept-url pattern="/pages/exec**" access="ROLE_ADMIN"/>
+		
+		<sec:form-login login-page="/pages/security/login.jsf"/>
+		<sec:logout  logout-success-url="/"
+			logout-url="/perform_logout"/>
+
 	</sec:http>
 							
 	<sec:authentication-manager>
-		<sec:authentication-provider>
-			<sec:user-service>
-				<sec:user name="admin" password="123456" authorities="ROLE_ADMIN"/>
-			</sec:user-service>
+		<sec:authentication-provider user-service-ref="jdbcUserService">
+			<sec:password-encoder ref="passwordEncoder" />
 		</sec:authentication-provider>
 	</sec:authentication-manager>
 
