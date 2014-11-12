@@ -4,6 +4,7 @@ import javax.sql.DataSource;
 
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.AbstractJUnit4SpringContextTests;
 
@@ -12,12 +13,12 @@ public class AnonymisationMethodEncryptSybaseTest extends AbstractJUnit4SpringCo
 
 	
 	@Autowired
-	DataSource dataSource;
+	DataSource dataSourceSybase;
 
 //	@Test
 	public void testAnonymiseString() {
 		AnonymisationMethodEncryptSybase anonymisationMethodEncryptSybase = new AnonymisationMethodEncryptSybase();
-		anonymisationMethodEncryptSybase.setDataSource(dataSource);
+		anonymisationMethodEncryptSybase.setDataSource(dataSourceSybase);
 		
 		System.out.println("++++++++ " + anonymisationMethodEncryptSybase.anonymiseString("aaaaaa"));
 		System.out.println("++++++++ " + anonymisationMethodEncryptSybase.anonymiseString("bbdf"));
@@ -27,7 +28,7 @@ public class AnonymisationMethodEncryptSybaseTest extends AbstractJUnit4SpringCo
 	@Test
 	public void testAnonymiseDouble() {
 		AnonymisationMethodEncryptSybase anonymisationMethodEncryptSybase = new AnonymisationMethodEncryptSybase();
-		anonymisationMethodEncryptSybase.setDataSource(dataSource);
+		anonymisationMethodEncryptSybase.setDataSource(dataSourceSybase);
 		
 		System.out.println("++++++++ " + anonymisationMethodEncryptSybase.anonymiseDouble(666.6));
 		System.out.println("++++++++ " + anonymisationMethodEncryptSybase.anonymiseDouble(10000.0));

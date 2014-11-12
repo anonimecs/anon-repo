@@ -5,14 +5,17 @@ import java.util.List;
 import org.anon.persistence.data.DatabaseColumnData;
 import org.anon.persistence.data.DatabaseTableData;
 import org.junit.FixMethodOrder;
+import org.junit.Ignore;
+import org.junit.Test;
 import org.junit.runners.MethodSorters;
 import org.springframework.jdbc.core.JdbcTemplate;
 
+@Ignore
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class DatabaseTableDataTest extends DbEntitiesTest {
 
 		
-		//@Test test suspended as DatabaseColumnData and DatabaseTableData not used
+		@Test //test suspended as DatabaseColumnData and DatabaseTableData not used
 		public void testInsertTableAndCol() {
 			DatabaseTableData databaseTable = new DatabaseTableData();
 			databaseTable.setDatabaseConfigId(-1l);
@@ -25,7 +28,7 @@ public class DatabaseTableDataTest extends DbEntitiesTest {
 			entitiesDao.insert(databaseTable);
 		}
 		
-		//@Test test suspended as DatabaseColumnData and DatabaseTableData not used
+		@Test //test suspended as DatabaseColumnData and DatabaseTableData not used
 		public void testLoadAllTables() {
 			
 			List<DatabaseTableData> databaseTableList = entitiesDao.loadAllTables();
