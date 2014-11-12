@@ -17,6 +17,7 @@
 			<outputDirectory>/anonimecs</outputDirectory>
 			<lineEnding>unix</lineEnding>
 			<fileMode>0755</fileMode>
+			<filtered>true</filtered>
 		</file>
 		<file>
 			<source>${project.basedir}/scripts/startEnterprise.bat</source>
@@ -28,12 +29,18 @@
 			<directory>${project.basedir}/../../anon-repo-db</directory>
 			<outputDirectory>/</outputDirectory>
 			<includes>
-				<include>db/**</include>
+				<include>db/db-derby-10.4.2.0-bin/lib/**</include>
 				<include>anon/**</include>
 			</includes>
 		</fileSet>
+		<fileSet>
+			<directory>${project.basedir}/../../anon-repo-db</directory>
+			<outputDirectory>/</outputDirectory>
+			<fileMode>0755</fileMode>
+			<includes>
+				<include>db/db-derby-10.4.2.0-bin/bin/**</include>
+			</includes>
+		</fileSet>
+		
 	</fileSets>
 </assembly>
-
-<!-- TODO: startNetworkServer must be runnable -->
-<!-- TODO: do not start if java 7 is not present -->

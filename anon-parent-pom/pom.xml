@@ -41,7 +41,7 @@
 		<dependency>
 			<groupId>org.anon</groupId>
 			<artifactId>anon-test</artifactId>
-			<version>1.0-SNAPSHOT</version>
+			<version>${anon.version}</version>
 		</dependency>
 	</dependencies>
 </project>
