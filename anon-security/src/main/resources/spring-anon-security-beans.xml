@@ -15,6 +15,7 @@
 				SELECT username, password, enabled 
 				FROM SECURITYUSER 
 				WHERE username = ?
+				AND enabled = 'Y'
             </value>
         </property>
         <property name="authoritiesByUsernameQuery">
