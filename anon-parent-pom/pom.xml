@@ -9,8 +9,9 @@
 	<properties>
 		<skip.tests>true</skip.tests>
 		<anon.version>0.1-SNAPSHOT</anon.version>
+		<anon.test.version>0.9-SNAPSHOT</anon.test.version>
 
-		<spring.version>3.2.8.RELEASE</spring.version>
+		<spring.version>3.2.8.RELEASE</spring.version> <!-- this needs to be the same as in anon-test -->
 		<spring.security.version>3.2.3.RELEASE</spring.security.version>
 		<log4j.version>1.2.14</log4j.version>
 	</properties>
@@ -41,7 +42,7 @@
 		<dependency>
 			<groupId>org.anon</groupId>
 			<artifactId>anon-test</artifactId>
-			<version>${anon.version}</version>
+			<version>${anon.test.version}</version>
 		</dependency>
 	</dependencies>
 </project>
