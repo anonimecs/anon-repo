@@ -22,6 +22,7 @@ public class MethodFactory {
 	
 	public static Class<AnonymisationMethod>[] ORACLE_METHODS = new Class[]{
 		AnonymisationMethodNone.class
+		,AnonymisationMethodEncryptOracle.class
 		,AnonymisationMethodDestoryOracle.class
 	};
 	
