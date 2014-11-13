@@ -3,12 +3,15 @@ package org.anon.exec;
 import javax.sql.DataSource;
 
 import org.anon.data.AnonConfig;
+import org.anon.data.AnonymizationType;
 import org.anon.logic.AnonymisationMethod;
 import org.anon.logic.AnonymisationMethodDestoryOracle;
+import org.anon.logic.AnonymisationMethodEncryptOracle;
 import org.anon.vendor.OracleDbConnection;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -17,6 +20,9 @@ public class OracleExecTest extends BaseExecTest{
 	
 	@Autowired
 	DataSource dataSourceOracle;
+	
+	@Autowired
+	AnonConfig anonConfig;
 	
 	@Override
 	DataSource getDataSource() {
@@ -52,6 +58,48 @@ public class OracleExecTest extends BaseExecTest{
 		
 		Assert.assertEquals("x", loadFromDbObject("select distinct COMSIID from USERS_TMP", String.class));
 		
+	}
+
+	@Test
+	public void test_anonymiseLong() {
+		AnonymisationMethodEncryptOracle anonymisationMethod = new AnonymisationMethodEncryptOracle();
+	
+		anonymisationMethod.setDataSource(dataSourceOracle);
+		Object value = anonymisationMethod.anonymise(100l, getTestAnonimisedColumnInfo("COMSIID", "NUMBER", "USERS_TMP",anonymisationMethod,OracleDbConnection.databaseSpecifics,anonConfig));
+	
+		System.out.println("Anonyised: " + value);
+	}
+	
+	@Test
+	public void test_anonymiseString() {
+		AnonymisationMethodEncryptOracle anonymisationMethod = new AnonymisationMethodEncryptOracle();
+	
+		anonymisationMethod.setDataSource(dataSourceOracle);
+		Object value = anonymisationMethod.anonymise("abax", getTestAnonimisedColumnInfo("COMSIID", "VARCHAR2", "USERS_TMP",anonymisationMethod,OracleDbConnection.databaseSpecifics,anonConfig));
+	
+		System.out.println("Anonyised: " + value);
+	}
+	
+	@Test
+	public void testAnonymisationMethodEncryptString() {
+		OracleExec oracleExec = new OracleExec();
+		oracleExec.setDataSource(dataSourceOracle);
+		oracleExec.setAnonConfig(getTestAnonConfig("COMSIID", "VARCHAR2", "USERS_TMP",new AnonymisationMethodEncryptOracle()));
+		oracleExec.runAll();
+		System.out.println(
+				new JdbcTemplate(dataSourceOracle).queryForList("select distinct(COMSIID) from USERS_TMP")
+				);		
+	}
+
+	@Test
+	public void testAnonymisationMethodEncryptNumber() {
+		OracleExec oracleExec = new OracleExec();
+		oracleExec.setDataSource(dataSourceOracle);
+		oracleExec.setAnonConfig(getTestAnonConfig("ROLE_ID", "NUMBER", "USERS_TMP",new AnonymisationMethodEncryptOracle()));
+		oracleExec.runAll();
+		System.out.println(
+				new JdbcTemplate(dataSourceOracle).queryForList("select distinct(ROLE_ID) from USERS_TMP")
+				);		
 	}
 
 	

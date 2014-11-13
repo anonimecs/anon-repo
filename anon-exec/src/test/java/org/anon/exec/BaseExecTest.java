@@ -11,6 +11,18 @@ public abstract class BaseExecTest extends BaseDbTest{
 	protected AnonConfig getTestAnonConfig(String colName, String colType, String tableName, AnonymisationMethod anonymisationMethod, DatabaseSpecifics databaseSpecifics) {
 		AnonConfig anonConfig = new AnonConfig();
 		anonConfig.init();
+		
+		getTestAnonimisedColumnInfo(colName, colType, tableName,
+				anonymisationMethod, databaseSpecifics, anonConfig);
+		
+		anonConfig.addAnonMethod(anonymisationMethod);
+		
+		return anonConfig;
+	}
+
+	protected AnonymisedColumnInfo getTestAnonimisedColumnInfo(String colName, String colType,
+			String tableName, AnonymisationMethod anonymisationMethod,
+			DatabaseSpecifics databaseSpecifics, AnonConfig anonConfig) {
 		DatabaseTableInfo table = new DatabaseTableInfo();
 		DatabaseColumnInfo databaseColumnInfo = new DatabaseColumnInfo(colName, colType, databaseSpecifics);
 		table.addColumn(databaseColumnInfo);
@@ -21,9 +33,7 @@ public abstract class BaseExecTest extends BaseDbTest{
 		anonymisationMethod.addColumn(anonymizedColumn);
 		table.addAnonymisedColumn(anonymizedColumn);
 		
-		anonConfig.addAnonMethod(anonymisationMethod);
-		
-		return anonConfig;
+		return anonymizedColumn;
 	}
 
     

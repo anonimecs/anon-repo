@@ -13,17 +13,13 @@ import org.springframework.jdbc.core.CallableStatementCallback;
 import org.springframework.jdbc.core.CallableStatementCreator;
 import org.springframework.jdbc.core.JdbcTemplate;
 
-/**
- * adds hash(password) to each character or number or special char
- */
-public class AnonymisationMethodEncryptSybase extends AnonymisationMethodEncrypt {
-	
-	
-	public AnonymisationMethodEncryptSybase() {
+public class AnonymisationMethodEncryptOracle extends AnonymisationMethodEncrypt {
+
+	public AnonymisationMethodEncryptOracle() {
 		super(AnonymizationType.ENCRYPT);
 		
-		addSetupSqlFiles("MethodEncrypt_create.sql", "MethodEncrypt_create2.sql");
-		addCleanupSqlFiles("MethodEncrypt_drop.sql", "MethodEncrypt_drop2.sql");
+		addSetupSqlFiles("oracle/MethodEncrypt_createFunc.sql", "oracle/MethodEncrypt_createProc.sql");
+		addCleanupSqlFiles("oracle/MethodEncrypt_dropProc.sql", "oracle/MethodEncrypt_dropFunc.sql");
 		
 	}
 	
@@ -42,24 +38,24 @@ public class AnonymisationMethodEncryptSybase extends AnonymisationMethodEncrypt
 		try{
 
 			
-			return new JdbcTemplate(dataSource).queryForObject("select "+exampleValue+" + round((rand("+hashmodint+") * "+exampleValue+")/10, 0)",clazz);
+			return new JdbcTemplate(dataSource).queryForObject("select "+ exampleValue + " + ora_hash(" + exampleValue+ ", " + exampleValue+ "/10, "+hashmodint+") from dual",clazz);
 		}
 		catch(RuntimeException e){
 			logger.error("anonymiseDouble failed", e);
 			throw e;
 		}
 	}
-	
+
 	@Override
 	protected String anonymiseString(final String exampleValue) {
 		try{
-			String setupSql = getFileContent("MethodEncrypt_create.sql");
+			String setupSql = getFileContent("oracle/MethodEncrypt_createFunc.sql");
 			execute(setupSql);
 			
 			return new JdbcTemplate(dataSource).execute(
 				new CallableStatementCreator() {
 			        public CallableStatement createCallableStatement(Connection con) throws SQLException{
-			            CallableStatement cs = con.prepareCall("select dbo.cs_meth_enc_func(?, ?)");
+			            CallableStatement cs = con.prepareCall("select an_meth_enc_func(?, ?) from dual");
 			            cs.setString(1, exampleValue);
 			            cs.setInt(2, hashmodint);
 			            return cs;
@@ -82,24 +78,21 @@ public class AnonymisationMethodEncryptSybase extends AnonymisationMethodEncrypt
 			throw e;
 		}
 		finally{
-			String setupSql = getFileContent("MethodEncrypt_drop2.sql");
+			String setupSql = getFileContent("oracle/MethodEncrypt_dropFunc.sql");
 			execute(setupSql);
 		}
 	}
-
-
-
-
+	
 	@Override
 	public RunResult runOnColumn(AnonymisedColumnInfo col) {
 		if(col.isJavaTypeString()){
 			
-			int rowCount = update("exec cs_meth_enc_tbl (?, ?, ?)", col.getName() , col.getTable().getName(), hashmodint);
+			int rowCount = update("call an_meth_enc_proc (?, ?, ?)", col.getName() , col.getTable().getName(), hashmodint);
 			return new RunResult("Updated Strings", rowCount);
 
 		}
 		else if(col.isJavaTypeDouble() || col.isJavaTypeLong()){
-			int rowCount = update("update "+ col.getTable().getName()+ " set " + col.getName() + " = " +col.getName()+ "+ round((rand("+hashmodint+") * "+col.getName()+")/10, 0)");
+			int rowCount = update("update "+ col.getTable().getName()+ " set " + col.getName() + " = " + col.getName() + " + ora_hash(" + col.getName()+ ", " + col.getName()+ "/10, "+hashmodint+")");
 			return new RunResult("Updated Numbers", rowCount);
 		}
 		else {
@@ -108,6 +101,4 @@ public class AnonymisationMethodEncryptSybase extends AnonymisationMethodEncrypt
 		
 	}
 
-	
-	
 }
