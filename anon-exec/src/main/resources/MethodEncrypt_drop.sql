@@ -1,1 +1,0 @@
-drop procedure cs_meth_enc_tbl

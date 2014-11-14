@@ -1,7 +1,16 @@
 package org.anon.logic;
 
+import java.sql.CallableStatement;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 import org.anon.data.AnonymisedColumnInfo;
 import org.anon.data.AnonymizationType;
+import org.springframework.dao.DataAccessException;
+import org.springframework.jdbc.core.CallableStatementCallback;
+import org.springframework.jdbc.core.CallableStatementCreator;
+import org.springframework.jdbc.core.JdbcTemplate;
 
 /**
  * adds hash(password) to each character or number or special char
@@ -17,9 +26,22 @@ public abstract class AnonymisationMethodEncrypt extends AnonymisationMethod {
 		
 		
 	}
+	@Override
+	protected Long anonymiseLong(Long exampleValue) {
+		return anonymiseNum(exampleValue, Long.class);
+	}
+
+	@Override
+	protected Double anonymiseDouble(Double exampleValue) {
+		return anonymiseNum(exampleValue, Double.class);
+		
+	}
 
 
 
+
+	protected abstract <T> T  anonymiseNum(Number exampleValue, Class<T> clazz);
+	
 	@Override
 	public boolean supports(AnonymisedColumnInfo anonymizedColumn){
 		if(anonymizedColumn.isJavaTypeDate()){
@@ -30,38 +52,43 @@ public abstract class AnonymisationMethodEncrypt extends AnonymisationMethod {
 	}
 
 	
-	@Override
-	protected String anonymiseString(String exampleValue) {
-		char[] toEncode = exampleValue.toCharArray();
-		
-		for (int i = 0; i < toEncode.length; i++) {
-	        if (Character.isLetter(toEncode[i])) {
-	            toEncode[i] = (char)((toEncode[i] + hashmod - 'a') % 25 + 'a');
-	        }
-	        else if (Character.isDigit(toEncode[i])){
-	        	toEncode[i] = (char)((toEncode[i] + hashmod) % 10); 
-	        }
-	        else {
-	        	toEncode[i] = (char)(toEncode[i] + hashmod);
-	        }
-	    }
-		
-		return new String(toEncode);
-	}
+	protected abstract String getAnonimiseStringSql();
 	
 	@Override
-	protected Double anonymiseDouble(Double exampleValue) {
-		Double exampleDouble = (Double) exampleValue; 
-		
-		return exampleDouble + hashmod;
+	protected String anonymiseString(final String exampleValue) {
+		try{
+			setupInDb();
+			
+			return new JdbcTemplate(dataSource).execute(
+				new CallableStatementCreator() {
+			        public CallableStatement createCallableStatement(Connection con) throws SQLException{
+			            CallableStatement cs = con.prepareCall(getAnonimiseStringSql());
+			            cs.setString(1, exampleValue);
+			            cs.setInt(2, hashmodint);
+			            return cs;
+			        }
+			    }, 
+				new CallableStatementCallback<String>() {
+
+					@Override
+					public String doInCallableStatement(CallableStatement cs) throws SQLException, DataAccessException {
+						cs.execute();
+						ResultSet rs = cs.getResultSet();
+						rs.next();
+						return rs.getString(1);
+					}
+			    }
+			);
+		}
+		catch(RuntimeException e){
+			logger.error("anonymiseString failed", e);
+			throw e;
+		}
+		finally{
+			cleanupInDb();
+		}
 	}
-	
-	@Override
-	protected Long anonymiseLong(Long exampleValue) {
-		Long exampleLong = (Long) exampleValue; 
-		
-		return exampleLong + hashmod;
-	}
+
 
 	
 

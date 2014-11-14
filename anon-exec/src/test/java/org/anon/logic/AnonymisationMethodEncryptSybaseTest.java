@@ -4,7 +4,6 @@ import javax.sql.DataSource;
 
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.AbstractJUnit4SpringContextTests;
 
@@ -15,7 +14,7 @@ public class AnonymisationMethodEncryptSybaseTest extends AbstractJUnit4SpringCo
 	@Autowired
 	DataSource dataSourceSybase;
 
-//	@Test
+	@Test
 	public void testAnonymiseString() {
 		AnonymisationMethodEncryptSybase anonymisationMethodEncryptSybase = new AnonymisationMethodEncryptSybase();
 		anonymisationMethodEncryptSybase.setDataSource(dataSourceSybase);

@@ -1,16 +1,8 @@
 package org.anon.logic;
 
-import java.sql.CallableStatement;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-
 import org.anon.data.AnonymisedColumnInfo;
 import org.anon.data.AnonymizationType;
 import org.anon.data.RunResult;
-import org.springframework.dao.DataAccessException;
-import org.springframework.jdbc.core.CallableStatementCallback;
-import org.springframework.jdbc.core.CallableStatementCreator;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 public class AnonymisationMethodEncryptOracle extends AnonymisationMethodEncrypt {
@@ -24,64 +16,23 @@ public class AnonymisationMethodEncryptOracle extends AnonymisationMethodEncrypt
 	}
 	
 	@Override
-	protected Long anonymiseLong(Long exampleValue) {
-		return anonymiseNum(exampleValue, Long.class);
-	}
-
-	@Override
-	protected Double anonymiseDouble(Double exampleValue) {
-		return anonymiseNum(exampleValue, Double.class);
-		
-	}
-
-	private <T> T anonymiseNum(Number exampleValue, Class<T> clazz) {
+	protected <T> T anonymiseNum(Number exampleValue, Class<T> clazz) {
 		try{
 
 			
 			return new JdbcTemplate(dataSource).queryForObject("select "+ exampleValue + " + ora_hash(" + exampleValue+ ", " + exampleValue+ "/10, "+hashmodint+") from dual",clazz);
 		}
 		catch(RuntimeException e){
-			logger.error("anonymiseDouble failed", e);
+			logger.error("anonymiseNum failed", e);
 			throw e;
 		}
 	}
-
+	
 	@Override
-	protected String anonymiseString(final String exampleValue) {
-		try{
-			String setupSql = getFileContent("oracle/MethodEncrypt_createFunc.sql");
-			execute(setupSql);
-			
-			return new JdbcTemplate(dataSource).execute(
-				new CallableStatementCreator() {
-			        public CallableStatement createCallableStatement(Connection con) throws SQLException{
-			            CallableStatement cs = con.prepareCall("select an_meth_enc_func(?, ?) from dual");
-			            cs.setString(1, exampleValue);
-			            cs.setInt(2, hashmodint);
-			            return cs;
-			        }
-			    }, 
-				new CallableStatementCallback<String>() {
-
-					@Override
-					public String doInCallableStatement(CallableStatement cs) throws SQLException, DataAccessException {
-						cs.execute();
-						ResultSet rs = cs.getResultSet();
-						rs.next();
-						return rs.getString(1);
-					}
-			    }
-			);
-		}
-		catch(RuntimeException e){
-			logger.error("anonymiseString failed", e);
-			throw e;
-		}
-		finally{
-			String setupSql = getFileContent("oracle/MethodEncrypt_dropFunc.sql");
-			execute(setupSql);
-		}
+	protected String getAnonimiseStringSql() {
+		return "select an_meth_enc_func(?, ?) from dual";
 	}
+
 	
 	@Override
 	public RunResult runOnColumn(AnonymisedColumnInfo col) {
