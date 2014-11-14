@@ -4,7 +4,7 @@ import org.anon.data.AnonymisedColumnInfo;
 import org.anon.data.RunResult;
 import org.springframework.jdbc.core.JdbcTemplate;
 
-public class AnonymisationMethodReshuffleSybase extends AnonymisationMethodReshuffle {
+public class AnonymisationMethodReshuffleOracle extends AnonymisationMethodReshuffle {
 
 	public static final String TMP_TABLE = "TMP_TABLE"; 
 	public static final String LOOKUP_TABLE = "TMP_TABLE_LOOKUP"; 
@@ -14,9 +14,9 @@ public class AnonymisationMethodReshuffleSybase extends AnonymisationMethodReshu
 	@Override
 	public void setupInDb() {
 
-		String createTmpTableSql = 
-				" select ROWID=identity(10), COLCOL as orig, COLCOL as reshuffled        " +
-				" into " + TMP_TABLE + " " +
+		String createTmpTableSql =
+				" create table " + TMP_TABLE + " as " +
+				" select ROWNUM as MYROWNUMBER, COLCOL as orig, COLCOL as reshuffled        " +
 				" from ( ";
 
 		for(int i =0 ; i < applyedToColumns.size(); i++){
@@ -33,7 +33,7 @@ public class AnonymisationMethodReshuffleSybase extends AnonymisationMethodReshu
 				" order by 2  ";
 
 		
-		String createTmpTableIndexSql = "create index " +TMP_TABLE+ "_IND on " + TMP_TABLE + " (ROWID)";
+		String createTmpTableIndexSql = "create index " +TMP_TABLE+ "_IND on " + TMP_TABLE + " (MYROWNUMBER)";
 		String createLookupTableIndexSql = "create index " +LOOKUP_TABLE+ "_IND on " + LOOKUP_TABLE + " (orig)";
 
 		
@@ -45,11 +45,12 @@ public class AnonymisationMethodReshuffleSybase extends AnonymisationMethodReshu
 		int shift = rowCount / 4  + hashmodint;
 
 		String reshuffleToLookupTable =
-				"select ROWID,orig,(	SELECT orig                            		"+
+				" create table " + LOOKUP_TABLE + " as " + 
+				" select MYROWNUMBER,orig,(	SELECT orig                            		"+
 					" FROM "+TMP_TABLE+" a                                     		"+
 					" WHERE                                                    		"+
-					"	a.ROWID = (x.ROWID + "+shift+") % "+rowCount+" + 1) as reshuffled  "+
-					" into " + LOOKUP_TABLE + " from " + TMP_TABLE+" x                ";
+					"	a.MYROWNUMBER = mod(x.MYROWNUMBER + "+shift+", "+rowCount+") + 1) as reshuffled  "+
+					" from " + TMP_TABLE+" x                ";
 
 		
 		execute(reshuffleToLookupTable);
@@ -68,14 +69,13 @@ public class AnonymisationMethodReshuffleSybase extends AnonymisationMethodReshu
 		String colName = col.getName();
 		String tableName = col.getTable().getName();
 		String sql =
-				" update " + tableName 					  +
+				" update " + tableName + " x "		   +
 				" set " +colName+" = (                   "+
 				" select s.reshuffled                    "+
 				" from                                   "+
 				" " + LOOKUP_TABLE + " s                   "+
 				" where s.orig = x."+colName			  +
-				" )                                      "+
-				" from "+tableName+" x                   "
+				" )                                      "
 				;
 		int rowCount = update(sql);
 		return new RunResult("Reshuffled Rows", rowCount);

@@ -39,8 +39,8 @@ public abstract class BaseExec {
 
 			MethodExecution methodExecution = anonConfig.getMethodExecution(anonymisationMethod);
 			try{
-				anonymisationMethod.setupInDb();
 				methodExecution.started();
+				anonymisationMethod.setupInDb();
 				for (AnonymisedColumnInfo col : anonymisationMethod.getApplyedToColumns()) {
 					methodExecution.startedCol(col);
 					RunResult runResult = anonymisationMethod.runOnColumn(col);

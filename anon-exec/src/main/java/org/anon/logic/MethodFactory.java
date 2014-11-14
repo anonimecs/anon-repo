@@ -24,6 +24,7 @@ public class MethodFactory {
 		AnonymisationMethodNone.class
 		,AnonymisationMethodEncryptOracle.class
 		,AnonymisationMethodDestoryOracle.class
+		,AnonymisationMethodReshuffleOracle.class
 	};
 	
 

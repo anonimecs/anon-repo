@@ -28,5 +28,10 @@ public abstract class AnonymisationMethodReshuffle extends AnonymisationMethod {
 		return allValues.get(newIndex);
 	}
 
+	@Override
+	public boolean supports(AnonymisedColumnInfo anonymizedColumn) {
+		return true;
+	}
+
 
 }
