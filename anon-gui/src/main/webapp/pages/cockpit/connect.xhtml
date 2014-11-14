@@ -1,0 +1,52 @@
+<ui:composition 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+	template="/layout/layout.xhtml">
+
+
+	<ui:define name="insert-content">
+		<h:form id="selectConnectionForm">
+		
+			<p:breadCrumb>
+			    <p:menuitem value="Categories" url="#" />
+			    <p:menuitem value="Connect" url="#" />
+			</p:breadCrumb>
+						
+			<h:panelGrid columns="3" >
+	
+				<p:outputLabel for="connection" value="Connection" style="display: block; width:100px;"/>
+								
+				<p:selectOneMenu id="connection" value="#{databasePanelBacking.selectedConnectionId}" disabled="#{databasePanelBacking.connected}">
+					<f:selectItems value="#{databasePanelBacking.dbConfigs}" 
+						var="db" itemValue="#{db.id}" itemLabel="#{db.guiName}"/>
+						<p:ajax event="change" update=":selectConnectionForm"/>
+				</p:selectOneMenu>
+								
+				<p:commandButton action="#{databasePanelBacking.connectDb()}"
+					value="Connect DB" update=":selectConnectionForm,:menuForm:menuBar" rendered="#{not databasePanelBacking.connected}"  />
+					            	
+				<p:commandButton actionListener="#{databasePanelBacking.disconnectDb()}" 
+					value="Disconnect DB" update=":selectConnectionForm, :menuForm:menuBar" rendered="#{databasePanelBacking.connected}"  />
+					        
+				<h:outputLabel for="databaseUrl">URL</h:outputLabel>
+				<h:outputText id="databaseUrl" value="#{databasePanelBacking.databaseConfig.url}" />
+				<h:outputText/>
+				
+				<h:outputLabel for="databaseType">Type</h:outputLabel>
+				<h:outputText id="databaseType" value="#{databasePanelBacking.databaseConfig.vendor} #{databasePanelBacking.databaseConfig.version}" />
+				<h:outputText/>
+					            
+				<h:outputLabel for="databaseUser">Login</h:outputLabel>
+				<h:outputText id="databaseUser" value="#{databasePanelBacking.databaseConfig.login}" />
+				<h:outputText/>
+			            	
+			</h:panelGrid>
+		        
+		</h:form>
+	
+	</ui:define>
+</ui:composition>

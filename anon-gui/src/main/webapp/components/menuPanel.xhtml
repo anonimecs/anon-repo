@@ -1,0 +1,33 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+
+	<h:form>
+		<p:panelMenu style="width:200px">
+			<p:submenu label="Database Connections">
+				<p:menuitem value="Connect" url="/pages/cockpit/connect.jsf"
+					icon="ui-icon-star" />
+				<p:menuitem value="Add" url="/pages/connection/connectionAdd.jsf"
+					icon="ui-icon-disk" />
+				<p:menuitem value="Edit" url="/pages/connection/connectionList.jsf"
+					icon="ui-icon-arrowrefresh-1-w" />
+			</p:submenu>
+			<p:submenu label="Configure">
+				<p:menuitem value="Delete" actionListener="#{menuView.delete}"
+					ajax="false" icon="ui-icon-close" />
+			</p:submenu>
+			<p:submenu label="Run">
+				<p:menuitem value="Show Process" actionListener="#{menuView.delete}"
+					ajax="false" icon="ui-icon-close" />
+				<p:menuitem value="Execute" actionListener="#{menuView.delete}"
+					ajax="false" icon="ui-icon-close" />
+			</p:submenu>
+		</p:panelMenu>
+	</h:form>
+
+</html>

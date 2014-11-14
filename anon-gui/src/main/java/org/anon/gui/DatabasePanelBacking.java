@@ -56,7 +56,7 @@ public class DatabasePanelBacking extends BackingBase{
 		}
 	}
 
-	public void connectDb(){
+	public String connectDb(){
 		
 		DatabaseConfig databaseConfig = getDatabaseConfig();
 		logDebug("connecting to "  + databaseConfig.toString());
@@ -66,6 +66,8 @@ public class DatabasePanelBacking extends BackingBase{
 		schemas = databaseLoaderService.getSchemas();
 		loadDatabaseTableList();
 		connected = true;
+		
+		return "/pages/cockpit/databaseTableList.jsf";
 	}
 	
 	public void disconnectDb() {
