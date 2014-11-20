@@ -78,6 +78,7 @@ public class DatabasePanelBacking extends BackingBase{
 		tableList = null;
 		connected = false;
 		editedTableBacking.setEditedTable(null);
+		editedTableBacking.setEditedColumn(null);
 	}
 	
 	public void onSchemaChanged(){
