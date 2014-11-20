@@ -5,13 +5,14 @@ import java.util.Map;
 
 import javax.sql.DataSource;
 
+import org.anon.test.AnonUnitTest;
 import org.springframework.jdbc.core.ColumnMapRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.AbstractJUnit4SpringContextTests;
 
 @ContextConfiguration(locations = { "classpath:spring-test-datasources.xml" })
-public abstract class BaseDbTest extends AbstractJUnit4SpringContextTests{
+public abstract class BaseDbTest extends AbstractJUnit4SpringContextTests implements AnonUnitTest{
 
 	
     /**
