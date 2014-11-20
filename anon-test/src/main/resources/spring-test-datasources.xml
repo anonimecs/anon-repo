@@ -6,7 +6,7 @@
 						http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd
 						http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.1.xsd">
 	
-	<context:property-placeholder  location="classpath:classpath:jenkins.test.properties,local.test.properties"  ignore-unresolvable="true" ignore-resource-not-found="true"/>
+	<context:property-placeholder  location="classpath:jenkins.test.properties,classpath:local.test.properties"  ignore-unresolvable="true" ignore-resource-not-found="true"/>
 	
 	
 	<bean id="dataSourceSybase" class="org.apache.commons.dbcp.BasicDataSource" >
