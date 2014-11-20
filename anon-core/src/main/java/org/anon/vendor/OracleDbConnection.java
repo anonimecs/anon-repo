@@ -26,7 +26,7 @@ public class OracleDbConnection extends AbstractDbConnection   {
 
 	@Override
 	public List<DatabaseTableInfo> getTableNamesAndRowcounts(String selectedSchema) {
-		String SQL = "select table_name as name, num_rows rowcnt from dba_tables where   owner = '" + selectedSchema + "' order by   table_name";
+		String SQL = "select table_name as name, num_rows rowcnt from all_tables where   owner = '" + selectedSchema + "' order by   table_name";
 		return jdbcTemplate.query(SQL, new RowMapper<DatabaseTableInfo>(){
 
 			@Override
