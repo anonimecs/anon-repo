@@ -13,6 +13,13 @@
 	</h:head>
 
 	<h:body>
+	
+		<p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />       
+  
+  		<p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
+		    <h:outputText value="Loading database info" />
+		</p:dialog>
+	
 		<h:form>
 			<p:growl id="msgs" showDetail="true" autoUpdate="true"
 				globalOnly="false" />
@@ -25,7 +32,7 @@
 			<p:layoutUnit position="west" resizable="false" style="border: none;">
 				<ui:include src="/components/menuPanel.xhtml" />
 			</p:layoutUnit>
-			<p:layoutUnit position="center" id="centerUnit">
+			<p:layoutUnit position="center" resizable="false" style="border: none;">
 				<ui:insert name="insert-content" />
 			</p:layoutUnit>
 		</p:layout>

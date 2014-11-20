@@ -9,7 +9,7 @@
 
 	<h:form>
 		<p:panelMenu style="width:200px">
-			<p:submenu label="Database Connections">
+			<p:submenu label="Database Connections" >
 				<p:menuitem value="Connect" url="/pages/cockpit/connect.jsf"
 					icon="ui-icon-star" />
 				<p:menuitem value="Add" url="/pages/connection/connectionAdd.jsf"
@@ -18,8 +18,12 @@
 					icon="ui-icon-arrowrefresh-1-w" />
 			</p:submenu>
 			<p:submenu label="Configure">
-				<p:menuitem value="Delete" actionListener="#{menuView.delete}"
-					ajax="false" icon="ui-icon-close" />
+				<p:menuitem value="Table list" url="/pages/cockpit/databaseTableList.jsf" 
+					disabled="#{!databasePanelBacking.connected}" ajax="false" icon="ui-icon-close" />
+				<p:menuitem value="Column list" url="/pages/cockpit/databaseColumnList.jsf" 
+					disabled="#{empty editedTableBacking.editedTable}" ajax="false" icon="ui-icon-close" />
+				<p:menuitem value="Anonymize" url="/pages/cockpit/anonymize.jsf" 
+					disabled="#{null eq editedTableBacking.editedColumn}" ajax="false" icon="ui-icon-close" />
 			</p:submenu>
 			<p:submenu label="Run">
 				<p:menuitem value="Show Process" actionListener="#{menuView.delete}"

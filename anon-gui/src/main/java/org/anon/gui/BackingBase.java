@@ -1,5 +1,6 @@
 package org.anon.gui;
 
+import javax.faces.application.ConfigurableNavigationHandler;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 
@@ -62,5 +63,14 @@ public class BackingBase {
 			FacesContext.getCurrentInstance()
 			.addMessage(INFO_MESSAGE_ID, new FacesMessage(msg.getSeverity(), msg.getHeadline(), msg.getDetails()));
 		}
+	}
+	
+	protected void navigateTo(String url) {
+
+		 ConfigurableNavigationHandler handler = (ConfigurableNavigationHandler) FacesContext
+	               .getCurrentInstance().getApplication()
+	               .getNavigationHandler();
+		 
+		 handler.performNavigation(url);
 	}
 }
