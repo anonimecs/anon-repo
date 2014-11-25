@@ -10,11 +10,9 @@
 
 	<ui:define name="insert-content">
 		
-		<p:breadCrumb>
-		   	<p:menuitem value="Categories" url="#" />
-		   	<p:menuitem value="Connect" url="/pages/cockpit/connect.jsf" />
-		   	<p:menuitem value="Table list" url="#" />
-		</p:breadCrumb>
+		<ui:include src="/components/breadCrumb.xhtml">
+			<ui:param name="step" value="1" />
+		</ui:include>
 		
 		<h:panelGrid columns="2" >
 			<h:form rendered="#{databasePanelBacking.connected}" >
@@ -43,7 +41,7 @@
 							rowStyleClass="#{not empty databaseTableInfo.anonymisedColumnsList() ? 'anonymisedColumn' : not empty databaseTableInfo.getActiveAnonCandidateList() ? 'anonCandidate' : null}"
 							styleClass="myTable" rowIndexVar="rowIndex">
 						
-						<p:ajax event="rowSelect" listener="#{editedTableBacking.onTableSelect}"/>
+						<p:ajax event="rowSelect" listener="#{editedTableBacking.onTableSelect}" />
 						
 						<p:column headerText="Table" filterBy="#{databaseTableInfo.name}" filterMatchMode="contains" sortBy="#{databaseTableInfo.name}" width="200">
 		        			<h:outputText value="#{databaseTableInfo.name}" />

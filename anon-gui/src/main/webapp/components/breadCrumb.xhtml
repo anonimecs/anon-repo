@@ -1,0 +1,16 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+	
+	<p:breadCrumb>
+		   	<p:menuitem value="Categories" 	url="#" />
+		   	<p:menuitem value="Connect" 	url="/doConnect" />
+		   	<p:menuitem value="Table list" 	rendered="#{step > 0}" 	url="/listTables" />
+		   	<p:menuitem value="Column list" rendered="#{step > 1}" 	url="/listColumns" />
+		   	<p:menuitem value="Anonymize" 	rendered="#{step > 2}" 	url="/doAnonymize" />
+	</p:breadCrumb>
+
+</ui:composition>
+

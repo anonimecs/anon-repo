@@ -11,6 +11,7 @@ import javax.faces.context.FacesContext;
 
 import org.anon.data.AnonymisedColumnInfo;
 import org.anon.data.DatabaseTableInfo;
+import org.anon.gui.navigation.NavigationCaseEnum;
 import org.anon.persistence.data.DatabaseConfig;
 import org.anon.service.DatabaseConfigService;
 import org.anon.service.DatabaseLoaderService;
@@ -67,7 +68,7 @@ public class DatabasePanelBacking extends BackingBase{
 		loadDatabaseTableList();
 		connected = true;
 		
-		navigateTo("/pages/cockpit/databaseTableList.jsf");
+		redirectPageTo(NavigationCaseEnum.TABLES);
 	}
 	
 	public void disconnectDb() {

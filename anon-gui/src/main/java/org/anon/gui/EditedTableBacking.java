@@ -13,6 +13,7 @@ import org.anon.data.AnonymizationType;
 import org.anon.data.DatabaseColumnInfo;
 import org.anon.data.DatabaseTableInfo;
 import org.anon.data.RelatedTableColumnInfo;
+import org.anon.gui.navigation.NavigationCaseEnum;
 import org.anon.logic.AnonymisationMethod;
 import org.anon.logic.AnonymisationMethodNone;
 import org.anon.logic.MethodFactory;
@@ -80,14 +81,13 @@ public class EditedTableBacking extends BackingBase {
 	}
 
 
-
 	public void onTableSelect(SelectEvent event){
 		 logDebug("Line Selected" + editedTable);
 		 databaseLoaderService.fillExampleValues(editedTable);
 		 editedColumn = null;
 		 anonymisationMethod = null;	 
-
-		 navigateTo("/pages/cockpit/databaseColumnList.jsf");
+		 
+		 redirectPageTo(NavigationCaseEnum.COLUMNS);
 	}
 	
 	
@@ -116,7 +116,7 @@ public class EditedTableBacking extends BackingBase {
 			replaceInSupported();
 		}
 		
-		navigateTo("/pages/cockpit/anonymize.jsf");
+		redirectPageTo(NavigationCaseEnum.ANONYMIZE);
 	}
 	
 
@@ -301,12 +301,3 @@ public class EditedTableBacking extends BackingBase {
 	
 	
 }
-
-
-
-
-
-
-
-
-

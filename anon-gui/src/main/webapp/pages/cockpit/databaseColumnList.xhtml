@@ -10,12 +10,9 @@
 
 	<ui:define name="insert-content">
 		
-		<p:breadCrumb>
-		   	<p:menuitem value="Categories" url="#" />
-		   	<p:menuitem value="Connect" url="/pages/cockpit/connect.jsf" />
-		   	<p:menuitem value="Table list" url="/pages/cockpit/databaseTableList.jsf" />
-		   	<p:menuitem value="Column list" url="#"/>
-		</p:breadCrumb>
+		<ui:include src="/components/breadCrumb.xhtml">
+			<ui:param name="step" value="2" />
+		</ui:include>
 		
 		<h:form id="editedTableColumnsForm" rendered="#{not empty editedTableBacking.editedTable}">
 			<p:panel header="Anonymize table #{editedTableBacking.editedTable.name} RowCount: #{editedTableBacking.editedTable.rowCount}" >

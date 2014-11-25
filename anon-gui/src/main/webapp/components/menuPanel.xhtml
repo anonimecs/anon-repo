@@ -5,24 +5,25 @@
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:p="http://primefaces.org/ui">
+	
 
 
-	<h:form>
-		<p:panelMenu style="width:200px">
+	<h:form id="menuPanelForm">
+		<p:panelMenu id="menuPanel" style="width:200px">
 			<p:submenu label="Database Connections" >
-				<p:menuitem value="Connect" url="/pages/cockpit/connect.jsf"
+				<p:menuitem value="Connect" url="/doConnect"
 					icon="ui-icon-star" />
-				<p:menuitem value="Add" url="/pages/connection/connectionAdd.jsf"
+				<p:menuitem value="Add" url="/addConnection"
 					icon="ui-icon-disk" />
-				<p:menuitem value="Edit" url="/pages/connection/connectionList.jsf"
+				<p:menuitem value="Edit" url="/listConnection"
 					icon="ui-icon-arrowrefresh-1-w" />
 			</p:submenu>
 			<p:submenu label="Configure">
-				<p:menuitem value="Table list" url="/pages/cockpit/databaseTableList.jsf" 
+				<p:menuitem value="Table list" url="/listTables" 
 					disabled="#{!databasePanelBacking.connected}" ajax="false" icon="ui-icon-close" />
-				<p:menuitem value="Column list" url="/pages/cockpit/databaseColumnList.jsf" 
+				<p:menuitem value="Column list" url="/listColumns" 
 					disabled="#{empty editedTableBacking.editedTable}" ajax="false" icon="ui-icon-close" />
-				<p:menuitem value="Anonymize" url="/pages/cockpit/anonymize.jsf" 
+				<p:menuitem value="Anonymize" url="/doAnonymize" 
 					disabled="#{null eq editedTableBacking.editedColumn}" ajax="false" icon="ui-icon-close" />
 			</p:submenu>
 			<p:submenu label="Run">

@@ -4,6 +4,7 @@ import javax.faces.application.ConfigurableNavigationHandler;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 
+import org.anon.gui.navigation.NavigationCaseEnum;
 import org.anon.service.ServiceResult;
 import org.anon.service.ServiceResultMessage;
 import org.apache.commons.lang.builder.ReflectionToStringBuilder;
@@ -65,12 +66,12 @@ public class BackingBase {
 		}
 	}
 	
-	protected void navigateTo(String url) {
-
-		 ConfigurableNavigationHandler handler = (ConfigurableNavigationHandler) FacesContext
+	protected void redirectPageTo(NavigationCaseEnum nav) {
+		
+		ConfigurableNavigationHandler handler = (ConfigurableNavigationHandler) FacesContext
 	               .getCurrentInstance().getApplication()
 	               .getNavigationHandler();
-		 
-		 handler.performNavigation(url);
+		
+		handler.performNavigation(nav.getUrl() + "?faces-redirect=true");
 	}
 }

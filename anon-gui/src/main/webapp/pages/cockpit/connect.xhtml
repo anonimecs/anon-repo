@@ -12,10 +12,9 @@
 	
 		<h:form id="selectConnectionForm">
 		
-			<p:breadCrumb>
-			    <p:menuitem value="Categories" url="#" />
-			    <p:menuitem value="Connect" url="#" />
-			</p:breadCrumb>
+			<ui:include src="/components/breadCrumb.xhtml">
+				<ui:param name="step" value="0" />
+			</ui:include>
 						
 			<h:panelGrid columns="3" >
 	
@@ -25,13 +24,13 @@
 					<f:selectItems value="#{databasePanelBacking.dbConfigs}" 
 						var="db" itemValue="#{db.id}" itemLabel="#{db.guiName}"/>
 						<p:ajax event="change" update=":selectConnectionForm"/>
-				</p:selectOneMenu>
+				</p:selectOneMenu>	
 								
 				<p:commandButton action="#{databasePanelBacking.connectDb()}"
 					value="Connect DB" update=":selectConnectionForm,:menuForm:menuBar" rendered="#{not databasePanelBacking.connected}"  />
 					            	
 				<p:commandButton actionListener="#{databasePanelBacking.disconnectDb()}" 
-					value="Disconnect DB" update=":selectConnectionForm, :menuForm:menuBar" rendered="#{databasePanelBacking.connected}"  />
+					value="Disconnect DB" update=":selectConnectionForm, :menuForm:menuBar, :menuPanelForm:menuPanel" rendered="#{databasePanelBacking.connected}"  />
 					        
 				<h:outputLabel for="databaseUrl">URL</h:outputLabel>
 				<h:outputText id="databaseUrl" value="#{databasePanelBacking.databaseConfig.url}" />

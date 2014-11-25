@@ -10,14 +10,9 @@
 
 	<ui:define name="insert-content">
 		
-		<p:breadCrumb>
-		   	<p:menuitem value="Categories" url="#" />
-		   	<p:menuitem value="Connect" url="/pages/cockpit/connect.jsf" />
-		   	<p:menuitem value="Table list" url="/pages/cockpit/databaseTableList.jsf" />
-		   	<p:menuitem value="Column list" url="/pages/cockpit/databaseColumnList.jsf"/>
-		   	<p:menuitem value="Anonymize" url="#" />
-		</p:breadCrumb>
-		
+		<ui:include src="/components/breadCrumb.xhtml">
+			<ui:param name="step" value="3" />
+		</ui:include>
 		
 		<p:outputPanel id="anonymizePanel" rendered="#{not empty editedTableBacking.editedTable}">
 					<p:panel header="Anonymize Column: #{editedTableBacking.editedColumn.name}" rendered="#{null ne editedTableBacking.editedColumn}"> 
