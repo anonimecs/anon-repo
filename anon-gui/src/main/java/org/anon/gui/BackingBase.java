@@ -68,9 +68,11 @@ public class BackingBase {
 	
 	protected void redirectPageTo(NavigationCaseEnum nav) {
 		
-		ConfigurableNavigationHandler handler = (ConfigurableNavigationHandler) FacesContext
-	               .getCurrentInstance().getApplication()
-	               .getNavigationHandler();
+		FacesContext context = FacesContext.getCurrentInstance();
+		context.getExternalContext().getFlash().setKeepMessages(true);
+		
+		ConfigurableNavigationHandler handler = (ConfigurableNavigationHandler) context
+				.getApplication().getNavigationHandler();
 		
 		handler.performNavigation(nav.getUrl() + "?faces-redirect=true");
 	}

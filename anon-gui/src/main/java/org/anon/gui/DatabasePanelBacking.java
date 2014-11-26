@@ -3,7 +3,6 @@ package org.anon.gui;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
-import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
@@ -95,8 +94,7 @@ public class DatabasePanelBacking extends BackingBase{
 		List<String> errors = databaseLoaderService.getLoadErrors();
 		if(errors!=null && !errors.isEmpty()){
 			for (String error : errors) {
-				FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, error, null);
-				FacesContext.getCurrentInstance().addMessage(null, msg);
+				showErrorInGui(error);
 			}
 		}
 	}
