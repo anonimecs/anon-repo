@@ -9,126 +9,145 @@
 
 
 	<ui:define name="insert-content">
+	
+		<h:outputStylesheet library="css" name="cockpit.css" />
 		
 		<ui:include src="/components/breadCrumb.xhtml">
 			<ui:param name="step" value="3" />
 		</ui:include>
 		
-		<p:outputPanel id="anonymizePanel" rendered="#{not empty editedTableBacking.editedTable}">
-					<p:panel header="Anonymize Column: #{editedTableBacking.editedColumn.name}" rendered="#{null ne editedTableBacking.editedColumn}"> 
-						<h:panelGrid columns="2" style="width:100%;">
-					        <p:commandButton 
-					        	id="saveColumnSettingsButton" actionListener="#{editedTableBacking.onSaveColumnSettings()}" 
-					        	value="Save Changes" update="anonymizePanel,:menuForm:menuBar" 
-					        	process="@this" icon="ui-icon-disk"/>
+		<h:panelGrid columns="3" style="padding-top:15px;">
+			
+			<h:outputLabel for="anonymizationMethodSelect">Method</h:outputLabel>
+			<h:form>        
+				<p:selectOneMenu id="anonymizationMethodSelect" value="#{editedTableBacking.anonymisationMethod}" converter="methodConverter" var="a">
+					<p:ajax event="change" update=":anonymizeTabView"
+					    listener="#{editedTableBacking.onAnonymisatationTypeChanged()}" oncomplete=""/>
+					<f:selectItems value="#{editedTableBacking.supportedAnonymisationMethods}" var="anonMethod" 
+						itemLabel="#{anonMethod.type}" itemValue="#{anonMethod}" />
+					<p:column>
+	               		<h:outputText value="#{a.type}" />
+	           		</p:column>
+	       		</p:selectOneMenu>
+			</h:form>
 
-							<h:form>
-							
+			<p:commandButton 
+				id="saveColumnSettingsButton" actionListener="#{editedTableBacking.onSaveColumnSettings()}" 
+				value="Save Changes" update="anonymizeTabView,:menuForm:menuBar" 
+				process="@this" icon="ui-icon-disk"/>		
+			
+		</h:panelGrid>
+		
+		<h:outputText value="#{editedTableBacking.anonymisationMethod}" />
+
+		<p:tabView id="anonymizeTabView" >
+		
+			<p:tab id="anonymizeTab" title="Anonymize Column: #{editedTableBacking.editedColumn.name}" rendered="#{null ne editedTableBacking.editedColumn}"> 
+			
+				<style>
+					.fifty-percent {
+   						width: 50%;
+					}
+				</style>
+			
+				<h:panelGrid columns="2" style="width:100%;" columnClasses="fifty-percent">
+	        
+					<p:dataTable  value="#{editedTableBacking.editedColumn.exampleValues}" var="exampleValue"
+						scrollable="true" scrollHeight="300">
+						<p:column headerText="Original Values">
+							<h:outputText value="#{exampleValue}"/>
+						</p:column>
+					</p:dataTable>
 						        
-						        <p:selectOneMenu id="anonymizationMethodSelect" value="#{editedTableBacking.anonymisationMethod}" converter="methodConverter"	 var="a">
-						        	<p:ajax event="change" update=":anonymizePanel"
-						        		listener="#{editedTableBacking.onAnonymisatationTypeChanged()}" oncomplete=""/>
-									<f:selectItems value="#{editedTableBacking.supportedAnonymisationMethods}" var="anonMethod" 
-										itemLabel="#{anonMethod.type}" itemValue="#{anonMethod}" />
-						            <p:column>
-               							<h:outputText value="#{a.type}" />
-           							</p:column>
-           
-       							</p:selectOneMenu>
-						    </h:form>
-					        
-							<p:dataTable  value="#{editedTableBacking.editedColumn.exampleValues}" var="exampleValue">
-							    <p:column headerText="Original Values">
-							    	<h:outputText value="#{exampleValue}"/>
-							    </p:column>
-							</p:dataTable>
-					        
-							<p:dataTable id="anonymizedValues" value="#{editedTableBacking.editedColumn.exampleValues}" var="exampleValue">
-							    <p:column headerText="Anonymized Values">
-							    	<h:outputText value="#{editedTableBacking.anonymiseValue(exampleValue)}"/>
-							    </p:column>
-							</p:dataTable>
-					        
-					        <f:facet name="footer">
-									
-								<!-- unselect related -->
-								<h:panelGroup rendered="#{editedTableBacking.anonymisationMethod.type eq 'NONE' and not empty editedTableBacking.selectedRelatedTableColumns}">
-							    	<h:form>
-							    		
-							    		<style>
-							    			.ui-datatable .ui-state-highlight {
-   												background: red !important;
-											}
-							    		</style>
+					<p:dataTable id="anonymizedValues" value="#{editedTableBacking.editedColumn.exampleValues}" var="exampleValue"
+						scrollable="true" scrollHeight="300">
+						<p:column headerText="Anonymized Values">
+							<h:outputText value="#{editedTableBacking.anonymiseValue(exampleValue)}"/>
+						</p:column>
+					</p:dataTable>
+						        
+				</h:panelGrid>
+															
+			</p:tab>
+		
+			<p:tab title="Related to #{editedTableBacking.editedColumn.name}">
+				<!-- unselect related -->
+				<h:panelGroup rendered="#{editedTableBacking.anonymisationMethod.type eq 'NONE' and not empty editedTableBacking.selectedRelatedTableColumns}">
+					
+					<h:form>
+						<style>
+							.ui-datatable .ui-state-highlight {
+   								background: red !important;
+							}
+						</style>
 							    	
-							    		<p:dataTable id="relatedTableColumnsToRemove"  
-								        	value="#{editedTableBacking.selectedRelatedTableColumns}" var="relatedTableColumnInfo"
-								        	selection="#{editedTableBacking.selectedRelatedTableColumnsToRemove}" rowKey="#{relatedTableColumnInfo.key}"
-								        	scrollable="true" scrollHeight="150"
-								        	style="padding-top:20px;"
-								        	>
-								        	<p:ajax event="rowSelectCheckbox"/>
-								        	<p:ajax event="rowUnselectCheckbox"/>
-								        	<p:ajax event="toggleSelect"/>
-								        	<p:ajax event="rowSelect"/>
-								        	<p:ajax event="rowUnselect"/>
+						<p:dataTable id="relatedTableColumnsToRemove"  
+							value="#{editedTableBacking.selectedRelatedTableColumns}" var="relatedTableColumnInfo"
+							selection="#{editedTableBacking.selectedRelatedTableColumnsToRemove}" rowKey="#{relatedTableColumnInfo.key}"
+							scrollable="true" scrollHeight="300"
+							style="padding-top:20px;">
+							        	
+							<p:ajax event="rowSelectCheckbox"/>
+							<p:ajax event="rowUnselectCheckbox"/>
+							<p:ajax event="toggleSelect"/>
+							<p:ajax event="rowSelect"/>
+							<p:ajax event="rowUnselect"/>
 								        	
-								        	<f:facet name="header">Also remove the following related anonymisations</f:facet>
+							<f:facet name="header">Also remove the following related anonymisations</f:facet>
 								        	
-								        	<p:column selectionMode="multiple" style="width:20px;text-align:center"/>
-										    <p:column headerText="Column" >
-										    	<h:outputText value="#{relatedTableColumnInfo.columnName}"/>
-										    </p:column>
-										    <p:column headerText="Related table" >
-										    	<h:outputText value="#{relatedTableColumnInfo.tableName}"/>
-										    </p:column>
-										    <p:column headerText="Relation" >
-										    	<h:outputText value="#{relatedTableColumnInfo.relation}"/>
-										    </p:column>
-										</p:dataTable>
-							    	</h:form>
+					      	<p:column selectionMode="multiple" style="width:20px;text-align:center"/>
+						    <p:column headerText="Column" >
+						    	<h:outputText value="#{relatedTableColumnInfo.columnName}"/>
+						    </p:column>
+						    <p:column headerText="Related table" >
+						    	<h:outputText value="#{relatedTableColumnInfo.tableName}"/>
+						    </p:column>
+						    <p:column headerText="Relation" >
+						    	<h:outputText value="#{relatedTableColumnInfo.relation}"/>
+						    </p:column>
+						</p:dataTable>
+										
+					</h:form>
 							    	
-							    </h:panelGroup>
+				</h:panelGroup>
 
-								<!-- select related -->
-							    <h:panelGroup rendered="#{editedTableBacking.anonymisationMethod.type ne 'NONE'}">
-							    	<h:form>
-								        <p:dataTable id="relatedTableColumns"  
-								        	value="#{editedTableBacking.relatedTableColumns}" var="relatedTableColumnInfo"
-								        	selection="#{editedTableBacking.selectedRelatedTableColumns}" rowKey="#{relatedTableColumnInfo.key}"
-								        	scrollable="true" scrollHeight="150"
-								        	style="padding-top:20px;"
-											filteredValue="#{editedTableBacking.filteredRelatedTableColumns}"
-								        	>
-								        	<p:ajax event="rowSelectCheckbox"/>
-								        	<p:ajax event="rowUnselectCheckbox"/>
-								        	<p:ajax event="toggleSelect"/>
-								        	<p:ajax event="rowSelect"/>
-								        	<p:ajax event="rowUnselect"/>
+				<!-- select related -->
+				<h:panelGroup rendered="#{editedTableBacking.anonymisationMethod.type ne 'NONE'}">				
+				   	<h:form>
+				   	
+				        <p:dataTable id="relatedTableColumns"  
+				        	value="#{editedTableBacking.relatedTableColumns}" var="relatedTableColumnInfo"
+				        	selection="#{editedTableBacking.selectedRelatedTableColumns}" rowKey="#{relatedTableColumnInfo.key}"
+				        	scrollable="true" scrollHeight="500"
+				        	style="padding-top:20px;"
+							filteredValue="#{editedTableBacking.filteredRelatedTableColumns}">
+							
+							<p:ajax event="rowSelectCheckbox"/>
+							<p:ajax event="rowUnselectCheckbox"/>
+							<p:ajax event="toggleSelect"/>
+							<p:ajax event="rowSelect"/>
+							<p:ajax event="rowUnselect"/>
 								        	
-								        	<f:facet name="header">Also anonymise the following</f:facet>
+							<f:facet name="header">Also anonymise the following</f:facet>
 								        	
-								        	<p:column selectionMode="multiple" style="width:20px;text-align:center"/>
-										    <p:column headerText="Column" filterBy="#{relatedTableColumnInfo.columnName}" filterMatchMode="contains" sortBy="#{relatedTableColumnInfo.columnName}">
-										    	<h:outputText value="#{relatedTableColumnInfo.columnName}"/>
-										    </p:column>
-										    <p:column headerText="Related table" filterBy="#{relatedTableColumnInfo.tableName}" filterMatchMode="contains" sortBy="#{relatedTableColumnInfo.tableName}">
-										    	<h:outputText value="#{relatedTableColumnInfo.tableName}"/>
-										    </p:column>
-										    <p:column headerText="Relation" sortBy="#{relatedTableColumnInfo.relation}">
-										    	<h:outputText value="#{relatedTableColumnInfo.relation}"/>
-										    </p:column>
-										</p:dataTable>
-									</h:form>	
-							    </h:panelGroup>
-
-								
-								<h:outputText value="#{editedTableBacking.anonymisationMethod}"/>
-						    </f:facet>
+							<p:column selectionMode="multiple" style="width:20px;text-align:center"/>
+							<p:column headerText="Column" filterBy="#{relatedTableColumnInfo.columnName}" filterMatchMode="contains" sortBy="#{relatedTableColumnInfo.columnName}">
+								<h:outputText value="#{relatedTableColumnInfo.columnName}"/>
+							</p:column>
+							<p:column headerText="Related table" filterBy="#{relatedTableColumnInfo.tableName}" filterMatchMode="contains" sortBy="#{relatedTableColumnInfo.tableName}">
+								<h:outputText value="#{relatedTableColumnInfo.tableName}"/>
+							</p:column>
+							<p:column headerText="Relation" sortBy="#{relatedTableColumnInfo.relation}">
+								<h:outputText value="#{relatedTableColumnInfo.relation}"/>
+							</p:column>
+						</p:dataTable>
 						
-						</h:panelGrid>
-					</p:panel>
-				</p:outputPanel>
+					</h:form>	
+				</h:panelGroup>			
+								
+			</p:tab>
+		
+		</p:tabView>
 		
 	</ui:define>
 </ui:composition>

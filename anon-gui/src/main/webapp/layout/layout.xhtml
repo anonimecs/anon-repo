@@ -25,14 +25,14 @@
 				globalOnly="false" />
 		</h:form>
 
-		<p:layout style="min-width:400px">
-			<p:layoutUnit position="north" resizable="false" style="border: none;" size="55">
+		<p:layout fullPage="true">
+			<p:layoutUnit position="north" resizable="true" style="border: none;">
 				<ui:include src="/components/menuBar.xhtml" />
 			</p:layoutUnit>
-			<p:layoutUnit position="west" resizable="false" style="border: none;">
+			<p:layoutUnit position="west" resizable="true" style="border: none;">
 				<ui:include src="/components/menuPanel.xhtml" />
 			</p:layoutUnit>
-			<p:layoutUnit position="center" resizable="false" style="border: none;">
+			<p:layoutUnit position="center" resizable="true" style="border: none;">
 				<ui:insert name="insert-content" />
 			</p:layoutUnit>
 		</p:layout>

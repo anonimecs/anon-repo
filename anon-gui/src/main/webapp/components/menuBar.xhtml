@@ -7,14 +7,21 @@
 	xmlns:p="http://primefaces.org/ui">
 
 	<h:form id="menuForm">
-		<p:menubar id="menuBar" >
-			<f:facet name="options">
-            	<p:inputText style="margin-right:10px" placeholder="Search"/>
-            	
-            	<p:button type="button" value="Logout" icon="ui-icon-extlink" rendered="#{infoBacking.isEnterprise()}" href="/perform_logout"/>
-			</f:facet>
 
-		</p:menubar>
+		<p:panel id="menuBar" style="height:50px; background: #888;">
+
+			<h:outputText value="Anonimecs"/>
+			
+			<h:panelGrid columns="2" style="float: right;">
+			
+				<h:outputText value="Not connected" rendered="#{not databasePanelBacking.connected}"/>
+				<h:outputText value="Connected to #{databasePanelBacking.databaseConfig.url}" rendered="#{databasePanelBacking.connected}"/>
+			
+				<p:button type="button" value="Logout" icon="ui-icon-extlink" rendered="#{infoBacking.isEnterprise()}" href="/perform_logout" style="margin-left: 10px"/>
+			
+			</h:panelGrid>
+		
+		</p:panel>
 	</h:form>
 	
 	

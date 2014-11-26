@@ -20,16 +20,16 @@
 			</p:submenu>
 			<p:submenu label="Configure">
 				<p:menuitem value="Table list" url="/listTables" 
-					disabled="#{!databasePanelBacking.connected}" ajax="false" icon="ui-icon-close" />
+					disabled="#{!databasePanelBacking.connected}" icon="ui-icon-close" />
 				<p:menuitem value="Column list" url="/listColumns" 
-					disabled="#{empty editedTableBacking.editedTable}" ajax="false" icon="ui-icon-close" />
+					disabled="#{empty editedTableBacking.editedTable}" icon="ui-icon-close" />
 				<p:menuitem value="Anonymize" url="/doAnonymize" 
-					disabled="#{null eq editedTableBacking.editedColumn}" ajax="false" icon="ui-icon-close" />
+					disabled="#{null eq editedTableBacking.editedColumn}" icon="ui-icon-close" />
 			</p:submenu>
 			<p:submenu label="Run">
-				<p:menuitem value="Show Process" actionListener="#{menuView.delete}"
+				<p:menuitem value="Show Process" url="#"
 					ajax="false" icon="ui-icon-close" />
-				<p:menuitem value="Execute" actionListener="#{menuView.delete}"
+				<p:menuitem value="Execute" url="#"
 					ajax="false" icon="ui-icon-close" />
 			</p:submenu>
 		</p:panelMenu>

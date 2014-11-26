@@ -9,6 +9,8 @@
 
 
 	<ui:define name="insert-content">
+	
+		<h:outputStylesheet library="css" name="cockpit.css" />
 		
 		<ui:include src="/components/breadCrumb.xhtml">
 			<ui:param name="step" value="2" />
@@ -19,9 +21,9 @@
 		
 				<p:dataTable id="editedTableColumns" value="#{editedTableBacking.editedTable.columns}" var="databaseColumnInfo"
 					selectionMode="single" selection="#{editedTableBacking.editedColumn}" rowKey="#{databaseColumnInfo.name}"
-					scrollable="true" scrollHeight="300"
-					rowStyleClass="#{databaseColumnInfo.getClass().getSimpleName() == 'AnonymisedColumnInfo' ? 'anonymisedColumn' : null!=databaseColumnInfo.getAnonCandidate() and databaseColumnInfo.getAnonCandidate().active ? 'anonCandidate' : null}"
-					>
+					scrollable="true" scrollHeight="500"
+					rowStyleClass="#{databaseColumnInfo.getClass().getSimpleName() == 'AnonymisedColumnInfo' ? 'anonymisedColumn' : null!=databaseColumnInfo.getAnonCandidate() and databaseColumnInfo.getAnonCandidate().active ? 'anonCandidate' : null}">
+					
 					<p:ajax event="rowSelect" listener="#{editedTableBacking.onColumnSelect}"/>
 					<p:column headerText="Column" width="100">
 						<h:outputText value="#{databaseColumnInfo.name}"/>
@@ -31,9 +33,9 @@
 					</p:column>
 					<p:column headerText="Example Values">
 						<h:outputText value="#{editedTableBacking.concatExamples(databaseColumnInfo.exampleValues)}"/>
-					</p:column>					
-					
+					</p:column>									
 				</p:dataTable>
+				
 			</p:panel>	
 		</h:form>
 		
