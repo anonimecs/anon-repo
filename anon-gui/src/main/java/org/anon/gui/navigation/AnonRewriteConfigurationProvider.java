@@ -37,6 +37,9 @@ public class AnonRewriteConfigurationProvider extends HttpConfigurationProvider 
 						.withInboundCorrection())
 				.addRule(Join.path("/doAnonymize")
 						.to(NavigationCaseEnum.ANONYMIZE.getUrl())
+						.withInboundCorrection())
+				.addRule(Join.path("/doExecute")
+						.to(NavigationCaseEnum.EXECUTE.getUrl())
 						.withInboundCorrection());
 	}
 

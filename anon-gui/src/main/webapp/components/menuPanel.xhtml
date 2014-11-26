@@ -10,6 +10,7 @@
 
 	<h:form id="menuPanelForm">
 		<p:panelMenu id="menuPanel" style="width:200px">
+		
 			<p:submenu label="Database Connections" >
 				<p:menuitem value="Connect" url="/doConnect"
 					icon="ui-icon-star" />
@@ -27,11 +28,10 @@
 					disabled="#{null eq editedTableBacking.editedColumn}" icon="ui-icon-close" />
 			</p:submenu>
 			<p:submenu label="Run">
-				<p:menuitem value="Show Process" url="#"
-					ajax="false" icon="ui-icon-close" />
-				<p:menuitem value="Execute" url="#"
-					ajax="false" icon="ui-icon-close" />
+				<p:menuitem value="Execute" url="/doExecute"
+					icon="ui-icon-close" />
 			</p:submenu>
+			
 		</p:panelMenu>
 	</h:form>
 

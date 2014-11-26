@@ -9,8 +9,6 @@
 
 
 	<ui:define name="insert-content">
-	
-        <h2><h:outputText value="Run your current anonymisation" /></h2>
         
         <style>
         	.panelBgColor_ANONYMISED{
@@ -22,43 +20,44 @@
         </style>
 
 		<h:form id="execForm">
-			<p:dataGrid columns="1" value="#{anonConfig.anonMethods}" var="anonMethod">
+		
+			<p:panel id="executionPanel" header="Run your current anonymisation">	
 			
+				<h:panelGrid columns="2" style="padding-top:15px;">
+					<p:commandButton id="execAllBtn" value="Run All" action="#{execBacking.onRun()}" update="execForm"/>
+					<h:outputLabel for="execAllBtn" value="Anonimisation Methods: #{anonConfig.anonMethods.size()}"/>
+				</h:panelGrid>
+				
+				<p:accordionPanel id="anonPanel" value="#{anonConfig.anonMethods}" var="anonMethod" multiple="true">
+					<p:tab title="Anonymisation: #{anonMethod.type}" styleClass="panelBgColor_#{anonConfig.getMethodExecution(anonMethod).getStatus()}">
+						<h:panelGrid columns="1">
+						
+							<p:dataTable value="#{anonMethod.applyedToColumns}" var="anonColumnInfo">
+	  	
+				        		<p:column headerText="On Column">
+				        			<h:outputText value="#{anonColumnInfo.name}"/>
+				        		</p:column>
+				        		<p:column headerText="of Table">
+				        			<h:outputText value="#{anonColumnInfo.table.name}"/>
+				        		</p:column>
+				        		<p:column headerText="Last Anonimisation Info">
+				        			<h:outputText value="#{anonConfig.getMethodExecution(anonMethod).getLastRunInfo(anonColumnInfo)}"/>
+				        		</p:column>
+				        	</p:dataTable>
+				
+							<h:outputText value="Status: #{anonConfig.getMethodExecution(anonMethod).getStatus()}"/>
+							<h:outputText value="Last Finished: #{anonConfig.getMethodExecution(anonMethod).getFinishedTime()}"/>
+							<h:outputText value="Error: #{anonConfig.getMethodExecution(anonMethod).getLastException()}" rendered="#{null != anonConfig.getMethodExecution(anonMethod).getLastException()}"/>
+				
+					        <p:commandButton value="Run" action="#{execBacking.onRunSingle(anonMethod)}" update="anonPanel"/>
 			
-				<f:facet name="header">
-		            <h:outputText value="Anonimisation Methods: #{anonConfig.anonMethods.size()}" />
-		        </f:facet>
-	
-				<p:panel id="anonPanel" header="Anonymisation: #{anonMethod.type}" style="text-align:left;width:800px;" styleClass="panelBgColor_#{anonConfig.getMethodExecution(anonMethod).getStatus()}">
-		            <h:panelGrid columns="1">
-		                <p:dataTable value="#{anonMethod.applyedToColumns}" var="anonColumnInfo">
-				        	
-			        		<p:column headerText="On Column">
-			        			<h:outputText value="#{anonColumnInfo.name}"/>
-			        		</p:column>
-			        		<p:column headerText="of Table">
-			        			<h:outputText value="#{anonColumnInfo.table.name}"/>
-			        		</p:column>
-			        		<p:column headerText="Last Anonimisation Info">
-			        			<h:outputText value="#{anonConfig.getMethodExecution(anonMethod).getLastRunInfo(anonColumnInfo)}"/>
-			        		</p:column>
-			        	</p:dataTable>
-		
-						<h:outputText value="Status: #{anonConfig.getMethodExecution(anonMethod).getStatus()}"/>
-						<h:outputText value="Last Finished: #{anonConfig.getMethodExecution(anonMethod).getFinishedTime()}"/>
-						<h:outputText value="Error: #{anonConfig.getMethodExecution(anonMethod).getLastException()}" rendered="#{null != anonConfig.getMethodExecution(anonMethod).getLastException()}"/>
-		
-				        <p:commandButton value="Run" action="#{execBacking.onRunSingle(anonMethod)}" update="anonPanel"/>
-		
-		            </h:panelGrid>
-		        </p:panel>
-		        
-			
-			</p:dataGrid>
-		
-            <p:commandButton value="Run All" action="#{execBacking.onRun()}" update="execForm"/>
+			            </h:panelGrid>
+					</p:tab>
+				</p:accordionPanel>
+
+	            <p:poll id="execPoll" interval="2" update=":execForm" global="false" onstart="PF('pollstatus').show();" oncomplete="PF('pollstatus').hide();" />
             
-            <p:poll interval="2" update=":execForm" />
+            </p:panel>
 		</h:form>		
 	
 	</ui:define>

@@ -8,7 +8,8 @@ public enum NavigationCaseEnum {
 	LIST_CONNECTION("/pages/connection/connectionList.jsf"),
 	TABLES("/pages/cockpit/databaseTableList.jsf"),
 	COLUMNS("/pages/cockpit/databaseColumnList.jsf"),
-	ANONYMIZE("/pages/cockpit/anonymize.jsf");
+	ANONYMIZE("/pages/cockpit/anonymize.jsf"),
+	EXECUTE("/pages/exec.jsf");
 	
 	private NavigationCaseEnum(String url) {
 		this.url = url;
