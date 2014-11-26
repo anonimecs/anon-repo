@@ -1,0 +1,100 @@
+<ui:composition 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+	template="/layout/layout.xhtml">
+
+
+	<ui:define name="insert-content">
+	
+		<h:outputStylesheet library="css" name="cockpit.css" />
+		
+		<ui:include src="/components/breadCrumb.xhtml">
+			<ui:param name="step" value="1" />
+		</ui:include>
+		
+		<h:panelGrid columns="2" >
+			<h:form rendered="#{databasePanelBacking.connected}" >
+				<h:panelGrid columns="2" cellpadding="5">
+					<p:outputLabel for="schemaId" value="Anonymising Schema:" />
+					<p:selectOneMenu id="schemaId" value="#{databasePanelBacking.selectedSchema}" style="width:150px">
+						<p:ajax update="@([id$=databaseTableListForm])" listener="#{databasePanelBacking.onSchemaChanged}"/>
+						<f:selectItems value="#{databasePanelBacking.schemas}" />
+					</p:selectOneMenu>				
+		    	</h:panelGrid>
+			</h:form>
+			<h:outputText id="tableCount" value="#{databasePanelBacking.tableCount} tables" rendered="#{databasePanelBacking.connected}"/>
+		</h:panelGrid>	
+		
+		<p:tabView>
+			<p:tab title="Database Tables">
+				<h:form id="databaseTableListForm" rendered="#{databasePanelBacking.connected}" >
+									               			       
+					<p:dataTable 
+							id="databaseTableList"
+							value="#{databasePanelBacking.tableList}" 
+							var="databaseTableInfo"  
+							selectionMode="single" selection="#{editedTableBacking.editedTable}" rowKey="#{databaseTableInfo.name}"
+							filteredValue="#{databasePanelBacking.filteredTables}"
+							scrollable="true" scrollHeight="500"
+							rowStyleClass="#{not empty databaseTableInfo.anonymisedColumnsList() ? 'anonymisedColumn' : not empty databaseTableInfo.getActiveAnonCandidateList() ? 'anonCandidate' : null}"
+							styleClass="myTable" rowIndexVar="rowIndex">
+						
+						<p:ajax event="rowSelect" listener="#{editedTableBacking.onTableSelect}" />
+						
+						<p:column headerText="Table" filterBy="#{databaseTableInfo.name}" filterMatchMode="contains" sortBy="#{databaseTableInfo.name}" width="200">
+		        			<h:outputText value="#{databaseTableInfo.name}" />
+							<p:tooltip for="@(.myTable tr[role=row][data-ri=#{rowIndex}])" rendered="#{not empty databaseTableInfo.getActiveAnonCandidateList()}">
+								<p:dataList value="#{databaseTableInfo.getAnonCandidateList()}" var="anonCandidate">
+									<f:facet name="header">
+                    					<h:outputText value="Anonymisation Suggestions"/>
+                					</f:facet>
+									<h:outputText value="#{anonCandidate.getMessage()}"/>
+								</p:dataList>
+							</p:tooltip>  
+		    			</p:column>
+		    			<p:column headerText="Cols" sortBy="#{databaseTableInfo.getColumns().size()}" width="50">
+		        			<h:outputText value="#{databaseTableInfo.getColumns().size()}" />
+		    			</p:column>
+		    			<p:column headerText="Rows" sortBy="#{databaseTableInfo.rowCount}" width="50">
+		        			<h:outputText value="#{databaseTableInfo.rowCount}" />
+		    			</p:column>
+		    			<p:column headerText="Anonymised Columns" width="80">
+		        			<h:outputText value="#{databasePanelBacking.concatColumns(databaseTableInfo.anonymisedColumnsList())}" />
+		    			</p:column>
+		    			
+					</p:dataTable>
+					
+				</h:form>		
+			</p:tab>
+				
+			<p:tab title="Candidates">
+				<h:form  rendered="#{databasePanelBacking.connected}">
+					
+					<p:dataTable id="candidateList" 
+						value="#{anonCandidatesParser.getAnonCandidatesList()}" var="anonCandidate"
+						scrollable="true" scrollHeight="500">
+						
+						<p:column headerText="Anonymisation Suggestions" >
+							<h:outputText value="#{anonCandidate.getMessage()}"/>
+						</p:column>
+						<p:column width="20" >
+							<h:outputText value="#{anonCandidate.ocurrances}"/>
+						</p:column>
+						<p:column  width="40">
+							<p:commandLink action="#{anonCandidate.setActive(false)}" value="Hide" update="@([id$=databaseTableListForm]), candidateList" rendered="#{anonCandidate.active}"/>
+							<p:commandLink action="#{anonCandidate.setActive(true)}" value="Highlight"  update="@([id$=databaseTableListForm]), candidateList" rendered="#{not anonCandidate.active}"/>
+						</p:column>
+					
+					</p:dataTable> 	
+					
+				</h:form>
+			</p:tab>		
+		</p:tabView>
+				
+	</ui:define>
+				
+</ui:composition>

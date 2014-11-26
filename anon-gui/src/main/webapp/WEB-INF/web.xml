@@ -5,7 +5,7 @@
 	id="WebApp_ID" version="3.0">
 	<display-name>anon-gui</display-name>
 	<welcome-file-list>
-		<welcome-file>pages/cockpit.jsf</welcome-file>
+		<welcome-file>pages/cockpit/connect.jsf</welcome-file>
 	</welcome-file-list>
 	
 	<servlet>

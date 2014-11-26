@@ -1,0 +1,44 @@
+<ui:composition 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+	template="/layout/layout.xhtml">
+
+
+	<ui:define name="insert-content">
+	
+		<h:outputStylesheet library="css" name="cockpit.css" />
+		
+		<ui:include src="/components/breadCrumb.xhtml">
+			<ui:param name="step" value="2" />
+		</ui:include>
+		
+		<h:form id="editedTableColumnsForm" rendered="#{not empty editedTableBacking.editedTable}">
+			<p:panel header="Anonymize table #{editedTableBacking.editedTable.name} RowCount: #{editedTableBacking.editedTable.rowCount}" >
+		
+				<p:dataTable id="editedTableColumns" value="#{editedTableBacking.editedTable.columns}" var="databaseColumnInfo"
+					selectionMode="single" selection="#{editedTableBacking.editedColumn}" rowKey="#{databaseColumnInfo.name}"
+					scrollable="true" scrollHeight="500"
+					rowStyleClass="#{databaseColumnInfo.getClass().getSimpleName() == 'AnonymisedColumnInfo' ? 'anonymisedColumn' : null!=databaseColumnInfo.getAnonCandidate() and databaseColumnInfo.getAnonCandidate().active ? 'anonCandidate' : null}">
+					
+					<p:ajax event="rowSelect" listener="#{editedTableBacking.onColumnSelect}"/>
+					<p:column headerText="Column" width="100">
+						<h:outputText value="#{databaseColumnInfo.name}"/>
+					</p:column>
+					<p:column headerText="Type" width="100">
+						<h:outputText value="#{databaseColumnInfo.type}"/>
+					</p:column>
+					<p:column headerText="Example Values">
+						<h:outputText value="#{editedTableBacking.concatExamples(databaseColumnInfo.exampleValues)}"/>
+					</p:column>									
+				</p:dataTable>
+				
+			</p:panel>	
+		</h:form>
+		
+	</ui:define>
+				
+</ui:composition>

@@ -11,6 +11,7 @@ import javax.faces.context.FacesContext;
 
 import org.anon.data.AnonymisedColumnInfo;
 import org.anon.data.DatabaseTableInfo;
+import org.anon.gui.navigation.NavigationCaseEnum;
 import org.anon.persistence.data.DatabaseConfig;
 import org.anon.service.DatabaseConfigService;
 import org.anon.service.DatabaseLoaderService;
@@ -66,6 +67,8 @@ public class DatabasePanelBacking extends BackingBase{
 		schemas = databaseLoaderService.getSchemas();
 		loadDatabaseTableList();
 		connected = true;
+		
+		redirectPageTo(NavigationCaseEnum.TABLES);
 	}
 	
 	public void disconnectDb() {
@@ -76,6 +79,7 @@ public class DatabasePanelBacking extends BackingBase{
 		tableList = null;
 		connected = false;
 		editedTableBacking.setEditedTable(null);
+		editedTableBacking.setEditedColumn(null);
 	}
 	
 	public void onSchemaChanged(){

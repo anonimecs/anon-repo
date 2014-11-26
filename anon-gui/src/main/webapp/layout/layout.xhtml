@@ -13,14 +13,30 @@
 	</h:head>
 
 	<h:body>
+	
+		<p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />       
+  
+  		<p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
+		    <h:outputText value="Loading..." />
+		</p:dialog>
+	
 		<h:form>
-			<p:growl id="msgs" showDetail="true" autoUpdate="true" globalOnly="false"/>
+			<p:growl id="msgs" showDetail="true" autoUpdate="true"
+				globalOnly="false" />
 		</h:form>
+
+		<p:layout fullPage="true">
+			<p:layoutUnit position="north" resizable="true" style="border: none;">
+				<ui:include src="/components/menuBar.xhtml" />
+			</p:layoutUnit>
+			<p:layoutUnit position="west" resizable="true" style="border: none;">
+				<ui:include src="/components/menuPanel.xhtml" />
+			</p:layoutUnit>
+			<p:layoutUnit position="center" resizable="true" style="border: none;">
+				<ui:insert name="insert-content" />
+			</p:layoutUnit>
+		</p:layout>
 		
-		<ui:include src="/components/menu.xhtml"/>
-		
-		<ui:insert name="insert-content"/>
-		 
 	</h:body>
 </f:view>
 </html>

@@ -1,6 +1,5 @@
 package org.anon.gui;
 
-
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -14,6 +13,7 @@ import org.anon.data.AnonymizationType;
 import org.anon.data.DatabaseColumnInfo;
 import org.anon.data.DatabaseTableInfo;
 import org.anon.data.RelatedTableColumnInfo;
+import org.anon.gui.navigation.NavigationCaseEnum;
 import org.anon.logic.AnonymisationMethod;
 import org.anon.logic.AnonymisationMethodNone;
 import org.anon.logic.MethodFactory;
@@ -81,13 +81,15 @@ public class EditedTableBacking extends BackingBase {
 	}
 
 
-
 	public void onTableSelect(SelectEvent event){
 		 logDebug("Line Selected" + editedTable);
 		 databaseLoaderService.fillExampleValues(editedTable);
 		 editedColumn = null;
-		 anonymisationMethod = null;
+		 anonymisationMethod = null;	 
+		 
+		 redirectPageTo(NavigationCaseEnum.COLUMNS);
 	}
+	
 	
 	public void onColumnSelect(SelectEvent event) throws Exception{
 		logDebug("column Selected" + editedColumn);
@@ -114,7 +116,7 @@ public class EditedTableBacking extends BackingBase {
 			replaceInSupported();
 		}
 		
-		
+		redirectPageTo(NavigationCaseEnum.ANONYMIZE);
 	}
 	
 
@@ -299,12 +301,3 @@ public class EditedTableBacking extends BackingBase {
 	
 	
 }
-
-
-
-
-
-
-
-
-
