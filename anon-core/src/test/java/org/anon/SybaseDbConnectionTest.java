@@ -42,7 +42,7 @@ public class SybaseDbConnectionTest extends BaseDbTest{
 		
 		List<DatabaseTableInfo> res = sybaseDbConnection.getTableList(schema);
 		
-		Assert.assertTrue(res.size() > 2);
+		Assert.assertTrue(res.size() >= 1);
 		Assert.assertTrue(res.get(0).getRowCount() > 0);
 	}
 
@@ -51,9 +51,13 @@ public class SybaseDbConnectionTest extends BaseDbTest{
 	@Test
 	public void testGetColumns() {
 		SybaseDbConnection sybaseDbConnection = createConn();
+
+		List<DatabaseTableInfo> res = sybaseDbConnection.getTableList(schema);
+
+		String tableName = res.get(0).getName();
 		
 		DatabaseTableInfo databaseTableInfo = new DatabaseTableInfo();
-		databaseTableInfo.setName("ANALYST");
+		databaseTableInfo.setName(tableName);
 		databaseTableInfo.setSchema(schema);
 		System.out.println(sybaseDbConnection.getColumns(databaseTableInfo));
 	}
