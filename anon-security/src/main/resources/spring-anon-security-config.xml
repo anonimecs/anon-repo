@@ -10,7 +10,7 @@
 		<sec:intercept-url pattern="/pages/cockpit/**" access="ROLE_ADMIN"/>
 		<sec:intercept-url pattern="/pages/exec**" access="ROLE_ADMIN"/>
 		
-		<sec:form-login login-page="/doLogin"/>
+		<sec:form-login login-page="/login/"/>
 		<sec:logout  logout-success-url="/"
 			logout-url="/perform_logout"/>
 

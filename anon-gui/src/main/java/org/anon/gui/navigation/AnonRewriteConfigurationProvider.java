@@ -15,32 +15,16 @@ public class AnonRewriteConfigurationProvider extends HttpConfigurationProvider 
 	@Override
 	public Configuration getConfiguration(ServletContext arg0) {
 		
-		return ConfigurationBuilder.begin()
-				
-				.addRule(Join.path("/doLogin")
-						.to(NavigationCaseEnum.LOGIN.getUrl())
-						.withInboundCorrection())
-				.addRule(Join.path("/doConnect")
-						.to(NavigationCaseEnum.CONNECT.getUrl())
-						.withInboundCorrection())
-				.addRule(Join.path("/addConnection")
-						.to(NavigationCaseEnum.ADD_CONNECTION.getUrl())
-						.withInboundCorrection())
-				.addRule(Join.path("/listConnection")
-						.to(NavigationCaseEnum.LIST_CONNECTION.getUrl())
-						.withInboundCorrection())
-				.addRule(Join.path("/listTables")
-						.to(NavigationCaseEnum.TABLES.getUrl())
-						.withInboundCorrection())
-				.addRule(Join.path("/listColumns")
-						.to(NavigationCaseEnum.COLUMNS.getUrl())
-						.withInboundCorrection())
-				.addRule(Join.path("/doAnonymize")
-						.to(NavigationCaseEnum.ANONYMIZE.getUrl())
-						.withInboundCorrection())
-				.addRule(Join.path("/doExecute")
-						.to(NavigationCaseEnum.EXECUTE.getUrl())
-						.withInboundCorrection());
+		ConfigurationBuilder cfgBuilder = ConfigurationBuilder.begin();
+		
+		for(NavigationCaseEnum nav : NavigationCaseEnum.values()) {
+			
+			cfgBuilder.addRule(Join.path(nav.getPath())
+					.to(nav.getUrl())
+					.withInboundCorrection());
+		}
+		
+		return cfgBuilder;
 	}
 
 	@Override
