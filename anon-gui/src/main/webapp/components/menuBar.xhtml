@@ -15,7 +15,7 @@
 			<h:panelGrid columns="2" style="float: right;">
 			
 				<h:outputText value="Not connected" rendered="#{not databasePanelBacking.connected}"/>
-				<h:outputText value="Connected to #{databasePanelBacking.databaseConfig.url}" rendered="#{databasePanelBacking.connected}"/>
+				<h:outputText value="Connected to #{databasePanelBacking.databaseConfig.guiName} (#{databasePanelBacking.databaseConfig.url})" rendered="#{databasePanelBacking.connected}"/>
 			
 				<p:button type="button" id="logout" value="Logout" icon="ui-icon-extlink" rendered="#{infoBacking.isEnterprise()}" href="/perform_logout" style="margin-left: 10px"/>
 			

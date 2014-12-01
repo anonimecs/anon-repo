@@ -5,7 +5,7 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:p="http://primefaces.org/ui"
 	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
-	template="/layout/layout.xhtml">
+	template="/layout/layoutPollable.xhtml">
 
 
 	<ui:define name="insert-content">
@@ -13,6 +13,9 @@
         <style>
         	.panelBgColor_ANONYMISED{
         		background-color: #CCEECC;
+        	}        	
+        	.panelBgColor_RUNNING{
+        		background-color: #FFFACD;
         	}        	
         	.panelBgColor_FAILED{
         		background-color: #EEAAAA;
@@ -28,9 +31,9 @@
 					<h:outputLabel for="execAllBtn" value="Anonimisation Methods: #{anonConfig.anonMethods.size()}"/>
 				</h:panelGrid>
 				
-				<p:accordionPanel id="anonPanel" value="#{anonConfig.anonMethods}" var="anonMethod" multiple="true">
-					<p:tab title="Anonymisation: #{anonMethod.type}" styleClass="panelBgColor_#{anonConfig.getMethodExecution(anonMethod).getStatus()}">
-						<h:panelGrid columns="1">
+				<p:accordionPanel id="anonPanel" value="#{anonConfig.anonMethods}" var="anonMethod" multiple="true" activeIndex="0,1,2,3,4,5">
+					<p:tab title="Anonymisation: #{anonMethod.type}" >
+						<h:panelGrid columns="1" style="width:100%" styleClass="panelBgColor_#{anonConfig.getMethodExecution(anonMethod).getStatus()}">
 						
 							<p:dataTable value="#{anonMethod.applyedToColumns}" var="anonColumnInfo">
 	  	
@@ -55,9 +58,14 @@
 					</p:tab>
 				</p:accordionPanel>
 
-	            <p:poll id="execPoll" interval="2" update=":execForm" global="false" onstart="PF('pollstatus').show();" oncomplete="PF('pollstatus').hide();" />
             
             </p:panel>
+
+
+		</h:form>
+		
+		<h:form id="pollForm">
+            <p:poll id="execPoll" interval="2" update=":execForm:executionPanel" />
 		</h:form>		
 	
 	</ui:define>
