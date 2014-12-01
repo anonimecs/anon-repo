@@ -7,7 +7,36 @@
   	
 	<properties>
 		<spring.version>3.2.8.RELEASE</spring.version> <!-- this needs to be the same as in anon-parent-pom -->
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<skipITs>true</skipITs>
 	</properties>
+	
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.robotframework</groupId>
+				<artifactId>robotframework-maven-plugin</artifactId>
+				<version>1.4.3</version>
+				<configuration>
+					<skipITs>${skipITs}</skipITs>
+					<tests>
+						<test>*</test>
+					</tests>
+					<variableFiles>
+						<variableFile>src/test/robotframework/conf/dev.py</variableFile>
+					</variableFiles>
+				</configuration>
+				<executions>
+					<execution>
+						<goals>
+							<goal>run</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+
 
 	<dependencies>
 		<dependency>
@@ -25,7 +54,20 @@
 			<artifactId>spring-context</artifactId>
 			<version>${spring.version}</version>
 		</dependency>
+		<dependency>
+	  		<groupId>com.github.markusbernhardt</groupId>
+	  		<artifactId>robotframework-selenium2library-java</artifactId>
+	  		<version>1.4.0.6</version>
+	  		<scope>test</scope>
+	  	</dependency>
+	  	<!-- needed for the maven robot plugin -->
+	  	<dependency>
+			<groupId>com.sun</groupId>
+			<artifactId>tools</artifactId>
+			<version>1.6.0</version>
+			<scope>system</scope>
+			<systemPath>${env.JAVA_HOME}/lib/tools.jar</systemPath>
+		</dependency>  	
 	</dependencies>
-	
 	
 </project>

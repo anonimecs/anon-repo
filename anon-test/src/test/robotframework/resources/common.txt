@@ -1,0 +1,26 @@
+*** Settings ***
+Documentation  This resource file contains common and global variables
+
+Library  Selenium2Library
+
+*** Variables ***
+${sel_speed}  				2
+
+*** Keywords ***
+Teardown
+	Run Keyword And Ignore Error  Logout from Anonimces
+	Close All Browsers
+
+the user is logged in
+	Open Browser			${ANON_URL}	${BROWSER}
+	Set Window Size			1680	1050
+	Input Text 				j_username	${USERNAME}
+	Input Text  			j_password	${PASSWORD}
+	Click Button			login
+	Page Should Contain		Not connected
+	
+logout from Anonimces
+	Click Button			menuForm:logout
+	Page Should Contain		Username
+	Page Should Contain		Password
+	Close Browser

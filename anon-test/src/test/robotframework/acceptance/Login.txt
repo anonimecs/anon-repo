@@ -1,0 +1,8 @@
+*** Settings ***
+Resource	../resources/common.txt
+
+*** Testcase ***
+Login to Anonimecs
+	Given the user is logged in
+	then logout from Anonimces
+	
