@@ -1,0 +1,4 @@
+*** Keywords ***
+
+Get Locator Database Table List All Rows
+	[return]	xpath=.//html/body/div[5]/div/div[2]/div/div[1]/form/div/div[2]/table/tbody/tr

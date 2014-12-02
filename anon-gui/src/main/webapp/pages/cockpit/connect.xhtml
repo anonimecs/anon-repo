@@ -28,10 +28,10 @@
 						<p:ajax event="change" update=":selectConnectionForm"/>
 				</p:selectOneMenu>	
 								
-				<p:commandButton action="#{databasePanelBacking.connectDb()}"
+				<p:commandButton id="connectBtn" action="#{databasePanelBacking.connectDb()}"
 					value="Connect DB" update=":selectConnectionForm,:menuForm:menuBar" rendered="#{not databasePanelBacking.connected}"  />
 					            	
-				<p:commandButton actionListener="#{databasePanelBacking.disconnectDb()}" 
+				<p:commandButton id="disconnectBtn" actionListener="#{databasePanelBacking.disconnectDb()}" 
 					value="Disconnect DB" update=":selectConnectionForm, :menuForm:menuBar, :menuPanelForm:menuPanel" rendered="#{databasePanelBacking.connected}"  />
 					        
 				<h:outputLabel for="databaseUrl">URL</h:outputLabel>

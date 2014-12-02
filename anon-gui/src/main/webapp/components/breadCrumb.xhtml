@@ -6,10 +6,10 @@
 	
 	<p:breadCrumb>
 		   	<p:menuitem value="Categories" 	url="#" />
-		   	<p:menuitem value="Connect" 	url="/connect/" />
-		   	<p:menuitem value="Table list" 	rendered="#{step > 0}" 	url="/tables-list/" />
-		   	<p:menuitem value="Column list" rendered="#{step > 1}" 	url="/columns-list/" />
-		   	<p:menuitem value="Anonymize" 	rendered="#{step > 2}" 	url="/method/" />
+		   	<p:menuitem id="breadConnect" 	value="Connect" 	url="/connect/" />
+		   	<p:menuitem id="breadTables" 	value="Table list" 	rendered="#{step > 0}" 	url="/tables-list/" />
+		   	<p:menuitem id="breadColumns" 	value="Column list" rendered="#{step > 1}" 	url="/columns-list/" />
+		   	<p:menuitem id="breadAnonymize"	value="Anonymize" 	rendered="#{step > 2}" 	url="/method/" />
 	</p:breadCrumb>
 
 </ui:composition>

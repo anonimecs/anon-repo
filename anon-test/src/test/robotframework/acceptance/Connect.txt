@@ -1,0 +1,12 @@
+*** Settings ***
+Resource	../resources/common.txt
+Resource	../resources/connect.txt
+
+Test Teardown	Teardown
+
+*** Testcase ***
+Connect to Database
+	Given the user is logged in
+	When the connection button is clicked
+	Then the db table list is not empty
+	And disconnect from database

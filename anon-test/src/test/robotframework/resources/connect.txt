@@ -1,0 +1,20 @@
+*** Settings ***
+Resource	./objects/connect.txt
+
+*** Keywords ***
+
+the connection button is clicked
+	Click Button	selectConnectionForm:connectBtn
+	Wait Until Page Contains	Database Tables		10s
+	
+the db table list is not empty
+	${loc} =	Get Locator Database Table List All Rows
+	${count}=	Get Matching Xpath Count	${loc}
+	Should Not Be Equal	0	${count}	List of tables is empty!
+	
+disconnect from database
+	Click Link	breadConnect
+	Click Button	selectConnectionForm:disconnectBtn
+	Element Should Be Visible	selectConnectionForm:connectBtn
+	
+	

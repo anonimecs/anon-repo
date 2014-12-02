@@ -12,15 +12,18 @@ Teardown
 	Close All Browsers
 
 the user is logged in
-	Open Browser			${ANON_URL}	${BROWSER}
-	Set Window Size			1680	1050
-	Input Text 				j_username	${USERNAME}
-	Input Text  			j_password	${PASSWORD}
-	Click Button			login
-	Page Should Contain		Not connected
+	Open Browser to Anonimces
 	
 logout from Anonimces
 	Click Button			menuForm:logout
 	Page Should Contain		Username
 	Page Should Contain		Password
 	Close Browser
+	
+Open Browser to Anonimces
+	Open Browser			${ANON_URL}	${BROWSER}
+	Set Window Size			1680	1050
+	Input Text 				j_username	${USERNAME}
+	Input Text  			j_password	${PASSWORD}
+	Click Button			login
+	Page Should Contain		Not connected
