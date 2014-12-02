@@ -1,0 +1,1 @@
+mvn integration-test -DskipITs=false  -Dphantomjs.binary.path=../../phantomjs/phantomjs.exe
