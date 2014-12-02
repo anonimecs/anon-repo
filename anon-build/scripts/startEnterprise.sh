@@ -25,4 +25,4 @@ echo "waiting to start the application"
 sleep 10
 echo "application started"
 
-echo "go to http://`hostname`:8080/anon-gui/pages/cockpit.jsf"
+echo "go to http://`hostname`:8080/anon-gui/login/"

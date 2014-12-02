@@ -40,13 +40,15 @@
 	    <profile>
 	        <id>free</id>
 	        <properties>
-	            <assembly-descriptor>assembly/free_edition.xml</assembly-descriptor>
+	            <assembly-descriptor1>assembly/free_edition-linux.xml</assembly-descriptor1>
+	            <assembly-descriptor2>assembly/free_edition-win.xml</assembly-descriptor2>
 	        </properties>
 	    </profile>
 		<profile>
 	        <id>enterprise</id>
 	        <properties>
-	            <assembly-descriptor>assembly/enterprise_edition.xml</assembly-descriptor>
+	            <assembly-descriptor1>assembly/enterprise_edition-linux.xml</assembly-descriptor1>
+	            <assembly-descriptor2>assembly/enterprise_edition-win.xml</assembly-descriptor2>
 	        </properties>
 	    </profile>
 	</profiles>
@@ -62,7 +64,8 @@
 					<outputDirectory>target/distributions</outputDirectory>
 					<finalName>anonimecs</finalName>
 					<descriptors>
-						<descriptor>${assembly-descriptor}</descriptor>
+						<descriptor>${assembly-descriptor1}</descriptor>
+						<descriptor>${assembly-descriptor2}</descriptor>
 					</descriptors>
 				</configuration>
 				<executions>
