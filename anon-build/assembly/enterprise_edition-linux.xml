@@ -2,7 +2,7 @@
 	xmlns="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2 http://maven.apache.org/xsd/assembly-1.1.2.xsd">
-	<id>enterprise</id>
+	<id>enterprise-linux</id>
 	<formats>
 		<format>zip</format>
 	</formats>
@@ -18,10 +18,6 @@
 			<lineEnding>unix</lineEnding>
 			<fileMode>0755</fileMode>
 			<filtered>true</filtered>
-		</file>
-		<file>
-			<source>${project.basedir}/scripts/startEnterprise.bat</source>
-			<outputDirectory>/anonimecs</outputDirectory>
 		</file>
 	</files>
 	<fileSets>

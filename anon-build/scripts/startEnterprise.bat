@@ -22,4 +22,4 @@ ping 192.0.2.3 -n 1 -w 10000 > nul
 echo "application started"
 
 
-start iexplore http://localhost:8080/anon-gui/pages/cockpit.jsf
+start iexplore http://localhost:8080/anon-gui/login/

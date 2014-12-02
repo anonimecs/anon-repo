@@ -8,5 +8,5 @@ rm mypipe
 echo "logs are in anonimecsFree.log"
 
 nohup java -Dspring.profiles.active=free_edition -jar anonimecsFree.war > anonimecsFree.log 2>&1 &
-sleep 10
-echo "go to http://`hostname`:8080/anon-gui/pages/cockpit.jsf"
+sleep 15
+echo "go to http://`hostname`:8080/anon-gui/connect/"
