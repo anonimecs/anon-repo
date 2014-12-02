@@ -48,7 +48,7 @@ public class SybaseDbConnection extends AbstractDbConnection {
 
 	@Override
 	public List<DatabaseTableInfo> getTableNamesAndRowcounts(String selectedSchema) {
-		String SQL = "select ob.name,st.rowcnt from " + selectedSchema + "..sysobjects ob, " + selectedSchema + "..systabstats st where ob.type='U' and st.id=ob.id order by ob.name";
+		String SQL = "select ob.name,st.rowcnt from " + selectedSchema + "..sysobjects ob, " + selectedSchema + "..systabstats st where ob.type='U' and st.id=ob.id and indid = 0 order by ob.name";
 		return jdbcTemplate.query(SQL, new RowMapper<DatabaseTableInfo>(){
 
 			@Override
