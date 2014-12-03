@@ -20,7 +20,7 @@
         <dependent-module archiveName="anon-security-0.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/anon-security/anon-security">
             <dependency-type>uses</dependency-type>
         </dependent-module>
-        <dependent-module archiveName="anon-test-0.9-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/anon-test/anon-test">
+        <dependent-module archiveName="anon-gui-skin-0.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/anon-gui-skin/anon-gui-skin">
             <dependency-type>uses</dependency-type>
         </dependent-module>
         <property name="java-output-path" value="/anon-gui/target/classes"/>
