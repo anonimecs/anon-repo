@@ -43,6 +43,7 @@
 			<groupId>org.anon</groupId>
 			<artifactId>anon-test</artifactId>
 			<version>${anon.test.version}</version>
+			<scope>test</scope>
 		</dependency>
 	</dependencies>
 </project>
