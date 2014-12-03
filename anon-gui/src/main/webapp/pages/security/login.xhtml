@@ -14,8 +14,14 @@
 
 	<h:body>
 		<h:form id="loginForm" prependId="false"> 
-			<p:panel header="Login" style="width: 360px;" styleClass="centered">
-			
+			<p:panel header="Anonimecs - Login" styleClass="loginPanel" 
+				style="background-image: url('#{resource['images:anonimecs.png']}');">
+						
+				
+				<h:panelGrid columns="1" cellpadding="5" styleClass="centered" style="height: 180px;" columnClasses="bottomAlign">
+					<h:outputText value="Anonimecs" style="font-size:40px; font-weight: bold;"/>
+				</h:panelGrid>
+					
 				<h:panelGrid columns="2" cellpadding="5" styleClass="centered">
 		        	<h:outputLabel for="j_username" value="Username:" />
 		            <p:inputText id="j_username" value="#{loginBacking.username}" required="true" />

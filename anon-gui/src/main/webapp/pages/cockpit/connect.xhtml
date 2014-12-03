@@ -26,11 +26,11 @@
 						<p:ajax event="change" update=":selectConnectionForm"/>
 				</p:selectOneMenu>	
 								
-				<p:commandButton id="connectBtn" action="#{databasePanelBacking.connectDb()}"
-					value="Connect DB" update=":selectConnectionForm,:menuForm:menuBar" rendered="#{not databasePanelBacking.connected}"  />
+				<p:commandButton id="connectBtn" icon="ui-icon-transferthick-e-w"  actionListener="#{databasePanelBacking.connectRedirect()}"
+					value="Connect" update=":selectConnectionForm,:menuForm:menuBar" rendered="#{not databasePanelBacking.connected}"  />
 					            	
-				<p:commandButton id="disconnectBtn" actionListener="#{databasePanelBacking.disconnectDb()}" 
-					value="Disconnect DB" update=":selectConnectionForm, :menuForm:menuBar, :menuPanelForm:menuPanel" rendered="#{databasePanelBacking.connected}"  />
+				<p:commandButton id="disconnectBtn" icon="ui-icon-circle-close" actionListener="#{databasePanelBacking.disconnectDb()}" 
+					value="Disconnect" update=":selectConnectionForm, :menuForm:menuBar, :menuPanelForm:menuPanel" rendered="#{databasePanelBacking.connected}"  />
 					        
 				<p:outputLabel for="databaseUrl" value="URL"/>
 				<h:outputText id="databaseUrl" value="#{databasePanelBacking.databaseConfig.url}" />

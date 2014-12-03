@@ -66,8 +66,6 @@ public class DatabasePanelBacking extends BackingBase{
 		schemas = databaseLoaderService.getSchemas();
 		loadDatabaseTableList();
 		connected = true;
-		
-		redirectPageTo(NavigationCaseEnum.TABLES);
 	}
 	
 	public void disconnectDb() {
@@ -79,6 +77,16 @@ public class DatabasePanelBacking extends BackingBase{
 		connected = false;
 		editedTableBacking.setEditedTable(null);
 		editedTableBacking.setEditedColumn(null);
+	}
+	
+	public void connectRedirect() {
+		connectDb();		
+		redirectPageTo(NavigationCaseEnum.TABLES);
+	}
+	
+	public void disconnectRedirect() {
+		disconnectDb();
+		redirectPageTo(NavigationCaseEnum.CONNECT);
 	}
 	
 	public void onSchemaChanged(){

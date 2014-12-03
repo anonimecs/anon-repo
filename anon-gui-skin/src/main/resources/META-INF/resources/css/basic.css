@@ -2,11 +2,19 @@ body {
     
 }
 
+.loginPanel {
+	margin: 0 auto;
+	width: 360px;
+	height: 360px;
+	background-repeat: no-repeat;
+    background-size: 130px 130px;
+    background-position: 50% 30px;
+}
+
 .menuBar {
 	height:50px; 
 	background: #424242;
 	background-repeat: no-repeat;
-    background-position: left top;
     background-size: 50px 50px;
     background-position: 10px;
 }
@@ -30,6 +38,10 @@ body {
 
 .centered {
 	margin: 0 auto;
+}
+
+.bottomAlign {
+	vertical-align: bottom;
 }
 
 .anonymisedColumn{

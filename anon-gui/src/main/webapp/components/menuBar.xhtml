@@ -12,11 +12,30 @@
 		
 			<h1>Anonimecs</h1>
 		
-			<h:panelGrid columns="2" style="float: right;">	
-				<h:outputText value="Not connected" rendered="#{not databasePanelBacking.connected}" styleClass="headline"/>
+			<h:panelGrid columns="4" style="float: right;">	
 				<h:outputText value="Connected to #{databasePanelBacking.databaseConfig.guiName} (#{databasePanelBacking.databaseConfig.url})" styleClass="headline" rendered="#{databasePanelBacking.connected}"/>
-			
-				<p:button type="button" id="logout" value="Logout" icon="ui-icon-extlink" rendered="#{infoBacking.isEnterprise()}" href="/perform_logout" style="margin-left: 10px"/>
+
+				<p:selectOneMenu id="connection" value="#{databasePanelBacking.selectedConnectionId}" rendered="#{not databasePanelBacking.connected}">
+					<f:selectItems value="#{databasePanelBacking.dbConfigs}" 
+						var="db" itemValue="#{db.id}" itemLabel="#{db.guiName}"/>
+				</p:selectOneMenu>	
+
+				<p:commandButton id="connectHeadBtn" 
+					value="Connect" 
+					icon="ui-icon-transferthick-e-w" 
+					actionListener="#{databasePanelBacking.connectDb()}"
+					rendered="#{not databasePanelBacking.connected}"
+					update="@all" 
+					style="margin-left: 10px"/>
+
+				<p:commandButton id="disconnectHeadBtn" 
+					value="Disconnect" 
+					icon="ui-icon-circle-close" 
+					actionListener="#{databasePanelBacking.disconnectRedirect()}"
+					rendered="#{databasePanelBacking.connected}" 
+					style="margin-left: 10px"/>
+					
+				<p:button id="logout" value="Logout" icon="ui-icon-locked" rendered="#{infoBacking.isEnterprise()}" href="/perform_logout" style="margin-left: 10px"/>
 			
 			</h:panelGrid>
 		

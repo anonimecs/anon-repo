@@ -21,15 +21,15 @@
 			</p:submenu>
 			<p:submenu label="Configure">
 				<p:menuitem value="Table list" url="/tables-list/" 
-					disabled="#{!databasePanelBacking.connected}" icon="ui-icon-close" />
+					disabled="#{!databasePanelBacking.connected}" icon="ui-icon-zoomin" />
 				<p:menuitem value="Column list" url="/columns-list/" 
-					disabled="#{empty editedTableBacking.editedTable}" icon="ui-icon-close" />
+					disabled="#{empty editedTableBacking.editedTable}" icon="ui-icon-zoomin" />
 				<p:menuitem value="Anonymize" url="/method/" 
-					disabled="#{null eq editedTableBacking.editedColumn}" icon="ui-icon-close" />
+					disabled="#{null eq editedTableBacking.editedColumn}" icon="ui-icon-shuffle" />
 			</p:submenu>
 			<p:submenu label="Run">
 				<p:menuitem value="Execute" url="/execute/"
-					icon="ui-icon-close" />
+					icon="ui-icon-triangle-1-e" />
 			</p:submenu>
 			
 		</p:panelMenu>
