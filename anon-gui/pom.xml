@@ -165,11 +165,16 @@
 			<artifactId>primefaces</artifactId>
 			<version>5.1</version>
 		</dependency>
-		<dependency>
-			<groupId>org.primefaces.themes</groupId>
-			<artifactId>bootstrap</artifactId>
-			<version>1.0.10</version>
-		</dependency>
+<!-- 		<dependency> -->
+<!-- 			<groupId>org.primefaces.themes</groupId> -->
+<!-- 			<artifactId>bootstrap</artifactId> -->
+<!-- 			<version>1.0.10</version> -->
+<!-- 		</dependency> -->
+<!-- 		<dependency> -->
+<!-- 			<groupId>org.primefaces.themes</groupId> -->
+<!-- 			<artifactId>cupertino</artifactId> -->
+<!-- 			<version>1.0.10</version> -->
+<!-- 		</dependency> -->
 		<dependency>
 		    <groupId>org.ocpsoft.rewrite</groupId>
 		    <artifactId>rewrite-servlet</artifactId>
@@ -251,6 +256,11 @@
 		<dependency>
 			<groupId>org.anon</groupId>
 			<artifactId>anon-security</artifactId>
+			<version>${anon.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.anon</groupId>
+			<artifactId>anon-gui-skin</artifactId>
 			<version>${anon.version}</version>
 		</dependency>
 	</dependencies>

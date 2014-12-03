@@ -28,7 +28,7 @@
 	</context-param>
 	<context-param>
 		<param-name>primefaces.THEME</param-name>
-		<param-value>bootstrap</param-value>
+		<param-value>anon</param-value>
 	</context-param>
 	
     <listener>

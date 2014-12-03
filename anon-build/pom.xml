@@ -32,6 +32,9 @@
 			../anon-security
 		</module>
 		<module>
+			../anon-gui-skin
+		</module>
+		<module>
 			../anon-gui
 		</module>
 	</modules>

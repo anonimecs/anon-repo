@@ -8,14 +8,13 @@
 
 	<h:form id="menuForm">
 
-		<p:panel id="menuBar" style="height:50px; background: #BBB;">
-
-			<h:outputText value="Anonimecs"/>
-			
-			<h:panelGrid columns="2" style="float: right;">
-			
-				<h:outputText value="Not connected" rendered="#{not databasePanelBacking.connected}"/>
-				<h:outputText value="Connected to #{databasePanelBacking.databaseConfig.guiName} (#{databasePanelBacking.databaseConfig.url})" rendered="#{databasePanelBacking.connected}"/>
+		<p:panel id="menuBar" styleClass="menuBar" style="background-image: url('#{resource['images:anonimecs.png']}');">
+		
+			<h1>Anonimecs</h1>
+		
+			<h:panelGrid columns="2" style="float: right;">	
+				<h:outputText value="Not connected" rendered="#{not databasePanelBacking.connected}" styleClass="headline"/>
+				<h:outputText value="Connected to #{databasePanelBacking.databaseConfig.guiName} (#{databasePanelBacking.databaseConfig.url})" styleClass="headline" rendered="#{databasePanelBacking.connected}"/>
 			
 				<p:button type="button" id="logout" value="Logout" icon="ui-icon-extlink" rendered="#{infoBacking.isEnterprise()}" href="/perform_logout" style="margin-left: 10px"/>
 			

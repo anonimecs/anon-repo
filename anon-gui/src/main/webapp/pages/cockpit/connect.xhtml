@@ -10,8 +10,6 @@
 
 	<ui:define name="insert-content">
 	
-		<h:outputStylesheet library="css" name="cockpit.css" />
-	
 		<h:form id="selectConnectionForm">
 		
 			<ui:include src="/components/breadCrumb.xhtml">
@@ -34,15 +32,15 @@
 				<p:commandButton id="disconnectBtn" actionListener="#{databasePanelBacking.disconnectDb()}" 
 					value="Disconnect DB" update=":selectConnectionForm, :menuForm:menuBar, :menuPanelForm:menuPanel" rendered="#{databasePanelBacking.connected}"  />
 					        
-				<h:outputLabel for="databaseUrl">URL</h:outputLabel>
+				<p:outputLabel for="databaseUrl" value="URL"/>
 				<h:outputText id="databaseUrl" value="#{databasePanelBacking.databaseConfig.url}" />
 				<h:outputText/>
 				
-				<h:outputLabel for="databaseType">Type</h:outputLabel>
+				<p:outputLabel for="databaseType" value="Type" />
 				<h:outputText id="databaseType" value="#{databasePanelBacking.databaseConfig.vendor} #{databasePanelBacking.databaseConfig.version}" />
 				<h:outputText/>
 					            
-				<h:outputLabel for="databaseUser">Login</h:outputLabel>
+				<p:outputLabel for="databaseUser" value="Login"/>
 				<h:outputText id="databaseUser" value="#{databasePanelBacking.databaseConfig.login}" />
 				<h:outputText/>
 			            	

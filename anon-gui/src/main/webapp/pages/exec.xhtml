@@ -5,7 +5,7 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:p="http://primefaces.org/ui"
 	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
-	template="/layout/layoutPollable.xhtml">
+	template="/layout/layout.xhtml">
 
 
 	<ui:define name="insert-content">
@@ -65,7 +65,7 @@
 		</h:form>
 		
 		<h:form id="pollForm">
-            <p:poll id="execPoll" interval="2" update=":execForm:executionPanel" />
+            <p:poll id="execPoll" interval="2" update=":execForm:executionPanel" global="false" />
 		</h:form>		
 	
 	</ui:define>

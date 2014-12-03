@@ -1,0 +1,41 @@
+body {
+    
+}
+
+.menuBar {
+	height:50px; 
+	background: #424242;
+	background-repeat: no-repeat;
+    background-position: left top;
+    background-size: 50px 50px;
+    background-position: 10px;
+}
+
+.menuBar h1 {
+	font-size: 30px;
+    line-height: 0px;
+    padding-left: 50px;
+    float: left;  
+    color: #F2F2F2;
+    font-weight: normal;
+    font-family: 'Orienta', sans-serif;
+    text-shadow: 10px 10px 0 rgba(0,0,0,0.5);
+}
+
+.menuBar .headline {
+	color: #F2F2F2;
+	font-size: 12px;
+	font-weight: bold;
+}
+
+.centered {
+	margin: 0 auto;
+}
+
+.anonymisedColumn{
+	background-color: #AAFFAA; /*green*/
+}
+
+.anonCandidate{
+	background-color: #FFE2C9; /*orange*/
+}
