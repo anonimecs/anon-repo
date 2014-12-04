@@ -27,5 +27,13 @@
 		<property name="maxWait" value="1000" />
 	</bean>
 
+	<bean id="dataSourceMySql" class="org.apache.commons.dbcp.BasicDataSource">
+		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
+		<property name="url" value="${mysql.test.url}" />
+		<property name="username" value="${mysql.test.user}" />
+		<property name="password" value="${mysql.test.passwd}" />
+		<property name="maxActive" value="5" />
+		<property name="maxWait" value="1000" />
+	</bean>
 
 </beans>

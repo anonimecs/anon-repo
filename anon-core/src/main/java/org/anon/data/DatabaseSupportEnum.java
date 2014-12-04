@@ -2,6 +2,7 @@ package org.anon.data;
 
 public enum DatabaseSupportEnum {
 
+	MYSQL("MySql", new String[]{"5.1"}),
 	ORACLE("Oracle", new String[]{"11g", "10x", "9y"}), 
 	SYBASE("Sybase", new String[]{"15.7", "16.0"});
 

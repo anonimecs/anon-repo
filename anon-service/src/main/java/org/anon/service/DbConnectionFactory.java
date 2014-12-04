@@ -8,6 +8,7 @@ import org.anon.AbstractDbConnection;
 import org.anon.AnonStatic;
 import org.anon.persistence.data.DatabaseConfig;
 import org.anon.vendor.DatabaseSpecifics;
+import org.anon.vendor.MySqlDbConnection;
 import org.anon.vendor.OracleDbConnection;
 import org.anon.vendor.SybaseDbConnection;
 import org.apache.commons.dbcp.BasicDataSourceFactory;
@@ -34,6 +35,9 @@ public class DbConnectionFactory extends AnonStatic{
 			}
 			else if(databaseConfig.getVendor().equals(ORACLE)) {
 				dbConnection = createOracleConnection();
+			}
+			else if(databaseConfig.getVendor().equals(MYSQL)) {
+				dbConnection = createMySqlConnection();
 			}
 		}
 		return dbConnection;
@@ -76,6 +80,22 @@ public class DbConnectionFactory extends AnonStatic{
 		
 		OracleDbConnection oracleDbConnection = new OracleDbConnection(databaseConfig.getLogin());
 		dbConnection = oracleDbConnection;
+		dbConnection.setProperties(props);
+		dbConnection.setDataSource(getDatasource(props));	
+		return dbConnection;
+	}
+	
+	private AbstractDbConnection createMySqlConnection() {	
+		AbstractDbConnection dbConnection = null;
+		Properties props = new Properties();
+		
+		props.setProperty("driverClassName", MYSQL_DRIVER_CLASS);
+		props.setProperty("url", MYSQL_JDBC_PREFIX);
+		props.setProperty("maxActive", JDBC_MAX_ACTIVE);
+		props.setProperty("maxWait", JDBC_MAX_WAIT);
+		
+		MySqlDbConnection mysqlDbConnection = new MySqlDbConnection(databaseConfig.getLogin());
+		dbConnection = mysqlDbConnection;
 		dbConnection.setProperties(props);
 		dbConnection.setDataSource(getDatasource(props));	
 		return dbConnection;

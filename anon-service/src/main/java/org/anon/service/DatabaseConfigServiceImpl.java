@@ -4,6 +4,8 @@ import static org.anon.AnonStatic.ORACLE;
 import static org.anon.AnonStatic.ORACLE_JDBC_PREFIX;
 import static org.anon.AnonStatic.SYBASE;
 import static org.anon.AnonStatic.SYBASE_JDBC_PREFIX;
+import static org.anon.AnonStatic.MYSQL;
+import static org.anon.AnonStatic.MYSQL_JDBC_PREFIX;
 
 import java.util.List;
 
@@ -33,6 +35,9 @@ public class DatabaseConfigServiceImpl implements DatabaseConfigService {
 		}
 		else if (SYBASE.equals(config.getVendor())) {
 			return SYBASE_JDBC_PREFIX;
+		}
+		else if (MYSQL.equals(config.getVendor())) {
+			return MYSQL_JDBC_PREFIX;
 		}
 		else return "";
 	}
