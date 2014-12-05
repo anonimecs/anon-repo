@@ -1,4 +1,4 @@
-CREATE PROCEDURE an_meth_enc_tbl(
+CREATE PROCEDURE dbo.an_meth_enc_tbl(
   @colName                     varchar(50),
   @tblName                     varchar(50),
   @shift                        int

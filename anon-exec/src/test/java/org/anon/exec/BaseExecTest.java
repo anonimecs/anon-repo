@@ -65,8 +65,8 @@ public abstract class BaseExecTest extends BaseDbTest{
 
 	@Test
 	public void test1_simpleTest() {
-		Assert.assertEquals(getTestTableCreator().getRowCount_TMP_TABLE_B(), new JdbcTemplate(getDataSource()).queryForInt("select count (*) from TMP_TABLE_B"));
-		Assert.assertEquals(getTestTableCreator().getRowCount_TMP_TABLE_A(), new JdbcTemplate(getDataSource()).queryForInt("select count (*) from TMP_TABLE_A"));
+		Assert.assertEquals(getTestTableCreator().getRowCount_TMP_TABLE_B(), new JdbcTemplate(getDataSource()).queryForInt("select count(*) from TMP_TABLE_B"));
+		Assert.assertEquals(getTestTableCreator().getRowCount_TMP_TABLE_A(), new JdbcTemplate(getDataSource()).queryForInt("select count(*) from TMP_TABLE_A"));
 	}
 	
 	protected abstract TestTableCreator getTestTableCreator();

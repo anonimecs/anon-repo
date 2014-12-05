@@ -1,4 +1,4 @@
-CREATE FUNCTION an_meth_enc_func(
+CREATE FUNCTION dbo.an_meth_enc_func(
   @inputStr                     varchar(50),
   @shift                        int
 ) 
