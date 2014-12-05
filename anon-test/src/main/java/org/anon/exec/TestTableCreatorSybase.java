@@ -18,11 +18,11 @@ public class TestTableCreatorSybase extends TestTableCreator{
 	@Override
 	public void createTables(JdbcTemplate jdbcTemplate) throws IOException {
 		for (String sql : getStatements("/TMP_TABLE_A_SYBASE.sql")) {
-//			System.out.println(sql);
+			System.out.println(sql);
 			jdbcTemplate.execute(sql);
 		}
 		for (String sql : getStatements("/TMP_TABLE_B_SYBASE.sql")) {
-//			System.out.println(sql);
+			System.out.println(sql);
 			jdbcTemplate.execute(sql);
 		}
 	}

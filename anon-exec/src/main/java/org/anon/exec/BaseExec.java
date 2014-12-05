@@ -49,6 +49,7 @@ public abstract class BaseExec {
 				methodExecution.finished();
 			}
 			catch(RuntimeException e){		
+				logger.debug("anonymisationMethod failed : " + anonymisationMethod, e);
 				methodExecution.failed(e);
 				throw e;				
 			}

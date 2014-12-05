@@ -35,7 +35,7 @@ public class AnonymisationMethodEncryptSybase extends AnonymisationMethodEncrypt
 	
 	@Override
 	protected String getAnonimiseStringSql() {
-		return "select dbo.an_meth_enc_func(?, ?)";
+		return "select an_meth_enc_func(?, ?)";
 	}
 
 
