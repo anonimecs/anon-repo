@@ -6,6 +6,7 @@ import javax.sql.DataSource;
 
 import org.anon.AbstractDbConnection;
 import org.anon.AnonStatic;
+import org.anon.data.Database;
 import org.anon.persistence.data.DatabaseConfig;
 import org.anon.vendor.DatabaseSpecifics;
 import org.anon.vendor.MySqlDbConnection;
@@ -16,11 +17,9 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class DbConnectionFactory extends AnonStatic{
-
 	
 	private DatabaseConfig databaseConfig;
-	private AbstractDbConnection dbConnection;
-	
+	private AbstractDbConnection dbConnection;	
 	
 	public DatabaseSpecifics getDatabaseSpecifics(){
 		return getConnection().getDatabaseSpecifics();
@@ -29,15 +28,15 @@ public class DbConnectionFactory extends AnonStatic{
 	public AbstractDbConnection getConnection() {
 		
 		if(dbConnection == null){
-	
-			if(databaseConfig.getVendor().equals(SYBASE)) {
-				dbConnection = createSybaseConnection();
-			}
-			else if(databaseConfig.getVendor().equals(ORACLE)) {
-				dbConnection = createOracleConnection();
-			}
-			else if(databaseConfig.getVendor().equals(MYSQL)) {
-				dbConnection = createMySqlConnection();
+			
+			switch(databaseConfig.getVendor()) {
+				case MYSQL: dbConnection = createMySqlConnection();
+					break;
+				case ORACLE: dbConnection = createOracleConnection();
+					break;
+				case SYBASE: dbConnection = createSybaseConnection();
+					break;
+				default: throw new RuntimeException(databaseConfig.getVendor() + " not supported.");
 			}
 		}
 		return dbConnection;
@@ -45,12 +44,7 @@ public class DbConnectionFactory extends AnonStatic{
 	
 	private AbstractDbConnection createSybaseConnection() {	
 		AbstractDbConnection dbConnection = null;
-		Properties props = new Properties();
-		
-		props.setProperty("driverClassName", SYBASE_DRIVER_CLASS);
-		props.setProperty("url", SYBASE_JDBC_PREFIX);
-		props.setProperty("maxActive", JDBC_MAX_ACTIVE);
-		props.setProperty("maxWait", JDBC_MAX_WAIT);
+		Properties props = createDbProps(Database.SYBASE);
 				
 		SybaseDbConnection sybaseDbConnection = new SybaseDbConnection(parseSybSchemaFromUrl(databaseConfig.getUrl()));
 		dbConnection = sybaseDbConnection;
@@ -71,12 +65,7 @@ public class DbConnectionFactory extends AnonStatic{
 
 	private AbstractDbConnection createOracleConnection() {	
 		AbstractDbConnection dbConnection = null;
-		Properties props = new Properties();
-		
-		props.setProperty("driverClassName", ORACLE_DRIVER_CLASS);
-		props.setProperty("url", ORACLE_JDBC_PREFIX);
-		props.setProperty("maxActive", JDBC_MAX_ACTIVE);
-		props.setProperty("maxWait", JDBC_MAX_WAIT);
+		Properties props = createDbProps(Database.ORACLE);
 		
 		OracleDbConnection oracleDbConnection = new OracleDbConnection(databaseConfig.getLogin());
 		dbConnection = oracleDbConnection;
@@ -87,18 +76,24 @@ public class DbConnectionFactory extends AnonStatic{
 	
 	private AbstractDbConnection createMySqlConnection() {	
 		AbstractDbConnection dbConnection = null;
-		Properties props = new Properties();
-		
-		props.setProperty("driverClassName", MYSQL_DRIVER_CLASS);
-		props.setProperty("url", MYSQL_JDBC_PREFIX);
-		props.setProperty("maxActive", JDBC_MAX_ACTIVE);
-		props.setProperty("maxWait", JDBC_MAX_WAIT);
+		Properties props = createDbProps(Database.MYSQL);
 		
 		MySqlDbConnection mysqlDbConnection = new MySqlDbConnection(databaseConfig.getLogin());
 		dbConnection = mysqlDbConnection;
 		dbConnection.setProperties(props);
 		dbConnection.setDataSource(getDatasource(props));	
 		return dbConnection;
+	}
+	
+	private Properties createDbProps(Database db) {
+		Properties props = new Properties();
+		
+		props.setProperty("driverClassName", db.getDriver());
+		props.setProperty("url", db.getJdbcPrefix());
+		props.setProperty("maxActive", JDBC_MAX_ACTIVE);
+		props.setProperty("maxWait", JDBC_MAX_WAIT);
+		
+		return props;
 	}
 	
 	public DataSource getDatasource(Properties props) {

@@ -14,7 +14,6 @@ public interface DatabaseConfigService {
 
 	public ServiceResult addDatabaseConfig(DatabaseConfig config);
 
-	String getUrlPrefix(DatabaseConfig config);
 }
 
 

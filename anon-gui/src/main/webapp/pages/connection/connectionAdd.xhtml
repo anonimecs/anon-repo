@@ -19,12 +19,12 @@ xmlns="http://www.w3.org/1999/xhtml"
 				    <p:selectOneMenu id="vendor" value="#{databaseConfigBacking.configBean.vendor}" required="true">
 				    	<f:selectItem itemValue="" itemLabel="Select one"/>
 				    	<f:selectItems value="#{databaseConfigBacking.supportedDatabases}" 
-				    		var="db" itemLabel="#{db.name}" itemValue="#{db.name}"/>
+				    		var="db" itemLabel="#{db.name}" itemValue="#{db}"/>
 				    	<p:ajax event="change" update="urlPrefix" />
 				   	</p:selectOneMenu>
 				   	<p:message id="vendorMSG" for="vendor" />
 
-					<p:outputLabel id="urlPrefix" for="url" value="URL: #{databaseConfigServiceImpl.getUrlPrefix(databaseConfigBacking.configBean)}" />
+					<p:outputLabel id="urlPrefix" for="url" value="URL: #{databaseConfigBacking.configBean.vendor.jdbcPrefix}" />
 					<p:inputText id="url" value="#{databaseConfigBacking.configBean.url}" required="true" size="70"/>
 					<p:message for="url" />
 					

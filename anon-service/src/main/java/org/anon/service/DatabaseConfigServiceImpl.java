@@ -1,12 +1,5 @@
 package org.anon.service;
 
-import static org.anon.AnonStatic.ORACLE;
-import static org.anon.AnonStatic.ORACLE_JDBC_PREFIX;
-import static org.anon.AnonStatic.SYBASE;
-import static org.anon.AnonStatic.SYBASE_JDBC_PREFIX;
-import static org.anon.AnonStatic.MYSQL;
-import static org.anon.AnonStatic.MYSQL_JDBC_PREFIX;
-
 import java.util.List;
 
 import org.anon.persistence.dao.DatabaseConfigDao;
@@ -27,20 +20,6 @@ public class DatabaseConfigServiceImpl implements DatabaseConfigService {
 	
 	@Autowired
 	private DbConnectionValidatorService connectionValidator;
-	
-	@Override
-	public String getUrlPrefix(DatabaseConfig config){
-		if(ORACLE.equals(config.getVendor())) {
-			return ORACLE_JDBC_PREFIX;
-		}
-		else if (SYBASE.equals(config.getVendor())) {
-			return SYBASE_JDBC_PREFIX;
-		}
-		else if (MYSQL.equals(config.getVendor())) {
-			return MYSQL_JDBC_PREFIX;
-		}
-		else return "";
-	}
 	
 	@Override
 	public List<DatabaseConfig> loadConnectionConfigs() {

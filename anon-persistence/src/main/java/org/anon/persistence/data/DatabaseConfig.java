@@ -1,9 +1,13 @@
 package org.anon.persistence.data;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+
+import org.anon.data.Database;
 
 @Entity
 public class DatabaseConfig extends PersistentObject{
@@ -21,7 +25,7 @@ public class DatabaseConfig extends PersistentObject{
 	private String url;	
 	private String login;	
 	private String password;	
-	private String vendor;	
+	private Database vendor;	
 	private String version;
 	
 	private String guiName;
@@ -33,10 +37,11 @@ public class DatabaseConfig extends PersistentObject{
 	public void setUrl(String url) {
 		this.url = url;
 	}
-	public String getVendor() {
+	@Enumerated(EnumType.STRING)
+	public Database getVendor() {
 		return vendor;
 	}
-	public void setVendor(String vendor) {
+	public void setVendor(Database vendor) {
 		this.vendor = vendor;
 	}
 	public String getVersion() {

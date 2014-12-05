@@ -17,22 +17,7 @@ public class DbConnectionValidatorService extends AnonStatic{
 		String drvClass = "";
 		ServiceResult result = new ServiceResult();
 		
-		if(config.getVendor().equals(ORACLE)) {
-			testUrl.append(ORACLE_JDBC_PREFIX).append(config.getUrl());
-			drvClass = ORACLE_DRIVER_CLASS;
-		}
-		else if (config.getVendor().equals(SYBASE)) {
-			testUrl.append(SYBASE_JDBC_PREFIX).append(config.getUrl());
-			drvClass = SYBASE_DRIVER_CLASS;
-		}
-		else if (config.getVendor().equals(MYSQL)) {
-			testUrl.append(MYSQL_JDBC_PREFIX).append(config.getUrl());
-			drvClass = MYSQL_DRIVER_CLASS;
-		}
-		else {
-			result.addErrorMessage("Vendor not supported", null);
-			return result;
-		}
+		testUrl.append(config.getVendor().getJdbcPrefix()).append(config.getUrl());
 		
 		try {
 			Class.forName(drvClass);

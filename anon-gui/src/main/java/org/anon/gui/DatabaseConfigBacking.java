@@ -7,7 +7,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 
-import org.anon.data.DatabaseSupportEnum;
+import org.anon.data.Database;
 import org.anon.persistence.data.DatabaseConfig;
 import org.anon.service.DatabaseConfigService;
 import org.anon.service.ServiceResult;
@@ -31,10 +31,6 @@ public class DatabaseConfigBacking extends BackingBase {
 	private void init() {
 		reset();
 	}
-	
-//	public void vendorChanged(){
-//		configBean.setUrlPrefix(configService.getUrlPrefix(configBean));
-//	}
 	
 	public void deleteDatabaseConfig(DatabaseConfig config) {
 		logDebug("delete databaseConfig " + config.getUrl());
@@ -75,16 +71,8 @@ public class DatabaseConfigBacking extends BackingBase {
 		return configList;
 	}
 	
-	public DatabaseSupportEnum[] getSupportedDatabases() {
-		return DatabaseSupportEnum.values();
-	}
-	
-	public String[] getSupportedVersions() {
-		if(configBean.getVendor()==null) {
-			return new String[]{""};
-		}else {
-			return DatabaseSupportEnum.getVersionsByName(configBean.getVendor());
-		}
+	public Database[] getSupportedDatabases() {
+		return Database.values();
 	}
 
 	public DatabaseConfig getConfigBean() {

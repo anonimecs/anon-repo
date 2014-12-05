@@ -2,6 +2,7 @@ package org.anon;
 
 import java.util.List;
 
+import org.anon.data.Database;
 import org.anon.persistence.dao.DatabaseConfigDao;
 import org.anon.persistence.data.DatabaseConfig;
 import org.junit.Assert;
@@ -25,7 +26,7 @@ public class AppDbConnectionTest extends DbEntitiesTest {
 			config.setUrl("test.anon.org");
 			config.setLogin("anon");
 			config.setPassword("anon");
-			config.setVendor("sybase");
+			config.setVendor(Database.SYBASE);
 			config.setVersion("16.0");
 			config.setGuiName(GUINAME);
 		}
