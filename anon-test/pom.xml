@@ -89,7 +89,18 @@
 			<artifactId>tools</artifactId>
 			<version>1.6.0</version>
 			<scope>system</scope>
-			<systemPath>${env.JAVA_HOME}/lib/tools.jar</systemPath>
+			<systemPath>${systempath.tools.jar}/tools.jar</systemPath>
+			<!-- set this path in your maven/conf/settings.xml -->
+<!-- 			    <profile> -->
+<!-- 			      <id>local-paths</id> -->
+<!-- 			      <properties> -->
+<!-- 			        <systempath.tools.jar>/Library/Java/JavaVirtualMachines/jdk1.7.0_55.jdk/Contents/Home/lib</systempath.tools.jar> -->
+<!-- 			      </properties> -->
+<!-- 			     </profile> -->
+<!-- 			       <activeProfiles> -->
+<!-- 				    <activeProfile>local-paths</activeProfile> -->
+<!-- 				  </activeProfiles> -->
+			
 		</dependency>  	
 	</dependencies>
 	
