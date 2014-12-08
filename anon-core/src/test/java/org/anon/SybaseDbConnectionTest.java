@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
+import org.anon.data.DatabaseColumnInfo;
 import org.anon.data.DatabaseTableInfo;
 import org.anon.exec.BaseDbTest;
 import org.anon.vendor.SybaseDbConnection;
@@ -44,6 +45,7 @@ public class SybaseDbConnectionTest extends BaseDbTest{
 		
 		Assert.assertTrue(res.size() >= 1);
 		Assert.assertTrue(res.get(0).getRowCount() > 0);
+		
 	}
 
 
@@ -60,6 +62,25 @@ public class SybaseDbConnectionTest extends BaseDbTest{
 		databaseTableInfo.setName(tableName);
 		databaseTableInfo.setSchema(schema);
 		System.out.println(sybaseDbConnection.getColumns(databaseTableInfo));
+	}
+
+	@Test
+	public void testSupportedDatatypes() {
+		SybaseDbConnection sybaseDbConnection = createConn();
+		
+		List<DatabaseTableInfo> res = sybaseDbConnection.getTableList(schema);
+		
+		for (DatabaseTableInfo databaseTableInfo : res) {
+			for(DatabaseColumnInfo databaseColumnInfo:databaseTableInfo.getColumns()){
+				if(!sybaseDbConnection.databaseSpecifics.isSupportedDataType(databaseColumnInfo)){
+					System.out.println("Unsupported datatype on column " + databaseColumnInfo + ":"+   databaseColumnInfo.getType());
+				}
+
+//				Assert.assertTrue("Unsupported datatype on column " + databaseColumnInfo + ":"+  databaseColumnInfo.getType(), sybaseDbConnection.databaseSpecifics.isSupportedDataType(databaseColumnInfo));	
+			}
+			
+		}
+		
 	}
 
 }

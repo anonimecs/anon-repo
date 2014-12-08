@@ -1,28 +1,14 @@
 package org.anon.vendor;
 
-import org.anon.data.DatabaseColumnInfo;
 
-public class OracleSpecific implements DatabaseSpecifics{
+public class OracleSpecific extends DatabaseSpecifics{
 
-	@Override
-	public boolean isJavaTypeString(DatabaseColumnInfo databaseColumnInfo) {
-		return databaseColumnInfo.getType().toUpperCase().startsWith("VARCHAR") || databaseColumnInfo.getType().equalsIgnoreCase("CHAR");
+	
+	public OracleSpecific() {
+		javaTypeStringSet = createSet("VARCHAR", "VARCHAR2", "CHAR", "NCHAR", "NVARCHAR2");
+		javaTypeDateSet = createSet("DATE", "TIMESTAMP");
+		javaTypeLongSet = createSet("NUMBER", "LONG");
+		javaTypeDoubleSet = createSet("FLOAT", "NUMERIC","BINARY_FLOAT","BINARY_DOUBLE");
 	}
-
-
-	@Override
-	public boolean isJavaTypeDate(DatabaseColumnInfo databaseColumnInfo) {
-		return databaseColumnInfo.getType().equalsIgnoreCase("DATE") || databaseColumnInfo.getType().toUpperCase().startsWith("TIMESTAMP");
-	}
-
-	@Override
-	public boolean isJavaTypeLong(DatabaseColumnInfo databaseColumnInfo) {
-		return databaseColumnInfo.getType().equalsIgnoreCase("NUMBER");
-	}
-
-	@Override
-	public boolean isJavaTypeDouble(DatabaseColumnInfo databaseColumnInfo) {
-		return databaseColumnInfo.getType().equalsIgnoreCase("numeric")|| databaseColumnInfo.getType().equalsIgnoreCase("float");
-	}	
 
 }

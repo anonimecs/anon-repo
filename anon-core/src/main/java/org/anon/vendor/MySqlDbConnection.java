@@ -10,7 +10,6 @@ import org.anon.AbstractDbConnection;
 import org.anon.data.DatabaseColumnInfo;
 import org.anon.data.DatabaseTableInfo;
 import org.anon.data.RelatedTableColumnInfo;
-import org.anon.data.RelatedTableColumnInfo.Relation;
 import org.apache.log4j.Logger;
 import org.springframework.jdbc.core.RowMapper;
 

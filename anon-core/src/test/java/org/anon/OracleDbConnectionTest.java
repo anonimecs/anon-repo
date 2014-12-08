@@ -4,9 +4,11 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
+import org.anon.data.DatabaseColumnInfo;
 import org.anon.data.DatabaseTableInfo;
 import org.anon.exec.BaseDbTest;
 import org.anon.vendor.OracleDbConnection;
+import org.anon.vendor.SybaseDbConnection;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,4 +48,22 @@ public class OracleDbConnectionTest extends BaseDbTest{
 		Assert.assertTrue(res.size() > 10);
 	}
 
+	@Test
+	public void testSupportedDatatypes() {
+		OracleDbConnection oracleDbConnection = createConn();
+		
+		List<DatabaseTableInfo> res = oracleDbConnection.getTableList(schema);
+		
+		for (DatabaseTableInfo databaseTableInfo : res) {
+			for(DatabaseColumnInfo databaseColumnInfo:databaseTableInfo.getColumns()){
+				String type = databaseColumnInfo.getType();
+				if(!type.contains("LOB")){
+					Assert.assertTrue("Unsupported datatype on column " + databaseColumnInfo + ":"+  type, oracleDbConnection.databaseSpecifics.isSupportedDataType(databaseColumnInfo));	
+					
+				}
+			}
+			
+		}
+		
+	}
 }
