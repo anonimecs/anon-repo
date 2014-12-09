@@ -7,3 +7,8 @@ oracle.test.url=jdbc:oracle:thin:@localhost:31521
 oracle.test.user=ecap
 oracle.test.passwd=aaa
 oracle.test.schema=ECAP
+
+mysql.test.url=jdbc:mysql://localhost:3306/anontest
+mysql.test.user=anontest
+mysql.test.passwd=anontest
+mysql.test.schema=anontest
