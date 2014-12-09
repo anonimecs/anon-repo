@@ -37,6 +37,9 @@
 		<module>
 			../anon-gui
 		</module>
+		<module>
+			../anon-enterprise-only
+		</module>
 	</modules>
 	
 	<profiles>

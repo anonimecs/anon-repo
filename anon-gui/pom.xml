@@ -27,6 +27,17 @@
 	            <edition>free</edition>
 	        </properties>
 	    </profile>
+		<profile>
+	        <id>enterprise</id>
+				<dependencies>
+					<dependency>
+						<groupId>org.anon</groupId>
+						<artifactId>anon-enterprise-only</artifactId>
+						<version>${anon.version}</version>
+					</dependency>
+				</dependencies>
+	    </profile>
+	    
 	</profiles>
 
 	<build>

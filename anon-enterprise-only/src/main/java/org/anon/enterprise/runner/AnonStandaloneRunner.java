@@ -1,4 +1,4 @@
-package org.anon.premium.runner;
+package org.anon.enterprise.runner;
 
 import java.util.Arrays;
 import java.util.List;
@@ -17,11 +17,15 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
-// TODO This class is part of the premium package. Move it to a new project (jar)
+/**
+ * The standalone runner can be used, when the server (anon-gui) is not started and, only the (derby) database server is available.
+ * It must be started with an existing configuration in the database (select * from DatabaseConfig where guiName=param)     
+ * 
+ */
 @Service
-public class AnonRunner {
+public class AnonStandaloneRunner {
 	
-	static Logger logger = Logger.getLogger(AnonRunner.class);
+	static Logger logger = Logger.getLogger(AnonStandaloneRunner.class);
 
 	@Autowired
 	protected BaseExec baseExec;
@@ -50,12 +54,13 @@ public class AnonRunner {
 			// Start Spring
 			// AnonRunner assumes standalone database 
 			System.setProperty("spring.profiles.active", "enterprise_edition");
-			ApplicationContext context = new ClassPathXmlApplicationContext("anonRunnerContext.xml");
-			AnonRunner anonRunner = context.getBean(AnonRunner.class);
+			ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("anonRunnerContext.xml");
+			AnonStandaloneRunner anonRunner = context.getBean(AnonStandaloneRunner.class);
 			
 			// run the stuff
 			anonRunner.runAll(databaseConfigGuiName);
 		
+			context.close();
 		}catch(Exception e){
 			logger.error("AnonRunner failed with error " + e.getMessage(), e);
 		}
