@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 public class MethodFactory {
 	
 
+	@SuppressWarnings("unchecked")
 	public static Class<AnonymisationMethod>[] SYBASE_METHODS = new Class[]{
 		AnonymisationMethodNone.class
 		,AnonymisationMethodEncryptSybase.class
@@ -21,6 +22,7 @@ public class MethodFactory {
 		,AnonymisationMethodReshuffleSybase.class
 	};
 	
+	@SuppressWarnings("unchecked")
 	public static Class<AnonymisationMethod>[] ORACLE_METHODS = new Class[]{
 		AnonymisationMethodNone.class
 		,AnonymisationMethodEncryptOracle.class
@@ -28,9 +30,11 @@ public class MethodFactory {
 		,AnonymisationMethodReshuffleOracle.class
 	};
 	
+	@SuppressWarnings("unchecked")
 	public static Class<AnonymisationMethod>[] MYSQL_METHODS = new Class[]{
 		AnonymisationMethodNone.class
 		,AnonymisationMethodDestoryMySql.class
+		,AnonymisationMethodEncryptMySql.class
 	};
 
 	public List<AnonymisationMethod> getSupportedMethods(AnonymisedColumnInfo anonymizedColumn, DatabaseSpecifics databaseSpecifics) throws Exception{
