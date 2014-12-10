@@ -2,14 +2,15 @@ package org.anon.gui.navigation;
 
 public enum NavigationCaseEnum {
 	
+	HOME			("/",										"/app/"),
 	LOGIN			("/pages/security/login.jsf",				"/login/"),
-	CONNECT			("/pages/cockpit/connect.jsf",				"/connect/"),
-	ADD_CONNECTION	("/pages/connection/connectionAdd.jsf",		"/connection-add/"),
-	LIST_CONNECTION	("/pages/connection/connectionList.jsf",	"/connection-list/"),
-	TABLES			("/pages/cockpit/databaseTableList.jsf",	"/tables-list/"),
-	COLUMNS			("/pages/cockpit/databaseColumnList.jsf",	"/columns-list/"),
-	ANONYMIZE		("/pages/cockpit/anonymize.jsf",			"/method/"),
-	EXECUTE			("/pages/exec.jsf",							"/execute/");
+	CONNECT			("/pages/cockpit/connect.jsf",				"/app/connect/"),
+	ADD_CONNECTION	("/pages/connection/connectionAdd.jsf",		"/app/connection-add/"),
+	LIST_CONNECTION	("/pages/connection/connectionList.jsf",	"/app/connection-list/"),
+	TABLES			("/pages/cockpit/databaseTableList.jsf",	"/app/tables-list/"),
+	COLUMNS			("/pages/cockpit/databaseColumnList.jsf",	"/app/columns-list/"),
+	ANONYMIZE		("/pages/cockpit/anonymize.jsf",			"/app/method/"),
+	EXECUTE			("/pages/exec.jsf",							"/app/execute/");
 	
 	private NavigationCaseEnum(String url, String path) {
 		this.url = url;

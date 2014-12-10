@@ -12,23 +12,23 @@
 		<p:panelMenu id="menuPanel" style="width:200px">
 		
 			<p:submenu label="Database Connections" >
-				<p:menuitem value="Connection" url="/connect/"
+				<p:menuitem value="Connection" url="/app/connect/"
 					icon="ui-icon-star" />
-				<p:menuitem value="Add" url="/connection-add/"
+				<p:menuitem value="Add" url="/app/connection-add/"
 					icon="ui-icon-disk" />
-				<p:menuitem value="Edit" url="/connection-list/"
+				<p:menuitem value="Edit" url="/app/connection-list/"
 					icon="ui-icon-arrowrefresh-1-w" />
 			</p:submenu>
 			<p:submenu label="Configure">
-				<p:menuitem value="Table list" url="/tables-list/" 
+				<p:menuitem value="Table list" url="/app/tables-list/" 
 					disabled="#{!databasePanelBacking.connected}" icon="ui-icon-zoomin" />
-				<p:menuitem value="Column list" url="/columns-list/" 
+				<p:menuitem value="Column list" url="/app/columns-list/" 
 					disabled="#{empty editedTableBacking.editedTable}" icon="ui-icon-zoomin" />
-				<p:menuitem value="Anonymize" url="/method/" 
+				<p:menuitem value="Anonymize" url="/app/method/" 
 					disabled="#{null eq editedTableBacking.editedColumn}" icon="ui-icon-shuffle" />
 			</p:submenu>
 			<p:submenu label="Run">
-				<p:menuitem value="Execute" url="/execute/"
+				<p:menuitem value="Execute" url="/app/execute/"
 					icon="ui-icon-triangle-1-e" />
 			</p:submenu>
 			
