@@ -30,7 +30,7 @@ public class ExecBacking extends BackingBase{
 
 	public void onRunSingle(final AnonymisationMethod anonymisationMethod){
 		try{
-			logDebug("Runnig single " + anonymisationMethod);
+			logDebug("Running single " + anonymisationMethod);
 			AbstractDbConnection connection = dbConnectionFactory.getConnection();
 			logDebug("Database " + connection.getProperties());
 	

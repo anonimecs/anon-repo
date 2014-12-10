@@ -2,4 +2,4 @@
 
 cd %~dp0
 
-java -jar anon-enterprise-only.jar %1
+java -cp anon-enterprise-only.jar;lib/* org.anon.enterprise.runner.AnonStandaloneRunner %1

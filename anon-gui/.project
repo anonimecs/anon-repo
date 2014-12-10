@@ -3,6 +3,7 @@
 	<name>anon-gui</name>
 	<comment></comment>
 	<projects>
+		<project>anon-enterprise-only</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

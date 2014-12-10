@@ -1,4 +1,4 @@
-package org.anon.enterprise.runner;
+package org.anon.enterprise;
 
 import java.util.List;
 
@@ -11,17 +11,11 @@ import org.anon.service.DatabaseLoaderService;
 import org.anon.service.DbConnectionFactory;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-/**
- * The standalone runner can be used, when the server (anon-gui) is not started and, only the (derby) database server is available.
- * It must be started with an existing configuration in the database (select * from DatabaseConfig where guiName=param)     
- * 
- */
-public class AnonStandaloneRunner extends Runner{
+public class AnonServerImpl implements AnonServer {
+
+	Logger logger = Logger.getLogger(getClass());
 	
-	static Logger logger = Logger.getLogger(AnonStandaloneRunner.class);
-
 	@Autowired
 	protected BaseExec baseExec;
 
@@ -36,30 +30,10 @@ public class AnonStandaloneRunner extends Runner{
 	
 	@Autowired
 	protected AnonConfig anonConfig;
+
 	
-	public static void main(String[] args) {
-		try{
-			String databaseConfigGuiName = checkParams(args);
-			
-			// Start Spring
-			// AnonRunner assumes standalone database 
-			System.setProperty("spring.profiles.active", "enterprise_edition");
-			ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("AnonStandaloneRunner.xml");
-			AnonStandaloneRunner anonRunner = context.getBean(AnonStandaloneRunner.class);
-			
-			// run the stuff
-			anonRunner.runAll(databaseConfigGuiName);
-		
-			context.close();
-		}catch(Exception e){
-			logger.error("AnonRunner failed with error " + e.getMessage(), e);
-		}
-		
-		
-	}
-
-
-	private void runAll(String databaseConfigGuiName) {
+	@Override
+	public void runAll(String databaseConfigGuiName) {
 
 		logger.info("Loading configuration " + databaseConfigGuiName);
 
@@ -85,5 +59,4 @@ public class AnonStandaloneRunner extends Runner{
 		baseExec.runAll();
 		logger.warn("Anonimisation finished for " + databaseConfigGuiName);
 	}
-
 }

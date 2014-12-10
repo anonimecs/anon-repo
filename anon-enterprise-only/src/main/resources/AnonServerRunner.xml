@@ -7,11 +7,9 @@
 
 	<context:property-placeholder location="classpath:default.properties"  ignore-resource-not-found="true"/>
 
-	<import resource="classpath:spring-anon.xml"/>
-	<import resource="classpath:spring-anon-persistence.xml"/>			
-
-	<context:component-scan base-package="org.anon"/>
-	<context:annotation-config/>
-
+	<bean id="anonServer" class="org.springframework.remoting.rmi.RmiProxyFactoryBean">
+	    <property name="serviceUrl" value="rmi://localhost:1199/anonServer"/>
+	    <property name="serviceInterface" value="org.anon.enterprise.AnonServer"/>
+	</bean>
 
 </beans>

@@ -274,6 +274,13 @@
 			<artifactId>anon-gui-skin</artifactId>
 			<version>${anon.version}</version>
 		</dependency>
+		
+<!-- 		<dependency> -->
+<!-- 			<groupId>org.anon</groupId> -->
+<!-- 			<artifactId>anon-enterprise-only</artifactId> -->
+<!-- 			<version>${anon.version}</version> -->
+<!-- 		</dependency> -->
+		
 	</dependencies>
 
 </project>

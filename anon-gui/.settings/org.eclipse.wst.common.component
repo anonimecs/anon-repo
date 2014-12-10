@@ -23,6 +23,9 @@
         <dependent-module archiveName="anon-gui-skin-0.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/anon-gui-skin/anon-gui-skin">
             <dependency-type>uses</dependency-type>
         </dependent-module>
+        <dependent-module archiveName="anon-enterprise-only.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/anon-enterprise-only/anon-enterprise-only">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
         <property name="java-output-path" value="/anon-gui/target/classes"/>
         <property name="context-root" value="anon-gui-0.1-SNAPSHOT-enterprise"/>
     </wb-module>
