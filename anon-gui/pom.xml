@@ -29,10 +29,20 @@
 	    </profile>
 		<profile>
 	        <id>enterprise</id>
+	        <properties>
+	            <webXmlPath>src/main/webapp/WEB-INF/enterprise_edition_web.xml</webXmlPath>
+	            <edition>free</edition>
+	        </properties>
+	        	<!-- These dependencies will only be available in the enterprise build -->
 				<dependencies>
 					<dependency>
 						<groupId>org.anon</groupId>
 						<artifactId>anon-enterprise-only</artifactId>
+						<version>${anon.version}</version>
+					</dependency>
+					<dependency>
+						<groupId>org.anon</groupId>
+						<artifactId>anon-security</artifactId>
 						<version>${anon.version}</version>
 					</dependency>
 				</dependencies>
@@ -262,11 +272,6 @@
 		<dependency>
 			<groupId>org.anon</groupId>
 			<artifactId>anon-service</artifactId>
-			<version>${anon.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.anon</groupId>
-			<artifactId>anon-security</artifactId>
 			<version>${anon.version}</version>
 		</dependency>
 		<dependency>

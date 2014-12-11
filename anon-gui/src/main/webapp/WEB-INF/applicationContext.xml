@@ -7,8 +7,6 @@
 
 	<import resource="classpath:spring-anon.xml"/>
 	<import resource="classpath:spring-anon-persistence.xml"/>
-	<import resource="classpath:spring-anon-security-config.xml"/>
-	<import resource="classpath:spring-anon-security-beans.xml"/>		
 		
 
 	<context:property-placeholder location="classpath:default.properties"  ignore-resource-not-found="true"/>
@@ -23,6 +21,9 @@
 	
 
 	<beans profile="enterprise_edition">
+		<import resource="classpath:spring-anon-security-config.xml"/>
+		<import resource="classpath:spring-anon-security-beans.xml"/>		
+
 		<bean id="anonServer" class="org.anon.enterprise.AnonServerImpl"/>
 		<bean class="org.springframework.remoting.rmi.RmiServiceExporter">
 		    <!-- does not necessarily have to be the same name as the bean to be exported -->
