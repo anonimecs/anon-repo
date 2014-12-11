@@ -35,6 +35,7 @@ public class MethodFactory {
 		AnonymisationMethodNone.class
 		,AnonymisationMethodDestoryMySql.class
 		,AnonymisationMethodEncryptMySql.class
+		,AnonymisationMethodReshuffleMySql.class
 	};
 
 	public List<AnonymisationMethod> getSupportedMethods(AnonymisedColumnInfo anonymizedColumn, DatabaseSpecifics databaseSpecifics) throws Exception{
