@@ -8,7 +8,6 @@ import org.anon.data.DatabaseColumnInfo;
 import org.anon.data.DatabaseTableInfo;
 import org.anon.exec.BaseDbTest;
 import org.anon.vendor.OracleDbConnection;
-import org.anon.vendor.SybaseDbConnection;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;

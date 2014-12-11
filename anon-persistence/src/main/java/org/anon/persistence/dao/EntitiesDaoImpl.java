@@ -30,6 +30,7 @@ public class EntitiesDaoImpl implements EntitiesDao {
 
 	@Override
 	public List<DatabaseTableData> loadAllTables() {
+		@SuppressWarnings("unchecked")
 		List<DatabaseTableData> list = sessionFactory.getCurrentSession().createQuery("from DatabaseTableData as table left join fetch table.columns").list();
 		for (DatabaseTableData databaseTableInfo : list) {
 			Hibernate.initialize(databaseTableInfo.getColumns());
@@ -46,6 +47,7 @@ public class EntitiesDaoImpl implements EntitiesDao {
 
 	@Override
 	public List<AnonymisationMethodData> loadAllAnonMethods(DatabaseConfig databaseConfig) {
+		@SuppressWarnings("unchecked")
 		List<AnonymisationMethodData> list = sessionFactory.getCurrentSession().createQuery("from AnonymisationMethodData as method left join fetch method.applyedToColumns where method.databaseConfigId=:ID").setLong("ID", databaseConfig.getId()).list();
 		for (AnonymisationMethodData data : list) {
 			Hibernate.initialize(data.getApplyedToColumns());

@@ -9,8 +9,6 @@ import org.anon.data.DatabaseTableInfo;
 import org.anon.logic.AnonymisationMethod;
 import org.anon.logic.AnonymisationMethodReshuffleOracle;
 import org.anon.vendor.OracleDbConnection;
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;

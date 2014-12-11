@@ -1,7 +1,5 @@
 package org.anon.exec;
 
-import java.io.IOException;
-
 import javax.sql.DataSource;
 
 import org.anon.data.AnonConfig;
@@ -9,12 +7,8 @@ import org.anon.logic.AnonymisationMethod;
 import org.anon.logic.AnonymisationMethodDestorySybase;
 import org.anon.logic.AnonymisationMethodEncryptSybase;
 import org.anon.vendor.SybaseDbConnection;
-import org.junit.After;
 import org.junit.Assert;
-import org.junit.Before;
-import org.junit.FixMethodOrder;
 import org.junit.Test;
-import org.junit.runners.MethodSorters;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 
