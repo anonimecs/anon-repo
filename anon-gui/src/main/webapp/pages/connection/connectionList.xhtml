@@ -17,7 +17,11 @@
 				<p:dataTable id="configTable" var="config" value="#{databaseConfigBacking.configList}" rowKey="#{config.id}"
 						selection="#{databaseConfigBacking.configBean}" >
 						
-					<p:column headerText="Url" filterBy="#{config.url}" width="400">
+					<p:column headerText="Connection" filterBy="#{config.url}" >
+						<h:outputText value="#{config.guiName}"/>
+					</p:column>
+					
+					<p:column headerText="Url" filterBy="#{config.url}" width="300">
 						<h:outputText value="#{config.url}"/>
 					</p:column>
 					
