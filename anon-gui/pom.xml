@@ -31,7 +31,7 @@
 	        <id>enterprise</id>
 	        <properties>
 	            <webXmlPath>src/main/webapp/WEB-INF/enterprise_edition_web.xml</webXmlPath>
-	            <edition>free</edition>
+	            <edition>enterprise</edition>
 	        </properties>
 	        	<!-- These dependencies will only be available in the enterprise build -->
 				<dependencies>
