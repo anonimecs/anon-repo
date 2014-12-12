@@ -2,66 +2,85 @@ package org.anon.logic;
 
 import org.anon.data.AnonymisedColumnInfo;
 import org.anon.data.RunResult;
-import org.springframework.jdbc.core.JdbcTemplate;
 
 public class AnonymisationMethodReshuffleOracle extends AnonymisationMethodReshuffle {
 
-	public static final String TMP_TABLE = "TMP_TABLE"; 
-	public static final String LOOKUP_TABLE = "TMP_TABLE_LOOKUP"; 
+	public static final String SHUFFLE_RAN = "TMP_SHUFFLE_1";
+	public static final String SHUFFLE_ORG = "TMP_SHUFFLE_2";
 	
-
 	
 	@Override
 	public void setupInDb() {
-
-		String createTmpTableSql =
-				" create table " + TMP_TABLE + " as " +
-				" select ROWNUM as MYROWNUMBER, COLCOL as orig, COLCOL as reshuffled        " +
-				" from ( ";
-
-		for(int i =0 ; i < applyedToColumns.size(); i++){
-			AnonymisedColumnInfo anonymisedColumnInfo = applyedToColumns.get(i);
-			String subselect = "select distinct " + anonymisedColumnInfo.getName() + " as COLCOL from  " + anonymisedColumnInfo.getTable().getName();
-			createTmpTableSql += subselect;
-			if( i < (applyedToColumns.size() - 1)){
-				createTmpTableSql += " union ";
-			}
-		}
 		
-		createTmpTableSql = createTmpTableSql + 
-				" ) AAA                                                                                      " +
-				" order by 2  ";
+		cleanupInDb();
 
+		String createTmpShuffleRandom =
+				"CREATE TABLE " + SHUFFLE_RAN + " (" +
+				"id NUMBER(11) NOT NULL," +
+				"shuffle_values VARCHAR(255))";
 		
-		String createTmpTableIndexSql = "create index " +TMP_TABLE+ "_IND on " + TMP_TABLE + " (MYROWNUMBER)";
-		String createLookupTableIndexSql = "create index " +LOOKUP_TABLE+ "_IND on " + LOOKUP_TABLE + " (orig)";
-
+		execute(createTmpShuffleRandom);
 		
-		execute(createTmpTableSql);
-		execute(createTmpTableIndexSql);
+		String alterShuffleRandomTable =
+				"ALTER TABLE " + SHUFFLE_RAN + " ADD (" +
+				"CONSTRAINT " + SHUFFLE_RAN + "_pk PRIMARY KEY(id))";
 		
-		@SuppressWarnings("deprecation")
-		int rowCount = new JdbcTemplate(dataSource).queryForInt("SELECT COUNT(*)  FROM " + TMP_TABLE);
-		int shift = rowCount / 4  + hashmodint;
-
-		String reshuffleToLookupTable =
-				" create table " + LOOKUP_TABLE + " as " + 
-				" select MYROWNUMBER,orig,(	SELECT orig                            		"+
-					" FROM "+TMP_TABLE+" a                                     		"+
-					" WHERE                                                    		"+
-					"	a.MYROWNUMBER = mod(x.MYROWNUMBER + "+shift+", "+rowCount+") + 1) as reshuffled  "+
-					" from " + TMP_TABLE+" x                ";
-
+		execute(alterShuffleRandomTable);
 		
-		execute(reshuffleToLookupTable);
-		execute(createLookupTableIndexSql);
-				
+		String createShuffleSequence = 
+				"CREATE SEQUENCE " + SHUFFLE_RAN + "_seq";
+		
+		execute(createShuffleSequence);
+		
+		String createShuffleSeqTrigger = 
+				"CREATE OR REPLACE TRIGGER" + SHUFFLE_RAN + "_bir " + 
+				"BEFORE INSERT ON " + SHUFFLE_RAN + " " +
+				"FOR EACH ROW " +
+				"BEGIN " +
+				"  SELECT " + SHUFFLE_RAN + "_seq.NEXTVAL " +
+				"  INTO :new.id " +
+				"  FROM dual;" +
+				"END; /";
+		
+		execute(createShuffleSeqTrigger);
+		
+		String insertTmpShuffleRandom =
+				"INSERT INTO "+ SHUFFLE_RAN +" (shuffle_values) SELECT COLCOL FROM " +
+				"( " + createUnionSelectForColumns() + ") " +
+				"ORDER BY dbms_random.value";
+		
+		execute(insertTmpShuffleRandom);
+		
+		String createTmpShuffleOrg =
+				"CREATE TABLE " + SHUFFLE_ORG + " AS " +
+				"SELECT ROWNUM as ROWNUMBER, COLCOL as orginal_values FROM " +
+				"( " + createUnionSelectForColumns() + ") AAA " +
+				"ORDER BY ROWNUM";
+		
+		execute(createTmpShuffleOrg);
+		
+		logger.debug("AnonymisationMethodReshuffleOracle.setupInDb() complete");
 	}
 	
+	private String createUnionSelectForColumns() {
+		
+		StringBuilder builder = new StringBuilder("");
+		
+		for(int i =0 ; i < applyedToColumns.size(); i++){
+			AnonymisedColumnInfo column = applyedToColumns.get(i);
+			String subselect = "select distinct " + column.getName() + " as COLCOL from " + column.getTable().getName();
+			builder.append(subselect);
+			if( i < (applyedToColumns.size() - 1)){
+				builder.append(" union ");
+			}
+		}
+		return builder.toString();
+	}
+
 	@Override
 	public void cleanupInDb() {
-		execute("drop table " + TMP_TABLE + "");
-		execute("drop table " + LOOKUP_TABLE + "");
+		execute("drop table " + SHUFFLE_RAN + "");
+		execute("drop table " + SHUFFLE_ORG + "");
 	}
 	
 	@Override
@@ -69,14 +88,13 @@ public class AnonymisationMethodReshuffleOracle extends AnonymisationMethodReshu
 		String colName = col.getName();
 		String tableName = col.getTable().getName();
 		String sql =
-				" update " + tableName + " x "		   +
-				" set " +colName+" = (                   "+
-				" select s.reshuffled                    "+
-				" from                                   "+
-				" " + LOOKUP_TABLE + " s                   "+
-				" where s.orig = x."+colName			  +
-				" )                                      "
-				;
+				"UPDATE " + tableName + " " +
+				"SET " + tableName + "." + colName + "=" +
+				"(SELECT " + SHUFFLE_RAN + ".shuffle_values " +
+				"FROM " + SHUFFLE_RAN + " " +
+				"JOIN " + SHUFFLE_ORG + " ON " + SHUFFLE_ORG + ".rownumber=" + SHUFFLE_RAN + ".id " +
+				"WHERE " + tableName + "." + colName + "=" + SHUFFLE_ORG + ".original_values)";
+				
 		int rowCount = update(sql);
 		return new RunResult("Reshuffled Rows", rowCount);
 	}
