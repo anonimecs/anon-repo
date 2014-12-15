@@ -40,11 +40,6 @@
 						<artifactId>anon-enterprise-only</artifactId>
 						<version>${anon.version}</version>
 					</dependency>
-					<dependency>
-						<groupId>org.anon</groupId>
-						<artifactId>anon-security</artifactId>
-						<version>${anon.version}</version>
-					</dependency>
 				</dependencies>
 	    </profile>
 	    
@@ -279,12 +274,11 @@
 			<artifactId>anon-gui-skin</artifactId>
 			<version>${anon.version}</version>
 		</dependency>
-		
-<!-- 		<dependency> -->
-<!-- 			<groupId>org.anon</groupId> -->
-<!-- 			<artifactId>anon-enterprise-only</artifactId> -->
-<!-- 			<version>${anon.version}</version> -->
-<!-- 		</dependency> -->
+		<dependency>
+			<groupId>org.anon</groupId>
+			<artifactId>anon-enterprise-only</artifactId>
+			<version>${anon.version}</version>
+		</dependency>
 		
 	</dependencies>
 

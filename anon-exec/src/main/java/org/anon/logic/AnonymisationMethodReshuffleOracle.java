@@ -2,6 +2,7 @@ package org.anon.logic;
 
 import org.anon.data.AnonymisedColumnInfo;
 import org.anon.data.RunResult;
+import org.springframework.jdbc.BadSqlGrammarException;
 
 public class AnonymisationMethodReshuffleOracle extends AnonymisationMethodReshuffle {
 
@@ -33,14 +34,14 @@ public class AnonymisationMethodReshuffleOracle extends AnonymisationMethodReshu
 		execute(createShuffleSequence);
 		
 		String createShuffleSeqTrigger = 
-				"CREATE OR REPLACE TRIGGER" + SHUFFLE_RAN + "_bir " + 
+				"CREATE OR REPLACE TRIGGER " + SHUFFLE_RAN + "_bir " + 
 				"BEFORE INSERT ON " + SHUFFLE_RAN + " " +
 				"FOR EACH ROW " +
 				"BEGIN " +
 				"  SELECT " + SHUFFLE_RAN + "_seq.NEXTVAL " +
 				"  INTO :new.id " +
 				"  FROM dual;" +
-				"END; /";
+				"END;";
 		
 		execute(createShuffleSeqTrigger);
 		
@@ -79,8 +80,21 @@ public class AnonymisationMethodReshuffleOracle extends AnonymisationMethodReshu
 
 	@Override
 	public void cleanupInDb() {
-		execute("drop table " + SHUFFLE_RAN + "");
-		execute("drop table " + SHUFFLE_ORG + "");
+		try {
+			execute("drop table " + SHUFFLE_RAN + "");
+		} catch (BadSqlGrammarException e) {
+			logger.debug(SHUFFLE_RAN + " not exists.");
+		}
+		try {
+			execute("drop table " + SHUFFLE_ORG + "");
+		} catch (BadSqlGrammarException e) {
+			logger.debug(SHUFFLE_ORG + " not exists.");
+		}
+		try {
+			execute("drop sequence " + SHUFFLE_RAN + "_seq");
+		} catch (BadSqlGrammarException e) {
+			logger.debug(SHUFFLE_RAN + "_seq not exists.");
+		}
 	}
 	
 	@Override
@@ -93,7 +107,7 @@ public class AnonymisationMethodReshuffleOracle extends AnonymisationMethodReshu
 				"(SELECT " + SHUFFLE_RAN + ".shuffle_values " +
 				"FROM " + SHUFFLE_RAN + " " +
 				"JOIN " + SHUFFLE_ORG + " ON " + SHUFFLE_ORG + ".rownumber=" + SHUFFLE_RAN + ".id " +
-				"WHERE " + tableName + "." + colName + "=" + SHUFFLE_ORG + ".original_values)";
+				"WHERE " + tableName + "." + colName + "=" + SHUFFLE_ORG + ".orginal_values)";
 				
 		int rowCount = update(sql);
 		return new RunResult("Reshuffled Rows", rowCount);
