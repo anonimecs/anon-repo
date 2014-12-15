@@ -58,6 +58,7 @@ public class EditedTableService {
 		}
 		
 		entitiesDao.save(anonymisationMethodData);
+		anonymisationMethod.setId(anonymisationMethodData.getId());
 	}
 
 	public void removeAnonymisation(DatabaseTableInfo selectedEditedTable,

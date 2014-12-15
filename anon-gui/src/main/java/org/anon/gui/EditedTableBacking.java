@@ -76,8 +76,6 @@ public class EditedTableBacking extends BackingBase {
 			}
 			
 		}
-		editedColumn = null;
-		
 	}
 
 
