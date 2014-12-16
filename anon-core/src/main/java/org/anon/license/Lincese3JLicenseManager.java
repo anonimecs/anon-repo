@@ -14,6 +14,8 @@ import com.verhas.licensor.License;
 @Service
 public class Lincese3JLicenseManager implements LicenseManager {
 
+	private static final String ANON_PUBLIC_KEY = "anon_pub.gpg";
+
 	Logger logger = Logger.getLogger(getClass());
 
 	private License lic = null;
@@ -23,38 +25,62 @@ public class Lincese3JLicenseManager implements LicenseManager {
 
 	@Override
 	public void checkLicenseExpired() {
-		try {
-			String validDateString = lic.getFeature("valid-date");
-			Date validDate = new SimpleDateFormat("yyyy-MM-dd").parse(validDateString);
-			boolean expired = new Date().after(validDate);
-			logger.debug("checkLicenseExpired: " + expired);
-			if (expired) {
-				throw new LicenseException("You license has expired on "
-						+ validDateString);
-			}
-		}
-		catch(LicenseException e){
-			throw e;
-		}
-		catch (Exception e) {
-			throw new LicenseException(e);
+		Date validDate = getDate("valid-date");
+		boolean expired = new Date().after(validDate);
+		logger.debug("checkLicenseExpired: " + expired);
+		if (expired) {
+			throw new LicenseException("You license has expired on "
+					+ validDate);
 		}
 
 	}
 
+	@Override
+	public int getMaxDbConnections() {
+		return getInt("maxDbConnections");
+	}
+	
+	@Override
+	public int getMaxTablesAnonimised() {
+		return getInt("maxTablesAnonimised");
+	}
+
+	private Date getDate(String key)  {
+		try{
+			String string = lic.getFeature(key);
+			Date date = new SimpleDateFormat("yyyy-MM-dd").parse(string);
+			return date;
+		}
+		catch (Exception e) {
+			throw new LicenseException(e);
+		}
+	}
+
+	private int getInt(String key)  {
+		try{
+			String string = lic.getFeature(key);
+			int intValue= Integer.parseInt(string);
+			return intValue;
+		}
+		catch (Exception e) {
+			throw new LicenseException(e);
+		}
+	}
+
 	@PostConstruct
-	private void initLicense() {
+	public void initLicense() {
 		try {
 			if (licenseSignature == null || licenseSignature.length() == 0) {
 				throw new RuntimeException("Empty license signature");
 			}
 
 			lic = new License();
-			lic.loadKeyRingFromResource("anon_pub.gpg", null);
+			lic.loadKeyRingFromResource(ANON_PUBLIC_KEY, null);
 			lic.setLicenseEncoded(licenseSignature);
 			String edition = lic.getFeature("edition");
 
 			logger.warn("Loaded license for the " + edition + " edition");
+			logger.info("License details: \n " + lic.getLicenseString());
 
 		} catch (Exception e) {
 			logger.error("failed to initialise the license", e);
