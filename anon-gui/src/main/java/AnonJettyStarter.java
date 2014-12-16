@@ -20,7 +20,7 @@ public class AnonJettyStarter {
         ProtectionDomain domain = AnonJettyStarter.class.getProtectionDomain();
         URL location = domain.getCodeSource().getLocation();
         WebAppContext webapp = new WebAppContext();
-        webapp.setContextPath("/anon-gui");
+        webapp.setContextPath("/anon");
         webapp.setWar(location.toExternalForm());
         server.setHandler(webapp);
         

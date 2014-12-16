@@ -92,6 +92,13 @@
 			<version>5.1.17</version>
 		</dependency>
 		
+		<!-- Licence management extension -->
+		<dependency>
+			<groupId>com.verhas</groupId>
+			<artifactId>license3j</artifactId>
+			<version>1.0.5</version>
+		</dependency>
+		
 	</dependencies>
 	<build>
 
@@ -104,76 +111,6 @@
 					<target>1.7</target>
 				</configuration>
 			</plugin>
-			
-<!-- 			<plugin> -->
-<!-- 				<groupId>com.github.wvengen</groupId> -->
-<!-- 			    <artifactId>proguard-maven-plugin</artifactId> -->
-<!-- 			    <version>2.0.8</version> -->
-<!-- 			    <executions> -->
-<!-- 			    	<execution> -->
-<!-- 			        	<phase>package</phase> -->
-<!-- 			       		<goals><goal>proguard</goal></goals> -->
-<!-- 			    	</execution> -->
-<!-- 			    </executions> -->
-<!-- 			    <dependencies> -->
-<!-- 			    	<dependency> -->
-<!-- 			        	<groupId>net.sf.proguard</groupId> -->
-<!-- 						<artifactId>proguard-base</artifactId> -->
-<!-- 						<version>4.8</version> -->
-<!-- 						<scope>runtime</scope> -->
-<!-- 					</dependency> -->
-<!-- 				</dependencies> -->
-<!-- 			    <configuration> -->
-<!-- 			    	<obfuscate>true</obfuscate> -->
-<!--                 	<includeDependency>true</includeDependency> -->
-<!-- 			    	<options> -->
-<!--                     	<option>-target 1.7</option>  -->
-<!--                     	<option>-allowaccessmodification</option> -->
-<!--                     	<option>-keepattributes Exceptions,InnerClasses,Signature,Deprecated,SourceFile,LineNumberTable,*Annotation*,EnclosingMethod</option>              -->
-<!--                     	<option><![CDATA[ -->
-<!--                         	-keep public class org.anon.** { public *; } -->
-<!--                         	]]></option> -->
-<!--                         <option><![CDATA[ -->
-<!--                         	-keep public class org.anon.logic.** { public protected *; } -->
-<!--                         	]]></option> -->
-<!--                     	<option><![CDATA[ -->
-<!--                         	-keepclassmembers enum * { -->
-<!--                             	public static **[] values(); -->
-<!--                             	public static ** valueOf(java.lang.String); -->
-<!--                         	}                        -->
-<!--                         	]]></option> -->
-<!--                         <option><![CDATA[ -->
-<!--                         	-keepclassmembers class * {  -->
-<!--                            		@org.springframework.beans.factory.annotation.Autowired *;  -->
-<!--                             	@org.springframework.beans.factory.annotation.Qualifier *;  -->
-<!--                             	@org.springframework.beans.factory.annotation.Value *;  -->
-<!--                             	@org.springframework.beans.factory.annotation.Required *; -->
-<!--                             	@org.springframework.context.annotation.Bean *; -->
-<!--                             	@javax.annotation.PostConstruct *; -->
-<!--                             	@javax.annotation.PreDestroy *; -->
-<!--                             	@org.aspectj.lang.annotation.AfterReturning *; -->
-<!--                             	@org.aspectj.lang.annotation.Pointcut *; -->
-<!--                             	@org.aspectj.lang.annotation.AfterThrowing *; -->
-<!--                             	@org.aspectj.lang.annotation.Around *; -->
-<!--                         	} -->
-<!--                         	]]></option> -->
-<!--                         <option>-keep @org.springframework.stereotype.Service class *</option> -->
-<!--                     	<option>-keep @org.springframework.stereotype.Controller class * </option> -->
-<!--                     	<option>-keep @org.springframework.stereotype.Component class * </option> -->
-<!--                     	<option>-keep @org.springframework.stereotype.Repository class *</option> -->
-<!--                     	<option>-keep @org.springframework.cache.annotation.EnableCaching class *</option> -->
-<!--                     	<option>-keep @org.springframework.context.annotation.Configuration class *</option> -->
-<!-- 					</options> -->
-<!-- 					<addMavenDescriptor>false</addMavenDescriptor> -->
-<!-- 			    	<libs> -->
-<!-- 			        	<lib>${java.home}/lib/rt.jar</lib> -->
-<!--                     	<lib>${java.home}/lib/jce.jar</lib>                       -->
-<!--                     	<lib>${java.home}/lib/jsse.jar</lib> -->
-<!--                     	<lib>${java.home}/lib/ext/sunjce_provider.jar</lib> -->
-<!-- 			    	</libs> -->
-<!-- 			    	<proguardVersion>4.8</proguardVersion> -->
-<!-- 				</configuration>		 -->
-<!-- 			</plugin> -->
 			
 		</plugins>
 

@@ -8,6 +8,7 @@ import org.anon.data.AnonConfig;
 import org.anon.data.AnonymisedColumnInfo;
 import org.anon.data.MethodExecution;
 import org.anon.data.RunResult;
+import org.anon.license.LicenseManager;
 import org.anon.logic.AnonymisationMethod;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,9 @@ public abstract class BaseExec {
 	protected AnonConfig anonConfig;
 	
 
+	@Autowired
+	protected LicenseManager licenseManager;
+	
 	
 	public void runAll() {
 
@@ -31,6 +35,8 @@ public abstract class BaseExec {
 	}
 
 	public void run(AnonymisationMethod anonymisationMethod) {
+		licenseManager.checkLicenseExpired();
+		
 		anonymisationMethod.setDataSource(dataSource);
 		// deactivate the foreign keys
 		List<Constraint> deactivatedContstraints = null;

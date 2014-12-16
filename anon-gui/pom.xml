@@ -25,7 +25,24 @@
 	        <properties>
 	            <webXmlPath>src/main/webapp/WEB-INF/free_edition_web.xml</webXmlPath>
 	            <edition>free</edition>
-	        </properties>
+			</properties>
+			<build>
+				<resources>
+					<!-- adds the free license -->
+					<resource>
+						<directory>../anon-build/License/free</directory>
+						<filtering>false</filtering>
+						<includes>
+							<include>license.txt</include>
+						</includes>
+					</resource>
+					<resource>
+						<directory>src/main/resources</directory>
+						<filtering>true</filtering>
+					</resource>
+				</resources>
+			</build>	        
+	        
 	    </profile>
 		<profile>
 	        <id>enterprise</id>
@@ -33,14 +50,32 @@
 	            <webXmlPath>src/main/webapp/WEB-INF/enterprise_edition_web.xml</webXmlPath>
 	            <edition>enterprise</edition>
 	        </properties>
-	        	<!-- These dependencies will only be available in the enterprise build -->
-				<dependencies>
-					<dependency>
-						<groupId>org.anon</groupId>
-						<artifactId>anon-enterprise-only</artifactId>
-						<version>${anon.version}</version>
-					</dependency>
-				</dependencies>
+
+			<build>
+				<resources>
+					<resource>
+						<directory>../anon-build/License/enterprise</directory>
+						<filtering>false</filtering>
+						<includes>
+							<include>license.txt</include>
+						</includes>
+					</resource>
+				</resources>
+			</build>	       	        
+	        
+        	<!-- These dependencies will only be available in the enterprise build -->
+			<dependencies>
+				<dependency>
+					<groupId>org.anon</groupId>
+					<artifactId>anon-enterprise-only</artifactId>
+					<version>${anon.version}</version>
+				</dependency>
+				<dependency>
+					<groupId>org.anon</groupId>
+					<artifactId>anon-security</artifactId>
+					<version>${anon.version}</version>
+				</dependency>
+			</dependencies>
 	    </profile>
 	    
 	</profiles>
@@ -274,11 +309,12 @@
 			<artifactId>anon-gui-skin</artifactId>
 			<version>${anon.version}</version>
 		</dependency>
-		<dependency>
-			<groupId>org.anon</groupId>
-			<artifactId>anon-enterprise-only</artifactId>
-			<version>${anon.version}</version>
-		</dependency>
+		
+<!-- 		<dependency> -->
+<!-- 			<groupId>org.anon</groupId> -->
+<!-- 			<artifactId>anon-enterprise-only</artifactId> -->
+<!-- 			<version>${anon.version}</version> -->
+<!-- 		</dependency> -->
 		
 	</dependencies>
 
