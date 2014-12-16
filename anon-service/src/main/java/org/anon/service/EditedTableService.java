@@ -56,7 +56,6 @@ public class EditedTableService {
 			anonymisedColumnData.setSchemaName(column.getTable().getSchema());
 			anonymisationMethodData.addColumn(anonymisedColumnData);	
 		}
-		
 		entitiesDao.save(anonymisationMethodData);
 		anonymisationMethod.setId(anonymisationMethodData.getId());
 	}
@@ -91,6 +90,8 @@ public class EditedTableService {
 			entitiesDao.removeAnonymisationMethodData(anonymisationMethod.getId());
 		}
 		
+		// reset method to null
+		selectedAnonymizedColumn.setAnonymisationMethod(null);
 	}
 
 	public void changeAnonymisation(DatabaseTableInfo selectedEditedTable,

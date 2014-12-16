@@ -1,5 +1,6 @@
 package org.anon.persistence.dao;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.anon.persistence.data.AnonymisationMethodData;
@@ -47,12 +48,8 @@ public class EntitiesDaoImpl implements EntitiesDao {
 
 	@Override
 	public List<AnonymisationMethodData> loadAllAnonMethods(DatabaseConfig databaseConfig) {
-		@SuppressWarnings("unchecked")
-		List<AnonymisationMethodData> list = sessionFactory.getCurrentSession().createQuery("from AnonymisationMethodData as method left join fetch method.applyedToColumns where method.databaseConfigId=:ID").setLong("ID", databaseConfig.getId()).list();
-		for (AnonymisationMethodData data : list) {
-			Hibernate.initialize(data.getApplyedToColumns());
-		}
-		return list;
+		databaseConfig = (DatabaseConfig) sessionFactory.getCurrentSession().merge(databaseConfig);
+		return new ArrayList<>(databaseConfig.getAnonymisationMethodData());
 	}
 
 	@Override

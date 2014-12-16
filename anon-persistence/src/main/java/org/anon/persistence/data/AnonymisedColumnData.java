@@ -27,7 +27,8 @@ public class AnonymisedColumnData extends PersistentObject{
 	@Column
 	private String schemaName;
 	
-	@ManyToOne @JoinColumn(name="AnonymisationMethodData_ID")
+	@ManyToOne
+	@JoinColumn(name="AnonymisationMethodData_ID")
 	private AnonymisationMethodData anonymisationMethodData;
 
 	public AnonymisationMethodData getAnonymisationMethodData() {

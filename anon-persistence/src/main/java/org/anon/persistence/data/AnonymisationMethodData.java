@@ -10,6 +10,8 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 import org.anon.data.AnonymizationType;
@@ -27,11 +29,15 @@ public class AnonymisationMethodData extends PersistentObject{
 	@Column 
 	protected String anonMethodClass; 
 	
-	@OneToMany(mappedBy="anonymisationMethodData", fetch=FetchType.EAGER, cascade=CascadeType.ALL) 
+	@OneToMany(mappedBy="anonymisationMethodData", fetch=FetchType.EAGER, cascade=CascadeType.ALL, orphanRemoval=true) 
 	protected List<AnonymisedColumnData> applyedToColumns = new LinkedList<>();
 
 	@Column(name="DATABASECONFIG_ID")
 	private Long databaseConfigId;
+	
+	@ManyToOne
+	@JoinColumn(name="DATABASECONFIG_ID", referencedColumnName="ID", insertable = false, updatable = false)
+	private DatabaseConfig databaseConfig;
 	
 	public Long getId() {
 		return id;
@@ -60,7 +66,6 @@ public class AnonymisationMethodData extends PersistentObject{
 	public void addColumn(AnonymisedColumnData column) {
 		applyedToColumns.add(column);
 		column.setAnonymisationMethodData(this);
-		
 	}
 
 	public String getAnonMethodClass() {
@@ -79,6 +84,11 @@ public class AnonymisationMethodData extends PersistentObject{
 		this.databaseConfigId = databaseConfigId;
 	}
 
-	
-	
+	public DatabaseConfig getDatabaseConfig() {
+		return databaseConfig;
+	}
+
+	public void setDatabaseConfig(DatabaseConfig databaseConfig) {
+		this.databaseConfig = databaseConfig;
+	}
 }

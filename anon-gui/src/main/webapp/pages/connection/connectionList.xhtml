@@ -39,12 +39,21 @@
 					
 					<p:column style="width:10%">					
 			        	<p:commandButton id="deleteButton" update=":showConnectionForm:panel,:menuForm:menuBar" icon="ui-icon-close" 
-			        		title="Delete" actionListener="#{databaseConfigBacking.deleteDatabaseConfig(config)}" />           	
+			        		title="Delete" actionListener="#{databaseConfigBacking.deleteDatabaseConfig(config)}">
+			        		<p:confirm header="Confirmation"
+			        			message="Delete this Connection, including all anonymization config ?" 
+			        			icon="ui-icon-alert"/>
+			        	</p:commandButton>           	
 			        </p:column>
 				
 				</p:dataTable>
-	
 			</p:panel>
+			
+			 <p:confirmDialog global="true" showEffect="fade" hideEffect="explode">
+				<p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+				<p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+			</p:confirmDialog>
+			
 		</h:form>
 
 	</ui:define>

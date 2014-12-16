@@ -56,12 +56,8 @@ public class DatabaseLoaderService {
 		return dbConnectionFactory.getConnection().getDataSource();
 	}
 	
-	public void connectDb(DatabaseConfig databaseConfig ){
-		
+	public void connectDb(DatabaseConfig databaseConfig ){	
 		dbConnectionFactory.setDatabaseConfig(databaseConfig);
-		//dbConnectionFactory.createConnection();
-
-
 	}
 
 	public void disconnectDb() {
@@ -98,8 +94,6 @@ public class DatabaseLoaderService {
 		
 		return anonConfig.getTables();
 	}
-
-
 
 	protected void loadPersistedAnonymisations(String selectedSchema) {
 		List<AnonymisationMethodData> anonymisationMethodDatas = entitiesDao.loadAllAnonMethods(dbConnectionFactory.getDatabaseConfig());
