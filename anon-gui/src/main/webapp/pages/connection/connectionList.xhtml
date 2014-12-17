@@ -43,7 +43,10 @@
 			        		<p:confirm header="Confirmation"
 			        			message="Delete this Connection, including all anonymization config ?" 
 			        			icon="ui-icon-alert"/>
-			        	</p:commandButton>           	
+			        	</p:commandButton>
+			        	<p:commandButton id="editButton" icon="ui-icon-pencil"
+			        		title="Edit" actionListener="#{databaseConfigBacking.prepareModify(config)}">
+			        	</p:commandButton>        	
 			        </p:column>
 				
 				</p:dataTable>

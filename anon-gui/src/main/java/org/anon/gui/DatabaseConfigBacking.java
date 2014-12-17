@@ -5,15 +5,16 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
-import javax.faces.bean.ViewScoped;
+import javax.faces.bean.SessionScoped;
 
 import org.anon.data.Database;
+import org.anon.gui.navigation.NavigationCaseEnum;
 import org.anon.persistence.data.DatabaseConfig;
 import org.anon.service.DatabaseConfigService;
 import org.anon.service.ServiceResult;
 
 @ManagedBean
-@ViewScoped
+@SessionScoped
 public class DatabaseConfigBacking extends BackingBase {
 
 	@ManagedProperty(value = "#{databaseConfigServiceImpl}")
@@ -21,8 +22,6 @@ public class DatabaseConfigBacking extends BackingBase {
 	
 	@ManagedProperty(value = "#{databasePanelBacking}")
 	private DatabasePanelBacking databasePanelBacking;
-
-
 	
 	private List<DatabaseConfig> configList;
 	private DatabaseConfig configBean;
@@ -57,6 +56,26 @@ public class DatabaseConfigBacking extends BackingBase {
 		}
 		handleServiceResultAsInfoMessage(result);
 		databasePanelBacking.init();
+		configBean = new DatabaseConfig();
+	}
+	
+	public void updateDatabaseConfig() {
+		logDebug("update databaseConfig " + configBean.getUrl());
+		
+		ServiceResult result = configService.updateDatabaseConfig(configBean);
+		
+		if(!result.isFailed()) {
+			showExtInfoInGui("Config updated", configBean.getUrl());
+			configBean = new DatabaseConfig();
+			databasePanelBacking.init();
+			redirectPageTo(NavigationCaseEnum.LIST_CONNECTION);
+		}
+		handleServiceResultAsInfoMessage(result);
+	}
+	
+	public void prepareModify(DatabaseConfig config) {
+		configBean = config;
+		redirectPageTo(NavigationCaseEnum.MODIFY_CONNECTION);
 	}
 
 	public void reset() {

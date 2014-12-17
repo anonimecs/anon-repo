@@ -10,6 +10,8 @@ public interface DatabaseConfigDao {
 	
 	void addDatabaseConfig(DatabaseConfig config);
 	
+	void updateDatabaseConifg(DatabaseConfig config);
+	
 	void removeDatabaseConfig(DatabaseConfig config);
 
 	DatabaseConfig loadConnectionConfig(String guiName);

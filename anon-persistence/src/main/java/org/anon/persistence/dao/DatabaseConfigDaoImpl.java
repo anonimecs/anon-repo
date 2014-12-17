@@ -42,4 +42,9 @@ public class DatabaseConfigDaoImpl implements DatabaseConfigDao {
 		return (DatabaseConfig) sessionFactory.getCurrentSession().
 				createQuery("from DatabaseConfig where guiName=:guiName").setString("guiName", guiName).uniqueResult();
 	}
+
+	@Override
+	public void updateDatabaseConifg(DatabaseConfig config) {
+		sessionFactory.getCurrentSession().update(config);
+	}
 }

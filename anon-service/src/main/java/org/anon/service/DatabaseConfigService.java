@@ -13,6 +13,8 @@ public interface DatabaseConfigService {
 	public ServiceResult deleteDatabaseConfig(DatabaseConfig config);
 
 	public ServiceResult addDatabaseConfig(DatabaseConfig config);
+	
+	public ServiceResult updateDatabaseConfig(DatabaseConfig config);
 
 }
 

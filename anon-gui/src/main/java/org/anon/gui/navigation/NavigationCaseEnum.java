@@ -2,15 +2,16 @@ package org.anon.gui.navigation;
 
 public enum NavigationCaseEnum {
 	
-	HOME			("/",										"/app/"),
-	LOGIN			("/pages/security/login.jsf",				"/login/"),
-	CONNECT			("/pages/cockpit/connect.jsf",				"/app/connect/"),
-	ADD_CONNECTION	("/pages/connection/connectionAdd.jsf",		"/app/connection-add/"),
-	LIST_CONNECTION	("/pages/connection/connectionList.jsf",	"/app/connection-list/"),
-	TABLES			("/pages/cockpit/databaseTableList.jsf",	"/app/tables-list/"),
-	COLUMNS			("/pages/cockpit/databaseColumnList.jsf",	"/app/columns-list/"),
-	ANONYMIZE		("/pages/cockpit/anonymize.jsf",			"/app/method/"),
-	EXECUTE			("/pages/exec.jsf",							"/app/execute/");
+	HOME				("/",										"/app/"),
+	LOGIN				("/pages/security/login.jsf",				"/login/"),
+	CONNECT				("/pages/cockpit/connect.jsf",				"/app/connect/"),
+	ADD_CONNECTION		("/pages/connection/connectionAdd.jsf",		"/app/connection-add/"),
+	MODIFY_CONNECTION	("/pages/connection/connectionEdit.jsf",	"/app/connection-modify/"),
+	LIST_CONNECTION		("/pages/connection/connectionList.jsf",	"/app/connection-list/"),
+	TABLES				("/pages/cockpit/databaseTableList.jsf",	"/app/tables-list/"),
+	COLUMNS				("/pages/cockpit/databaseColumnList.jsf",	"/app/columns-list/"),
+	ANONYMIZE			("/pages/cockpit/anonymize.jsf",			"/app/method/"),
+	EXECUTE				("/pages/exec.jsf",							"/app/execute/");
 	
 	private NavigationCaseEnum(String url, String path) {
 		this.url = url;

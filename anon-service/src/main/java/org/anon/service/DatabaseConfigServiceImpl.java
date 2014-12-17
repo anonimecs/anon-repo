@@ -64,8 +64,24 @@ public class DatabaseConfigServiceImpl implements DatabaseConfigService {
 		}
 		return result;
 	}
+	
 
-	public void setConfigDao(DatabaseConfigDao configDao) {
-		this.configDao = configDao;
+	@Override
+	@Transactional(readOnly = false)
+	public ServiceResult updateDatabaseConfig(DatabaseConfig config) {
+		
+		ServiceResult result = connectionValidator.connectionValid(config);
+		
+		if(!result.isFailed()) {
+			try {
+				configDao.updateDatabaseConifg(config);
+			} catch (Exception e) {
+				logger.warn(e.getMessage());
+				result.addErrorMessage("Configuration not updated", 
+						e.getCause() != null ?  e.getCause().getMessage() : e.getMessage());
+			}
+		}
+		return result;
 	}
 }
+
