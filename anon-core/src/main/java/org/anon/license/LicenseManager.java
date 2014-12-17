@@ -6,7 +6,14 @@ public interface LicenseManager {
 	
 	void checkLicenseExpired() ;
 	
-	int getMaxDbConnections();
+	boolean reachedMaxDbConnections(int connections);
 	
+	boolean reachedMaxTablesAnonimised(int tablesAnonimised);
+
 	int getMaxTablesAnonimised();
+	
+	boolean isFreeEdition();
+	
+	boolean isEnterpriseEdition();
+
 }

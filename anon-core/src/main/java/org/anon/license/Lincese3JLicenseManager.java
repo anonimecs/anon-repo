@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 
 import com.verhas.licensor.License;
 
-@Service
+@Service("licenseManager")
 public class Lincese3JLicenseManager implements LicenseManager {
 
 	private static final String ANON_PUBLIC_KEY = "anon_pub.gpg";
@@ -36,13 +36,28 @@ public class Lincese3JLicenseManager implements LicenseManager {
 	}
 
 	@Override
-	public int getMaxDbConnections() {
-		return getInt("maxDbConnections");
+	public boolean reachedMaxDbConnections(int connections) {
+		return connections >= getInt("maxDbConnections");
 	}
 	
 	@Override
+	public boolean reachedMaxTablesAnonimised(int tables) {
+		return tables >= getMaxTablesAnonimised();
+	}
+
+	@Override
 	public int getMaxTablesAnonimised() {
 		return getInt("maxTablesAnonimised");
+	}
+
+	@Override
+	public boolean isFreeEdition() {
+		return "free".equalsIgnoreCase(lic.getFeature("edition"));
+	}
+
+	@Override
+	public boolean isEnterpriseEdition() {
+		return "enterprise".equalsIgnoreCase(lic.getFeature("edition"));
 	}
 
 	private Date getDate(String key)  {

@@ -8,6 +8,7 @@ import org.anon.data.AnonConfig;
 import org.anon.data.AnonymisedColumnInfo;
 import org.anon.data.MethodExecution;
 import org.anon.data.RunResult;
+import org.anon.license.LicenseException;
 import org.anon.license.LicenseManager;
 import org.anon.logic.AnonymisationMethod;
 import org.apache.log4j.Logger;
@@ -21,14 +22,16 @@ public abstract class BaseExec {
 	
 	@Autowired
 	protected AnonConfig anonConfig;
-	
 
 	@Autowired
 	protected LicenseManager licenseManager;
 	
+	int tablesAnonimised;
 	
 	public void runAll() {
-
+		tablesAnonimised = 0; 
+		
+		
 		for (AnonymisationMethod anonymisationMethod : anonConfig.getAnonMethods()) {
 			run(anonymisationMethod);
 		}
@@ -48,6 +51,7 @@ public abstract class BaseExec {
 				methodExecution.started();
 				anonymisationMethod.setupInDb();
 				for (AnonymisedColumnInfo col : anonymisationMethod.getApplyedToColumns()) {
+					assertFreeEditionRunCount();
 					methodExecution.startedCol(col);
 					RunResult runResult = anonymisationMethod.runOnColumn(col);
 					methodExecution.finishedColumn(col, runResult);
@@ -70,6 +74,14 @@ public abstract class BaseExec {
 	}
 	
 	
+	private void assertFreeEditionRunCount() {
+		if(licenseManager.reachedMaxTablesAnonimised(tablesAnonimised)){
+			throw new LicenseException("Reached maximal number of tables " + licenseManager.getMaxTablesAnonimised());
+		}
+		tablesAnonimised++;
+		
+	}
+
 	protected abstract List<Constraint> deactivateConstraints(AnonymisationMethod anonymisationMethod);
 	protected abstract void activateConstraints(AnonymisationMethod anonymisationMethod, List<Constraint> deactivatedContstraints);
 	

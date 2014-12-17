@@ -34,6 +34,17 @@ public class AnonConfig {
 		return anonMethods;
 	}
 	
+	/**
+	 * gets the list of anonimised tables
+	 */
+	public int getAnonTableCount(){
+		int res = 0;
+		for(AnonymisationMethod anonymisationMethod:getAnonMethods()){
+			res+= anonymisationMethod.getApplyedToColumns().size();
+		}
+		return res;
+	}
+	
 	public void addTable(DatabaseTableInfo table){
 		tables.add(table);
 	}

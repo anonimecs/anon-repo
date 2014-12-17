@@ -26,9 +26,14 @@
 		
 			<p:panel id="executionPanel" header="Run your current anonymisation">	
 			
-				<h:panelGrid columns="2" style="padding-top:15px;">
-					<p:commandButton id="execAllBtn" value="Run All" action="#{execBacking.onRun()}" update="execForm"/>
-					<h:outputLabel for="execAllBtn" value="Anonimisation Methods: #{anonConfig.anonMethods.size()}"/>
+				<h:panelGrid columns="3" style="padding-top:15px;">
+					<p:commandButton id="execAllBtn" value="Run All" action="#{execBacking.onRun()}" update="execForm" />
+					<h:outputLabel for="execAllBtn" value="#{anonConfig.anonMethods.size()} anonimisation methods on #{anonConfig.getAnonTableCount()} columns"/>
+					<p:lightBox iframe="true" id="anonimexHomeLightBox1" rendered="#{licenseManager.reachedMaxTablesAnonimised(anonConfig.getAnonTableCount())}" onShow="poll.stop()"> 
+					    <h:outputLink value="http://www.anonimecs.com/products.html" title="Anonimecs" >
+					        <h:outputText value="Free edition is limited to anonimse #{licenseManager.getMaxTablesAnonimised()} columns. Consider upgrading your license."/>
+					    </h:outputLink>
+					</p:lightBox>
 				</h:panelGrid>
 				
 				<p:accordionPanel id="anonPanel" value="#{anonConfig.anonMethods}" var="anonMethod" multiple="true" activeIndex="0,1,2,3,4,5">
@@ -52,8 +57,12 @@
 							<h:outputText value="Last Finished: #{anonConfig.getMethodExecution(anonMethod).getFinishedTime()}"/>
 							<h:outputText value="Error: #{anonConfig.getMethodExecution(anonMethod).getLastException()}" rendered="#{null != anonConfig.getMethodExecution(anonMethod).getLastException()}"/>
 				
-					        <p:commandButton value="Run" action="#{execBacking.onRunSingle(anonMethod)}" update="anonPanel"/>
-			
+					        <p:commandButton value="Run" action="#{execBacking.onRunSingle(anonMethod)}" update="anonPanel" disabled="#{licenseManager.isFreeEdition()}" />
+							<p:lightBox iframe="true" id="anonimexHomeLightBox2" rendered="#{licenseManager.isFreeEdition()}" onShow="poll.stop()"> 
+							    <h:outputLink value="http://www.anonimecs.com/products.html" title="Anonimecs" onclick="poll.stop()">
+							        <h:outputText value="Free edition does not support selective runs. Consider upgrading your license." />
+							    </h:outputLink>
+							</p:lightBox>			
 			            </h:panelGrid>
 					</p:tab>
 				</p:accordionPanel>
