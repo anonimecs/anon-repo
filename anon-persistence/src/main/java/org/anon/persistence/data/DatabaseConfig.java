@@ -16,10 +16,22 @@ import javax.persistence.OneToMany;
 import org.anon.data.Database;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
+import org.hibernate.annotations.Parameter;
+import org.hibernate.annotations.Type;
+import org.hibernate.annotations.TypeDef;
+import org.jasypt.hibernate4.type.EncryptedStringType;
+
+@TypeDef(
+		name="encryptedString",
+		typeClass=EncryptedStringType.class,
+		parameters= {
+			@Parameter(name="encryptorRegisteredName", value="strongHibernateStringEncryptor")
+		}
+) 
 
 @Entity
 public class DatabaseConfig {
-	
+
 	@Id
 	@GeneratedValue( strategy = GenerationType.AUTO)
 	protected Long id;	
@@ -28,6 +40,7 @@ public class DatabaseConfig {
 	
 	private String login;
 	
+	@Type(type="encryptedString")
 	private String password;
 	
 	@Enumerated(EnumType.STRING)

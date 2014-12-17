@@ -99,6 +99,13 @@
 			<version>1.0.5</version>
 		</dependency>
 		
+		<!-- DB password encryption and licence management -->
+		<dependency>
+			<groupId>org.bouncycastle</groupId>
+			<artifactId>bcprov-jdk15on</artifactId>
+			<version>1.50</version>
+		</dependency>
+		
 	</dependencies>
 	<build>
 
