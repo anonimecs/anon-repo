@@ -8,6 +8,7 @@ import javax.faces.bean.ViewScoped;
 
 import org.anon.AbstractDbConnection;
 import org.anon.exec.BaseExec;
+import org.anon.exec.ExecFactory;
 import org.anon.logic.AnonymisationMethod;
 import org.anon.service.DbConnectionFactory;
 
@@ -15,9 +16,8 @@ import org.anon.service.DbConnectionFactory;
 @ViewScoped
 public class ExecBacking extends BackingBase{
 
-	// TODO turn this into a factory
-	@ManagedProperty(value="#{sybaseExec}")
-	protected BaseExec baseExec;
+	@ManagedProperty(value="#{execFactory}")
+	protected ExecFactory execFactory;
 
 	
 	@ManagedProperty(value="#{dbConnectionFactory}")
@@ -30,7 +30,10 @@ public class ExecBacking extends BackingBase{
 
 	public void onRunSingle(final AnonymisationMethod anonymisationMethod){
 		try{
+			
 			logDebug("Running single " + anonymisationMethod);
+			
+			final BaseExec baseExec = execFactory.createExec(dbConnectionFactory.getDatabaseSpecifics());
 			AbstractDbConnection connection = dbConnectionFactory.getConnection();
 			logDebug("Database " + connection.getProperties());
 	
@@ -59,6 +62,7 @@ public class ExecBacking extends BackingBase{
 	public void onRun(){
 		try{
 			logDebug("Anonymising all methods" );
+			final BaseExec baseExec = execFactory.createExec(dbConnectionFactory.getDatabaseSpecifics());
 			AbstractDbConnection connection = dbConnectionFactory.getConnection();
 			logDebug("Database " + connection.getProperties());
 			baseExec.setDataSource(connection.getDataSource());
@@ -95,21 +99,20 @@ public class ExecBacking extends BackingBase{
 		this.dbConnectionFactory = dbConnectionFactory;
 	}
 
-
-	public void setBaseExec(BaseExec baseExec) {
-		this.baseExec = baseExec;
-	}
-	
-	public BaseExec getBaseExec() {
-		return baseExec;
-	}
-
 	public Executor getExecBackingExecutor() {
 		return execBackingExecutor;
 	}
 
 	public void setExecBackingExecutor(Executor execBackingExecutor) {
 		this.execBackingExecutor = execBackingExecutor;
+	}
+
+	public ExecFactory getExecFactory() {
+		return execFactory;
+	}
+
+	public void setExecFactory(ExecFactory execFactory) {
+		this.execFactory = execFactory;
 	}
 
 }

@@ -6,6 +6,7 @@ import org.anon.data.AnonConfig;
 import org.anon.logic.AnonymisationMethod;
 import org.anon.logic.AnonymisationMethodDestoryMySql;
 import org.anon.logic.AnonymisationMethodEncryptOracle;
+import org.anon.vendor.MySqlDbConnection;
 import org.anon.vendor.OracleDbConnection;
 import org.junit.Assert;
 import org.junit.Ignore;
@@ -23,6 +24,9 @@ public class MySqlExecTest extends BaseExecTest{
 	@Autowired
 	AnonConfig anonConfig;
 	
+	@Autowired
+	ExecFactory execFactory;
+	
 	@Override
 	DataSource getDataSource() {
 		return dataSourceMySql;
@@ -36,8 +40,8 @@ public class MySqlExecTest extends BaseExecTest{
 
 
 	@Test
-	public void testAnonymisationMethodDestoryOracle() {
-		MySqlExec mysqlExec = new MySqlExec();
+	public void testAnonymisationMethodDestory() {
+		MySqlExec mysqlExec = (MySqlExec)execFactory.createExec(MySqlDbConnection.databaseSpecifics);
 		mysqlExec.setDataSource(dataSourceMySql);
 		mysqlExec.setAnonConfig(getTestAnonConfig("COMSIID", "VARCHAR2", "TMP_TABLE_A", new AnonymisationMethodDestoryMySql()));
 		mysqlExec.runAll();

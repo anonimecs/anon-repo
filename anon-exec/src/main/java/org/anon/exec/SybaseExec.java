@@ -3,9 +3,11 @@ package org.anon.exec;
 import java.util.List;
 
 import org.anon.logic.AnonymisationMethod;
-import org.springframework.stereotype.Service;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
-@Service
+@Component
+@Scope(value = "prototype")
 public class SybaseExec extends BaseExec {
 
 

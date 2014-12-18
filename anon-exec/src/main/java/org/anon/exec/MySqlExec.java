@@ -2,15 +2,15 @@ package org.anon.exec;
 
 import java.util.List;
 
-import org.anon.data.AnonConfig;
 import org.anon.logic.AnonymisationMethod;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
+@Component
+@Scope(value = "prototype")
 public class MySqlExec extends BaseExec{
 
-	
-	public void runExecution(AnonConfig anonConfig){
-		throw new RuntimeException("Unimplemented");
-	}
+
 
 	@Override
 	protected List<Constraint> deactivateConstraints(AnonymisationMethod anonymisationMethod) {
