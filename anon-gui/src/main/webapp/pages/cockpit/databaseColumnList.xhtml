@@ -19,11 +19,11 @@
 		
 				<p:dataTable id="editedTableColumns" value="#{editedTableBacking.editedTable.columns}" var="databaseColumnInfo"
 					selectionMode="single" selection="#{editedTableBacking.editedColumn}" rowKey="#{databaseColumnInfo.name}"
-					scrollable="true" scrollHeight="500"
+					scrollable="true" scrollHeight="600"
 					rowStyleClass="#{databaseColumnInfo.getClass().getSimpleName() == 'AnonymisedColumnInfo' ? 'anonymisedColumn' : null!=databaseColumnInfo.getAnonCandidate() and databaseColumnInfo.getAnonCandidate().active ? 'anonCandidate' : null}">
 					
 					<p:ajax event="rowSelect" listener="#{editedTableBacking.onColumnSelect}"/>
-					<p:column headerText="Column" width="100">
+					<p:column headerText="Column" width="180">
 						<h:outputText value="#{databaseColumnInfo.name}"/>
 					</p:column>
 					<p:column headerText="Type" width="100">

@@ -54,10 +54,13 @@
 				        	</p:dataTable>
 				
 							<h:outputText value="Status: #{anonConfig.getMethodExecution(anonMethod).getStatus()}"/>
-							<h:outputText value="Last Finished: #{anonConfig.getMethodExecution(anonMethod).getFinishedTime()}"/>
+							<p:outputPanel>
+								<h:outputText value="Last Finished:" rendered="#{null != anonConfig.getMethodExecution(anonMethod).getFinishedTime()}"/>
+								<h:outputText value="#{anonConfig.getMethodExecution(anonMethod).getFinishedTime()}" converter="weekTimestampConverter"/>
+							</p:outputPanel>
 							<h:outputText value="Error: #{anonConfig.getMethodExecution(anonMethod).getLastException()}" rendered="#{null != anonConfig.getMethodExecution(anonMethod).getLastException()}"/>
 				
-					        <p:commandButton value="Run" action="#{execBacking.onRunSingle(anonMethod)}" update="anonPanel" disabled="#{licenseManager.isFreeEdition()}" />
+					        <p:commandButton value="Run" action="#{execBacking.onRunSingle(anonMethod)}" update="anonPanel" disabled="#{licenseManager.isFreeEdition() or anonConfig.getMethodExecution(anonMethod).getStatus() == 'RUNNING'}" />
 							<p:lightBox iframe="true" id="anonimexHomeLightBox2" rendered="#{licenseManager.isFreeEdition()}" onShow="poll.stop()"> 
 							    <h:outputLink value="http://www.anonimecs.com/products.html" title="Anonimecs" onclick="poll.stop()">
 							        <h:outputText value="Free edition does not support selective runs. Consider upgrading your license." />

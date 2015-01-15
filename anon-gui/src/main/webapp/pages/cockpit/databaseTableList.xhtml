@@ -37,7 +37,7 @@
 							var="databaseTableInfo"  
 							selectionMode="single" selection="#{editedTableBacking.editedTable}" rowKey="#{databaseTableInfo.name}"
 							filteredValue="#{databasePanelBacking.filteredTables}"
-							scrollable="true" scrollHeight="500"
+							scrollable="true" scrollHeight="600"
 							rowStyleClass="#{not empty databaseTableInfo.anonymisedColumnsList() ? 'anonymisedColumn' : not empty databaseTableInfo.getActiveAnonCandidateList() ? 'anonCandidate' : null}"
 							styleClass="myTable" rowIndexVar="rowIndex">
 						
@@ -74,7 +74,7 @@
 					
 					<p:dataTable id="candidateList" 
 						value="#{anonCandidatesParser.getAnonCandidatesList()}" var="anonCandidate"
-						scrollable="true" scrollHeight="500">
+						scrollable="true" scrollHeight="600">
 						
 						<p:column headerText="Anonymisation Suggestions" >
 							<h:outputText value="#{anonCandidate.getMessage()}"/>
