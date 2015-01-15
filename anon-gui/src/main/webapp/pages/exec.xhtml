@@ -53,8 +53,8 @@
 				        				<f:convertNumber pattern="###,###"/>
 				        			</h:outputText>
 				        		</p:column>
-				        		<p:column headerText="Last Anonimisation Info">
-				        			<h:outputText value="#{anonConfig.getMethodExecution(anonMethod).getLastRunInfo(anonColumnInfo)}"/>
+				        		<p:column headerText="Status Info">
+				        			<h:outputText value="#{anonConfig.getMethodExecution(anonMethod).getLastMessage(anonColumnInfo)}"/>
 				        		</p:column>
 				        	</p:dataTable>
 				

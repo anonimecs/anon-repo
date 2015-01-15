@@ -7,7 +7,9 @@ import javax.sql.DataSource;
 import org.anon.data.AnonConfig;
 import org.anon.data.AnonymisedColumnInfo;
 import org.anon.data.MethodExecution;
-import org.anon.data.RunResult;
+import org.anon.data.RunMessage;
+import org.anon.exec.constraint.Constraint;
+import org.anon.exec.constraint.ConstraintManager;
 import org.anon.license.LicenseException;
 import org.anon.license.LicenseManager;
 import org.anon.logic.AnonymisationMethod;
@@ -42,34 +44,38 @@ public abstract class BaseExec {
 		
 		anonymisationMethod.setDataSource(dataSource);
 		// deactivate the foreign keys
-		List<Constraint> deactivatedContstraints = null;
+		List<? extends Constraint> deactivatedContstraints = null;
+		MethodExecution methodExecution = anonConfig.getMethodExecution(anonymisationMethod);
 		try{
-			deactivatedContstraints = deactivateConstraints(anonymisationMethod);
-
-			MethodExecution methodExecution = anonConfig.getMethodExecution(anonymisationMethod);
-			try{
-				methodExecution.started();
-				anonymisationMethod.setupInDb();
-				for (AnonymisedColumnInfo col : anonymisationMethod.getApplyedToColumns()) {
-					assertFreeEditionRunCount();
-					methodExecution.startedCol(col);
-					RunResult runResult = anonymisationMethod.runOnColumn(col);
-					methodExecution.finishedColumn(col, runResult);
+			methodExecution.started();
+			anonymisationMethod.setupInDb();
+			for (AnonymisedColumnInfo col : anonymisationMethod.getApplyedToColumns()) {
+				assertFreeEditionRunCount();
+				methodExecution.startedCol(col);
+				methodExecution.setLastMessage(col, new RunMessage("Deacivating constraints", 0));
+				deactivatedContstraints = getConstraintManager(dataSource).deactivateConstraints(col);
+				RunMessage runResult;
+				try{
+					methodExecution.setLastMessage(col, new RunMessage("Anonymising rows", col.getTable().getRowCount()));
+					runResult = anonymisationMethod.runOnColumn(col);
 				}
-				methodExecution.finished();
+				finally{
+					methodExecution.setLastMessage(col, new RunMessage("Reacivating constraints", deactivatedContstraints.size()));
+					getConstraintManager(dataSource).activateConstraints(col, deactivatedContstraints);
+				}
+				methodExecution.setLastMessage(col, runResult);
+
+				
 			}
-			catch(RuntimeException e){		
-				logger.debug("anonymisationMethod failed : " + anonymisationMethod, e);
-				methodExecution.failed(e);
-				throw e;				
-			}
-			finally{
-				anonymisationMethod.cleanupInDb();
-			}
+			methodExecution.finished();
+		}
+		catch(RuntimeException e){		
+			logger.debug("anonymisationMethod failed : " + anonymisationMethod, e);
+			methodExecution.failed(e);
+			throw e;				
 		}
 		finally{
-			// reactivate the constraints
-			activateConstraints(anonymisationMethod, deactivatedContstraints);
+			anonymisationMethod.cleanupInDb();
 		}
 	}
 	
@@ -82,9 +88,8 @@ public abstract class BaseExec {
 		
 	}
 
-	protected abstract List<Constraint> deactivateConstraints(AnonymisationMethod anonymisationMethod);
-	protected abstract void activateConstraints(AnonymisationMethod anonymisationMethod, List<Constraint> deactivatedContstraints);
 	
+	protected abstract ConstraintManager getConstraintManager(DataSource dataSource);
 
 
 	public void setAnonConfig(AnonConfig anonConfig) {

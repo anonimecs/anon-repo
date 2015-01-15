@@ -2,7 +2,7 @@ package org.anon.logic;
 
 import org.anon.data.AnonymisedColumnInfo;
 import org.anon.data.AnonymizationType;
-import org.anon.data.RunResult;
+import org.anon.data.RunMessage;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 /**
@@ -40,16 +40,16 @@ public class AnonymisationMethodEncryptSybase extends AnonymisationMethodEncrypt
 
 
 	@Override
-	public RunResult runOnColumn(AnonymisedColumnInfo col) {
+	public RunMessage runOnColumn(AnonymisedColumnInfo col) {
 		if(col.isJavaTypeString()){
 			
 			int rowCount = update("exec an_meth_enc_tbl (?, ?, ?)", col.getName() , col.getTable().getName(), hashmodint);
-			return new RunResult("Updated Strings", rowCount);
+			return new RunMessage("Updated Strings", rowCount);
 
 		}
 		else if(col.isJavaTypeDouble() || col.isJavaTypeLong()){
 			int rowCount = update("update "+ col.getTable().getName()+ " set " + col.getName() + " = " +col.getName()+ "+ round((rand("+hashmodint+") * "+col.getName()+")/10, 0)");
-			return new RunResult("Updated Numbers", rowCount);
+			return new RunMessage("Updated Numbers", rowCount);
 		}
 		else {
 			throw new RuntimeException("Unimlemented");

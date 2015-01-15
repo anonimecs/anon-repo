@@ -1,7 +1,7 @@
 package org.anon.logic;
 
 import org.anon.data.AnonymisedColumnInfo;
-import org.anon.data.RunResult;
+import org.anon.data.RunMessage;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 public class AnonymisationMethodReshuffleSybase extends AnonymisationMethodReshuffle {
@@ -64,7 +64,7 @@ public class AnonymisationMethodReshuffleSybase extends AnonymisationMethodReshu
 	}
 	
 	@Override
-	public RunResult runOnColumn(AnonymisedColumnInfo col) {
+	public RunMessage runOnColumn(AnonymisedColumnInfo col) {
 		String colName = col.getName();
 		String tableName = col.getTable().getName();
 		String sql =
@@ -78,7 +78,7 @@ public class AnonymisationMethodReshuffleSybase extends AnonymisationMethodReshu
 				" from "+tableName+" x                   "
 				;
 		int rowCount = update(sql);
-		return new RunResult("Reshuffled Rows", rowCount);
+		return new RunMessage("Reshuffled Rows", rowCount);
 	}
 	
 	

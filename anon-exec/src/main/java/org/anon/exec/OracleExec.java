@@ -2,7 +2,11 @@ package org.anon.exec;
 
 import java.util.List;
 
-import org.anon.logic.AnonymisationMethod;
+import javax.sql.DataSource;
+
+import org.anon.data.AnonymisedColumnInfo;
+import org.anon.exec.constraint.Constraint;
+import org.anon.exec.constraint.ConstraintManager;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -10,17 +14,24 @@ import org.springframework.stereotype.Component;
 @Scope(value = "prototype")
 public class OracleExec extends BaseExec{
 
-	
-
 	@Override
-	protected List<Constraint> deactivateConstraints(AnonymisationMethod anonymisationMethod) {
-		// TODO Auto-generated method stub
-		return null;
+	protected ConstraintManager getConstraintManager(DataSource dataSource) {
+		return new ConstraintManager() {
+			
+			@Override
+			public List<? extends Constraint> deactivateConstraints(
+					AnonymisedColumnInfo anonymisedColumnInfo) {
+				// TODO Auto-generated method stub
+				return null;
+			}
+			
+			@Override
+			public void activateConstraints(AnonymisedColumnInfo anonymisedColumnInfo,
+					List<? extends Constraint> deactivatedContstraints) {
+				// TODO Auto-generated method stub
+				
+			}
+		};
 	}
 
-	@Override
-	protected void activateConstraints(AnonymisationMethod anonymisationMethod, List<Constraint> deactivatedContstraints) {
-		// TODO Auto-generated method stub
-		
-	}
 }

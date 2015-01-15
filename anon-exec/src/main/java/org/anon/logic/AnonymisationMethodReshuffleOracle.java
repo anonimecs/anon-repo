@@ -1,7 +1,7 @@
 package org.anon.logic;
 
 import org.anon.data.AnonymisedColumnInfo;
-import org.anon.data.RunResult;
+import org.anon.data.RunMessage;
 import org.springframework.jdbc.BadSqlGrammarException;
 
 public class AnonymisationMethodReshuffleOracle extends AnonymisationMethodReshuffle {
@@ -98,7 +98,7 @@ public class AnonymisationMethodReshuffleOracle extends AnonymisationMethodReshu
 	}
 	
 	@Override
-	public RunResult runOnColumn(AnonymisedColumnInfo col) {
+	public RunMessage runOnColumn(AnonymisedColumnInfo col) {
 		String colName = col.getName();
 		String tableName = col.getTable().getName();
 		String sql =
@@ -110,7 +110,7 @@ public class AnonymisationMethodReshuffleOracle extends AnonymisationMethodReshu
 				"WHERE " + tableName + "." + colName + "=" + SHUFFLE_ORG + ".orginal_values)";
 				
 		int rowCount = update(sql);
-		return new RunResult("Reshuffled Rows", rowCount);
+		return new RunMessage("Reshuffled Rows", rowCount);
 	}
 	
 	

@@ -14,7 +14,7 @@ public class MethodExecution {
 	private AnonymisationMethod anonymisationMethod;
 	private Status status = Status.NOT_RUN;
 	private Date startTime, finishedTime;
-	private Map<AnonymisedColumnInfo, RunResult> lastRunInfo = new HashMap<AnonymisedColumnInfo, RunResult>();
+	private Map<AnonymisedColumnInfo, RunMessage> lastMessage = new HashMap<AnonymisedColumnInfo, RunMessage>();
 	private Exception lastException;
 
 	public MethodExecution(AnonymisationMethod anonymisationMethod) {
@@ -49,9 +49,9 @@ public class MethodExecution {
 		
 	}
 
-	public void finishedColumn(AnonymisedColumnInfo col, RunResult runResult) {
-		logger.debug("Finished on col " + col);
-		lastRunInfo.put(col, runResult);
+	public void setLastMessage(AnonymisedColumnInfo col, RunMessage runResult) {
+//		logger.debug("Finished on col " + col);
+		lastMessage.put(col, runResult);
 	}
 
 	public void finished() {
@@ -67,8 +67,8 @@ public class MethodExecution {
 		
 	}
 	
-	public RunResult getLastRunInfo(AnonymisedColumnInfo anonymisedColumnInfo) {
-		return lastRunInfo.get(anonymisedColumnInfo);
+	public RunMessage getLastMessage(AnonymisedColumnInfo anonymisedColumnInfo) {
+		return lastMessage.get(anonymisedColumnInfo);
 	}
 
 	public Exception getLastException() {
