@@ -54,10 +54,10 @@
 								</p:dataList>
 							</p:tooltip>  
 		    			</p:column>
-		    			<p:column headerText="Cols" sortBy="#{databaseTableInfo.getColumns().size()}" width="50">
+		    			<p:column headerText="Cols" sortBy="#{databaseTableInfo.getColumns().size()}" width="50" style="text-align: right">
 		        			<h:outputText value="#{databaseTableInfo.getColumns().size()}" />
 		    			</p:column>
-		    			<p:column headerText="Rows" sortBy="#{databaseTableInfo.rowCount}" width="50">
+		    			<p:column headerText="Rows" sortBy="#{databaseTableInfo.rowCount}" width="50" style="text-align: right">
 		        			<h:outputText value="#{databaseTableInfo.rowCount}" />
 		    			</p:column>
 		    			<p:column headerText="Anonymised Columns" width="80">

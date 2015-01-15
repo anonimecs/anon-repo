@@ -40,13 +40,18 @@
 					<p:tab title="Anonymisation: #{anonMethod.type}" >
 						<h:panelGrid columns="1" style="width:100%" styleClass="panelBgColor_#{anonConfig.getMethodExecution(anonMethod).getStatus()}">
 						
-							<p:dataTable value="#{anonMethod.applyedToColumns}" var="anonColumnInfo">
+							<p:dataTable value="#{anonMethod.applyedToColumns}" var="anonColumnInfo" >
 	  	
-				        		<p:column headerText="On Column">
+				        		<p:column headerText="On Column" width="180">
 				        			<h:outputText value="#{anonColumnInfo.name}"/>
 				        		</p:column>
-				        		<p:column headerText="of Table">
+				        		<p:column headerText="of Table" width="180">
 				        			<h:outputText value="#{anonColumnInfo.table.name}"/>
+				        		</p:column>
+				        		<p:column headerText="Rows" width="100" style="text-align: right">
+				        			<h:outputText value="#{anonColumnInfo.table.rowCount}" >
+				        				<f:convertNumber pattern="###,###"/>
+				        			</h:outputText>
 				        		</p:column>
 				        		<p:column headerText="Last Anonimisation Info">
 				        			<h:outputText value="#{anonConfig.getMethodExecution(anonMethod).getLastRunInfo(anonColumnInfo)}"/>
