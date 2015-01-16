@@ -43,8 +43,6 @@ public abstract class BaseExec {
 		licenseManager.checkLicenseExpired();
 		
 		anonymisationMethod.setDataSource(dataSource);
-		// deactivate the foreign keys
-		List<? extends Constraint> deactivatedContstraints = null;
 		MethodExecution methodExecution = anonConfig.getMethodExecution(anonymisationMethod);
 		try{
 			methodExecution.started();
@@ -52,19 +50,22 @@ public abstract class BaseExec {
 			for (AnonymisedColumnInfo col : anonymisationMethod.getApplyedToColumns()) {
 				assertFreeEditionRunCount();
 				methodExecution.startedCol(col);
-				methodExecution.setLastMessage(col, new RunMessage("Deacivating constraints", 0));
+				methodExecution.addMessage(col, new RunMessage("Deacivating constraints", null));
 				ConstraintManager constraintManager = getConstraintManager(dataSource);
-				deactivatedContstraints = constraintManager.deactivateConstraints(col);
+				List<? extends Constraint> deactivatedContstraints = constraintManager.deactivateConstraints(col);
+				methodExecution.addMessage(col, new RunMessage("Deacivated constraints", deactivatedContstraints.size()));
+
 				RunMessage runResult;
 				try{
-					methodExecution.setLastMessage(col, new RunMessage("Anonymising rows", col.getTable().getRowCount()));
+					methodExecution.addMessage(col, new RunMessage("Anonymising rows", col.getTable().getRowCount()));
 					runResult = anonymisationMethod.runOnColumn(col);
 				}
 				finally{
-					methodExecution.setLastMessage(col, new RunMessage("Reacivating constraints", deactivatedContstraints.size()));
+					methodExecution.addMessage(col, new RunMessage("Reacivating constraints", deactivatedContstraints.size()));
 					constraintManager.activateConstraints(col, deactivatedContstraints);
+					showConstaintProblems(col, methodExecution, deactivatedContstraints);
 				}
-				methodExecution.setLastMessage(col, runResult);
+				methodExecution.addMessage(col, runResult);
 
 				
 			}
@@ -81,6 +82,15 @@ public abstract class BaseExec {
 	}
 	
 	
+	private void showConstaintProblems(AnonymisedColumnInfo col, MethodExecution methodExecution,List<? extends Constraint> deactivatedContstraints) {
+		for (Constraint constraint : deactivatedContstraints) {
+			if(! constraint.isActive()){
+				methodExecution.addMessage(col, new RunMessage(constraint.getMessage(), null));
+			}
+		}
+		
+	}
+
 	private void assertFreeEditionRunCount() {
 		if(licenseManager.reachedMaxTablesAnonimised(tablesAnonimised)){
 			throw new LicenseException("Reached maximal number of tables " + licenseManager.getMaxTablesAnonimised());

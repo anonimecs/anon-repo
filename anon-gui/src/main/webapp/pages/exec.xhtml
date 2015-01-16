@@ -20,6 +20,11 @@
         	.panelBgColor_FAILED{
         		background-color: #EEAAAA;
         	}
+        	.tooltipBehind{
+        		cursor: pointer;
+        		text-decoration: underline;
+        	}
+        	
         </style>
 
 		<h:form id="execForm">
@@ -54,7 +59,12 @@
 				        			</h:outputText>
 				        		</p:column>
 				        		<p:column headerText="Status Info">
-				        			<h:outputText value="#{anonConfig.getMethodExecution(anonMethod).getLastMessage(anonColumnInfo)}"/>
+				        			<h:outputText id="statusInfo" value="#{anonConfig.getMethodExecution(anonMethod).getLastMessage(anonColumnInfo)}" styleClass="tooltipBehind"/>
+			        				<p:tooltip for="statusInfo">
+			        					<p:dataList value="#{anonConfig.getMethodExecution(anonMethod).getMessages(anonColumnInfo)}" var="runMessage">
+			        						<h:outputText value="#{runMessage}"/>
+			        					</p:dataList>
+			        				</p:tooltip>
 				        		</p:column>
 				        	</p:dataTable>
 				

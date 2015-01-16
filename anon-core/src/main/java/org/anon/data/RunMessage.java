@@ -3,8 +3,8 @@ package org.anon.data;
 public class RunMessage {
 
 	private String message;
-	private int rowCount;
-	public RunMessage(String message, int rowCount) {
+	private Integer rowCount;
+	public RunMessage(String message, Integer rowCount) {
 		super();
 		this.message = message;
 		this.rowCount = rowCount;
@@ -12,7 +12,12 @@ public class RunMessage {
 	
 	@Override
 	public String toString() {
-		return message + " " + rowCount;
+		if(rowCount != null){
+			return message + " " + rowCount;
+		}
+		else {
+			return message;
+		}
 	}
 	
 	

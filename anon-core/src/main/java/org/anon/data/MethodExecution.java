@@ -2,6 +2,8 @@ package org.anon.data;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
 import org.anon.logic.AnonymisationMethod;
@@ -14,7 +16,7 @@ public class MethodExecution {
 	private AnonymisationMethod anonymisationMethod;
 	private Status status = Status.NOT_RUN;
 	private Date startTime, finishedTime;
-	private Map<AnonymisedColumnInfo, RunMessage> lastMessage = new HashMap<AnonymisedColumnInfo, RunMessage>();
+	private Map<AnonymisedColumnInfo, LinkedList<RunMessage>> messageMap = new HashMap<AnonymisedColumnInfo, LinkedList<RunMessage>>();
 	private Exception lastException;
 
 	public MethodExecution(AnonymisationMethod anonymisationMethod) {
@@ -46,12 +48,31 @@ public class MethodExecution {
 
 	public void startedCol(AnonymisedColumnInfo col) {
 		logger.debug("Started on col " + col);
+		getMessages(col).clear();
 		
 	}
 
-	public void setLastMessage(AnonymisedColumnInfo col, RunMessage runResult) {
-//		logger.debug("Finished on col " + col);
-		lastMessage.put(col, runResult);
+	public void addMessage(AnonymisedColumnInfo col, RunMessage runResult) {
+		List<RunMessage> messages = getMessages(col);
+		messages.add(runResult);
+	}
+
+	public LinkedList<RunMessage> getMessages(AnonymisedColumnInfo col) {
+		LinkedList<RunMessage> messages = messageMap.get(col);
+		if(messages == null){
+			messages = new LinkedList<>();
+			messageMap.put(col, messages);
+		}
+		return messages;
+	}
+
+	public RunMessage getLastMessage(AnonymisedColumnInfo anonymisedColumnInfo) {
+		LinkedList<RunMessage> messages = getMessages(anonymisedColumnInfo);
+		if(messages.isEmpty()){
+			return null;
+		}
+			
+		return messages.getLast();
 	}
 
 	public void finished() {
@@ -67,10 +88,6 @@ public class MethodExecution {
 		
 	}
 	
-	public RunMessage getLastMessage(AnonymisedColumnInfo anonymisedColumnInfo) {
-		return lastMessage.get(anonymisedColumnInfo);
-	}
-
 	public Exception getLastException() {
 		return lastException;
 	}
