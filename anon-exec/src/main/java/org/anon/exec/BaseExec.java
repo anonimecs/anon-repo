@@ -100,4 +100,7 @@ public abstract class BaseExec {
 		this.dataSource = dataSource;
 	}
 
+	public void setLicenseManager(LicenseManager licenseManager) {
+		this.licenseManager = licenseManager;
+	}
 }

@@ -1,7 +1,5 @@
 package org.anon.exec;
 
-import javax.sql.DataSource;
-
 import org.anon.data.AnonConfig;
 import org.anon.data.AnonymisedColumnInfo;
 import org.anon.data.DatabaseColumnInfo;
@@ -10,31 +8,14 @@ import org.anon.logic.AnonymisationMethod;
 import org.anon.logic.AnonymisationMethodReshuffleOracle;
 import org.anon.vendor.OracleDbConnection;
 import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 
-public class OracleRehuffleTest extends BaseExecTest{
-
-	
-	@Autowired
-	DataSource dataSourceOracle;
-	
-	@Override
-	DataSource getDataSource() {
-		return dataSourceOracle;
-	}
-	
-	TestTableCreatorOracle testTableCreator = new TestTableCreatorOracle();
-	
-	public TestTableCreatorOracle getTestTableCreator() {
-		return testTableCreator;
-	}
+public class OracleRehuffleTest extends OracleExecTestBase{
 
 	
 	@Test
 	public void testAnonymisationReshuffleNumber() {
-		OracleExec oracleExec = new OracleExec();
-		oracleExec.setDataSource(dataSourceOracle);
+		OracleExec oracleExec = createExec();
 		AnonConfig anonConfig = new AnonConfig();
 		anonConfig.init();
 		AnonymisationMethodReshuffleOracle anonymisationMethod = new AnonymisationMethodReshuffleOracle();
@@ -61,11 +42,12 @@ public class OracleRehuffleTest extends BaseExecTest{
 				new JdbcTemplate(dataSourceOracle).queryForList("select distinct ROLE_ID from TMP_TABLE_A")
 				);		
 	}
+
+
 	
 	@Test
 	public void testAnonymisationReshuffleDate() {
-		OracleExec oracleExec = new OracleExec();
-		oracleExec.setDataSource(dataSourceOracle);
+		OracleExec oracleExec = createExec();
 		AnonConfig anonConfig = new AnonConfig();
 		anonConfig.init();
 		AnonymisationMethodReshuffleOracle anonymisationMethod = new AnonymisationMethodReshuffleOracle();

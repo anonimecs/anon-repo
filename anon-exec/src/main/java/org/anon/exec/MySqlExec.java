@@ -1,5 +1,6 @@
 package org.anon.exec;
 
+import java.util.Collections;
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -20,8 +21,8 @@ public class MySqlExec extends BaseExec{
 			@Override
 			public List<? extends Constraint> deactivateConstraints(
 					AnonymisedColumnInfo anonymisedColumnInfo) {
-				// TODO Auto-generated method stub
-				return null;
+				// TODO
+				return Collections.EMPTY_LIST;
 			}
 			
 			@Override

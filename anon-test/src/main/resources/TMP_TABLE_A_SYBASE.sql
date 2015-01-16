@@ -1,7 +1,7 @@
 drop table dbo.TMP_TABLE_A
 GO
 CREATE TABLE dbo.TMP_TABLE_A  ( 
-	SSY_SourceSystem	varchar(50) NOT NULL,
+	SSY_SourceSystem	varchar(50) NOT NULL unique,
 	SSY_TopLink     	datetime NOT NULL 
 	)
 GO

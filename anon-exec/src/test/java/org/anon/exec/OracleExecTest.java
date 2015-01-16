@@ -1,7 +1,5 @@
 package org.anon.exec;
 
-import javax.sql.DataSource;
-
 import org.anon.data.AnonConfig;
 import org.anon.logic.AnonymisationMethod;
 import org.anon.logic.AnonymisationMethodDestoryOracle;
@@ -9,35 +7,18 @@ import org.anon.logic.AnonymisationMethodEncryptOracle;
 import org.anon.vendor.OracleDbConnection;
 import org.junit.Assert;
 import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.ContextConfiguration;
 
 @ContextConfiguration("classpath:BaseExecTest.xml")
-public class OracleExecTest extends BaseExecTest{
+public class OracleExecTest extends OracleExecTestBase{
 	
-	@Autowired
-	DataSource dataSourceOracle;
 	
-	@Autowired
-	AnonConfig anonConfig;
-	
-	@Override
-	DataSource getDataSource() {
-		return dataSourceOracle;
-	}
-	
-	TestTableCreatorOracle testTableCreator = new TestTableCreatorOracle();
-	
-	public TestTableCreatorOracle getTestTableCreator() {
-		return testTableCreator;
-	}
 
 
 	@Test
 	public void testAnonymisationMethodDestoryOracle() {
-		OracleExec oracleExec = new OracleExec();
-		oracleExec.setDataSource(dataSourceOracle);
+		OracleExec oracleExec = createExec();
 		oracleExec.setAnonConfig(getTestAnonConfig("COMSIID", "VARCHAR2", "TMP_TABLE_A", new AnonymisationMethodDestoryOracle()));
 		oracleExec.runAll();
 		
@@ -67,8 +48,7 @@ public class OracleExecTest extends BaseExecTest{
 	
 	@Test
 	public void testAnonymisationMethodEncryptString() {
-		OracleExec oracleExec = new OracleExec();
-		oracleExec.setDataSource(dataSourceOracle);
+		OracleExec oracleExec = createExec();
 		oracleExec.setAnonConfig(getTestAnonConfig("COMSIID", "VARCHAR2", "TMP_TABLE_A",new AnonymisationMethodEncryptOracle()));
 		oracleExec.runAll();
 		System.out.println(
@@ -78,8 +58,7 @@ public class OracleExecTest extends BaseExecTest{
 
 	@Test
 	public void testAnonymisationMethodEncryptNumber() {
-		OracleExec oracleExec = new OracleExec();
-		oracleExec.setDataSource(dataSourceOracle);
+		OracleExec oracleExec =  createExec();
 		oracleExec.setAnonConfig(getTestAnonConfig("ROLE_ID", "NUMBER", "TMP_TABLE_A",new AnonymisationMethodEncryptOracle()));
 		oracleExec.runAll();
 		System.out.println(

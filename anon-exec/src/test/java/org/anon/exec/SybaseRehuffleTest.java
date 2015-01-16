@@ -1,7 +1,5 @@
 package org.anon.exec;
 
-import javax.sql.DataSource;
-
 import org.anon.data.AnonConfig;
 import org.anon.data.AnonymisedColumnInfo;
 import org.anon.data.DatabaseColumnInfo;
@@ -10,32 +8,15 @@ import org.anon.logic.AnonymisationMethod;
 import org.anon.logic.AnonymisationMethodReshuffleSybase;
 import org.anon.vendor.SybaseDbConnection;
 import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 
-public class SybaseRehuffleTest extends BaseExecTest{
+public class SybaseRehuffleTest extends SybaseExecTestBase{
 
 	
-	@Autowired
-	DataSource dataSourceSybase;
-	
-	@Override
-	DataSource getDataSource() {
-		return dataSourceSybase;
-	}
-
-	TestTableCreatorSybase testTableCreator = new TestTableCreatorSybase();
-
-	public TestTableCreatorSybase getTestTableCreator() {
-		return testTableCreator;
-	}
-
 
 	
 	@Test
 	public void testAnonymisationReshuffleString() {
-		SybaseExec sybaseExec = new SybaseExec();
-		sybaseExec.setDataSource(dataSourceSybase);
 		AnonConfig anonConfig = new AnonConfig();
 		anonConfig.init();
 		AnonymisationMethodReshuffleSybase anonymisationMethod = new AnonymisationMethodReshuffleSybase();
@@ -46,6 +27,8 @@ public class SybaseRehuffleTest extends BaseExecTest{
 		addTable("SSY_SourceSystem", "varchar", "TMP_TABLE_A", anonymisationMethod,anonConfig);
 //		addTable("SSY_SourceSystem", "varchar", "TMP_POSITION", anonymisationMethod,anonConfig);
 		
+
+		SybaseExec sybaseExec = createSybaseExec();
 		sybaseExec.setAnonConfig(anonConfig);
 		
 		System.out.println(
@@ -65,8 +48,6 @@ public class SybaseRehuffleTest extends BaseExecTest{
 	
 	@Test
 	public void testAnonymisationReshuffleDate() {
-		SybaseExec sybaseExec = new SybaseExec();
-		sybaseExec.setDataSource(dataSourceSybase);
 		AnonConfig anonConfig = new AnonConfig();
 		anonConfig.init();
 		AnonymisationMethodReshuffleSybase anonymisationMethod = new AnonymisationMethodReshuffleSybase();
@@ -75,6 +56,7 @@ public class SybaseRehuffleTest extends BaseExecTest{
 		
 		addTable("SSY_TopLink", "varchar", "TMP_TABLE_A", anonymisationMethod,anonConfig);
 		
+		SybaseExec sybaseExec = createSybaseExec();
 		sybaseExec.setAnonConfig(anonConfig);
 		
 		System.out.println(

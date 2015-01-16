@@ -49,20 +49,21 @@ public abstract class BaseExecTest extends BaseDbTest{
 
 	@Before
 	public void createTable() throws IOException{
-		
+		dropTables();
 		getTestTableCreator().createTables(new JdbcTemplate(getDataSource()));
 	}
 	
 	@After
-	public void dropTableA() throws IOException{
-		getTestTableCreator().dropTableA(new JdbcTemplate(getDataSource()));
+	public void dropTables() {
+		try{
+			getTestTableCreator().dropTableB(new JdbcTemplate(getDataSource()));
+		}
+		catch(Exception e){}
+		try {
+			getTestTableCreator().dropTableA(new JdbcTemplate(getDataSource()));
+		} catch (Exception e) {}
 	}
 	
-	@After
-	public void dropTableB() throws IOException{
-		getTestTableCreator().dropTableB(new JdbcTemplate(getDataSource()));
-	}
-
 	@Test
 	public void test1_simpleTest() {
 		Assert.assertEquals(getTestTableCreator().getRowCount_TMP_TABLE_B(), new JdbcTemplate(getDataSource()).queryForInt("select count(*) from TMP_TABLE_B"));

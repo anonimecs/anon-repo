@@ -9,7 +9,8 @@ CREATE TABLE dbo.TMP_TABLE_B  (
 	AIS_LastRead     	datetime NULL,
 	AIS_CountInsert  	int NULL,
 	GAT_LastChange   	datetime NOT NULL,
-	AIS_AdbRunId     	varchar(20) NULL 
+	AIS_AdbRunId     	varchar(20) NULL,
+constraint TMP_TABLE_B_fk1  FOREIGN KEY (SSY_SourceSystem) REFERENCES TMP_TABLE_A(SSY_SourceSystem)  
 	)
 GO
 INSERT INTO dbo.TMP_TABLE_B(SSY_SourceSystem, AIS_ProductGroup, AIS_LastInsert, AIS_Target, AIS_CountPosition, AIS_LastRead, AIS_CountInsert, GAT_LastChange, AIS_AdbRunId)
