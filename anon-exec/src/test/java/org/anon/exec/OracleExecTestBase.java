@@ -4,7 +4,9 @@ import javax.sql.DataSource;
 
 import org.anon.data.AnonConfig;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
 
+@ContextConfiguration("classpath:BaseExecTest.xml")
 public abstract class OracleExecTestBase extends BaseExecTest {
 
 	@Autowired

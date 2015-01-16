@@ -11,8 +11,8 @@ import org.springframework.jdbc.core.JdbcTemplate;
 public class TestTableCreatorOracle extends TestTableCreator{
 
 
-	public int rowCount_TMP_TABLE_B = 5;
-	public int rowCount_TMP_TABLE_A = 31;
+	public int rowCount_TMP_TABLE_B = 31;
+	public int rowCount_TMP_TABLE_A = 5;
 
 	
 	@Override

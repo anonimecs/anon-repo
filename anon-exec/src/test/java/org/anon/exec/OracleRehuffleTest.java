@@ -22,24 +22,24 @@ public class OracleRehuffleTest extends OracleExecTestBase{
 		anonymisationMethod.setPassword("testpassword2");
 		anonConfig.addAnonMethod(anonymisationMethod);
 		
-		addTable("ID", "number", "TMP_TABLE_B", anonymisationMethod,anonConfig);
-		addTable("ROLE_ID", "number", "TMP_TABLE_A", anonymisationMethod,anonConfig);
+		addTable("ID", "number", "TMP_TABLE_A", anonymisationMethod,anonConfig);
+		addTable("ROLE_ID", "number", "TMP_TABLE_B", anonymisationMethod,anonConfig);
 		
 		oracleExec.setAnonConfig(anonConfig);
 		
 		System.out.println(
-				new JdbcTemplate(dataSourceOracle).queryForList("select* from TMP_TABLE_B")
+				new JdbcTemplate(dataSourceOracle).queryForList("select* from TMP_TABLE_A")
 				);		
 		System.out.println(
-				new JdbcTemplate(dataSourceOracle).queryForList("select distinct ROLE_ID from TMP_TABLE_A")
+				new JdbcTemplate(dataSourceOracle).queryForList("select distinct ROLE_ID from TMP_TABLE_B")
 				);		
 		oracleExec.runAll();
 
 		System.out.println(
-				new JdbcTemplate(dataSourceOracle).queryForList("select * from TMP_TABLE_B")
+				new JdbcTemplate(dataSourceOracle).queryForList("select * from TMP_TABLE_A")
 				);		
 		System.out.println(
-				new JdbcTemplate(dataSourceOracle).queryForList("select distinct ROLE_ID from TMP_TABLE_A")
+				new JdbcTemplate(dataSourceOracle).queryForList("select distinct ROLE_ID from TMP_TABLE_B")
 				);		
 	}
 
@@ -54,16 +54,16 @@ public class OracleRehuffleTest extends OracleExecTestBase{
 		anonymisationMethod.setPassword("testpassword2");
 		anonConfig.addAnonMethod(anonymisationMethod);
 		
-		addTable("MODIFIEDAT", "DATE", "TMP_TABLE_A", anonymisationMethod,anonConfig);
+		addTable("MODIFIEDAT", "DATE", "TMP_TABLE_B", anonymisationMethod,anonConfig);
 		
 		oracleExec.setAnonConfig(anonConfig);
 		
 		System.out.println(
-				new JdbcTemplate(dataSourceOracle).queryForList("select * from TMP_TABLE_A")
+				new JdbcTemplate(dataSourceOracle).queryForList("select * from TMP_TABLE_B")
 				);		
 		oracleExec.runAll();
 		System.out.println(
-				new JdbcTemplate(dataSourceOracle).queryForList("select * from TMP_TABLE_A")
+				new JdbcTemplate(dataSourceOracle).queryForList("select * from TMP_TABLE_B")
 				);		
 	}
 
