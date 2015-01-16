@@ -2,6 +2,7 @@ package org.anon.exec;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -11,7 +12,6 @@ import org.anon.exec.constraint.Constraint;
 import org.anon.exec.constraint.ConstraintManager;
 import org.anon.exec.constraint.SybaseConstraint;
 import org.springframework.context.annotation.Scope;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 
@@ -21,14 +21,13 @@ public class SybaseExec extends BaseExec {
 
 	@Override
 	protected ConstraintManager getConstraintManager(final DataSource dataSource) {
-		final JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
 
-		return new ConstraintManager(){
+		return new ConstraintManager(dataSource){
 
 			@Override
-			public List<? extends Constraint> deactivateConstraints(AnonymisedColumnInfo anonymisedColumnInfo) {
+			protected List<SybaseConstraint> loadConstraints(AnonymisedColumnInfo anonymisedColumnInfo) {
 				String sp_helpconstraint = "sp_helpconstraint '" + anonymisedColumnInfo.getTable().getName() + "', 'detail'";
-				List<SybaseConstraint> constraints = jdbcTemplate.query(sp_helpconstraint, new RowMapper<SybaseConstraint>(){
+				List<SybaseConstraint> allConstraints = jdbcTemplate.query(sp_helpconstraint, new RowMapper<SybaseConstraint>(){
 					@Override
 					public SybaseConstraint mapRow(ResultSet rs, int rowNum) throws SQLException {
 						try {
@@ -41,32 +40,31 @@ public class SybaseExec extends BaseExec {
 					
 				});
 				
-				for(SybaseConstraint sybaseConstraint:constraints){
+				List<SybaseConstraint> referentialConstraints = new ArrayList<>();
+				for(SybaseConstraint sybaseConstraint:allConstraints){
 					if(sybaseConstraint != null && sybaseConstraint.isReferentialConstraint()){
-						String dropConstraint = "alter table " + sybaseConstraint.getTableName() + " drop constraint " + sybaseConstraint.getName();
-						logger.debug(dropConstraint);
-						jdbcTemplate.update(dropConstraint);
-						sybaseConstraint.setActive(false);
+						referentialConstraints.add(sybaseConstraint);
 					}
 				}
-				
-				return constraints;
+				return referentialConstraints;
 			}
 
-			@SuppressWarnings("unchecked")
+
 			@Override
-			public void activateConstraints(AnonymisedColumnInfo anonymisedColumnInfo, List<? extends Constraint> deactivatedContstraints) {
-				for(SybaseConstraint sybaseConstraint:(List<SybaseConstraint>)deactivatedContstraints){
-					if(sybaseConstraint != null &&  sybaseConstraint.isReferentialConstraint() && ! sybaseConstraint.isActive()){
-						String createConstraint = "alter table " + sybaseConstraint.getTableName() + " add constraint " + sybaseConstraint.getName() + " " + sybaseConstraint.getStrippedDefinition();
-						logger.debug(createConstraint);
-						jdbcTemplate.update(createConstraint);
-						sybaseConstraint.setActive(true);
-					}
-				}
-				
-			}};
+			protected String createDeactivateSql(Constraint constraint) {
+				SybaseConstraint sybaseConstraint = (SybaseConstraint)constraint;
+				return "alter table " + sybaseConstraint.getTableName() + " drop constraint " + sybaseConstraint.getName();
+			}
+
+
+			@Override
+			protected String createActivateSql(Constraint constraint) {
+				SybaseConstraint sybaseConstraint = (SybaseConstraint)constraint;
+				return "alter table " + sybaseConstraint.getTableName() + " add constraint " + sybaseConstraint.getName() + " " + sybaseConstraint.getStrippedDefinition();
+			}
+		};
 	}
 
 
 }
+

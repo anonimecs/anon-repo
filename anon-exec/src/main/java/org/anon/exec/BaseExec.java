@@ -53,7 +53,8 @@ public abstract class BaseExec {
 				assertFreeEditionRunCount();
 				methodExecution.startedCol(col);
 				methodExecution.setLastMessage(col, new RunMessage("Deacivating constraints", 0));
-				deactivatedContstraints = getConstraintManager(dataSource).deactivateConstraints(col);
+				ConstraintManager constraintManager = getConstraintManager(dataSource);
+				deactivatedContstraints = constraintManager.deactivateConstraints(col);
 				RunMessage runResult;
 				try{
 					methodExecution.setLastMessage(col, new RunMessage("Anonymising rows", col.getTable().getRowCount()));
@@ -61,7 +62,7 @@ public abstract class BaseExec {
 				}
 				finally{
 					methodExecution.setLastMessage(col, new RunMessage("Reacivating constraints", deactivatedContstraints.size()));
-					getConstraintManager(dataSource).activateConstraints(col, deactivatedContstraints);
+					constraintManager.activateConstraints(col, deactivatedContstraints);
 				}
 				methodExecution.setLastMessage(col, runResult);
 

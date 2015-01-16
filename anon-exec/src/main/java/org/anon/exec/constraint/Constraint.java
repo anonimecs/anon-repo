@@ -5,7 +5,9 @@ import org.apache.commons.lang.builder.ToStringStyle;
 
 public class Constraint {
 
-	boolean active = true;
+	private boolean active = true;
+	private String message = null;
+	
 	
 	public void setActive(boolean active) {
 		this.active = active;
@@ -18,5 +20,13 @@ public class Constraint {
 	@Override
 	public String toString() {
 		return ReflectionToStringBuilder.toString(this, ToStringStyle.SIMPLE_STYLE);
+	}
+	
+	public void setMessage(String message) {
+		this.message = message;
+	}
+	
+	public String getMessage() {
+		return message;
 	}
 }

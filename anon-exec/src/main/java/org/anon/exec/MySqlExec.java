@@ -16,22 +16,25 @@ import org.springframework.stereotype.Component;
 public class MySqlExec extends BaseExec{
 	@Override
 	protected ConstraintManager getConstraintManager(DataSource dataSource) {
-		return new ConstraintManager() {
-			
+		return new ConstraintManager(dataSource) {
+
 			@Override
-			public List<? extends Constraint> deactivateConstraints(
-					AnonymisedColumnInfo anonymisedColumnInfo) {
-				// TODO
+			protected List<? extends Constraint> loadConstraints(AnonymisedColumnInfo anonymisedColumnInfo) {
+				// TODO Auto-generated method stub
 				return Collections.EMPTY_LIST;
 			}
-			
+
 			@Override
-			public void activateConstraints(AnonymisedColumnInfo anonymisedColumnInfo,
-					List<? extends Constraint> deactivatedContstraints) {
+			protected String createDeactivateSql(Constraint constraint) {
 				// TODO Auto-generated method stub
-				
+				return "TODO";
 			}
-		};
+
+			@Override
+			protected String createActivateSql(Constraint constraint) {
+				// TODO Auto-generated method stub
+				return "TODO";
+			}};
 	}
 
 }
