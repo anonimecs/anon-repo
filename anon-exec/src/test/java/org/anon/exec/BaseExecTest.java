@@ -31,9 +31,7 @@ public abstract class BaseExecTest extends BaseDbTest{
 		return anonConfig;
 	}
 
-	protected AnonymisedColumnInfo getTestAnonimisedColumnInfo(String colName, String colType,
-			String tableName, AnonymisationMethod anonymisationMethod,
-			DatabaseSpecifics databaseSpecifics, AnonConfig anonConfig) {
+	protected AnonymisedColumnInfo getTestAnonimisedColumnInfo(String colName, String colType,String tableName, AnonymisationMethod anonymisationMethod, DatabaseSpecifics databaseSpecifics, AnonConfig anonConfig) {
 		DatabaseTableInfo table = new DatabaseTableInfo();
 		DatabaseColumnInfo databaseColumnInfo = new DatabaseColumnInfo(colName, colType, databaseSpecifics);
 		table.addColumn(databaseColumnInfo);
@@ -66,8 +64,8 @@ public abstract class BaseExecTest extends BaseDbTest{
 	
 	@Test
 	public void test1_simpleTest() {
-		Assert.assertEquals(getTestTableCreator().getRowCount_TMP_TABLE_B(), new JdbcTemplate(getDataSource()).queryForInt("select count(*) from TMP_TABLE_B"));
-		Assert.assertEquals(getTestTableCreator().getRowCount_TMP_TABLE_A(), new JdbcTemplate(getDataSource()).queryForInt("select count(*) from TMP_TABLE_A"));
+		Assert.assertEquals(getTestTableCreator().getRowcountTableB(), new JdbcTemplate(getDataSource()).queryForInt("select count(*) from TMP_TABLE_B"));
+		Assert.assertEquals(getTestTableCreator().getRowcountTableA(), new JdbcTemplate(getDataSource()).queryForInt("select count(*) from TMP_TABLE_A"));
 	}
 	
 	protected abstract TestTableCreator getTestTableCreator();

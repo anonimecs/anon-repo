@@ -3,7 +3,7 @@ package org.anon.exec.constraint;
 import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 
-public class Constraint {
+public abstract class Constraint {
 
 	private boolean active = true;
 	private String message = null;
@@ -29,4 +29,7 @@ public class Constraint {
 	public String getMessage() {
 		return message;
 	}
+
+	abstract public String createActivateSql();
+	abstract public String createDeactivateSql();
 }

@@ -21,7 +21,7 @@ public abstract class ConstraintManager {
 		List<? extends Constraint> referentialConstraints = loadConstraints(anonymisedColumnInfo);
 		
 		for(Constraint constraint:referentialConstraints){
-			String dropConstraint = createDeactivateSql(constraint);
+			String dropConstraint = constraint.createDeactivateSql();
 			logger.debug(dropConstraint);
 			jdbcTemplate.update(dropConstraint);
 			constraint.setActive(false);
@@ -34,7 +34,7 @@ public abstract class ConstraintManager {
 		
 		for(Constraint constraint:referentialConstraints){
 			if(!constraint.isActive()){
-				String createConstraint = createActivateSql(constraint);
+				String createConstraint = constraint.createActivateSql();
 				logger.debug(createConstraint);
 				try {
 					jdbcTemplate.update(createConstraint);
@@ -50,7 +50,6 @@ public abstract class ConstraintManager {
 	
 
 	abstract protected List<? extends Constraint> loadConstraints(AnonymisedColumnInfo anonymisedColumnInfo);
-	abstract protected String createDeactivateSql(Constraint constraint);
-	abstract protected String createActivateSql(Constraint constraint);
+
 
 }

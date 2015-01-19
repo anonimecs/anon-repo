@@ -7,7 +7,6 @@ import java.util.List;
 import javax.sql.DataSource;
 
 import org.anon.data.AnonymisedColumnInfo;
-import org.anon.exec.constraint.Constraint;
 import org.anon.exec.constraint.ConstraintManager;
 import org.anon.exec.constraint.OracleConstraint;
 import org.springframework.context.annotation.Scope;
@@ -48,17 +47,6 @@ public class OracleExec extends BaseExec{
 			}
 
 
-			@Override
-			protected String createDeactivateSql(Constraint constraint) {
-				OracleConstraint oracleConstraint = (OracleConstraint)constraint;
-				return "alter table " + oracleConstraint.getSourceTableName()+ " DISABLE constraint " + oracleConstraint.getConstraintName();
-			}	
-			
-			@Override
-			protected String createActivateSql(Constraint constraint) {
-				OracleConstraint oracleConstraint = (OracleConstraint)constraint;
-				return "alter table " + oracleConstraint.getSourceTableName() + " ENABLE constraint " + oracleConstraint.getConstraintName();
-			}			
 		};
 	}
 
