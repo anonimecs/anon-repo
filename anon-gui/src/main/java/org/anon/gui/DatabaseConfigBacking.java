@@ -11,6 +11,7 @@ import org.anon.data.Database;
 import org.anon.gui.navigation.NavigationCaseEnum;
 import org.anon.persistence.data.DatabaseConfig;
 import org.anon.service.DatabaseConfigService;
+import org.anon.service.DbConnectionFactory;
 import org.anon.service.ServiceResult;
 
 @ManagedBean
@@ -22,6 +23,9 @@ public class DatabaseConfigBacking extends BackingBase {
 	
 	@ManagedProperty(value = "#{databasePanelBacking}")
 	private DatabasePanelBacking databasePanelBacking;
+	
+	@ManagedProperty(value = "#{dbConnectionFactory}")
+	private	DbConnectionFactory dbConnectionFactory;
 	
 	private List<DatabaseConfig> configList;
 	private DatabaseConfig configBean;
@@ -73,6 +77,15 @@ public class DatabaseConfigBacking extends BackingBase {
 		handleServiceResultAsInfoMessage(result);
 	}
 	
+	public boolean isConfigInUse(DatabaseConfig config) {
+		
+		if(dbConnectionFactory.getDatabaseConfig() != null && 
+				dbConnectionFactory.getDatabaseConfig().equals(config)) {
+			return true;
+		}
+		return false;
+	}
+	
 	public void prepareModify(DatabaseConfig config) {
 		configBean = config;
 		redirectPageTo(NavigationCaseEnum.MODIFY_CONNECTION);
@@ -110,11 +123,12 @@ public class DatabaseConfigBacking extends BackingBase {
 		this.configService = configService;
 	}
 	
-	public DatabasePanelBacking getDatabasePanelBacking() {
-		return databasePanelBacking;
-	}
-	
 	public void setDatabasePanelBacking(DatabasePanelBacking databasePanelBacking) {
 		this.databasePanelBacking = databasePanelBacking;
 	}
+
+	public void setDbConnectionFactory(DbConnectionFactory dbConnectionFactory) {
+		this.dbConnectionFactory = dbConnectionFactory;
+	}
+	
 }

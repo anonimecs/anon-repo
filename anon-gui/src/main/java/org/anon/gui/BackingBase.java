@@ -46,6 +46,10 @@ public class BackingBase {
 	protected void showErrorInGui(String guiMessage) {
 		showExtErrorInGui(guiMessage, null);
 	}
+	
+	protected void showErrorInGui(String guiMessage, String detail) {
+		showExtErrorInGui(guiMessage, detail);
+	}
 
 	protected void showExtErrorInGui(String head, String message) {
 		FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, head, message);

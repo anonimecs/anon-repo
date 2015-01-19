@@ -38,13 +38,14 @@
 					</p:column>	
 					
 					<p:column style="width:10%">					
-			        	<p:commandButton id="deleteButton" update=":showConnectionForm:panel,:menuForm:menuBar" icon="ui-icon-close" 
+			        	<p:commandButton id="deleteButton" update=":showConnectionForm:panel,:menuForm:menuBar" icon="ui-icon-close"
+			        		disabled="#{databaseConfigBacking.isConfigInUse(config)}"
 			        		title="Delete" actionListener="#{databaseConfigBacking.deleteDatabaseConfig(config)}">
 			        		<p:confirm header="Confirmation"
 			        			message="Delete this Connection, including all anonymization config ?" 
 			        			icon="ui-icon-alert"/>
 			        	</p:commandButton>
-			        	<p:commandButton id="editButton" icon="ui-icon-pencil"
+			        	<p:commandButton id="editButton" icon="ui-icon-pencil" disabled="#{databaseConfigBacking.isConfigInUse(config)}"
 			        		title="Edit" actionListener="#{databaseConfigBacking.prepareModify(config)}">
 			        	</p:commandButton>        	
 			        </p:column>

@@ -107,4 +107,17 @@ public class DatabaseConfig {
 	public String toString() {
 		return id + " / " + url + " / " + login + " / " + guiName;
 	}
+	@Override
+	public boolean equals(Object o) {
+		if (o == this) {
+            return true;
+        }
+		if (!(o instanceof DatabaseConfig)) {
+            return false;
+        }
+		DatabaseConfig c = (DatabaseConfig) o;
+		
+		return this.id.equals(c.getId());
+	}
+
 }
