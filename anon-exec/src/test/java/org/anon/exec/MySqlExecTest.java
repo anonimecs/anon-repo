@@ -5,9 +5,8 @@ import javax.sql.DataSource;
 import org.anon.data.AnonConfig;
 import org.anon.logic.AnonymisationMethod;
 import org.anon.logic.AnonymisationMethodDestoryMySql;
-import org.anon.logic.AnonymisationMethodEncryptOracle;
+import org.anon.logic.AnonymisationMethodEncryptMySql;
 import org.anon.vendor.MySqlDbConnection;
-import org.anon.vendor.OracleDbConnection;
 import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -43,20 +42,20 @@ public class MySqlExecTest extends BaseExecTest{
 	public void testAnonymisationMethodDestory() {
 		MySqlExec mysqlExec = (MySqlExec)execFactory.createExec(MySqlDbConnection.databaseSpecifics);
 		mysqlExec.setDataSource(dataSourceMySql);
-		mysqlExec.setAnonConfig(getTestAnonConfig("COMSIID", "VARCHAR2", "TMP_TABLE_A", new AnonymisationMethodDestoryMySql()));
+		mysqlExec.setAnonConfig(getTestAnonConfig("COMSIID", "VARCHAR2", "TMP_TABLE_B", new AnonymisationMethodDestoryMySql()));
 		mysqlExec.runAll();
 		
-		Assert.assertEquals("x", loadFromDbObject("select distinct COMSIID from TMP_TABLE_A", String.class));
+		Assert.assertEquals("x", loadFromDbObject("select distinct COMSIID from TMP_TABLE_B", String.class));
 		
 	}
 
 	@Ignore // until method is created
 	@Test
 	public void test_anonymiseLong() {
-		AnonymisationMethodEncryptOracle anonymisationMethod = new AnonymisationMethodEncryptOracle();
+		AnonymisationMethodEncryptMySql anonymisationMethod = new AnonymisationMethodEncryptMySql();
 	
 		anonymisationMethod.setDataSource(dataSourceMySql);
-		Object value = anonymisationMethod.anonymise(100l, getTestAnonimisedColumnInfo("COMSIID", "NUMBER", "TMP_TABLE_A",anonymisationMethod,OracleDbConnection.databaseSpecifics,anonConfig));
+		Object value = anonymisationMethod.anonymise(100l, getTestAnonimisedColumnInfo("COMSIID", "NUMBER", "TMP_TABLE_B",anonymisationMethod,MySqlDbConnection.databaseSpecifics,anonConfig));
 	
 		System.out.println("Anonyised: " + value);
 	}
@@ -64,10 +63,10 @@ public class MySqlExecTest extends BaseExecTest{
 	@Ignore // until method is created
 	@Test
 	public void test_anonymiseString() {
-		AnonymisationMethodEncryptOracle anonymisationMethod = new AnonymisationMethodEncryptOracle();
+		AnonymisationMethodEncryptMySql anonymisationMethod = new AnonymisationMethodEncryptMySql();
 	
 		anonymisationMethod.setDataSource(dataSourceMySql);
-		Object value = anonymisationMethod.anonymise("abax", getTestAnonimisedColumnInfo("COMSIID", "VARCHAR2", "TMP_TABLE_A",anonymisationMethod,OracleDbConnection.databaseSpecifics,anonConfig));
+		Object value = anonymisationMethod.anonymise("abax", getTestAnonimisedColumnInfo("COMSIID", "VARCHAR2", "TMP_TABLE_B",anonymisationMethod,MySqlDbConnection.databaseSpecifics,anonConfig));
 	
 		System.out.println("Anonyised: " + value);
 	}
@@ -75,30 +74,30 @@ public class MySqlExecTest extends BaseExecTest{
 	@Ignore // until method is created
 	@Test
 	public void testAnonymisationMethodEncryptString() {
-		OracleExec oracleExec = new OracleExec();
-		oracleExec.setDataSource(dataSourceMySql);
-		oracleExec.setAnonConfig(getTestAnonConfig("COMSIID", "VARCHAR2", "TMP_TABLE_A",new AnonymisationMethodEncryptOracle()));
-		oracleExec.runAll();
+		MySqlExec mysqlExec = (MySqlExec)execFactory.createExec(MySqlDbConnection.databaseSpecifics);
+		mysqlExec.setDataSource(dataSourceMySql);
+		mysqlExec.setAnonConfig(getTestAnonConfig("COMSIID", "VARCHAR2", "TMP_TABLE_B",new AnonymisationMethodEncryptMySql()));
+		mysqlExec.runAll();
 		System.out.println(
-				new JdbcTemplate(dataSourceMySql).queryForList("select distinct(COMSIID) from TMP_TABLE_A")
+				new JdbcTemplate(dataSourceMySql).queryForList("select distinct(COMSIID) from TMP_TABLE_B")
 				);		
 	}
 
 	@Ignore // until method is created
 	@Test
 	public void testAnonymisationMethodEncryptNumber() {
-		OracleExec oracleExec = new OracleExec();
-		oracleExec.setDataSource(dataSourceMySql);
-		oracleExec.setAnonConfig(getTestAnonConfig("ROLE_ID", "NUMBER", "TMP_TABLE_A",new AnonymisationMethodEncryptOracle()));
-		oracleExec.runAll();
+		MySqlExec mysqlExec = new MySqlExec();
+		mysqlExec.setDataSource(dataSourceMySql);
+		mysqlExec.setAnonConfig(getTestAnonConfig("ROLE_ID", "NUMBER", "TMP_TABLE_B",new AnonymisationMethodEncryptMySql()));
+		mysqlExec.runAll();
 		System.out.println(
-				new JdbcTemplate(dataSourceMySql).queryForList("select distinct(ROLE_ID) from TMP_TABLE_A")
+				new JdbcTemplate(dataSourceMySql).queryForList("select distinct(ROLE_ID) from TMP_TABLE_B")
 				);		
 	}
 
 	
 	protected AnonConfig getTestAnonConfig(String colName, String colType, String tableName,AnonymisationMethod anonymisationMethod ) {
-		return super.getTestAnonConfig(colName, colType, tableName, anonymisationMethod, OracleDbConnection.databaseSpecifics);
+		return super.getTestAnonConfig(colName, colType, tableName, anonymisationMethod, MySqlDbConnection.databaseSpecifics);
 	}
 
 	
