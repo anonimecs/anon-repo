@@ -8,7 +8,6 @@ import java.util.List;
 import javax.sql.DataSource;
 
 import org.anon.data.AnonymisedColumnInfo;
-import org.anon.exec.constraint.Constraint;
 import org.anon.exec.constraint.ConstraintManager;
 import org.anon.exec.constraint.SybaseConstraint;
 import org.springframework.context.annotation.Scope;
@@ -50,18 +49,6 @@ public class SybaseExec extends BaseExec {
 			}
 
 
-			@Override
-			protected String createDeactivateSql(Constraint constraint) {
-				SybaseConstraint sybaseConstraint = (SybaseConstraint)constraint;
-				return "alter table " + sybaseConstraint.getTableName() + " drop constraint " + sybaseConstraint.getName();
-			}
-
-
-			@Override
-			protected String createActivateSql(Constraint constraint) {
-				SybaseConstraint sybaseConstraint = (SybaseConstraint)constraint;
-				return "alter table " + sybaseConstraint.getTableName() + " add constraint " + sybaseConstraint.getName() + " " + sybaseConstraint.getStrippedDefinition();
-			}
 		};
 	}
 

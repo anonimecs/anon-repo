@@ -43,6 +43,17 @@ public class SybaseConstraint extends Constraint {
 		return definition;
 	}
 	
+	@Override
+	public String createDeactivateSql() {
+		return "alter table " + getTableName() + " drop constraint " + getName();
+	}
+
+
+	@Override
+	public String createActivateSql() {
+		return "alter table " +getTableName() + " add constraint " + getName() + " " + getStrippedDefinition();
+	}
+
 	
 	
 }

@@ -30,5 +30,6 @@ public abstract class Constraint {
 		return message;
 	}
 
-	//abstract public String createActivateSql();
+	abstract public String createActivateSql();
+	abstract public String createDeactivateSql();
 }

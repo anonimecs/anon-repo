@@ -7,7 +7,6 @@ import java.util.List;
 import javax.sql.DataSource;
 
 import org.anon.data.AnonymisedColumnInfo;
-import org.anon.exec.constraint.Constraint;
 import org.anon.exec.constraint.ConstraintManager;
 import org.anon.exec.constraint.MySqlConstraint;
 import org.springframework.context.annotation.Scope;
@@ -45,18 +44,6 @@ public class MySqlExec extends BaseExec{
 				return constraints;
 			}
 
-
-			@Override
-			protected String createDeactivateSql(Constraint constraint) {
-				MySqlConstraint mySqlConstraint = (MySqlConstraint)constraint;
-				return "alter table " + mySqlConstraint.getSourceTableName()+ " drop FOREIGN KEY " + mySqlConstraint.getConstraintName();
-			}	
-			
-			@Override
-			protected String createActivateSql(Constraint constraint) {
-				MySqlConstraint mySqlConstraint = (MySqlConstraint)constraint;
-				return mySqlConstraint.createActivateSql();
-			}			
 		};
 	}
 

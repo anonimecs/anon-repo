@@ -20,7 +20,12 @@ public class MySqlConstraint extends Constraint {
 		
 	}
 
-	//@Override
+	@Override
+	public String createDeactivateSql() {
+		return "alter table " + sourceTableName + " drop FOREIGN KEY " + constraintName;
+	}	
+	
+	@Override
 	public String createActivateSql() {
 		return "alter table " + sourceTableName + 
 				" add constraint " + constraintName + "  FOREIGN KEY (" + sourceColumns +")    REFERENCES " + targetTableName + " (" +targetColumns+ ")";

@@ -27,4 +27,14 @@ public class OracleConstraint extends Constraint {
 		return targetTableName;
 	}
 
+	@Override
+	public String createDeactivateSql() {
+		return "alter table " + getSourceTableName()+ " DISABLE constraint " + getConstraintName();
+	}	
+	
+	@Override
+	public String createActivateSql() {
+		return "alter table " + getSourceTableName() + " ENABLE constraint " + getConstraintName();
+	}			
+
 }
