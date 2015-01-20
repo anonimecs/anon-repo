@@ -31,6 +31,7 @@ public class MySqlDbConnectionTest extends BaseDbTest{
 		
 		DatabaseTableInfo databaseTableInfo = new DatabaseTableInfo();
 		databaseTableInfo.setName("TMP_TABLE_A");
+		databaseTableInfo.setSchema(schema);
 		System.out.println(mysqlDbConnection.getColumns(databaseTableInfo));
 	}
 
@@ -48,13 +49,9 @@ public class MySqlDbConnectionTest extends BaseDbTest{
 	}
 	
 	@After
-	public void dropTableA() throws IOException{
-		new TestTableCreatorMySql().dropTableA(new JdbcTemplate(dataSourceMySql));
-	}
-	
-	@After
-	public void dropTableB() throws IOException{
+	public void dropTables() throws IOException{
 		new TestTableCreatorMySql().dropTableB(new JdbcTemplate(dataSourceMySql));
+		new TestTableCreatorMySql().dropTableA(new JdbcTemplate(dataSourceMySql));
 	}
 	  
 	@Test
