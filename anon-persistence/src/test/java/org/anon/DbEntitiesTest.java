@@ -9,7 +9,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.AbstractJUnit4SpringContextTests;
 
 
-@ContextConfiguration(locations = { "classpath:spring-persistence-test.xml" })
+@ContextConfiguration(locations = { "classpath:spring-persistence-test.xml","classpath:spring-test-base.xml" })
 public abstract class DbEntitiesTest extends AbstractJUnit4SpringContextTests implements AnonUnitTest{
 
 		@Autowired
