@@ -60,7 +60,7 @@ public class MySqlDbConnectionTest extends BaseDbTest{
 		
 		List<DatabaseTableInfo> res = mysqlDbConnection.getTableList(schema);
 		
-		Assert.assertTrue(res.size() == 2);
+		Assert.assertTrue("at least two tables exist", res.size() >= 2);
 	}
 
 }
