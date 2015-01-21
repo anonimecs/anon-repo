@@ -2,8 +2,10 @@ package org.anon.logic;
 
 import javax.sql.DataSource;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.AbstractJUnit4SpringContextTests;
 
@@ -14,6 +16,16 @@ public class AnonymisationMethodEncryptOracleTest extends AbstractJUnit4SpringCo
 	@Autowired
 	DataSource dataSourceOracle;
 
+	@Before
+	public void warmup(){
+		try {
+			new JdbcTemplate(dataSourceOracle).execute("select 1 from dual");
+		} catch (Exception e) {
+			System.err.println("Warmup failed " );
+			e.printStackTrace();
+		}
+	}
+	
 	@Test
 	public void testAnonymiseString() {
 		AnonymisationMethodEncryptOracle anonymisationMethodEncryptOracle = new AnonymisationMethodEncryptOracle();
