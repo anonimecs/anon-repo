@@ -51,7 +51,7 @@
 			<plugin>
 				<groupId>com.github.github</groupId>
 				<artifactId>site-maven-plugin</artifactId>
-				<version>0.9</version>
+				<version>0.11</version>
 				<configuration>
 					<message>Maven artifacts for ${project.version}</message>  <!-- git commit message -->
 					<noJekyll>true</noJekyll>                                  <!-- disable webpage processing -->
@@ -61,7 +61,7 @@
 						<include>**/*</include>
 					</includes>
 					<repositoryName>anon-repo</repositoryName>      <!-- github repo name -->
-					<repositoryOwner>abaxsoraszem</repositoryOwner>    <!-- github username -->
+					<repositoryOwner>anonimecs</repositoryOwner>    <!-- github username -->
 				</configuration>
 				<executions>
 					<!-- run site-maven-plugin's 'site' target as part of the build's normal 'deploy' phase -->
