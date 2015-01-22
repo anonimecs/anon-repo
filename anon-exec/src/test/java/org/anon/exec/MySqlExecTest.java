@@ -49,29 +49,34 @@ public class MySqlExecTest extends BaseExecTest{
 		
 	}
 
-	@Ignore // until method is created
 	@Test
 	public void test_anonymiseLong() {
 		AnonymisationMethodEncryptMySql anonymisationMethod = new AnonymisationMethodEncryptMySql();
+		
+		Long input = 100l;
 	
 		anonymisationMethod.setDataSource(dataSourceMySql);
-		Object value = anonymisationMethod.anonymise(100l, getTestAnonimisedColumnInfo("COMSIID", "NUMBER", "TMP_TABLE_B",anonymisationMethod,MySqlDbConnection.databaseSpecifics,anonConfig));
+		Object value = anonymisationMethod.anonymise(input, getTestAnonimisedColumnInfo("COMSIID", "TINYINT", "TMP_TABLE_B",anonymisationMethod,MySqlDbConnection.databaseSpecifics,anonConfig));
 	
 		System.out.println("Anonyised: " + value);
+		
+		Assert.assertNotEquals(input, value);
 	}
 	
-	@Ignore // until method is created
 	@Test
 	public void test_anonymiseString() {
 		AnonymisationMethodEncryptMySql anonymisationMethod = new AnonymisationMethodEncryptMySql();
 	
+		String input = "abax";
+		
 		anonymisationMethod.setDataSource(dataSourceMySql);
-		Object value = anonymisationMethod.anonymise("abax", getTestAnonimisedColumnInfo("COMSIID", "VARCHAR2", "TMP_TABLE_B",anonymisationMethod,MySqlDbConnection.databaseSpecifics,anonConfig));
+		Object value = anonymisationMethod.anonymise(input, getTestAnonimisedColumnInfo("COMSIID", "VARCHAR", "TMP_TABLE_B",anonymisationMethod,MySqlDbConnection.databaseSpecifics,anonConfig));
 	
 		System.out.println("Anonyised: " + value);
+		
+		Assert.assertNotEquals(input, value);
 	}
 	
-	@Ignore // until method is created
 	@Test
 	public void testAnonymisationMethodEncryptString() {
 		MySqlExec mysqlExec = (MySqlExec)execFactory.createExec(MySqlDbConnection.databaseSpecifics);
