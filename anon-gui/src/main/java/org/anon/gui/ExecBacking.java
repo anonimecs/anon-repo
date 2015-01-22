@@ -52,13 +52,17 @@ public class ExecBacking extends BackingBase{
 				}
 			});
 			
+			showExtInfoInGui("Disconnect from the DB", "Please close all sessions to the target database." );
+			
 			Thread.sleep(250);
+			
 		} catch (Exception e) {
 			logError(e.getMessage(), e);
 			showErrorInGui("Run failed: " + e.getMessage());
 		}
 	}
 	
+
 	public void onRun(){
 		try{
 			logDebug("Anonymising all methods" );
@@ -79,6 +83,8 @@ public class ExecBacking extends BackingBase{
 					
 				}
 			});
+
+			showExtInfoInGui("Disconnect from the DB", "Please close all sessions to the target database." );
 			
 			Thread.sleep(250);
 		} catch (Exception e) {
