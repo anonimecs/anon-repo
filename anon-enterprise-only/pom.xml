@@ -2,14 +2,13 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>anon-enterprise-only</artifactId>
-	<version>${anon.version}</version>
 	<packaging>jar</packaging>
 
 	<parent>
 		<groupId>org.anon</groupId>
 		<artifactId>anon-parent-pom</artifactId>
 		<relativePath>../anon-parent-pom/pom.xml</relativePath>
-		<version>1.0</version>
+		<version>1.1-SNAPSHOT</version>
 	</parent>
 
 	<build>
@@ -45,22 +44,21 @@
 		<dependency>
 			<groupId>log4j</groupId>
 			<artifactId>log4j</artifactId>
-			<version>${log4j.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.anon</groupId>
 			<artifactId>anon-service</artifactId>
-			<version>${anon.version}</version>
+			<version>${project.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.anon</groupId>
 			<artifactId>anon-exec</artifactId>
-			<version>${anon.version}</version>
+			<version>${project.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.anon</groupId>
 			<artifactId>anon-security</artifactId>
-			<version>${anon.version}</version>
+			<version>${project.version}</version>
 		</dependency>
 	</dependencies>
 

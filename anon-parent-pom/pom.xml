@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.anon</groupId>
 	<artifactId>anon-parent-pom</artifactId>
@@ -7,24 +8,23 @@
 
 	<properties>
 		<skip.tests>true</skip.tests>
-		<anon.version>0.1-SNAPSHOT</anon.version>
-		<anon.test.version>0.9</anon.test.version>
+		<anon.test.version>0.10-SNAPSHOT</anon.test.version>
 
 		<spring.version>3.2.8.RELEASE</spring.version> <!-- this needs to be the same as in anon-test -->
 		<spring.security.version>3.2.3.RELEASE</spring.security.version>
 		<log4j.version>1.2.14</log4j.version>
-		
-	    <!-- github server corresponds to entry inmaven settings.xml -->
-	    <github.global.server>github</github.global.server>
+
+		<!-- github server corresponds to entry inmaven settings.xml -->
+		<github.global.server>github</github.global.server>
 	</properties>
 
 	<scm>
 		<connection>scm:git:git@github.com:anonimecs/anon-repo.git</connection>
 		<url>scm:git:git@github.com:anonimecs/anon-repo.git</url>
 		<developerConnection>scm:git:git@github.com:anonimecs/anon-repo.git</developerConnection>
-	  <tag>HEAD</tag>
-   </scm>
-	
+		<tag>HEAD</tag>
+	</scm>
+
 	<distributionManagement>
 		<repository>
 			<id>internal.repo</id>
@@ -35,6 +35,19 @@
 
 
 	<build>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-compiler-plugin</artifactId>
+					<configuration>
+						<source>1.7</source>
+						<target>1.7</target>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -46,20 +59,11 @@
 			</plugin>
 
 			<plugin>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.1</version>
-				<configuration>
-					<source>1.7</source>
-					<target>1.7</target>
-				</configuration>
-			</plugin>
-
-			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-release-plugin</artifactId>
 				<version>2.5.1</version>
-			</plugin> 
-			
+			</plugin>
+
 			<!-- staging the release builds in local folder: systempath.altDeploymentRepository must be defined in settings.xml -->
 			<!-- this local folder will be pushed to github: https://github.com/anonimecs/m2_deploymentRepository.git -->
 			<plugin>
@@ -70,11 +74,11 @@
 				</configuration>
 			</plugin>
 
-			
+
 		</plugins>
 	</build>
 
-	
+
 	<dependencies>
 		<dependency>
 			<groupId>org.anon</groupId>
@@ -87,8 +91,73 @@
 			<artifactId>springockito</artifactId>
 			<version>1.0.9</version>
 			<scope>test</scope>
-		</dependency>			
+		</dependency>
 	</dependencies>
-	
-	
+
+
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-core</artifactId>
+				<version>${spring.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-context</artifactId>
+				<version>${spring.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-jdbc</artifactId>
+				<version>${spring.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-tx</artifactId>
+				<version>${spring.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-test</artifactId>
+				<version>${spring.version}</version>
+				<scope>test</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-orm</artifactId>
+				<version>${spring.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-web</artifactId>
+				<version>${spring.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.springframework.security</groupId>
+				<artifactId>spring-security-core</artifactId>
+				<version>${spring.security.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework.security</groupId>
+				<artifactId>spring-security-web</artifactId>
+				<version>${spring.security.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework.security</groupId>
+				<artifactId>spring-security-config</artifactId>
+				<version>${spring.security.version}</version>
+			</dependency>
+
+
+			<dependency>
+				<groupId>log4j</groupId>
+				<artifactId>log4j</artifactId>
+				<version>${log4j.version}</version>
+			</dependency>
+
+		</dependencies>
+	</dependencyManagement>
+
 </project>
