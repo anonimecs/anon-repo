@@ -1,30 +1,20 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-   	<groupId>org.anon</groupId>
 	<artifactId>anon-test</artifactId>
-  	<version>0.10-SNAPSHOT</version>
-  	
+
+	<parent>
+		<groupId>org.anon</groupId>
+		<artifactId>anon-parent-pom</artifactId>
+		<relativePath>../pom.xml</relativePath>
+		<version>1.2-SNAPSHOT</version>
+	</parent>
+
 	<properties>
-		<spring.version>3.2.8.RELEASE</spring.version> <!-- this needs to be the same as in anon-parent-pom -->
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<skipITs>true</skipITs>
 	</properties>
 
-	<scm>
-		<connection>scm:git:git@github.com:anonimecs/anon-repo.git</connection>
-		<url>scm:git:git@github.com:anonimecs/anon-repo.git</url>
-		<developerConnection>scm:git:git@github.com:anonimecs/anon-repo.git</developerConnection>
-	  <tag>HEAD</tag>
-  </scm>
-	
-	<distributionManagement>
-		<repository>
-			<id>internal.repo</id>
-			<name>Temporary Staging Repository</name>
-			<url>file://${systempath.altDeploymentRepository}</url>
-		</repository>
-	</distributionManagement>
-		
 	<build>
 		<plugins>
 			<plugin>
@@ -48,33 +38,7 @@
 					</execution>
 				</executions>
 			</plugin>
-			
-			
-			<plugin>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.1</version>
-				<configuration>
-					<source>1.7</source>
-					<target>1.7</target>
-				</configuration>
-			</plugin>
 
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-release-plugin</artifactId>
-				<version>2.5.1</version>
-			</plugin> 
-			
-			<!-- staging the release builds in local folder: systempath.altDeploymentRepository must be defined in settings.xml -->
-			<!-- this local folder will be pushed to github: https://github.com/anonimecs/m2_deploymentRepository.git -->
-			<plugin>
-				<artifactId>maven-deploy-plugin</artifactId>
-				<version>2.8.1</version>
-				<configuration>
-					<altDeploymentRepository>internal.repo::default::file://${systempath.altDeploymentRepository}</altDeploymentRepository>
-				</configuration>
-			</plugin>
-			
 		</plugins>
 	</build>
 
@@ -83,63 +47,59 @@
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-test</artifactId>
-			<version>${spring.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-jdbc</artifactId>
-			<version>${spring.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context</artifactId>
-			<version>${spring.version}</version>
 		</dependency>
 
 
 		<dependency>
 			<groupId>org.kubek2k</groupId>
 			<artifactId>springockito</artifactId>
-			<version>1.0.9</version>
-		</dependency>		
+		</dependency>
 
 		<dependency>
 			<groupId>commons-io</groupId>
 			<artifactId>commons-io</artifactId>
 			<version>2.4</version>
-		</dependency>		
+		</dependency>
 		<dependency>
 			<groupId>commons-dbcp</groupId>
 			<artifactId>commons-dbcp</artifactId>
 			<version>1.2.1</version>
 		</dependency>
-				
-		
+
+
 		<dependency>
-	  		<groupId>com.github.markusbernhardt</groupId>
-	  		<artifactId>robotframework-selenium2library-java</artifactId>
-	  		<version>1.4.0.6</version>
-	  		<scope>test</scope>
-	  	</dependency>
-	  	<!-- needed for the maven robot plugin -->
-	  	<dependency>
+			<groupId>com.github.markusbernhardt</groupId>
+			<artifactId>robotframework-selenium2library-java</artifactId>
+			<version>1.4.0.6</version>
+			<scope>test</scope>
+		</dependency>
+		<!-- needed for the maven robot plugin -->
+		<dependency>
 			<groupId>com.sun</groupId>
 			<artifactId>tools</artifactId>
 			<version>1.6.0</version>
 			<scope>system</scope>
 			<systemPath>${systempath.tools.jar}/tools.jar</systemPath>
 			<!-- set this path in your maven/conf/settings.xml -->
-<!-- 			    <profile> -->
-<!-- 			      <id>local-paths</id> -->
-<!-- 			      <properties> -->
-<!-- 			        <systempath.tools.jar>/Library/Java/JavaVirtualMachines/jdk1.7.0_55.jdk/Contents/Home/lib</systempath.tools.jar> -->
-<!-- 			      </properties> -->
-<!-- 			     </profile> -->
-<!-- 			       <activeProfiles> -->
-<!-- 				    <activeProfile>local-paths</activeProfile> -->
-<!-- 				  </activeProfiles> -->
-			
-		</dependency>  	
+			<!-- <profile> -->
+			<!-- <id>local-paths</id> -->
+			<!-- <properties> -->
+			<!-- <systempath.tools.jar>/Library/Java/JavaVirtualMachines/jdk1.7.0_55.jdk/Contents/Home/lib</systempath.tools.jar> -->
+			<!-- </properties> -->
+			<!-- </profile> -->
+			<!-- <activeProfiles> -->
+			<!-- <activeProfile>local-paths</activeProfile> -->
+			<!-- </activeProfiles> -->
+
+		</dependency>
 	</dependencies>
-	
+
 </project>

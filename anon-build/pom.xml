@@ -7,7 +7,7 @@
 	<parent>
 		<groupId>org.anon</groupId>
 		<artifactId>anon-parent-pom</artifactId>
-		<relativePath>../anon-parent-pom/pom.xml</relativePath>
+		<relativePath>../pom.xml</relativePath>
 		<version>1.2-SNAPSHOT</version>
 	</parent>
 	
