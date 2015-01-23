@@ -1,5 +1,4 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>anon-gui</artifactId>
 	<packaging>war</packaging>
@@ -8,7 +7,7 @@
 		<groupId>org.anon</groupId>
 		<artifactId>anon-parent-pom</artifactId>
 		<relativePath>../anon-parent-pom/pom.xml</relativePath>
-		<version>1.2-SNAPSHOT</version>
+		<version>1.2</version>
 	</parent>
 
 
@@ -122,8 +121,7 @@
 						<phase>prepare-package</phase>
 						<configuration>
 							<tasks>
-								<move
-									todir="${project.build.directory}/${project.artifactId}-${project.version}/">
+								<move todir="${project.build.directory}/${project.artifactId}-${project.version}/">
 									<fileset dir="${project.build.directory}/classes/">
 										<include name="AnonJettyStarter.class" />
 									</fileset>
