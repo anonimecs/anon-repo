@@ -1,13 +1,43 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.anon</groupId>
 	<artifactId>anon-parent-pom</artifactId>
 	<version>1.2-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
+	<modules>
+		<module>
+			../anon-core
+		</module>
+		<module>
+			../anon-persistence
+		</module>
+		<module>
+			../anon-service
+		</module>
+		<module>
+			../anon-exec
+		</module>
+		<module>
+			../anon-security
+		</module>
+		<module>
+			../anon-gui-skin
+		</module>
+		<module>
+			../anon-gui
+		</module>
+		<module>
+			../anon-enterprise-only
+		</module>
+		<module>
+			../anon-build
+		</module>
+	</modules>
+
 	<properties>
 		<skip.tests>true</skip.tests>
-		<anon.test.version>0.10-SNAPSHOT</anon.test.version>
 
 		<spring.version>3.2.8.RELEASE</spring.version> <!-- this needs to be the same as in anon-test -->
 		<spring.security.version>3.2.3.RELEASE</spring.security.version>
@@ -63,7 +93,8 @@
 				<version>2.5.1</version>
 			</plugin>
 
-			<!-- staging the release builds in local folder: systempath.altDeploymentRepository must be defined in settings.xml -->
+			<!-- staging the release builds in local folder: systempath.altDeploymentRepository 
+				must be defined in settings.xml -->
 			<!-- this local folder will be pushed to github: https://github.com/anonimecs/m2_deploymentRepository.git -->
 			<plugin>
 				<artifactId>maven-deploy-plugin</artifactId>

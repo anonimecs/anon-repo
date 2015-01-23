@@ -8,35 +8,8 @@
 		<groupId>org.anon</groupId>
 		<artifactId>anon-parent-pom</artifactId>
 		<relativePath>../anon-parent-pom/pom.xml</relativePath>
-		<version>1.1-SNAPSHOT</version>
+		<version>1.2-SNAPSHOT</version>
 	</parent>
-
-	<modules>
-		<module>
-			../anon-core
-		</module>
-		<module>
-			../anon-persistence
-		</module>
-		<module>
-			../anon-service
-		</module>
-		<module>
-			../anon-exec
-		</module>
-		<module>
-			../anon-security
-		</module>
-		<module>
-			../anon-gui-skin
-		</module>
-		<module>
-			../anon-gui
-		</module>
-		<module>
-			../anon-enterprise-only
-		</module>
-	</modules>
 	
 	<profiles>
 	    <profile>
