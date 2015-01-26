@@ -21,7 +21,7 @@
 	    <profile>
 	        <id>free</id>
 	        <properties>
-	            <webXmlPath>src/main/webapp/WEB-INF/free_edition_web.xml</webXmlPath>
+	            <webXmlPath>src/editionDependent/free_edition_web.xml</webXmlPath>
 	            <edition>free</edition>
 			</properties>
 			<build>
@@ -45,7 +45,7 @@
 		<profile>
 	        <id>enterprise</id>
 	        <properties>
-	            <webXmlPath>src/main/webapp/WEB-INF/enterprise_edition_web.xml</webXmlPath>
+	            <webXmlPath>src/editionDependent/enterprise_edition_web.xml</webXmlPath>
 	            <edition>enterprise</edition>
 	        </properties>
 
