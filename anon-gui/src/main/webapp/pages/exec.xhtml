@@ -32,7 +32,7 @@
 			<p:panel id="executionPanel" header="Run your current anonymisation">	
 			
 				<h:panelGrid columns="3" style="padding-top:15px;">
-					<p:commandButton id="execAllBtn" value="Run All" action="#{execBacking.onRun()}" update="execForm" />
+					<p:commandButton id="execAllBtn" value="Run All" action="#{execBacking.onRun()}"/>
 					<h:outputLabel for="execAllBtn" value="#{anonConfig.anonMethods.size()} anonimisation methods on #{anonConfig.getAnonTableCount()} columns"/>
 					<p:lightBox iframe="true" id="anonimexHomeLightBox1" rendered="#{licenseManager.reachedMaxTablesAnonimised(anonConfig.getAnonTableCount())}" onShow="poll.stop()"> 
 					    <h:outputLink value="http://www.anonimecs.com/products.html" title="Anonimecs" >
@@ -75,7 +75,7 @@
 							</p:outputPanel>
 							<h:outputText value="Error: #{anonConfig.getMethodExecution(anonMethod).getLastException()}" rendered="#{null != anonConfig.getMethodExecution(anonMethod).getLastException()}"/>
 				
-					        <p:commandButton value="Run" action="#{execBacking.onRunSingle(anonMethod)}" update="anonPanel" disabled="#{licenseManager.isFreeEdition() or anonConfig.getMethodExecution(anonMethod).getStatus() == 'RUNNING'}" />
+					        <p:commandButton value="Run" action="#{execBacking.onRunSingle(anonMethod)}" disabled="#{licenseManager.isFreeEdition() or anonConfig.getMethodExecution(anonMethod).getStatus() == 'RUNNING'}" />
 							<p:lightBox iframe="true" id="anonimexHomeLightBox2" rendered="#{licenseManager.isFreeEdition()}" onShow="poll.stop()"> 
 							    <h:outputLink value="http://www.anonimecs.com/products.html" title="Anonimecs" onclick="poll.stop()">
 							        <h:outputText value="Free edition does not support selective runs. Consider upgrading your license." />
@@ -88,12 +88,12 @@
             
             </p:panel>
 
-
 		</h:form>
 		
-		<h:form id="pollForm">
-            <p:poll id="execPoll" interval="4" update=":execForm:executionPanel" global="false" />
-		</h:form>		
+		<p:socket channel="/execEvent">
+        	<p:ajax event="message" update=":execForm:executionPanel" global="false" />
+        </p:socket>
+
 	
 	</ui:define>
 

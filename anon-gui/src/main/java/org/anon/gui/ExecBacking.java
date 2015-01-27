@@ -11,6 +11,8 @@ import org.anon.exec.BaseExec;
 import org.anon.exec.ExecFactory;
 import org.anon.logic.AnonymisationMethod;
 import org.anon.service.DbConnectionFactory;
+import org.primefaces.push.EventBus;
+import org.primefaces.push.EventBusFactory;
 
 @ManagedBean
 @ViewScoped
@@ -47,6 +49,8 @@ public class ExecBacking extends BackingBase{
 						baseExec.run(anonymisationMethod);
 					} catch (Exception e) {
 						logError(e.getMessage(), e);
+					} finally {
+						fireEvent();
 					}
 					
 				}
@@ -59,7 +63,10 @@ public class ExecBacking extends BackingBase{
 		} catch (Exception e) {
 			logError(e.getMessage(), e);
 			showErrorInGui("Run failed: " + e.getMessage());
+		} finally {
+			fireEvent();
 		}
+		
 	}
 	
 
@@ -79,8 +86,9 @@ public class ExecBacking extends BackingBase{
 						baseExec.runAll();
 					} catch (Exception e) {
 						logError(e.getMessage(), e);
+					} finally {
+						fireEvent();
 					}
-					
 				}
 			});
 
@@ -90,9 +98,15 @@ public class ExecBacking extends BackingBase{
 		} catch (Exception e) {
 			logError(e.getMessage(), e);
 			showErrorInGui("Run failed: " + e.getMessage());
+		} finally {
+			fireEvent();
 		}
-		
-
+	}
+	
+	
+	public void fireEvent() {
+		EventBus eventBus = EventBusFactory.getDefault().eventBus();
+		eventBus.publish("/execEvent", "event");
 	}
 
 
