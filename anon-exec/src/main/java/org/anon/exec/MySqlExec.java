@@ -25,6 +25,7 @@ public class MySqlExec extends BaseExec{
 				String sql_select = "select  TABLE_NAME, GROUP_CONCAT(COLUMN_NAME) as sourceColumns,CONSTRAINT_NAME, REFERENCED_TABLE_NAME, GROUP_CONCAT(REFERENCED_COLUMN_NAME) as targetColumns" +
 									" from INFORMATION_SCHEMA.KEY_COLUMN_USAGE " +
 									" where  (REFERENCED_TABLE_NAME = ? or TABLE_NAME = ? and REFERENCED_TABLE_NAME is not null) " +
+									" group by TABLE_NAME " +
 									" order by CONSTRAINT_NAME";
 				
 				List<MySqlConstraint> constraints = jdbcTemplate.query(sql_select, new Object [] {anonymisedColumnInfo.getTable().getName(), anonymisedColumnInfo.getTable().getName()}, 
@@ -32,7 +33,8 @@ public class MySqlExec extends BaseExec{
 					@Override
 					public MySqlConstraint mapRow(ResultSet rs, int rowNum) throws SQLException {
 						try {
-							return new MySqlConstraint(rs);
+							MySqlConstraint constraint = new MySqlConstraint(rs);
+							return constraint.getSourceTableName() != null ? constraint : null;
 						} catch (Exception e) {
 							logger.error("deactivateConstraints failed", e);
 							return null;

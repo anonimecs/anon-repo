@@ -12,7 +12,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 
 public class OracleExecTest extends OracleExecTestBase{
 	
-	
 
 
 	@Test
