@@ -61,7 +61,7 @@ public class DatabasePanelBacking extends BackingBase{
 		logDebug("connecting to "  + databaseConfig.toString());
 		databaseLoaderService.connectDb(databaseConfig);
 
-		selectedSchema = databaseLoaderService.getDefaultSchema();
+		selectedSchema = databaseConfig.getDefaultSchema();
 		schemas = databaseLoaderService.getSchemas();
 		loadDatabaseTableList();
 		connected = true;

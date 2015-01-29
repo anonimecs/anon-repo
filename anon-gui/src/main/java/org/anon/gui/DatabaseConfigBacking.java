@@ -1,5 +1,6 @@
 package org.anon.gui;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -11,6 +12,7 @@ import org.anon.data.Database;
 import org.anon.gui.navigation.NavigationCaseEnum;
 import org.anon.persistence.data.DatabaseConfig;
 import org.anon.service.DatabaseConfigService;
+import org.anon.service.DatabaseLoaderService;
 import org.anon.service.DbConnectionFactory;
 import org.anon.service.ServiceResult;
 
@@ -27,7 +29,11 @@ public class DatabaseConfigBacking extends BackingBase {
 	@ManagedProperty(value = "#{dbConnectionFactory}")
 	private	DbConnectionFactory dbConnectionFactory;
 	
+	@ManagedProperty(value = "#{databaseLoaderService}")
+	private DatabaseLoaderService databaseLoaderService;
+	
 	private List<DatabaseConfig> configList;
+	private List<String> schemaList;
 	private DatabaseConfig configBean;
 
 	@PostConstruct
@@ -63,6 +69,19 @@ public class DatabaseConfigBacking extends BackingBase {
 		configBean = new DatabaseConfig();
 	}
 	
+	public void testDatabaseConfig() {
+		logDebug("test databaseConfig " + configBean.getUrl());
+		
+		ServiceResult result = configService.testDatabaseConfig(configBean);
+		
+		if(!result.isFailed()) {
+			databaseLoaderService.connectDb(configBean);
+			schemaList = databaseLoaderService.getSchemas();
+			databaseLoaderService.disconnectDb();
+		}
+		handleServiceResultAsInfoMessage(result);
+	}
+	
 	public void updateDatabaseConfig() {
 		logDebug("update databaseConfig " + configBean.getUrl());
 		
@@ -88,11 +107,15 @@ public class DatabaseConfigBacking extends BackingBase {
 	
 	public void prepareModify(DatabaseConfig config) {
 		configBean = config;
+		databaseLoaderService.connectDb(configBean);
+		schemaList = databaseLoaderService.getSchemas();
+		databaseLoaderService.disconnectDb();
 		redirectPageTo(NavigationCaseEnum.MODIFY_CONNECTION);
 	}
 
 	public void reset() {
 		configList = null;
+		schemaList = new ArrayList<>();
 		configBean = new DatabaseConfig();
 	}
 	
@@ -102,7 +125,15 @@ public class DatabaseConfigBacking extends BackingBase {
 		}
 		return configList;
 	}
-	
+
+	public List<String> getSchemaList() {
+		return schemaList;
+	}
+
+	public void setSchemaList(List<String> schemaList) {
+		this.schemaList = schemaList;
+	}
+
 	public Database[] getSupportedDatabases() {
 		return Database.values();
 	}
@@ -123,6 +154,10 @@ public class DatabaseConfigBacking extends BackingBase {
 		this.configService = configService;
 	}
 	
+	public void setDatabaseLoaderService(DatabaseLoaderService databaseLoaderService) {
+		this.databaseLoaderService = databaseLoaderService;
+	}
+
 	public void setDatabasePanelBacking(DatabasePanelBacking databasePanelBacking) {
 		this.databasePanelBacking = databasePanelBacking;
 	}

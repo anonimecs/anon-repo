@@ -19,15 +19,15 @@ xmlns="http://www.w3.org/1999/xhtml"
 				   	<h:outputText id="vendor" value="#{databaseConfigBacking.configBean.vendor}" />
 				   	<p:message id="vendorMSG" for="vendor" />
 
-					<p:outputLabel id="urlPrefix" for="url" value="URL: #{databaseConfigBacking.configBean.vendor.jdbcPrefix}" />
+					<p:outputLabel id="urlPrefix" for="url" value="URL #{databaseConfigBacking.configBean.vendor.jdbcPrefix}" />
 					<p:inputText id="url" value="#{databaseConfigBacking.configBean.url}" required="true" size="70"/>
 					<p:message for="url" />
 					
-					<p:outputLabel for="guiName" value="GUI Name:" />
+					<p:outputLabel for="guiName" value="GUI Name" />
 					<p:inputText id="guiName" value="#{databaseConfigBacking.configBean.guiName}" required="true"/>
 					<p:message for="guiName" />
 					
-					<p:outputLabel for="login" value="Login:" />
+					<p:outputLabel for="login" value="Login" />
 					<p:inputText id="login" value="#{databaseConfigBacking.configBean.login}" required="true"/>
 					<p:message for="login" />
 						
@@ -36,8 +36,14 @@ xmlns="http://www.w3.org/1999/xhtml"
 						label="Password">
 					</p:password>
 					<p:message id="passwordMsg" for="password"/>
-
 					
+					<p:outputLabel for="defaultSchema" value="Default Schema"/>
+						<p:selectOneMenu id="defaultSchema" value="#{databaseConfigBacking.configBean.defaultSchema}" style="width:150px"
+							disabled="#{empty databaseConfigBacking.schemaList}">
+							<f:selectItems value="#{databaseConfigBacking.schemaList}" />
+						</p:selectOneMenu>
+					<p:message id="defaultSchemaMsg" for="defaultSchema"/>
+
 					<h:panelGrid columns="3">
 						<p:commandButton id="addConnection" value="Update" 
 							actionListener="#{databaseConfigBacking.updateDatabaseConfig}" update="panel,:menuForm:menuBar" />

@@ -9,6 +9,8 @@
 			
 	<bean id="anonConfig" class="org.anon.data.AnonConfig"/>
 	
+	<bean id="execConfig" class="org.anon.data.AnonConfig"/>
+	
 	<context:component-scan base-package="org.anon" />
 	
 </beans>

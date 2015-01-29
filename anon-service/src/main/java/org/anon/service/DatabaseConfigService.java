@@ -14,6 +14,8 @@ public interface DatabaseConfigService {
 
 	public ServiceResult addDatabaseConfig(DatabaseConfig config);
 	
+	public ServiceResult testDatabaseConfig(DatabaseConfig config);
+	
 	public ServiceResult updateDatabaseConfig(DatabaseConfig config);
 
 }

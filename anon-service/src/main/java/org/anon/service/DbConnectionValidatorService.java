@@ -19,6 +19,10 @@ public class DbConnectionValidatorService extends AnonStatic{
 		String drvClass = config.getVendor().getDriver();
 		testUrl.append(config.getVendor().getJdbcPrefix()).append(config.getUrl());
 		
+		if(config.getDefaultSchema() != null && !config.getDefaultSchema().isEmpty()) {
+			testUrl.append("/").append(config.getDefaultSchema());
+		}
+		
 		try {
 			Class.forName(drvClass);
 			Connection conn = DriverManager.getConnection

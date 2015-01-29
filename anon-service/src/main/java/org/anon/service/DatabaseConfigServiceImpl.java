@@ -65,7 +65,6 @@ public class DatabaseConfigServiceImpl implements DatabaseConfigService {
 		return result;
 	}
 	
-
 	@Override
 	@Transactional(readOnly = false)
 	public ServiceResult updateDatabaseConfig(DatabaseConfig config) {
@@ -81,6 +80,13 @@ public class DatabaseConfigServiceImpl implements DatabaseConfigService {
 						e.getCause() != null ?  e.getCause().getMessage() : e.getMessage());
 			}
 		}
+		return result;
+	}
+
+	@Override
+	public ServiceResult testDatabaseConfig(DatabaseConfig config) {
+		
+		ServiceResult result = connectionValidator.connectionValid(config);
 		return result;
 	}
 }

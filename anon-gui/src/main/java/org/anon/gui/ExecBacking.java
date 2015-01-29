@@ -9,7 +9,9 @@ import javax.faces.bean.ViewScoped;
 import org.anon.AbstractDbConnection;
 import org.anon.exec.BaseExec;
 import org.anon.exec.ExecFactory;
+import org.anon.gui.navigation.NavigationCaseEnum;
 import org.anon.logic.AnonymisationMethod;
+import org.anon.service.DatabaseLoaderService;
 import org.anon.service.DbConnectionFactory;
 import org.primefaces.push.EventBus;
 import org.primefaces.push.EventBusFactory;
@@ -21,15 +23,16 @@ public class ExecBacking extends BackingBase{
 	@ManagedProperty(value="#{execFactory}")
 	protected ExecFactory execFactory;
 
-	
 	@ManagedProperty(value="#{dbConnectionFactory}")
 	protected DbConnectionFactory dbConnectionFactory; 
 	
-
 	@ManagedProperty(value="#{execBackingExecutor}")
 	protected Executor execBackingExecutor;
 	
+	@ManagedProperty(value="#{databaseLoaderService}")
+	protected DatabaseLoaderService databaseLoaderService;
 
+	
 	public void onRunSingle(final AnonymisationMethod anonymisationMethod){
 		try{
 			
@@ -103,6 +106,11 @@ public class ExecBacking extends BackingBase{
 		}
 	}
 	
+	public void onClickExecute() {
+		databaseLoaderService.loadExecConfig();
+		redirectPageTo(NavigationCaseEnum.EXECUTE);
+	}
+	
 	
 	public void fireEvent() {
 		EventBus eventBus = EventBusFactory.getDefault().eventBus();
@@ -135,4 +143,7 @@ public class ExecBacking extends BackingBase{
 		this.execFactory = execFactory;
 	}
 
+	public void setDatabaseLoaderService(DatabaseLoaderService databaseLoaderService) {
+		this.databaseLoaderService = databaseLoaderService;
+	}
 }

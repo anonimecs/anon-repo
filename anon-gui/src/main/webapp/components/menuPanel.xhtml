@@ -28,8 +28,8 @@
 					disabled="#{null eq editedTableBacking.editedColumn}" icon="ui-icon-shuffle" />
 			</p:submenu>
 			<p:submenu label="Run">
-				<p:menuitem value="Execute" url="/app/execute/"
-					icon="ui-icon-triangle-1-e" />
+				<p:menuitem value="Execute" action="#{execBacking.onClickExecute}"
+					disabled="#{!databasePanelBacking.connected}" icon="ui-icon-triangle-1-e" />
 			</p:submenu>
 			
 		</p:panelMenu>

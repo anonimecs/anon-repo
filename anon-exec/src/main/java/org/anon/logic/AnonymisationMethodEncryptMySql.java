@@ -12,14 +12,11 @@ public class AnonymisationMethodEncryptMySql extends AnonymisationMethodEncrypt 
 		
 		addSetupSqlFiles("mysql/MethodEncrypt_createFunc.sql", "mysql/MethodEncrypt_createProc.sql");
 		addCleanupSqlFiles("mysql/MethodEncrypt_dropProc.sql", "mysql/MethodEncrypt_dropFunc.sql");
-		
 	}
 	
 	@Override
 	protected <T> T anonymiseNum(Number exampleValue, Class<T> clazz) {
-		try{
-
-			
+		try{	
 			return new JdbcTemplate(dataSource).queryForObject("select "+exampleValue+" + round(rand("+hashmodint+") * "+exampleValue+")/10",clazz);
 		}
 		catch(RuntimeException e){
@@ -45,7 +42,7 @@ public class AnonymisationMethodEncryptMySql extends AnonymisationMethodEncrypt 
 			return new RunMessage("Updated Numbers", rowCount);
 		}
 		else {
-			throw new RuntimeException("Unimlemented");
+			throw new RuntimeException("Unimplemented");
 		}
 		
 	}

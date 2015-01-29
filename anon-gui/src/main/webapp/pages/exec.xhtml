@@ -33,17 +33,17 @@
 			
 				<h:panelGrid columns="3" style="padding-top:15px;">
 					<p:commandButton id="execAllBtn" value="Run All" action="#{execBacking.onRun()}" global="false"/>
-					<h:outputLabel for="execAllBtn" value="#{anonConfig.anonMethods.size()} anonimisation methods on #{anonConfig.getAnonTableCount()} columns"/>
-					<p:lightBox iframe="true" id="anonimexHomeLightBox1" rendered="#{licenseManager.reachedMaxTablesAnonimised(anonConfig.getAnonTableCount())}" onShow="poll.stop()"> 
+					<h:outputLabel for="execAllBtn" value="#{execConfig.anonMethods.size()} anonimisation methods on #{execConfig.getAnonTableCount()} columns"/>
+					<p:lightBox iframe="true" id="anonimexHomeLightBox1" rendered="#{licenseManager.reachedMaxTablesAnonimised(execConfig.getAnonTableCount())}" onShow="poll.stop()"> 
 					    <h:outputLink value="http://www.anonimecs.com/products.html" title="Anonimecs" >
 					        <h:outputText value="Free edition is limited to anonimse #{licenseManager.getMaxTablesAnonimised()} columns. Consider upgrading your license."/>
 					    </h:outputLink>
 					</p:lightBox>
 				</h:panelGrid>
 				
-				<p:accordionPanel id="anonPanel" value="#{anonConfig.anonMethods}" var="anonMethod" multiple="true" activeIndex="0,1,2,3,4,5">
+				<p:accordionPanel id="anonPanel" value="#{execConfig.anonMethods}" var="anonMethod" multiple="true" activeIndex="0,1,2,3,4,5">
 					<p:tab title="Anonymisation: #{anonMethod.type}" >
-						<h:panelGrid columns="1" style="width:100%" styleClass="panelBgColor_#{anonConfig.getMethodExecution(anonMethod).getStatus()}">
+						<h:panelGrid columns="1" style="width:100%" styleClass="panelBgColor_#{execConfig.getMethodExecution(anonMethod).getStatus()}">
 						
 							<p:dataTable value="#{anonMethod.applyedToColumns}" var="anonColumnInfo" >
 	  	
@@ -59,26 +59,26 @@
 				        			</h:outputText>
 				        		</p:column>
 				        		<p:column headerText="Status Info">
-				        			<h:outputText id="statusInfo" value="#{anonConfig.getMethodExecution(anonMethod).getLastMessage(anonColumnInfo)}" styleClass="tooltipBehind"/>
+				        			<h:outputText id="statusInfo" value="#{execConfig.getMethodExecution(anonMethod).getLastMessage(anonColumnInfo)}" styleClass="tooltipBehind"/>
 			        				<p:tooltip for="statusInfo">
-			        					<p:dataList value="#{anonConfig.getMethodExecution(anonMethod).getMessages(anonColumnInfo)}" var="runMessage">
+			        					<p:dataList value="#{execConfig.getMethodExecution(anonMethod).getMessages(anonColumnInfo)}" var="runMessage">
 			        						<h:outputText value="#{runMessage}"/>
 			        					</p:dataList>
 			        				</p:tooltip>
 				        		</p:column>
 				        	</p:dataTable>
 				
-							<h:outputText value="Status: #{anonConfig.getMethodExecution(anonMethod).getStatus()}"/>
+							<h:outputText value="Status: #{execConfig.getMethodExecution(anonMethod).getStatus()}"/>
 							<p:outputPanel>
-								<h:outputText value="Last Finished:" rendered="#{null != anonConfig.getMethodExecution(anonMethod).getFinishedTime()}"/>
-								<h:outputText value="#{anonConfig.getMethodExecution(anonMethod).getFinishedTime()}" converter="weekTimestampConverter"/>
+								<h:outputText value="Last Finished:" rendered="#{null != execConfig.getMethodExecution(anonMethod).getFinishedTime()}"/>
+								<h:outputText value="#{execConfig.getMethodExecution(anonMethod).getFinishedTime()}" converter="weekTimestampConverter"/>
 							</p:outputPanel>
-							<h:outputText value="Error: #{anonConfig.getMethodExecution(anonMethod).getLastException()}" rendered="#{null != anonConfig.getMethodExecution(anonMethod).getLastException()}"/>
+							<h:outputText value="Error: #{execConfig.getMethodExecution(anonMethod).getLastException()}" rendered="#{null != execConfig.getMethodExecution(anonMethod).getLastException()}"/>
 				
 					        <p:commandButton 
 					        	value="Run" 
 					        	action="#{execBacking.onRunSingle(anonMethod)}" 
-					        	disabled="#{licenseManager.isFreeEdition() or anonConfig.getMethodExecution(anonMethod).getStatus() == 'RUNNING'}"
+					        	disabled="#{licenseManager.isFreeEdition() or execConfig.getMethodExecution(anonMethod).getStatus() == 'RUNNING'}"
 					        	global="false" />
 							<p:lightBox iframe="true" id="anonimexHomeLightBox2" rendered="#{licenseManager.isFreeEdition()}" onShow="poll.stop()"> 
 							    <h:outputLink value="http://www.anonimecs.com/products.html" title="Anonimecs" onclick="poll.stop()">

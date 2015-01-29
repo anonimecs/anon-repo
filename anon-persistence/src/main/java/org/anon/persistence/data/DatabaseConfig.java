@@ -38,6 +38,8 @@ public class DatabaseConfig {
 	
 	private String url;	
 	
+	private String defaultSchema;
+	
 	private String login;
 	
 	@Type(type="encryptedString")
@@ -65,6 +67,12 @@ public class DatabaseConfig {
 	}
 	public void setUrl(String url) {
 		this.url = url;
+	}
+	public String getDefaultSchema() {
+		return defaultSchema;
+	}
+	public void setDefaultSchema(String defaultSchema) {
+		this.defaultSchema = defaultSchema;
 	}
 	public Database getVendor() {
 		return vendor;
