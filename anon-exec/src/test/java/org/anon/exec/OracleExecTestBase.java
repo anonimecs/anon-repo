@@ -3,6 +3,7 @@ package org.anon.exec;
 import javax.sql.DataSource;
 
 import org.anon.data.AnonConfig;
+import org.anon.data.Database;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 
@@ -14,7 +15,7 @@ public abstract class OracleExecTestBase extends BaseExecTest {
 	
 	@Autowired
 	AnonConfig anonConfig;
-	
+
 	@Override
 	DataSource getDataSource() {
 		return dataSourceOracle;
@@ -30,6 +31,7 @@ public abstract class OracleExecTestBase extends BaseExecTest {
 		OracleExec oracleExec = new OracleExec();
 		oracleExec.setDataSource(dataSourceOracle);
 		oracleExec.setLicenseManager(new DummyLicenseManager(false));
+		oracleExec.setDbConnectionFactory(new DummyConnectionFactory(dataSourceOracle, Database.ORACLE));
 		return oracleExec;
 	}
 

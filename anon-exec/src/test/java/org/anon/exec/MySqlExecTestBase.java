@@ -3,6 +3,7 @@ package org.anon.exec;
 import javax.sql.DataSource;
 
 import org.anon.data.AnonConfig;
+import org.anon.data.Database;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 
@@ -31,6 +32,7 @@ public class MySqlExecTestBase extends BaseExecTest {
 		MySqlExec mysqlExec = new MySqlExec();
 		mysqlExec.setDataSource(dataSourceMySql);
 		mysqlExec.setLicenseManager(new DummyLicenseManager(false));
+		mysqlExec.setDbConnectionFactory(new DummyConnectionFactory(dataSourceMySql, Database.MYSQL));
 		return mysqlExec;
 	}
 

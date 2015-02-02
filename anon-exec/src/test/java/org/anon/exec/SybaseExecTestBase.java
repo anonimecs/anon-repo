@@ -2,6 +2,7 @@ package org.anon.exec;
 
 import javax.sql.DataSource;
 
+import org.anon.data.Database;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public abstract class SybaseExecTestBase extends BaseExecTest {
@@ -24,6 +25,7 @@ public abstract class SybaseExecTestBase extends BaseExecTest {
 		SybaseExec sybaseExec = new SybaseExec();
 		sybaseExec.setDataSource(dataSourceSybase);
 		sybaseExec.setLicenseManager(new DummyLicenseManager(false));
+		sybaseExec.setDbConnectionFactory(new DummyConnectionFactory(dataSourceSybase, Database.SYBASE));
 		return sybaseExec;
 	}
 	public TestTableCreatorSybase getTestTableCreator() {

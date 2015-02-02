@@ -137,4 +137,8 @@ public abstract class BaseExec {
 	public void setLicenseManager(LicenseManager licenseManager) {
 		this.licenseManager = licenseManager;
 	}
+
+	public void setDbConnectionFactory(DbConnectionFactory dbConnectionFactory) {
+		this.dbConnectionFactory = dbConnectionFactory;
+	}
 }
