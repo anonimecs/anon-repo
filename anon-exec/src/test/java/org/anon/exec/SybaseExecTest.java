@@ -25,7 +25,7 @@ public class SybaseExecTest extends SybaseExecTestBase{
 	@Test
 	public void testAnonymisationMethodEncryptString() {
 		SybaseExec sybaseExec = createSybaseExec();
-		sybaseExec.setAnonConfig(getTestAnonConfig("SSY_SourceSystem", "varchar", "TMP_TABLE_A",new AnonymisationMethodEncryptSybase()));
+		sybaseExec.setExecConfig(getTestAnonConfig("SSY_SourceSystem", "varchar", "TMP_TABLE_A",new AnonymisationMethodEncryptSybase()));
 		sybaseExec.runAll();
 		System.out.println(
 				new JdbcTemplate(dataSourceSybase).queryForList("select distinct(SSY_SourceSystem) from TMP_TABLE_A")
@@ -36,7 +36,7 @@ public class SybaseExecTest extends SybaseExecTestBase{
 	@Test
 	public void testAnonymisationMethodEncryptNum() {
 		SybaseExec sybaseExec = createSybaseExec();
-		sybaseExec.setAnonConfig(getTestAnonConfig("AIS_CountPosition", "int", "TMP_TABLE_B", new AnonymisationMethodEncryptSybase()));
+		sybaseExec.setExecConfig(getTestAnonConfig("AIS_CountPosition", "int", "TMP_TABLE_B", new AnonymisationMethodEncryptSybase()));
 		System.out.println(
 				new JdbcTemplate(dataSourceSybase).queryForList("select AIS_CountPosition, SSY_SourceSystem from TMP_TABLE_B")
 				);		
@@ -50,7 +50,7 @@ public class SybaseExecTest extends SybaseExecTestBase{
 	@Test
 	public void testAnonymisationMethodDestroyNum() {
 		SybaseExec sybaseExec = createSybaseExec();
-		sybaseExec.setAnonConfig(getTestAnonConfig("AIS_CountPosition", "int", "TMP_TABLE_B", new AnonymisationMethodDestorySybase()));
+		sybaseExec.setExecConfig(getTestAnonConfig("AIS_CountPosition", "int", "TMP_TABLE_B", new AnonymisationMethodDestorySybase()));
 		System.out.println(
 				new JdbcTemplate(dataSourceSybase).queryForList("select AIS_CountPosition, SSY_SourceSystem from TMP_TABLE_B")
 				);		
@@ -63,7 +63,7 @@ public class SybaseExecTest extends SybaseExecTestBase{
 	@Test
 	public void testAnonymisationMethodDestroyDate() {
 		SybaseExec sybaseExec = createSybaseExec();
-		sybaseExec.setAnonConfig(getTestAnonConfig("AIS_LastInsert", "datetime", "TMP_TABLE_B", new AnonymisationMethodDestorySybase()));
+		sybaseExec.setExecConfig(getTestAnonConfig("AIS_LastInsert", "datetime", "TMP_TABLE_B", new AnonymisationMethodDestorySybase()));
 		System.out.println(
 				new JdbcTemplate(dataSourceSybase).queryForList("select AIS_LastInsert, SSY_SourceSystem from TMP_TABLE_B")
 				);		
@@ -77,7 +77,7 @@ public class SybaseExecTest extends SybaseExecTestBase{
 	@Test
 	public void testAnonymisationMethodDestroyString() {
 		SybaseExec sybaseExec = createSybaseExec();
-		sybaseExec.setAnonConfig(getTestAnonConfig("AIS_ProductGroup", "varchar", "TMP_TABLE_B", new AnonymisationMethodDestorySybase()));
+		sybaseExec.setExecConfig(getTestAnonConfig("AIS_ProductGroup", "varchar", "TMP_TABLE_B", new AnonymisationMethodDestorySybase()));
 		System.out.println(
 				new JdbcTemplate(dataSourceSybase).queryForList("select AIS_ProductGroup, SSY_SourceSystem from TMP_TABLE_B")
 				);		

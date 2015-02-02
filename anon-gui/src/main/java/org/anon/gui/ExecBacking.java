@@ -6,7 +6,6 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 
-import org.anon.AbstractDbConnection;
 import org.anon.exec.BaseExec;
 import org.anon.exec.ExecFactory;
 import org.anon.gui.navigation.NavigationCaseEnum;
@@ -35,15 +34,9 @@ public class ExecBacking extends BackingBase{
 	
 	public void onRunSingle(final AnonymisationMethod anonymisationMethod){
 		try{
-			
 			logDebug("Running single " + anonymisationMethod);
-			
 			final BaseExec baseExec = execFactory.createExec(dbConnectionFactory.getDatabaseSpecifics());
-			AbstractDbConnection connection = dbConnectionFactory.getConnection();
-			logDebug("Database " + connection.getProperties());
-	
-			baseExec.setDataSource(connection.getDataSource());
-			
+
 			execBackingExecutor.execute(new Runnable() {
 				
 				@Override
@@ -77,9 +70,6 @@ public class ExecBacking extends BackingBase{
 		try{
 			logDebug("Anonymising all methods" );
 			final BaseExec baseExec = execFactory.createExec(dbConnectionFactory.getDatabaseSpecifics());
-			AbstractDbConnection connection = dbConnectionFactory.getConnection();
-			logDebug("Database " + connection.getProperties());
-			baseExec.setDataSource(connection.getDataSource());
 	
 			execBackingExecutor.execute(new Runnable() {
 				
@@ -105,6 +95,7 @@ public class ExecBacking extends BackingBase{
 			fireEvent();
 		}
 	}
+	
 	
 	public void onClickExecute() {
 		databaseLoaderService.loadExecConfig();

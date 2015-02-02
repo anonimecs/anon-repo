@@ -26,25 +26,35 @@ public class DbConnectionFactory extends AnonStatic{
 	}
 
 	public AbstractDbConnection getConnection() {
-		
 		if(dbConnection == null){
-			
-			switch(databaseConfig.getVendor()) {
-				case MYSQL: dbConnection = createMySqlConnection();
-					break;
-				case ORACLE: dbConnection = createOracleConnection();
-					break;
-				case SYBASE: dbConnection = createSybaseConnection();
-					break;
-				default: throw new RuntimeException(databaseConfig.getVendor() + " not supported.");
-			}
+			dbConnection = getConnectionForSchema(null);
 		}
 		return dbConnection;
 	}
 	
-	private AbstractDbConnection createSybaseConnection() {	
+	public AbstractDbConnection getConnectionForSchema(String schema) {
+		
+		AbstractDbConnection execConnection;
+		
+		switch(databaseConfig.getVendor()) {
+			case MYSQL: execConnection = createMySqlConnection(schema);
+				break;
+			case ORACLE: execConnection = createOracleConnection(schema);
+				break;
+			case SYBASE: execConnection = createSybaseConnection(schema);
+				break;
+			default: throw new RuntimeException(databaseConfig.getVendor() + " not supported.");
+		}
+		return execConnection;
+	}
+	
+	private AbstractDbConnection createSybaseConnection(String schema) {	
 		AbstractDbConnection dbConnection = null;
 		Properties props = createDbProps(Database.SYBASE);
+		
+		if(schema!=null) {
+			props.setProperty("schema", schema);
+		}
 				
 		SybaseDbConnection sybaseDbConnection = new SybaseDbConnection(parseSybSchemaFromUrl(databaseConfig.getUrl()));
 		dbConnection = sybaseDbConnection;
@@ -63,9 +73,13 @@ public class DbConnectionFactory extends AnonStatic{
 		}
 	}
 
-	private AbstractDbConnection createOracleConnection() {	
+	private AbstractDbConnection createOracleConnection(String schema) {	
 		AbstractDbConnection dbConnection = null;
 		Properties props = createDbProps(Database.ORACLE);
+		
+		if(schema!=null) {
+			props.setProperty("schema", schema);
+		}
 		
 		OracleDbConnection oracleDbConnection = new OracleDbConnection(databaseConfig.getLogin());
 		dbConnection = oracleDbConnection;
@@ -74,9 +88,13 @@ public class DbConnectionFactory extends AnonStatic{
 		return dbConnection;
 	}
 	
-	private AbstractDbConnection createMySqlConnection() {	
+	private AbstractDbConnection createMySqlConnection(String schema) {	
 		AbstractDbConnection dbConnection = null;
 		Properties props = createDbProps(Database.MYSQL);
+		
+		if(schema!=null) {
+			props.setProperty("schema", schema);
+		}
 		
 		MySqlDbConnection mysqlDbConnection = new MySqlDbConnection(databaseConfig.getLogin());
 		dbConnection = mysqlDbConnection;
@@ -98,8 +116,15 @@ public class DbConnectionFactory extends AnonStatic{
 	
 	public DataSource getDatasource(Properties props) {
 		DataSource ds = null;
-
-		props.setProperty("url", props.getProperty("url") + databaseConfig.getUrl());
+		
+		StringBuilder url = new StringBuilder(props.getProperty("url"))
+			.append(databaseConfig.getUrl());
+			
+		if(props.containsKey("schema")) {
+			url.append("/").append(props.get("schema"));
+		}
+			
+		props.setProperty("url", url.toString());
 		props.setProperty("username", databaseConfig.getLogin());
 		props.setProperty("password", databaseConfig.getPassword());
 		

@@ -25,7 +25,7 @@ public class OracleRehuffleTest extends OracleExecTestBase{
 		addTable("ID", "number", "TMP_TABLE_A", anonymisationMethod,anonConfig);
 		addTable("ROLE_ID", "number", "TMP_TABLE_B", anonymisationMethod,anonConfig);
 		
-		oracleExec.setAnonConfig(anonConfig);
+		oracleExec.setExecConfig(anonConfig);
 		
 		System.out.println(
 				new JdbcTemplate(dataSourceOracle).queryForList("select* from TMP_TABLE_A")
@@ -56,7 +56,7 @@ public class OracleRehuffleTest extends OracleExecTestBase{
 		
 		addTable("MODIFIEDAT", "DATE", "TMP_TABLE_B", anonymisationMethod,anonConfig);
 		
-		oracleExec.setAnonConfig(anonConfig);
+		oracleExec.setExecConfig(anonConfig);
 		
 		System.out.println(
 				new JdbcTemplate(dataSourceOracle).queryForList("select * from TMP_TABLE_B")

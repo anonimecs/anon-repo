@@ -17,7 +17,7 @@ public class OracleExecTest extends OracleExecTestBase{
 	@Test
 	public void testAnonymisationMethodDestoryOracle() {
 		OracleExec oracleExec = createExec();
-		oracleExec.setAnonConfig(getTestAnonConfig("COMSIID", "VARCHAR2", "TMP_TABLE_B", new AnonymisationMethodDestoryOracle()));
+		oracleExec.setExecConfig(getTestAnonConfig("COMSIID", "VARCHAR2", "TMP_TABLE_B", new AnonymisationMethodDestoryOracle()));
 		oracleExec.runAll();
 		
 		Assert.assertEquals("x", loadFromDbObject("select distinct COMSIID from TMP_TABLE_B", String.class));
@@ -47,7 +47,7 @@ public class OracleExecTest extends OracleExecTestBase{
 	@Test
 	public void testAnonymisationMethodEncryptString() {
 		OracleExec oracleExec = createExec();
-		oracleExec.setAnonConfig(getTestAnonConfig("COMSIID", "VARCHAR2", "TMP_TABLE_B",new AnonymisationMethodEncryptOracle()));
+		oracleExec.setExecConfig(getTestAnonConfig("COMSIID", "VARCHAR2", "TMP_TABLE_B",new AnonymisationMethodEncryptOracle()));
 		oracleExec.runAll();
 		System.out.println(
 				new JdbcTemplate(dataSourceOracle).queryForList("select distinct(COMSIID) from TMP_TABLE_B")
@@ -57,7 +57,7 @@ public class OracleExecTest extends OracleExecTestBase{
 	@Test
 	public void testAnonymisationMethodEncryptNumber() {
 		OracleExec oracleExec =  createExec();
-		oracleExec.setAnonConfig(getTestAnonConfig("ROLE_ID", "NUMBER", "TMP_TABLE_B",new AnonymisationMethodEncryptOracle()));
+		oracleExec.setExecConfig(getTestAnonConfig("ROLE_ID", "NUMBER", "TMP_TABLE_B",new AnonymisationMethodEncryptOracle()));
 		oracleExec.runAll();
 		System.out.println(
 				new JdbcTemplate(dataSourceOracle).queryForList("select distinct(ROLE_ID) from TMP_TABLE_B")

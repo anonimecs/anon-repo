@@ -51,7 +51,7 @@ public class OracleExecTestMultiColFK extends BaseExecTest {
 		getTestAnonimisedColumnInfo("col1", "VARCHAR2", "TMP_TABLE_A",method, OracleDbConnection.databaseSpecifics, anonConfig);
 
 		
-		oracleExec.setAnonConfig(anonConfig);
+		oracleExec.setExecConfig(anonConfig);
 		oracleExec.runAll();
 		
 	}

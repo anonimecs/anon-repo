@@ -14,7 +14,7 @@ public class MySqlExecTest extends MySqlExecTestBase{
 	@Test
 	public void testAnonymisationMethodDestory() {
 		MySqlExec mysqlExec = createExec();
-		mysqlExec.setAnonConfig(getTestAnonConfig("COMSIID", "VARCHAR2", "TMP_TABLE_B", new AnonymisationMethodDestoryMySql()));
+		mysqlExec.setExecConfig(getTestAnonConfig("COMSIID", "VARCHAR2", "TMP_TABLE_B", new AnonymisationMethodDestoryMySql()));
 		mysqlExec.runAll();
 		Assert.assertEquals("x", loadFromDbObject("select distinct COMSIID from TMP_TABLE_B", String.class));
 	}
@@ -42,7 +42,7 @@ public class MySqlExecTest extends MySqlExecTestBase{
 	@Test
 	public void testAnonymisationMethodEncryptString() {
 		MySqlExec mysqlExec = createExec();
-		mysqlExec.setAnonConfig(getTestAnonConfig("COMSIID", "VARCHAR", "TMP_TABLE_B",new AnonymisationMethodEncryptMySql()));
+		mysqlExec.setExecConfig(getTestAnonConfig("COMSIID", "VARCHAR", "TMP_TABLE_B",new AnonymisationMethodEncryptMySql()));
 		mysqlExec.runAll();
 		System.out.println(
 			new JdbcTemplate(dataSourceMySql).queryForList("select distinct(COMSIID) from TMP_TABLE_B")
@@ -52,7 +52,7 @@ public class MySqlExecTest extends MySqlExecTestBase{
 	@Test
 	public void testAnonymisationMethodEncryptNumber() {
 		MySqlExec mysqlExec = createExec();
-		mysqlExec.setAnonConfig(getTestAnonConfig("ROLE_ID", "NUMERIC", "TMP_TABLE_B",new AnonymisationMethodEncryptMySql()));
+		mysqlExec.setExecConfig(getTestAnonConfig("ROLE_ID", "NUMERIC", "TMP_TABLE_B",new AnonymisationMethodEncryptMySql()));
 		mysqlExec.runAll();
 		System.out.println(
 			new JdbcTemplate(dataSourceMySql).queryForList("select distinct(ROLE_ID) from TMP_TABLE_B")

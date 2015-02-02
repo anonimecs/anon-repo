@@ -106,6 +106,7 @@ public class DatabaseLoaderService {
 			AnonymisationMethod anonymisationMethod = instantiate(anonymisationMethodData);
 			for(AnonymisedColumnData anonymisedColumnData: anonymisationMethodData.getApplyedToColumns()){
 				if(selectedSchema.equalsIgnoreCase(anonymisedColumnData.getSchemaName())){
+					
 					AnonymisedColumnInfo anonymisedColumnInfo = new AnonymisedColumnInfo(anonymisedColumnData.getColumnName(), anonymisedColumnData.getColumnType(), dbConnectionFactory.getConnection().getDatabaseSpecifics());
 					anonymisationMethod.addColumn(anonymisedColumnInfo);
 	
@@ -117,9 +118,35 @@ public class DatabaseLoaderService {
 						anonymisedColumnInfo.setTable(table);
 						table.addAnonymisedColumn(anonymisedColumnInfo);
 					}
+					
 				}
 			}
 			anonConfig.addAnonMethod(anonymisationMethod);
+		}
+	}
+	
+	public void loadExecConfig() {
+		
+		execConfig.getAnonMethods().clear();
+		List<AnonymisationMethodData> anonymisationMethodDatas = entitiesDao.loadAllAnonMethods(dbConnectionFactory.getDatabaseConfig());
+		
+		for(AnonymisationMethodData anonymisationMethodData: anonymisationMethodDatas){
+			AnonymisationMethod anonymisationMethod = instantiate(anonymisationMethodData);
+			for(AnonymisedColumnData anonymisedColumnData: anonymisationMethodData.getApplyedToColumns()){
+				
+				AnonymisedColumnInfo anonymisedColumnInfo = new AnonymisedColumnInfo(anonymisedColumnData.getColumnName(), anonymisedColumnData.getColumnType(), dbConnectionFactory.getConnection().getDatabaseSpecifics());
+				anonymisationMethod.addColumn(anonymisedColumnInfo);
+	
+				DatabaseTableInfo table = lookupTableBySchema(anonymisedColumnData.getTableName(), anonymisedColumnData.getSchemaName());
+				if(table == null){
+					loadErrors.add("Failed to find anonymised column " + anonymisedColumnData.getTableName() + "." + anonymisedColumnData.getColumnName());
+					logger.error("failed to find table and column " + anonymisedColumnData, new Exception());
+				} else {
+					anonymisedColumnInfo.setTable(table);
+					table.addAnonymisedColumn(anonymisedColumnInfo);
+				}
+			}
+			execConfig.addAnonMethod(anonymisationMethod);
 		}
 	}
 
@@ -170,32 +197,6 @@ public class DatabaseLoaderService {
 
 	public void schemaChanged() {
 		anonConfig.init();
-	}
-	
-	public void loadExecConfig() {
-		
-		List<AnonymisationMethodData> anonymisationMethodDatas = entitiesDao.loadAllAnonMethods(dbConnectionFactory.getDatabaseConfig());
-		
-		for(AnonymisationMethodData anonymisationMethodData: anonymisationMethodDatas){
-			AnonymisationMethod anonymisationMethod = instantiate(anonymisationMethodData);
-			for(AnonymisedColumnData anonymisedColumnData: anonymisationMethodData.getApplyedToColumns()){
-				
-					AnonymisedColumnInfo anonymisedColumnInfo = new AnonymisedColumnInfo(anonymisedColumnData.getColumnName(), anonymisedColumnData.getColumnType(), dbConnectionFactory.getConnection().getDatabaseSpecifics());
-					anonymisationMethod.addColumn(anonymisedColumnInfo);
-	
-					DatabaseTableInfo table = lookupTableBySchema(anonymisedColumnData.getTableName(), anonymisedColumnData.getSchemaName());
-					if(table == null){
-						loadErrors.add("Failed to find anonymised column " + anonymisedColumnData.getTableName() + "." + anonymisedColumnData.getColumnName());
-						logger.error("failed to find table and column " + anonymisedColumnData, new Exception());
-					} else {
-						anonymisedColumnInfo.setTable(table);
-						table.addAnonymisedColumn(anonymisedColumnInfo);
-					}
-
-					
-			}
-			execConfig.addAnonMethod(anonymisationMethod);
-		}
 	}
 	
 }

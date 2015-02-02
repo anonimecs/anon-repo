@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
+import org.anon.AbstractDbConnection;
 import org.anon.data.AnonConfig;
 import org.anon.data.AnonymisedColumnInfo;
 import org.anon.data.MethodExecution;
@@ -13,8 +14,10 @@ import org.anon.exec.constraint.ConstraintManager;
 import org.anon.license.LicenseException;
 import org.anon.license.LicenseManager;
 import org.anon.logic.AnonymisationMethod;
+import org.anon.service.DbConnectionFactory;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 
 public abstract class BaseExec {
 	
@@ -23,18 +26,21 @@ public abstract class BaseExec {
 	protected DataSource dataSource;
 	
 	@Autowired
-	protected AnonConfig anonConfig;
+	@Qualifier("execConfig")
+	protected AnonConfig execConfig;
 
 	@Autowired
 	protected LicenseManager licenseManager;
+	
+	@Autowired
+	protected DbConnectionFactory dbConnectionFactory;
 	
 	int tablesAnonimised;
 	
 	public void runAll() {
 		tablesAnonimised = 0; 
 		
-		
-		for (AnonymisationMethod anonymisationMethod : anonConfig.getAnonMethods()) {
+		for (AnonymisationMethod anonymisationMethod : execConfig.getAnonMethods()) {
 			run(anonymisationMethod);
 		}
 	}
@@ -42,8 +48,14 @@ public abstract class BaseExec {
 	public void run(AnonymisationMethod anonymisationMethod) {
 		licenseManager.checkLicenseExpired();
 		
+		AbstractDbConnection connection = 
+				dbConnectionFactory.getConnectionForSchema(getExecSchema(anonymisationMethod));
+		
+		logger.debug("Database " + connection.getProperties());
+		this.setDataSource(connection.getDataSource());
+		
 		anonymisationMethod.setDataSource(dataSource);
-		MethodExecution methodExecution = anonConfig.getMethodExecution(anonymisationMethod);
+		MethodExecution methodExecution = execConfig.getMethodExecution(anonymisationMethod);
 		try{
 			methodExecution.started();
 			anonymisationMethod.setupInDb();
@@ -64,10 +76,11 @@ public abstract class BaseExec {
 					methodExecution.addMessage(col, new RunMessage("Reacivating constraints", deactivatedContstraints.size()));
 					constraintManager.activateConstraints(col, deactivatedContstraints);
 					showConstaintProblems(col, methodExecution, deactivatedContstraints);
+					
+//					dataSource.getConnection().close();
+					
 				}
 				methodExecution.addMessage(col, runResult);
-
-				
 			}
 			methodExecution.finished();
 		}
@@ -81,6 +94,18 @@ public abstract class BaseExec {
 		}
 	}
 	
+	private String getExecSchema(AnonymisationMethod anonymisationMethod) {
+		String schema = null;
+		for(AnonymisedColumnInfo col : anonymisationMethod.getApplyedToColumns()) {		
+			if(schema==null) {
+				schema = col.getTable().getSchema();
+			}
+			else if(!schema.equals(col.getTable().getSchema())) {
+				throw new RuntimeException("multiple schema not allowed");
+			}
+		}
+		return schema;
+	}
 	
 	private void showConstaintProblems(AnonymisedColumnInfo col, MethodExecution methodExecution,List<? extends Constraint> deactivatedContstraints) {
 		for (Constraint constraint : deactivatedContstraints) {
@@ -88,7 +113,6 @@ public abstract class BaseExec {
 				methodExecution.addMessage(col, new RunMessage(constraint.getMessage(), null));
 			}
 		}
-		
 	}
 
 	private void assertFreeEditionRunCount() {
@@ -96,16 +120,15 @@ public abstract class BaseExec {
 			throw new LicenseException("Reached maximal number of tables " + licenseManager.getMaxTablesAnonimised());
 		}
 		tablesAnonimised++;
-		
 	}
 
 	
 	protected abstract ConstraintManager getConstraintManager(DataSource dataSource);
 
-
-	public void setAnonConfig(AnonConfig anonConfig) {
-		this.anonConfig = anonConfig;
-	}	
+	
+	public void setExecConfig(AnonConfig execConfig) {
+		this.execConfig = execConfig;
+	}
 
 	public void setDataSource(DataSource dataSource) {
 		this.dataSource = dataSource;

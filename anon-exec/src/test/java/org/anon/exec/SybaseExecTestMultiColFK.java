@@ -51,7 +51,7 @@ public class SybaseExecTestMultiColFK extends BaseExecTest {
 		getTestAnonimisedColumnInfo("col1", "VARCHAR2", "TMP_TABLE_A",method, SybaseDbConnection.databaseSpecifics, anonConfig);
 
 		
-		sybaseExec.setAnonConfig(anonConfig);
+		sybaseExec.setExecConfig(anonConfig);
 		sybaseExec.runAll();
 		
 	}

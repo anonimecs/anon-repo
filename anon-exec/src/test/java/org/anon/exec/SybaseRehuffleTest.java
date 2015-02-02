@@ -29,7 +29,7 @@ public class SybaseRehuffleTest extends SybaseExecTestBase{
 		
 
 		SybaseExec sybaseExec = createSybaseExec();
-		sybaseExec.setAnonConfig(anonConfig);
+		sybaseExec.setExecConfig(anonConfig);
 		
 		System.out.println(
 				new JdbcTemplate(dataSourceSybase).queryForList("select AIS_Target, SSY_SourceSystem from TMP_TABLE_B")
@@ -57,7 +57,7 @@ public class SybaseRehuffleTest extends SybaseExecTestBase{
 		addTable("SSY_TopLink", "varchar", "TMP_TABLE_A", anonymisationMethod,anonConfig);
 		
 		SybaseExec sybaseExec = createSybaseExec();
-		sybaseExec.setAnonConfig(anonConfig);
+		sybaseExec.setExecConfig(anonConfig);
 		
 		System.out.println(
 				new JdbcTemplate(dataSourceSybase).queryForList("select * from TMP_TABLE_A")
