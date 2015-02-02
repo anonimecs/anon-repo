@@ -2,7 +2,9 @@ package org.anon.persistence.dao;
 
 import java.util.List;
 
+import org.anon.data.AnonymisedColumnInfo;
 import org.anon.persistence.data.AnonymisationMethodData;
+import org.anon.persistence.data.AnonymisedColumnData;
 import org.anon.persistence.data.DatabaseConfig;
 import org.anon.persistence.data.DatabaseTableData;
 
@@ -19,5 +21,9 @@ public interface EntitiesDao {
 	int removeAnonymizedColumnData(String tableName, String columnName, String schemaName);
 
 	int removeAnonymisationMethodData(Long id);
+
+	AnonymisationMethodData loadAnonymisationMethodData(Long id);
+
+	AnonymisedColumnData loadAnonymisedColumnData(AnonymisedColumnInfo anonymisedColumnInfo);
 
 }

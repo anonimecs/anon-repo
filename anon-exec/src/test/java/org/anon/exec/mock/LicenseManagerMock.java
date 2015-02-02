@@ -1,16 +1,12 @@
-package org.anon.exec;
+package org.anon.exec.mock;
 
 import org.anon.license.LicenseManager;
 
-public class DummyLicenseManager implements LicenseManager {
-	boolean freeEdition;
-	
-	public DummyLicenseManager(boolean freeEdition) {
-		this.freeEdition = freeEdition;
-	}
-	
+public class LicenseManagerMock implements LicenseManager {
+
 	@Override
-	public void checkLicenseExpired() {}
+	public void checkLicenseExpired() {
+	}
 
 	@Override
 	public boolean reachedMaxDbConnections(int connections) {
@@ -24,17 +20,17 @@ public class DummyLicenseManager implements LicenseManager {
 
 	@Override
 	public int getMaxTablesAnonimised() {
-		return 10000;
+		return 100;
 	}
 
 	@Override
 	public boolean isFreeEdition() {
-		return freeEdition;
+		return true;
 	}
 
 	@Override
 	public boolean isEnterpriseEdition() {
-		return !freeEdition;
+		return false;
 	}
 
 }

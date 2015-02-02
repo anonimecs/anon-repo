@@ -4,10 +4,11 @@ import javax.sql.DataSource;
 
 import org.anon.data.AnonConfig;
 import org.anon.data.Database;
+import org.anon.exec.audit.ExecAuditor;
+import org.anon.exec.mock.LicenseManagerMock;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
 
-@ContextConfiguration("classpath:BaseExecTest.xml")
+
 public abstract class OracleExecTestBase extends BaseExecTest {
 
 	@Autowired
@@ -16,6 +17,9 @@ public abstract class OracleExecTestBase extends BaseExecTest {
 	@Autowired
 	AnonConfig anonConfig;
 
+	@Autowired
+	ExecAuditor execAuditor;
+	
 	@Override
 	DataSource getDataSource() {
 		return dataSourceOracle;
@@ -30,7 +34,14 @@ public abstract class OracleExecTestBase extends BaseExecTest {
 	protected OracleExec createExec() {
 		OracleExec oracleExec = new OracleExec();
 		oracleExec.setDataSource(dataSourceOracle);
-		oracleExec.setLicenseManager(new DummyLicenseManager(false));
+		oracleExec.setLicenseManager(new LicenseManagerMock());
+		oracleExec.setExecAuditor(execAuditor);
+		oracleExec.setGuiNotifier(new GuiNotifier() {
+			@Override
+			public void refreshExecGui() {
+			}
+		});
+		
 		oracleExec.setDbConnectionFactory(new DummyConnectionFactory(dataSourceOracle, Database.ORACLE));
 		return oracleExec;
 	}

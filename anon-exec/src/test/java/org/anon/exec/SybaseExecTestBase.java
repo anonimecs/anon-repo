@@ -3,12 +3,17 @@ package org.anon.exec;
 import javax.sql.DataSource;
 
 import org.anon.data.Database;
+import org.anon.exec.audit.ExecAuditor;
+import org.anon.exec.mock.LicenseManagerMock;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public abstract class SybaseExecTestBase extends BaseExecTest {
 
 	@Autowired
 	DataSource dataSourceSybase;
+	
+	@Autowired
+	ExecAuditor execAuditor;
 	
 	@Override
 	DataSource getDataSource() {
@@ -24,7 +29,14 @@ public abstract class SybaseExecTestBase extends BaseExecTest {
 	protected SybaseExec createSybaseExec() {
 		SybaseExec sybaseExec = new SybaseExec();
 		sybaseExec.setDataSource(dataSourceSybase);
-		sybaseExec.setLicenseManager(new DummyLicenseManager(false));
+		sybaseExec.setLicenseManager(new LicenseManagerMock());
+		sybaseExec.setExecAuditor(execAuditor);
+		sybaseExec.setGuiNotifier(new GuiNotifier() {
+			
+			@Override
+			public void refreshExecGui() {
+			}
+		});
 		sybaseExec.setDbConnectionFactory(new DummyConnectionFactory(dataSourceSybase, Database.SYBASE));
 		return sybaseExec;
 	}

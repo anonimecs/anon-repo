@@ -1,0 +1,98 @@
+<ui:composition 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+	template="/layout/layout.xhtml">
+
+
+	<ui:define name="insert-content">
+  
+
+		<h:form id="execForm">
+		
+			<p:panel id="auditPanel" header="Audit log of the recent anonymisations">	
+			
+				<p:dataTable 
+					id="execAuditListTable" value="#{execAuditBacking.execAuditListTableRows}" var="execAuditListTableRow" 
+					selectionMode="single" selection="#{execAuditBacking.selectedAuditListTableRow}" rowKey="#{execAuditListTableRow.executionData.id}"
+				>
+					<p:ajax event="rowSelect" update=":execForm:executionDataPanel" listener="#{execAuditBacking.onAuditListTableRowSelect}"/>
+					
+					<p:column headerText="Started" width="150" sortBy="#{execAuditListTableRow.executionData.startTime}">
+						<h:outputText value="#{execAuditListTableRow.executionData.startTime}"  converter="weekTimestampConverter"/>
+					</p:column>
+					<p:column headerText="Finished" width="100">
+						<h:outputText value="#{execAuditListTableRow.executionData.endTime}"  converter="weekTimestampConverter"/>
+					</p:column>
+					<p:column headerText="Status" width="100">
+						<h:outputText value="#{execAuditListTableRow.executionData.status}"/>
+					</p:column>
+					<p:column headerText="Started by" width="120">
+						<h:outputText value="#{execAuditListTableRow.executionData.userName}"/>
+					</p:column>
+					<p:column headerText="Info" width="300">
+						<h:outputText value="#{execAuditListTableRow.executionData.description}"/>
+					</p:column>
+				
+				</p:dataTable>
+				
+				<p:panel id="executionDataPanel" >
+				
+					<p:accordionPanel id="executionDataAccordion" value="#{execAuditBacking.executionMethodDataPanelRows}" var="executionMethodDataPanelRow" 
+						multiple="true" activeIndex="0,1,2,3,4,5,6,7,8,9,10" 
+						rendered="#{null != execAuditBacking.selectedAuditListTableRow}">
+						
+						<p:tab title="Anonymisation: #{executionMethodDataPanelRow.executionMethodData.anonymisationMethodData.anonymizationType}" >
+							<h:panelGrid columns="1" style="width:100%" styleClass="panelBgColor_#{executionMethodDataPanelRow.executionMethodData.status}">
+							
+								<p:dataTable value="#{executionMethodDataPanelRow.executionColumnDatas}" var="executionColumnData" >
+		  	
+					        		<p:column headerText="On Column" width="180">
+					        			<h:outputText value="#{executionColumnData.anonymisedColumnData.columnName}"/>
+					        		</p:column>
+					        		<p:column headerText="of Table" width="180">
+					        			<h:outputText value="#{executionColumnData.anonymisedColumnData.tableName}"/>
+					        		</p:column>
+					        		<p:column headerText="Status">
+					        			<h:outputText value="#{executionColumnData.status}"/>
+					        		</p:column>
+					        		<p:column headerText="Runtime">
+					        			<h:outputText value="#{executionColumnData.runtimeSec}" converter="secondsAsRuntimeConverter"/>
+					        		</p:column>
+					        		<p:column headerText="Messages">
+					        			<h:outputText id="statusInfo" value="#{executionColumnData.resultText}" styleClass="tooltipBehind"/>
+				        				<p:tooltip for="statusInfo">
+				        					<p:dataList value="#{executionColumnData.messages}" var="executionMessageData">
+				        						<h:outputText value="#{executionMessageData.messageText}"/>
+				        					</p:dataList>
+				        				</p:tooltip>
+					        		</p:column>
+					        	</p:dataTable>
+					
+								<h:outputText value="Status: #{executionMethodDataPanelRow.executionMethodData.status}"/>
+								<p:outputPanel>
+									<h:outputText value="Runtime:" />
+									<h:outputText value="#{executionMethodDataPanelRow.executionMethodData.runtimeSec}"  converter="secondsAsRuntimeConverter" />
+								</p:outputPanel>
+								<h:outputText value="Error: #{executionMethodDataPanelRow.executionMethodData.resultText}" rendered="#{null != executionMethodDataPanelRow.executionMethodData.resultText}"/>
+								
+				            </h:panelGrid>
+						</p:tab>
+					</p:accordionPanel>					
+				
+				</p:panel>
+		
+
+            
+            </p:panel>
+
+		</h:form>
+		
+
+	
+	</ui:define>
+
+</ui:composition>

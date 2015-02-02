@@ -24,7 +24,8 @@ public class DatabaseConfigDaoImpl implements DatabaseConfigDao {
 
 	@Override
 	public void addDatabaseConfig(DatabaseConfig config) {
-		sessionFactory.getCurrentSession().save(config);		
+		Long id = (Long)sessionFactory.getCurrentSession().save(config);	
+		config.setId(id);
 	}
 
 	@Override

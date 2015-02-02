@@ -3,7 +3,9 @@ package org.anon.persistence.dao;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.anon.data.AnonymisedColumnInfo;
 import org.anon.persistence.data.AnonymisationMethodData;
+import org.anon.persistence.data.AnonymisedColumnData;
 import org.anon.persistence.data.DatabaseConfig;
 import org.anon.persistence.data.DatabaseTableData;
 import org.hibernate.Hibernate;
@@ -53,6 +55,11 @@ public class EntitiesDaoImpl implements EntitiesDao {
 	}
 
 	@Override
+	public AnonymisationMethodData loadAnonymisationMethodData(Long id ){
+		return (AnonymisationMethodData)sessionFactory.getCurrentSession().load(AnonymisationMethodData.class, id);
+	}
+	
+	@Override
 	public int removeAnonymizedColumnData(String tableName, String columnName, String schemaName) {
 		String hql = "delete from AnonymisedColumnData where COLUMNNAME= :COLUMNNAME and TABLENAME = :TABLENAME and SCHEMANAME = :SCHEMANAME" ;
 		return sessionFactory.getCurrentSession().createQuery(hql).setString("TABLENAME", tableName).setString("COLUMNNAME", columnName).setString("SCHEMANAME", schemaName).executeUpdate();
@@ -64,6 +71,15 @@ public class EntitiesDaoImpl implements EntitiesDao {
 		String hql = "delete from AnonymisationMethodData where ID= :ID";
 		return sessionFactory.getCurrentSession().createQuery(hql).setLong("ID", id).executeUpdate();
 		
+	}
+
+	@Override
+	public AnonymisedColumnData loadAnonymisedColumnData(AnonymisedColumnInfo anonymisedColumnInfo) {
+		String hql = "from AnonymisedColumnData where COLUMNNAME= :COLUMNNAME and TABLENAME = :TABLENAME and SCHEMANAME = :SCHEMANAME" ;
+		return (AnonymisedColumnData)sessionFactory.getCurrentSession().createQuery(hql)
+				.setString("TABLENAME", anonymisedColumnInfo.getTable().getName())
+				.setString("COLUMNNAME", anonymisedColumnInfo.getName())
+				.setString("SCHEMANAME", anonymisedColumnInfo.getTable().getSchema()).uniqueResult();
 	}
 	
 	

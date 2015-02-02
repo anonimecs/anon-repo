@@ -11,7 +11,7 @@ import javax.sql.DataSource;
 
 import org.anon.data.AnonymisedColumnInfo;
 import org.anon.data.AnonymizationType;
-import org.anon.data.RunMessage;
+import org.anon.data.ExecutionMessage;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -155,7 +155,7 @@ public abstract class AnonymisationMethod {
 
 
 
-	public RunMessage runOnColumn(AnonymisedColumnInfo col){
+	public ExecutionMessage runOnColumn(AnonymisedColumnInfo col){
 		// TODO
 		throw new RuntimeException("UNIMPLEMENTED");
 	}

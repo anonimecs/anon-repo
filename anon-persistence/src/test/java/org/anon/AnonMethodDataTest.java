@@ -2,10 +2,9 @@ package org.anon;
 
 import static org.junit.Assert.assertEquals;
 
+import java.io.IOException;
 import java.util.List;
 
-import org.anon.data.AnonymizationType;
-import org.anon.logic.AnonymisationMethod;
 import org.anon.persistence.data.AnonymisationMethodData;
 import org.anon.persistence.data.AnonymisedColumnData;
 import org.anon.persistence.data.DatabaseConfig;
@@ -18,26 +17,18 @@ import org.springframework.jdbc.core.JdbcTemplate;
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class AnonMethodDataTest extends DbEntitiesTest {
 
-		static Long id;
+		@Test
+		public void test0_0_dbSetup() throws IOException {
+			recreateInMemDb();
+		}
+
 		
 		@Test
 		public void test1InsertAnonymisationMethodData() {
-			AnonymisationMethodData anonymisationMethodData = new AnonymisationMethodData();
-			anonymisationMethodData.setDatabaseConfigId(-1l);
-			anonymisationMethodData.setAnonymizationType(AnonymizationType.DESTROY);
-			anonymisationMethodData.setAnonMethodClass(AnonymisationMethod.class.getName());
-			AnonymisedColumnData column = new AnonymisedColumnData();
-			column.setColumnName("TESTCOLNAME");
-			column.setTableName("TestTableName");
-			column.setSchemaName("TestSchema");
-			column.setColumnType("VARCHAR");
-			
-			anonymisationMethodData.addColumn(column);
-			entitiesDao.save(anonymisationMethodData);
-			id = anonymisationMethodData.getId();
+			do_test1InsertAnonymisationMethodData();
 			
 		}
-		
+
 		@Ignore // TODO Csaba:this test is not good designed. there is no Foreign key from   AnonymisationMethodData -> DatabaseConfig
 		@Test
 		public void test2LoadAnonymisationMethodData() {
@@ -61,7 +52,7 @@ public class AnonMethodDataTest extends DbEntitiesTest {
 		
 		@Test
 		public void test4RemoveAnonymizedMethodData(){
-			assertEquals(1, entitiesDao.removeAnonymisationMethodData(id));
+			assertEquals(1, entitiesDao.removeAnonymisationMethodData(methodId));
 			
 		}
 		

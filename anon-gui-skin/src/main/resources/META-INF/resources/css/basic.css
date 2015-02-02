@@ -51,3 +51,20 @@ body {
 .anonCandidate{
 	background-color: #FFE2C9; /*orange*/
 }
+
+.panelBgColor_ANONYMISED {
+	background-color: #CCEECC;
+}
+
+.panelBgColor_RUNNING {
+	background-color: #FFFACD;
+}
+
+.panelBgColor_FAILED {
+	background-color: #EEAAAA;
+}
+
+.tooltipBehind {
+	cursor: pointer;
+	text-decoration: underline;
+}

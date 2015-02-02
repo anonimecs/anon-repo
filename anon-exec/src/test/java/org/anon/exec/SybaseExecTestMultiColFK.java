@@ -3,13 +3,14 @@ package org.anon.exec;
 import javax.sql.DataSource;
 
 import org.anon.data.AnonConfig;
+import org.anon.exec.audit.ExecAuditor;
+import org.anon.exec.mock.LicenseManagerMock;
 import org.anon.logic.AnonymisationMethodEncryptSybase;
 import org.anon.vendor.SybaseDbConnection;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
 
-@ContextConfiguration("classpath:BaseExecTest.xml")
+
 public class SybaseExecTestMultiColFK extends BaseExecTest {
 
 	@Autowired
@@ -17,6 +18,9 @@ public class SybaseExecTestMultiColFK extends BaseExecTest {
 	
 	@Autowired
 	AnonConfig anonConfig;
+	
+	@Autowired
+	ExecAuditor execAuditor;
 	
 	@Override
 	DataSource getDataSource() {
@@ -29,16 +33,23 @@ public class SybaseExecTestMultiColFK extends BaseExecTest {
 		return testTableCreator;
 	}
 	
-	protected SybaseExec createExec() {
+	protected SybaseExec createSybaseExec() {
 		SybaseExec sybaseExec = new SybaseExec();
 		sybaseExec.setDataSource(dataSourceSybase);
-		sybaseExec.setLicenseManager(new DummyLicenseManager(false));
+		sybaseExec.setLicenseManager(new LicenseManagerMock());
+		sybaseExec.setExecAuditor(execAuditor);
+		sybaseExec.setGuiNotifier(new GuiNotifier() {
+			
+			@Override
+			public void refreshExecGui() {
+			}
+		});
 		return sybaseExec;
 	}
 	
 	@Test
 	public void test_anonymiseString() {
-		SybaseExec sybaseExec = createExec();
+		SybaseExec sybaseExec = createSybaseExec();
 		
 		AnonConfig anonConfig = new AnonConfig();
 		anonConfig.init();

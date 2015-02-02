@@ -21,7 +21,7 @@ public class AnonConfig {
 	public void init(){
 		tables = new LinkedList<>();
 		anonMethods = new LinkedList<>();
-		methodExecutions = new HashMap<AnonymisationMethod, MethodExecution>();  
+		clearMethodExecutions();
 	}
 	
 	public List<DatabaseTableInfo> getTables() {
@@ -84,5 +84,10 @@ public class AnonConfig {
 		return methodExecutions.get(anonymisationMethod);
 	}
 	
-	
+	public void clearMethodExecutions(){
+		methodExecutions = new HashMap<AnonymisationMethod, MethodExecution>();  
+		for(AnonymisationMethod anonymisationMethod:anonMethods){
+			methodExecutions.put(anonymisationMethod, new MethodExecution(anonymisationMethod));
+		}
+	}
 }

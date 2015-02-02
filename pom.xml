@@ -163,7 +163,6 @@
 				<groupId>org.kubek2k</groupId>
 				<artifactId>springockito</artifactId>
 				<version>1.0.9</version>
-				<scope>test</scope>
 			</dependency>
 			<dependency>
 				<groupId>junit</groupId>

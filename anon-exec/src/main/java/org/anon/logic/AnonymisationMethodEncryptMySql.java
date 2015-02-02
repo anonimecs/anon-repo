@@ -2,7 +2,7 @@ package org.anon.logic;
 
 import org.anon.data.AnonymisedColumnInfo;
 import org.anon.data.AnonymizationType;
-import org.anon.data.RunMessage;
+import org.anon.data.ExecutionMessage;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 public class AnonymisationMethodEncryptMySql extends AnonymisationMethodEncrypt {
@@ -32,17 +32,18 @@ public class AnonymisationMethodEncryptMySql extends AnonymisationMethodEncrypt 
 
 	
 	@Override
-	public RunMessage runOnColumn(AnonymisedColumnInfo col) {
+	public ExecutionMessage runOnColumn(AnonymisedColumnInfo col) {
 		if(col.isJavaTypeString()) {
 			int rowCount = update("call an_meth_enc_proc (?, ?, ?)", col.getName() , col.getTable().getName(), hashmodint);
-			return new RunMessage("Updated Strings", rowCount);
+			return new ExecutionMessage("Updated Strings", rowCount);
+
 		}
 		else if(col.isJavaTypeDouble() || col.isJavaTypeLong()){
 			int rowCount = update("update "+ col.getTable().getName()+ " set " + col.getName() + " = " + col.getName() + " + round(rand("+hashmodint+") * "+ col.getName() +")/10");
-			return new RunMessage("Updated Numbers", rowCount);
+			return new ExecutionMessage("Updated Numbers", rowCount);
 		}
 		else {
-			throw new RuntimeException("Unimplemented");
+			throw new RuntimeException("Unimlemented");
 		}
 		
 	}

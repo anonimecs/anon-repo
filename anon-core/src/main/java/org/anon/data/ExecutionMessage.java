@@ -1,10 +1,10 @@
 package org.anon.data;
 
-public class RunMessage {
+public class ExecutionMessage {
 
 	private String message;
 	private Integer rowCount;
-	public RunMessage(String message, Integer rowCount) {
+	public ExecutionMessage(String message, Integer rowCount) {
 		super();
 		this.message = message;
 		this.rowCount = rowCount;

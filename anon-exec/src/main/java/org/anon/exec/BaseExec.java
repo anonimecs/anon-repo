@@ -7,8 +7,9 @@ import javax.sql.DataSource;
 import org.anon.AbstractDbConnection;
 import org.anon.data.AnonConfig;
 import org.anon.data.AnonymisedColumnInfo;
+import org.anon.data.ExecutionMessage;
 import org.anon.data.MethodExecution;
-import org.anon.data.RunMessage;
+import org.anon.exec.audit.ExecAuditor;
 import org.anon.exec.constraint.Constraint;
 import org.anon.exec.constraint.ConstraintManager;
 import org.anon.license.LicenseException;
@@ -33,6 +34,12 @@ public abstract class BaseExec {
 	protected LicenseManager licenseManager;
 	
 	@Autowired
+	protected ExecAuditor execAuditor;
+	
+	@Autowired
+	protected GuiNotifier guiNotifier;
+	
+	@Autowired
 	protected DbConnectionFactory dbConnectionFactory;
 	
 	int tablesAnonimised;
@@ -40,12 +47,33 @@ public abstract class BaseExec {
 	public void runAll() {
 		tablesAnonimised = 0; 
 		
+		
+		try {
+			execAuditor.insertExecution("Run All");
+			execConfig.clearMethodExecutions();
 		for (AnonymisationMethod anonymisationMethod : execConfig.getAnonMethods()) {
-			run(anonymisationMethod);
+				do_run(anonymisationMethod);
+			}
+			execAuditor.executionFinished();
+		} catch (RuntimeException e){
+			execAuditor.executionFailed(e.getMessage());
+			throw e;
 		}
 	}
 
 	public void run(AnonymisationMethod anonymisationMethod) {
+		try {
+			execAuditor.insertExecution("Run Method Only");
+			execConfig.clearMethodExecutions();
+			do_run(anonymisationMethod);
+			execAuditor.executionFinished();
+		} catch (RuntimeException e){
+			execAuditor.executionFailed(e.getMessage());
+			throw e;
+		}
+	}
+	
+	protected void do_run(AnonymisationMethod anonymisationMethod) {
 		licenseManager.checkLicenseExpired();
 		
 		AbstractDbConnection connection = 
@@ -62,25 +90,23 @@ public abstract class BaseExec {
 			for (AnonymisedColumnInfo col : anonymisationMethod.getApplyedToColumns()) {
 				assertFreeEditionRunCount();
 				methodExecution.startedCol(col);
-				methodExecution.addMessage(col, new RunMessage("Deacivating constraints", null));
+				addMessage(methodExecution, col, new ExecutionMessage("Deacivating constraints", null));
 				ConstraintManager constraintManager = getConstraintManager(dataSource);
 				List<? extends Constraint> deactivatedContstraints = constraintManager.deactivateConstraints(col);
-				methodExecution.addMessage(col, new RunMessage("Deacivated constraints", deactivatedContstraints.size()));
+				addMessage(methodExecution, col, new ExecutionMessage("Deacivated constraints", deactivatedContstraints.size()));
 
-				RunMessage runResult;
+				ExecutionMessage runResult;
 				try{
-					methodExecution.addMessage(col, new RunMessage("Anonymising rows", col.getTable().getRowCount()));
+					addMessage(methodExecution, col, new ExecutionMessage("Anonymising rows", col.getTable().getRowCount()));
 					runResult = anonymisationMethod.runOnColumn(col);
 				}
 				finally{
-					methodExecution.addMessage(col, new RunMessage("Reacivating constraints", deactivatedContstraints.size()));
+					addMessage(methodExecution, col, new ExecutionMessage("Reacivating constraints", deactivatedContstraints.size()));
 					constraintManager.activateConstraints(col, deactivatedContstraints);
 					showConstaintProblems(col, methodExecution, deactivatedContstraints);
-					
-//					dataSource.getConnection().close();
-					
 				}
-				methodExecution.addMessage(col, runResult);
+				methodExecution.finishedCol(col,runResult);
+					
 			}
 			methodExecution.finished();
 		}
@@ -91,6 +117,7 @@ public abstract class BaseExec {
 		}
 		finally{
 			anonymisationMethod.cleanupInDb();
+			execAuditor.saveMethodExecution(methodExecution);
 		}
 	}
 	
@@ -107,10 +134,17 @@ public abstract class BaseExec {
 		return schema;
 	}
 	
+	
+	private void addMessage(MethodExecution methodExecution, AnonymisedColumnInfo col, ExecutionMessage executionMessage) {
+		methodExecution.addMessage(col, executionMessage);
+		guiNotifier.refreshExecGui();
+		
+	}
+	
 	private void showConstaintProblems(AnonymisedColumnInfo col, MethodExecution methodExecution,List<? extends Constraint> deactivatedContstraints) {
 		for (Constraint constraint : deactivatedContstraints) {
 			if(! constraint.isActive()){
-				methodExecution.addMessage(col, new RunMessage(constraint.getMessage(), null));
+				methodExecution.addMessage(col, new ExecutionMessage(constraint.getMessage(), null));
 			}
 		}
 	}
@@ -140,5 +174,12 @@ public abstract class BaseExec {
 
 	public void setDbConnectionFactory(DbConnectionFactory dbConnectionFactory) {
 		this.dbConnectionFactory = dbConnectionFactory;
+	}
+	public void setExecAuditor(ExecAuditor execAuditor) {
+		this.execAuditor = execAuditor;
+	}
+	
+	public void setGuiNotifier(GuiNotifier guiNotifier) {
+		this.guiNotifier = guiNotifier;
 	}
 }

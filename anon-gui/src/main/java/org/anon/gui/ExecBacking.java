@@ -6,10 +6,16 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 
+import org.anon.data.AnonymisedColumnInfo;
 import org.anon.exec.BaseExec;
 import org.anon.exec.ExecFactory;
+import org.anon.exec.GuiNotifier;
 import org.anon.gui.navigation.NavigationCaseEnum;
 import org.anon.logic.AnonymisationMethod;
+import org.anon.persistence.dao.AuditDao;
+import org.anon.persistence.dao.EntitiesDao;
+import org.anon.persistence.data.AnonymisedColumnData;
+import org.anon.persistence.data.audit.ExecutionColumnData;
 import org.anon.service.DatabaseLoaderService;
 import org.anon.service.DbConnectionFactory;
 import org.primefaces.push.EventBus;
@@ -19,6 +25,16 @@ import org.primefaces.push.EventBusFactory;
 @ViewScoped
 public class ExecBacking extends BackingBase{
 
+	@ManagedProperty(value="#{guiNotifierImpl}")
+	protected GuiNotifier guiNotifier;
+
+	
+	@ManagedProperty(value="#{auditDaoImpl}")
+	protected AuditDao auditDao;
+	
+	@ManagedProperty(value="#{entitiesDaoImpl}")
+	protected EntitiesDao entitiesDao;
+	
 	@ManagedProperty(value="#{execFactory}")
 	protected ExecFactory execFactory;
 
@@ -46,7 +62,7 @@ public class ExecBacking extends BackingBase{
 					} catch (Exception e) {
 						logError(e.getMessage(), e);
 					} finally {
-						fireEvent();
+						guiNotifier.refreshExecGui();
 					}
 					
 				}
@@ -60,7 +76,7 @@ public class ExecBacking extends BackingBase{
 			logError(e.getMessage(), e);
 			showErrorInGui("Run failed: " + e.getMessage());
 		} finally {
-			fireEvent();
+			guiNotifier.refreshExecGui();
 		}
 		
 	}
@@ -80,7 +96,7 @@ public class ExecBacking extends BackingBase{
 					} catch (Exception e) {
 						logError(e.getMessage(), e);
 					} finally {
-						fireEvent();
+						guiNotifier.refreshExecGui();
 					}
 				}
 			});
@@ -92,10 +108,19 @@ public class ExecBacking extends BackingBase{
 			logError(e.getMessage(), e);
 			showErrorInGui("Run failed: " + e.getMessage());
 		} finally {
-			fireEvent();
+			guiNotifier.refreshExecGui();
 		}
 	}
 	
+	public Long getEstimatedRuntimeSec(AnonymisedColumnInfo anonymisedColumnInfo){
+		AnonymisedColumnData anonymisedColumnData  = entitiesDao.loadAnonymisedColumnData(anonymisedColumnInfo);
+		ExecutionColumnData executionColumnData = auditDao.getLastExecutionColumnData(anonymisedColumnData);
+		if(executionColumnData != null){
+			return executionColumnData.getRuntimeSec();
+		}
+		
+		return null;
+	}
 	
 	public void onClickExecute() {
 		databaseLoaderService.loadExecConfig();
@@ -136,5 +161,26 @@ public class ExecBacking extends BackingBase{
 
 	public void setDatabaseLoaderService(DatabaseLoaderService databaseLoaderService) {
 		this.databaseLoaderService = databaseLoaderService;
+	}
+	
+	public EntitiesDao getEntitiesDao() {
+		return entitiesDao;
+	}
+
+
+	public void setEntitiesDao(EntitiesDao entitiesDao) {
+		this.entitiesDao = entitiesDao;
+	}
+
+
+
+	public void setAuditDao(AuditDao auditDao) {
+		this.auditDao = auditDao;
+	}
+
+
+
+	public void setGuiNotifier(GuiNotifier guiNotifier) {
+		this.guiNotifier = guiNotifier;
 	}
 }

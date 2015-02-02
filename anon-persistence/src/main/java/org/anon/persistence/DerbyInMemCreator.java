@@ -28,18 +28,29 @@ public class DerbyInMemCreator {
     }		
 	
 	public void createTables() throws IOException {
-		logger.warn(">>>>>>>>>>>>>>>>>> Using in memory database <<<<<<<<<<<<<<<<<<<<<<");
-		for (String sql : getCreateStatements()) {
+		logger.warn(">>>>>>>>>>>>>>>>>> Creating Tables in the memory database <<<<<<<<<<<<<<<<<<<<<<");
+		runFile("/sql/create_tables.sql");
+	}
+	
+	public void dropTables() throws IOException {
+		logger.warn(">>>>>>>>>>>>>>>>>> Dropping tables in the memory database <<<<<<<<<<<<<<<<<<<<<<");
+		runFile("/sql/drop_tables.sql");
+	}
+	
+
+	private void runFile(String fileName) throws IOException {
+		for (String sql : getStatements(fileName)) {
 			try {
 				jdbcTemplate.execute(sql);
 			} catch (Exception e) {
 				logger.error("failed " + sql, e);
 			}
 		}
+		
 	}
 
-	private List<String> getCreateStatements() throws IOException {
-		InputStream inputStream = this.getClass().getResourceAsStream("/sql/create_tables.sql");  
+	private List<String> getStatements(String fileName) throws IOException {
+		InputStream inputStream = this.getClass().getResourceAsStream(fileName);  
 		StringWriter writer = new StringWriter();
 		IOUtils.copy(inputStream, writer);
 		String fileContent = writer.toString();
@@ -63,9 +74,9 @@ public class DerbyInMemCreator {
 			if(sql.trim().startsWith("/*")){
 				continue;
 			}			
-			if(sql.toLowerCase().contains("drop table")){
-				continue;
-			}
+//			if(sql.toLowerCase().contains("drop table")){
+//				continue;
+//			}
 			res.add(sql.trim().replace("\n", " ").replace("\r", " "));
 		}
 		return res;

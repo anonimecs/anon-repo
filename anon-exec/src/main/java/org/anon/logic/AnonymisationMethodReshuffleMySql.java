@@ -1,7 +1,7 @@
 package org.anon.logic;
 
 import org.anon.data.AnonymisedColumnInfo;
-import org.anon.data.RunMessage;
+import org.anon.data.ExecutionMessage;
 
 public class AnonymisationMethodReshuffleMySql extends AnonymisationMethodReshuffle {
 	
@@ -65,7 +65,7 @@ public class AnonymisationMethodReshuffleMySql extends AnonymisationMethodReshuf
 	}
 	
 	@Override
-	public RunMessage runOnColumn(AnonymisedColumnInfo col) {
+	public ExecutionMessage runOnColumn(AnonymisedColumnInfo col) {
 		
 		String colName = col.getName();
 		String tableName = col.getTable().getName();
@@ -78,6 +78,6 @@ public class AnonymisationMethodReshuffleMySql extends AnonymisationMethodReshuf
 				"WHERE " + tableName + "." + colName + "=" + SHUFFLE_ORG + ".original_values)";
 		
 		int rowCount = update(sql);
-		return new RunMessage("Reshuffled Rows", rowCount);
+		return new ExecutionMessage("Reshuffled Rows", rowCount);
 	}
 }

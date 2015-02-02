@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?><project-modules id="moduleCoreId" project-version="1.5.0">
     <wb-module deploy-name="anon-gui">
-        <wb-resource deploy-path="/WEB-INF/web.xml" source-path="/src/editionDependent/free_edition_web.xml"/>
+        <wb-resource deploy-path="/WEB-INF/web.xml" source-path="/src/editionDependent/enterprise_edition_web.xml"/>
         <wb-resource deploy-path="/" source-path="/target/m2e-wtp/web-resources"/>
         <wb-resource deploy-path="/" source-path="/src/main/webapp" tag="defaultRootSource"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/java"/>
@@ -20,7 +20,13 @@
         <dependent-module archiveName="anon-gui-skin-1.4-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/anon-gui-skin/anon-gui-skin">
             <dependency-type>uses</dependency-type>
         </dependent-module>
+        <dependent-module archiveName="anon-enterprise-only-1.4-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/anon-enterprise-only/anon-enterprise-only">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="anon-security-1.4-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/anon-security/anon-security">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
         <property name="java-output-path" value="/anon-gui/target/classes"/>
-        <property name="context-root" value="anon-gui-1.4-SNAPSHOT-free"/>
+        <property name="context-root" value="anon-gui-1.4-SNAPSHOT-enterprise"/>
     </wb-module>
 </project-modules>

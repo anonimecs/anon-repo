@@ -10,4 +10,15 @@
 	
 	<bean class="org.anon.data.AnonConfig"/>
 	
+	<bean id="licenseManager" class="org.anon.exec.mock.LicenseManagerMock"/>
+	
+	<bean id="execAuditor" class="org.anon.exec.mock.ExecAuditorMock"/>
+	
+	<bean id="auditDao" class="org.anon.exec.mock.AuditDaoMock"/>
+
+	<bean id="entitiesDao" class="org.anon.exec.mock.EntitiesDaoMock"/>
+
+	<bean id="guiNotifier" class="org.anon.exec.mock.GuiNotifierMock"/>
+
+	
 </beans>

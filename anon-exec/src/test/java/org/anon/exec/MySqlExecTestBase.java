@@ -4,6 +4,7 @@ import javax.sql.DataSource;
 
 import org.anon.data.AnonConfig;
 import org.anon.data.Database;
+import org.anon.exec.mock.LicenseManagerMock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 
@@ -31,7 +32,7 @@ public class MySqlExecTestBase extends BaseExecTest {
 	protected MySqlExec createExec() {
 		MySqlExec mysqlExec = new MySqlExec();
 		mysqlExec.setDataSource(dataSourceMySql);
-		mysqlExec.setLicenseManager(new DummyLicenseManager(false));
+		mysqlExec.setLicenseManager(new LicenseManagerMock());
 		mysqlExec.setDbConnectionFactory(new DummyConnectionFactory(dataSourceMySql, Database.MYSQL));
 		return mysqlExec;
 	}

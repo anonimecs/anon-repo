@@ -3,13 +3,14 @@ package org.anon.exec;
 import javax.sql.DataSource;
 
 import org.anon.data.AnonConfig;
+import org.anon.exec.audit.ExecAuditor;
+import org.anon.exec.mock.LicenseManagerMock;
 import org.anon.logic.AnonymisationMethodEncryptOracle;
 import org.anon.vendor.OracleDbConnection;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
 
-@ContextConfiguration("classpath:BaseExecTest.xml")
+
 public class OracleExecTestMultiColFK extends BaseExecTest {
 
 	@Autowired
@@ -17,6 +18,9 @@ public class OracleExecTestMultiColFK extends BaseExecTest {
 	
 	@Autowired
 	AnonConfig anonConfig;
+	
+	@Autowired
+	ExecAuditor execAuditor;
 	
 	@Override
 	DataSource getDataSource() {
@@ -32,7 +36,14 @@ public class OracleExecTestMultiColFK extends BaseExecTest {
 	protected OracleExec createExec() {
 		OracleExec oracleExec = new OracleExec();
 		oracleExec.setDataSource(dataSourceOracle);
-		oracleExec.setLicenseManager(new DummyLicenseManager(false));
+		oracleExec.setLicenseManager(new LicenseManagerMock());
+		oracleExec.setExecAuditor(execAuditor);
+		oracleExec.setGuiNotifier(new GuiNotifier() {
+			@Override
+			public void refreshExecGui() {
+			}
+		});
+		
 		return oracleExec;
 	}
 	
