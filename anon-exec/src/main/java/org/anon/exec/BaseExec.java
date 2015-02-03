@@ -42,14 +42,15 @@ public abstract class BaseExec {
 	@Autowired
 	protected DbConnectionFactory dbConnectionFactory;
 	
+	private String userName;
+	
 	int tablesAnonimised;
 	
 	public void runAll() {
 		tablesAnonimised = 0; 
 		
-		
 		try {
-			execAuditor.insertExecution("Run All");
+			execAuditor.insertExecution("Run All", userName);
 			execConfig.clearMethodExecutions();
 		for (AnonymisationMethod anonymisationMethod : execConfig.getAnonMethods()) {
 				do_run(anonymisationMethod);
@@ -63,7 +64,7 @@ public abstract class BaseExec {
 
 	public void run(AnonymisationMethod anonymisationMethod) {
 		try {
-			execAuditor.insertExecution("Run Method Only");
+			execAuditor.insertExecution("Run Method Only", userName);
 			execConfig.clearMethodExecutions();
 			do_run(anonymisationMethod);
 			execAuditor.executionFinished();
@@ -132,8 +133,7 @@ public abstract class BaseExec {
 			}
 		}
 		return schema;
-	}
-	
+	}	
 	
 	private void addMessage(MethodExecution methodExecution, AnonymisedColumnInfo col, ExecutionMessage executionMessage) {
 		methodExecution.addMessage(col, executionMessage);
@@ -158,8 +158,15 @@ public abstract class BaseExec {
 
 	
 	protected abstract ConstraintManager getConstraintManager(DataSource dataSource);
-
 	
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+
 	public void setExecConfig(AnonConfig execConfig) {
 		this.execConfig = execConfig;
 	}

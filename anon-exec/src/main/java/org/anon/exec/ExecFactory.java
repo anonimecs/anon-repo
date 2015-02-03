@@ -17,16 +17,22 @@ public class ExecFactory {
 	@Autowired ApplicationContext applicationContext;
 	
 	
-	public BaseExec createExec(DatabaseSpecifics databaseSpecifics) {
+	public BaseExec createExec(DatabaseSpecifics databaseSpecifics, String user) {
 		
 		if(databaseSpecifics == SybaseDbConnection.databaseSpecifics){
-			return applicationContext.getBean(SybaseExec.class);
+			BaseExec exec = applicationContext.getBean(SybaseExec.class);
+			exec.setUserName(user);
+			return exec;
 		}
 		else if(databaseSpecifics == OracleDbConnection.databaseSpecifics){
-			return applicationContext.getBean(OracleExec.class);
+			BaseExec exec = applicationContext.getBean(OracleExec.class);
+			exec.setUserName(user);
+			return exec;
 		} 
 		else if(databaseSpecifics == MySqlDbConnection.databaseSpecifics) {
-			return applicationContext.getBean(MySqlExec.class);
+			BaseExec exec = applicationContext.getBean(MySqlExec.class);
+			exec.setUserName(user);
+			return exec;
 		}
 
 		throw new RuntimeException("Unspecified db " + databaseSpecifics);

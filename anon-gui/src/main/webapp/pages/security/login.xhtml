@@ -24,10 +24,10 @@
 					
 				<h:panelGrid columns="2" cellpadding="5" styleClass="centered">
 		        	<h:outputLabel for="j_username" value="Username:" />
-		            <p:inputText id="j_username" value="#{loginBacking.username}" required="true" />
+		            <p:inputText id="j_username" value="#{loginBean.username}" required="true" />
 		 
 		            <h:outputLabel for="j_password" value="Password:" />
-		            <p:password id="j_password" value="#{loginBacking.password}" required="true" />
+		            <p:password id="j_password" value="#{loginBean.password}" required="true" />
 		            
 		            <f:facet name="footer">
 		            	<p:commandButton type="submit" value="Login" ajax="false" id="login"

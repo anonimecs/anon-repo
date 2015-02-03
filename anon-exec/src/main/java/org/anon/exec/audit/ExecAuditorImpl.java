@@ -4,7 +4,6 @@ import java.util.Date;
 
 import javax.annotation.PostConstruct;
 
-import org.anon.UserHolder;
 import org.anon.Utils;
 import org.anon.data.ColumnExecution;
 import org.anon.data.ExecutionMessage;
@@ -29,30 +28,18 @@ public class ExecAuditorImpl implements ExecAuditor{
 	
 	@Autowired
 	protected EntitiesDao entitiesDao; 
-	
-	@Autowired(required=false)
-	protected UserHolder userHolder;
-	
+
 	ExecutionData executionData;
 	
 	@PostConstruct
 	public void init() {
-		if(userHolder == null){
-			userHolder = new UserHolder() {
-				@Override
-				public String getExecutingUser() {
-					return "FREEVERSION_USER";
-				}
-			};
-		}
-
 	}
 	
-	public void insertExecution(String description) {
+	public void insertExecution(String description, String username) {
 		executionData = new ExecutionData();
 		executionData.setDescription(description);
 		executionData.setStartTime(new Date());
-		executionData.setUserName(userHolder.getExecutingUser());
+		executionData.setUserName(username);
 		executionData.setStatusEnum(Status.RUNNING);
 		
 		auditDao.save(executionData);		

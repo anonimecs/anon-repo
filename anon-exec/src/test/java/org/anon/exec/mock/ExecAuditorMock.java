@@ -6,7 +6,7 @@ import org.anon.exec.audit.ExecAuditor;
 public class ExecAuditorMock implements ExecAuditor{
 
 	@Override
-	public void insertExecution(String description) {
+	public void insertExecution(String description, String user) {
 		// TODO Auto-generated method stub
 		
 	}

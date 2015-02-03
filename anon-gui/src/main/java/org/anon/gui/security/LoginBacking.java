@@ -1,9 +1,11 @@
 package org.anon.gui.security;
 
 import java.io.IOException;
+import java.io.Serializable;
 
 import javax.faces.bean.ApplicationScoped;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.servlet.RequestDispatcher;
@@ -13,13 +15,15 @@ import javax.servlet.ServletResponse;
 
 import org.anon.gui.BackingBase;
 
+
 @ManagedBean
 @ApplicationScoped
-public class LoginBacking extends BackingBase {
+public class LoginBacking extends BackingBase implements Serializable {
 	
-	private String username;
+	private static final long serialVersionUID = 1L;
 	
-	private String password;
+	@ManagedProperty(value = "#{loginBean}")
+	private LoginBean loginBean;
 
 	public String doLogin() throws IOException, ServletException {	
 		
@@ -30,23 +34,11 @@ public class LoginBacking extends BackingBase {
 		
 		dispatcher.forward((ServletRequest) context.getRequest(),(ServletResponse) context.getResponse());
 		FacesContext.getCurrentInstance().responseComplete();
-		
+
 		return null;
 	}
 
-	public String getUsername() {
-		return username;
-	}
-
-	public void setUsername(String username) {
-		this.username = username;
-	}
-
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
+	public void setLoginBean(LoginBean loginBean) {
+		this.loginBean = loginBean;
 	}
 }

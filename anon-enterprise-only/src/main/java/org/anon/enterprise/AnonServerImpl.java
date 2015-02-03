@@ -56,7 +56,7 @@ public class AnonServerImpl implements AnonServer {
 
 		logger.info("Running " + anonConfig.getAnonMethods().size() + " anonymisation methods.");
 
-		BaseExec baseExec = execFactory.createExec(connection.getDatabaseSpecifics());
+		BaseExec baseExec = execFactory.createExec(connection.getDatabaseSpecifics(), "AnonServer");
 		baseExec.setDataSource(connection.getDataSource());
 		baseExec.runAll();
 		logger.warn("Anonimisation finished for " + databaseConfigGuiName);

@@ -4,7 +4,7 @@ import org.anon.data.MethodExecution;
 
 public interface ExecAuditor {
 
-	void insertExecution(String description);
+	void insertExecution(String description, String username);
 
 	void executionFinished();
 

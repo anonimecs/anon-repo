@@ -42,6 +42,7 @@ public class DatabasePanelBacking extends BackingBase{
 
 	@PostConstruct
 	public void init(){
+		
 		if(connected){
 			disconnectDb();
 		}

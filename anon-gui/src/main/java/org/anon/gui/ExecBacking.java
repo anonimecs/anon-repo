@@ -24,10 +24,12 @@ import org.primefaces.push.EventBusFactory;
 @ManagedBean
 @ViewScoped
 public class ExecBacking extends BackingBase{
+	
+	@ManagedProperty(value="#{infoBacking}")
+	protected InfoBacking infoBacking;
 
 	@ManagedProperty(value="#{guiNotifierImpl}")
 	protected GuiNotifier guiNotifier;
-
 	
 	@ManagedProperty(value="#{auditDaoImpl}")
 	protected AuditDao auditDao;
@@ -51,7 +53,7 @@ public class ExecBacking extends BackingBase{
 	public void onRunSingle(final AnonymisationMethod anonymisationMethod){
 		try{
 			logDebug("Running single " + anonymisationMethod);
-			final BaseExec baseExec = execFactory.createExec(dbConnectionFactory.getDatabaseSpecifics());
+			final BaseExec baseExec = execFactory.createExec(dbConnectionFactory.getDatabaseSpecifics(), infoBacking.getUserName());
 
 			execBackingExecutor.execute(new Runnable() {
 				
@@ -80,12 +82,11 @@ public class ExecBacking extends BackingBase{
 		}
 		
 	}
-	
 
 	public void onRun(){
 		try{
 			logDebug("Anonymising all methods" );
-			final BaseExec baseExec = execFactory.createExec(dbConnectionFactory.getDatabaseSpecifics());
+			final BaseExec baseExec = execFactory.createExec(dbConnectionFactory.getDatabaseSpecifics(), infoBacking.getUserName());
 	
 			execBackingExecutor.execute(new Runnable() {
 				
@@ -133,11 +134,9 @@ public class ExecBacking extends BackingBase{
 		eventBus.publish("/execEvent", "event");
 	}
 
-
 	public DbConnectionFactory getDbConnectionFactory() {
 		return dbConnectionFactory;
 	}
-
 
 	public void setDbConnectionFactory(DbConnectionFactory dbConnectionFactory) {
 		this.dbConnectionFactory = dbConnectionFactory;
@@ -149,6 +148,10 @@ public class ExecBacking extends BackingBase{
 
 	public void setExecBackingExecutor(Executor execBackingExecutor) {
 		this.execBackingExecutor = execBackingExecutor;
+	}
+
+	public void setInfoBacking(InfoBacking infoBacking) {
+		this.infoBacking = infoBacking;
 	}
 
 	public ExecFactory getExecFactory() {
@@ -167,18 +170,13 @@ public class ExecBacking extends BackingBase{
 		return entitiesDao;
 	}
 
-
 	public void setEntitiesDao(EntitiesDao entitiesDao) {
 		this.entitiesDao = entitiesDao;
 	}
 
-
-
 	public void setAuditDao(AuditDao auditDao) {
 		this.auditDao = auditDao;
 	}
-
-
 
 	public void setGuiNotifier(GuiNotifier guiNotifier) {
 		this.guiNotifier = guiNotifier;
