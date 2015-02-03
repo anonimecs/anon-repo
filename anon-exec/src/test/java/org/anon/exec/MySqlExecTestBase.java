@@ -6,9 +6,7 @@ import org.anon.data.AnonConfig;
 import org.anon.data.Database;
 import org.anon.exec.mock.LicenseManagerMock;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
 
-@ContextConfiguration("classpath:BaseExecTest.xml")
 public class MySqlExecTestBase extends BaseExecTest {
 	
 	@Autowired
