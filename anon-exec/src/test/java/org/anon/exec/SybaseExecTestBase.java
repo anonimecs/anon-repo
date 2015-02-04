@@ -29,6 +29,7 @@ public abstract class SybaseExecTestBase extends BaseExecTest {
 	protected SybaseExec createSybaseExec() {
 		SybaseExec sybaseExec = new SybaseExec();
 		sybaseExec.setDataSource(dataSourceSybase);
+		sybaseExec.setUserName("junit");
 		sybaseExec.setLicenseManager(new LicenseManagerMock());
 		sybaseExec.setExecAuditor(execAuditor);
 		sybaseExec.setGuiNotifier(new GuiNotifier() {

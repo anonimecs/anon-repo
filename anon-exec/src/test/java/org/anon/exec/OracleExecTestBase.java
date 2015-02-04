@@ -34,6 +34,7 @@ public abstract class OracleExecTestBase extends BaseExecTest {
 	protected OracleExec createExec() {
 		OracleExec oracleExec = new OracleExec();
 		oracleExec.setDataSource(dataSourceOracle);
+		oracleExec.setUserName("junit");
 		oracleExec.setLicenseManager(new LicenseManagerMock());
 		oracleExec.setExecAuditor(execAuditor);
 		oracleExec.setGuiNotifier(new GuiNotifier() {
