@@ -51,7 +51,6 @@ public abstract class BaseExec {
 		
 		try {
 			execAuditor.insertExecution("Run All", userName);
-			execConfig.clearMethodExecutions();
 		for (AnonymisationMethod anonymisationMethod : execConfig.getAnonMethods()) {
 				do_run(anonymisationMethod);
 			}
@@ -65,7 +64,6 @@ public abstract class BaseExec {
 	public void run(AnonymisationMethod anonymisationMethod) {
 		try {
 			execAuditor.insertExecution("Run Method Only", userName);
-			execConfig.clearMethodExecutions();
 			do_run(anonymisationMethod);
 			execAuditor.executionFinished();
 		} catch (RuntimeException e){
