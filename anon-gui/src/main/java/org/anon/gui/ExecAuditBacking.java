@@ -12,6 +12,8 @@ import org.anon.persistence.dao.AuditDao;
 import org.anon.persistence.data.audit.ExecutionColumnData;
 import org.anon.persistence.data.audit.ExecutionData;
 import org.anon.persistence.data.audit.ExecutionMethodData;
+import org.primefaces.event.ToggleEvent;
+import org.primefaces.model.Visibility;
 
 @ManagedBean
 @ViewScoped
@@ -21,7 +23,6 @@ public class ExecAuditBacking extends BackingBase{
 	protected AuditDao auditDao;
 	
 	protected List<ExecAuditListTableRow> execAuditListTableRows = new ArrayList<>();
-	protected ExecAuditListTableRow selectedAuditListTableRow;
 	protected List<ExecutionMethodDataPanelRow> executionMethodDataPanelRows = new ArrayList<>();
 	
 	@PostConstruct
@@ -34,13 +35,16 @@ public class ExecAuditBacking extends BackingBase{
 		}
 	}
 	
-	public void onAuditListTableRowSelect() {
-		executionMethodDataPanelRows = new ArrayList<>();
-		List<ExecutionMethodData> executionMethodDatas =auditDao.loadExecutionMethodDatas(selectedAuditListTableRow.getExecutionData());
-		for (ExecutionMethodData executionMethodData : executionMethodDatas) {
-			ExecutionMethodDataPanelRow executionMethodDataPanelRow = new ExecutionMethodDataPanelRow(executionMethodData);
-			executionMethodDataPanelRow.setExecutionColumnDatas(auditDao.loadExecutionColumnDatas(executionMethodData));
-			executionMethodDataPanelRows.add(executionMethodDataPanelRow);
+	public void onAuditListTableRowSelect(ToggleEvent event) {
+		
+		if(event.getVisibility().equals(Visibility.VISIBLE)) {
+			executionMethodDataPanelRows = new ArrayList<>();
+			List<ExecutionMethodData> executionMethodDatas =auditDao.loadExecutionMethodDatas(((ExecAuditListTableRow)event.getData()).executionData);
+			for (ExecutionMethodData executionMethodData : executionMethodDatas) {
+				ExecutionMethodDataPanelRow executionMethodDataPanelRow = new ExecutionMethodDataPanelRow(executionMethodData);
+				executionMethodDataPanelRow.setExecutionColumnDatas(auditDao.loadExecutionColumnDatas(executionMethodData));
+				executionMethodDataPanelRows.add(executionMethodDataPanelRow);
+			}
 		}
 	}
 
@@ -63,17 +67,6 @@ public class ExecAuditBacking extends BackingBase{
 	public void setExecAuditListTableRows(List<ExecAuditListTableRow> execAuditListTableRows) {
 		this.execAuditListTableRows = execAuditListTableRows;
 	}
-
-
-	public ExecAuditListTableRow getSelectedAuditListTableRow() {
-		return selectedAuditListTableRow;
-	}
-
-
-	public void setSelectedAuditListTableRow(ExecAuditListTableRow selectedAuditListTableRow) {
-		this.selectedAuditListTableRow = selectedAuditListTableRow;
-	}
-
 
 	public class ExecutionMethodDataPanelRow{
 		ExecutionMethodData executionMethodData;
@@ -99,10 +92,6 @@ public class ExecAuditBacking extends BackingBase{
 		public void setExecutionColumnDatas(List<ExecutionColumnData> executionColumnDatas) {
 			this.executionColumnDatas = executionColumnDatas;
 		}
-		
-
-		
-		
 	}
 	
 	public class ExecAuditListTableRow{
