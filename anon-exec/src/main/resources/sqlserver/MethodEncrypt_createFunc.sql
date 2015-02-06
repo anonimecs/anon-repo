@@ -12,7 +12,7 @@ As
    DECLARE @index INT
 
    SET  @inputStrLen = len(@inputStr)
-   SET @outputStr = null
+   SET @outputStr = ''
    SET @position = 1
   
    if @shift > 11
