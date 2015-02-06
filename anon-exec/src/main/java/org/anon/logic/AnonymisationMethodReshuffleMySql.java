@@ -19,7 +19,9 @@ public class AnonymisationMethodReshuffleMySql extends AnonymisationMethodReshuf
 				"id INT(11) NOT NULL AUTO_INCREMENT, " +
 				"shuffle_values VARCHAR(255), " +
 				"PRIMARY KEY (id), " +
-				"KEY shuffle_values(shuffle_values))";
+				"KEY shuffle_values(shuffle_values)) CHARACTER SET=utf8";
+		
+		
 		
 		execute(createTmpShuffleRandom);
 		
