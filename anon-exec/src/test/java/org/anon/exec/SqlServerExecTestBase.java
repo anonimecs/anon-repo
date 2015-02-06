@@ -2,6 +2,7 @@ package org.anon.exec;
 
 import javax.sql.DataSource;
 
+import org.anon.data.AnonConfig;
 import org.anon.data.Database;
 import org.anon.exec.audit.ExecAuditor;
 import org.anon.exec.mock.LicenseManagerMock;
@@ -11,6 +12,10 @@ public abstract class SqlServerExecTestBase extends BaseExecTest {
 
 	@Autowired
 	DataSource dataSourceSqlServer;
+	
+	@Autowired
+	AnonConfig anonConfig;
+
 	
 	@Autowired
 	ExecAuditor execAuditor;

@@ -47,7 +47,7 @@ public class DbConnectionFactoryImpl extends AnonStatic implements DbConnectionF
 			case ORACLE: execConnection = createOracleConnection(schema);
 				break;
 			case SYBASE: execConnection = createSybaseConnection(schema);
-				break;
+			break;
 			default: throw new RuntimeException(databaseConfig.getVendor() + " not supported.");
 		}
 		return execConnection;
