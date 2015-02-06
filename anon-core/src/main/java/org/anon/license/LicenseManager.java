@@ -15,5 +15,7 @@ public interface LicenseManager {
 	boolean isFreeEdition();
 	
 	boolean isEnterpriseEdition();
+	
+	String getCompanyName();
 
 }

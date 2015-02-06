@@ -33,4 +33,9 @@ public class LicenseManagerMock implements LicenseManager {
 		return false;
 	}
 
+	@Override
+	public String getCompanyName() {
+		return "test";
+	}
+
 }

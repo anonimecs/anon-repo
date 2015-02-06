@@ -12,6 +12,15 @@
 		
 <!-- 			<h1>Anonimecs</h1> -->
 			<h1>........</h1>
+			
+			<h:panelGrid columns="1" styleClass="licensePanel">
+				<h:outputText value="Licensed for #{licenseManager.getCompanyName()}"/>
+				<h:outputLink value="http://www.anonimecs.com/products.html" title="Upgrade Now!" target="_blank" style="color: white;"
+					rendered="#{licenseManager.isFreeEdition()}" >
+					<h:outputText value="Free Edition - Click to upgrade!"/>
+				</h:outputLink>
+				<h:outputText value="Enterprise Edition" rendered="#{licenseManager.isEnterpriseEdition()}"/>				
+			</h:panelGrid>
 		
 			<h:panelGrid columns="4" style="float: right;">	
 				<h:outputText value="Connected to #{databasePanelBacking.databaseConfig.guiName} (#{databasePanelBacking.databaseConfig.url})" styleClass="headline" rendered="#{databasePanelBacking.connected}"/>

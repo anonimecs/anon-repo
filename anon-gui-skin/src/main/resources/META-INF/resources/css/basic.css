@@ -36,6 +36,14 @@ body {
 	font-weight: bold;
 }
 
+.licensePanel {
+	float: left; 
+	color: white; 
+	margin-left: 20px; 
+	font-style: italic;
+	font-size: 12px;
+}
+
 .centered {
 	margin: 0 auto;
 }

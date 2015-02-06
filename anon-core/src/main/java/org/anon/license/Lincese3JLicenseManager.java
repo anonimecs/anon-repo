@@ -70,6 +70,11 @@ public class Lincese3JLicenseManager implements LicenseManager {
 			throw new LicenseException(e);
 		}
 	}
+	
+	@Override
+	public String getCompanyName() {
+		return lic.getFeature("company");
+	}
 
 	private int getInt(String key)  {
 		try{
