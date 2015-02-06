@@ -11,6 +11,7 @@ import org.anon.persistence.data.DatabaseConfig;
 import org.anon.vendor.DatabaseSpecifics;
 import org.anon.vendor.MySqlDbConnection;
 import org.anon.vendor.OracleDbConnection;
+import org.anon.vendor.SqlServerDbConnection;
 import org.anon.vendor.SybaseDbConnection;
 import org.apache.commons.dbcp.BasicDataSourceFactory;
 import org.springframework.stereotype.Service;
@@ -47,7 +48,9 @@ public class DbConnectionFactoryImpl extends AnonStatic implements DbConnectionF
 			case ORACLE: execConnection = createOracleConnection(schema);
 				break;
 			case SYBASE: execConnection = createSybaseConnection(schema);
-			break;
+				break;
+			case SQLSERVER: execConnection = createSqlServerConnection(schema);
+				break;
 			default: throw new RuntimeException(databaseConfig.getVendor() + " not supported.");
 		}
 		return execConnection;
@@ -55,36 +58,39 @@ public class DbConnectionFactoryImpl extends AnonStatic implements DbConnectionF
 	
 	private AbstractDbConnection createSybaseConnection(String schema) {	
 		AbstractDbConnection dbConnection = null;
-		Properties props = createDbProps(Database.SYBASE);
-		
-		if(schema!=null) {
-			props.setProperty("schema", schema);
-		}
+		Properties props = createDbProps(Database.SYBASE, schema);
 				
-		SybaseDbConnection sybaseDbConnection = new SybaseDbConnection(parseSybSchemaFromUrl(databaseConfig.getUrl()));
+		SybaseDbConnection sybaseDbConnection = new SybaseDbConnection(schema);
 		dbConnection = sybaseDbConnection;
 		dbConnection.setProperties(props);
 		dbConnection.setDataSource(getDatasource(props));
 		return dbConnection;
 	}
 	
-	private String parseSybSchemaFromUrl(String url) {
-		int index = url.lastIndexOf('/');
-		if(index != -1){
-			return url.substring(index + 1);
-		}
-		else {
-			return "tempdb";
-		}
+	private AbstractDbConnection createSqlServerConnection(String schema) {	
+		AbstractDbConnection dbConnection = null;
+		Properties props = createDbProps(Database.SQLSERVER,schema);
+		
+		SqlServerDbConnection sqlServerDbConnection = new SqlServerDbConnection(schema);
+		dbConnection = sqlServerDbConnection;
+		dbConnection.setProperties(props);
+		dbConnection.setDataSource(getDatasource(props));
+		return dbConnection;
 	}
+	
+//	private String parseSybSchemaFromUrl(String url) {
+//		int index = url.lastIndexOf('/');
+//		if(index != -1){
+//			return url.substring(index + 1);
+//		}
+//		else {
+//			return "tempdb";
+//		}
+//	}
 
 	private AbstractDbConnection createOracleConnection(String schema) {	
 		AbstractDbConnection dbConnection = null;
-		Properties props = createDbProps(Database.ORACLE);
-		
-		if(schema!=null) {
-			props.setProperty("schema", schema);
-		}
+		Properties props = createDbProps(Database.ORACLE, schema);
 		
 		OracleDbConnection oracleDbConnection = new OracleDbConnection(databaseConfig.getLogin());
 		dbConnection = oracleDbConnection;
@@ -95,11 +101,8 @@ public class DbConnectionFactoryImpl extends AnonStatic implements DbConnectionF
 	
 	private AbstractDbConnection createMySqlConnection(String schema) {	
 		AbstractDbConnection dbConnection = null;
-		Properties props = createDbProps(Database.MYSQL);
+		Properties props = createDbProps(Database.MYSQL, schema);
 		
-		if(schema!=null) {
-			props.setProperty("schema", schema);
-		}
 		
 		MySqlDbConnection mysqlDbConnection = new MySqlDbConnection(databaseConfig.getLogin());
 		dbConnection = mysqlDbConnection;
@@ -108,13 +111,18 @@ public class DbConnectionFactoryImpl extends AnonStatic implements DbConnectionF
 		return dbConnection;
 	}
 	
-	private Properties createDbProps(Database db) {
+	private Properties createDbProps(Database db, String schema) {
 		Properties props = new Properties();
 		
 		props.setProperty("driverClassName", db.getDriver());
 		props.setProperty("url", db.getJdbcPrefix());
 		props.setProperty("maxActive", JDBC_MAX_ACTIVE);
 		props.setProperty("maxWait", JDBC_MAX_WAIT);
+		
+		if(schema!=null) {
+			props.setProperty("schema", schema);
+		}
+
 		
 		return props;
 	}

@@ -13,7 +13,7 @@ mysql.test.user=anontest
 mysql.test.passwd=anontest
 mysql.test.schema=anontest
 
-sqlserver.test.url=jdbc:sqlserver://192.168.1.174:1433
+sqlserver.test.url=jdbc:sqlserver://sqlserver:1433
 sqlserver.test.user=sa
 sqlserver.test.passwd=secret
 sqlserver.test.schema=anon
