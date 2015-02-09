@@ -2,6 +2,7 @@ package org.anon.data;
 
 public enum Database {
 
+	SQLSERVER	("SqlServer",	"com.microsoft.sqlserver.jdbc.SQLServerDriver",			"jdbc:sqlserver://",		new String[]{"2008", "2012"}),
 	MYSQL	("MySql",	"com.mysql.jdbc.Driver",			"jdbc:mysql://",		new String[]{"5.5"}),
 	ORACLE	("Oracle",	"oracle.jdbc.driver.OracleDriver",	"jdbc:oracle:thin:@",	new String[]{"11g", "10x", "9y"}), 
 	SYBASE	("Sybase", 	"com.sybase.jdbc4.jdbc.SybDriver",	"jdbc:sybase:Tds:",		new String[]{"15.7", "16.0"});

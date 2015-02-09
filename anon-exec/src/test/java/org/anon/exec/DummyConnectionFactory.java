@@ -11,6 +11,7 @@ import org.anon.service.DbConnectionFactory;
 import org.anon.vendor.DatabaseSpecifics;
 import org.anon.vendor.MySqlDbConnection;
 import org.anon.vendor.OracleDbConnection;
+import org.anon.vendor.SqlServerDbConnection;
 import org.anon.vendor.SybaseDbConnection;
 
 public class DummyConnectionFactory implements DbConnectionFactory {
@@ -45,6 +46,8 @@ public class DummyConnectionFactory implements DbConnectionFactory {
 			case ORACLE: connection = new OracleDbConnection(schema);
 				break;
 			case SYBASE: connection = new SybaseDbConnection(schema);
+				break;
+			case SQLSERVER: connection = new SqlServerDbConnection(schema);
 				break;
 			default: throw new RuntimeException(vendor + " not supported.");
 		}

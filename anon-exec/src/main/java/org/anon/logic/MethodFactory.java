@@ -7,6 +7,7 @@ import org.anon.data.AnonymisedColumnInfo;
 import org.anon.vendor.DatabaseSpecifics;
 import org.anon.vendor.MySqlDbConnection;
 import org.anon.vendor.OracleDbConnection;
+import org.anon.vendor.SqlServerDbConnection;
 import org.anon.vendor.SybaseDbConnection;
 import org.springframework.stereotype.Service;
 
@@ -38,6 +39,14 @@ public class MethodFactory {
 		,AnonymisationMethodReshuffleMySql.class
 	};
 
+	@SuppressWarnings("unchecked")
+	public static Class<AnonymisationMethod>[] SQLSERVER_METHODS = new Class[]{
+		AnonymisationMethodNone.class
+		,AnonymisationMethodDestorySqlServer.class
+		,AnonymisationMethodEncryptSqlServer.class
+//		,AnonymisationMethodReshuffleMySql.class
+	};
+
 	public List<AnonymisationMethod> getSupportedMethods(AnonymisedColumnInfo anonymizedColumn, DatabaseSpecifics databaseSpecifics) throws Exception{
 		List<AnonymisationMethod> supportedMethods = new ArrayList<>();
 		
@@ -51,6 +60,9 @@ public class MethodFactory {
 		} 
 		else if(databaseSpecifics == MySqlDbConnection.databaseSpecifics) {
 			methods = MYSQL_METHODS;
+		}
+		else if(databaseSpecifics == SqlServerDbConnection.databaseSpecifics) {
+			methods = SQLSERVER_METHODS;
 		}
 		
 		for(Class<AnonymisationMethod> anonMethodClass:methods){
