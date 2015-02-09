@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+						http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd">
+
+	
+	<bean id="DerbyDataSource" 
+			class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+			<property name="driverClassName" value="org.apache.derby.jdbc.ClientDriver" />
+			<property name="url" value="jdbc:derby://localhost:1527/anon" />
+			<property name="username" value="app" />
+			<property name="password" value="anon" />
+	</bean>
+
+
+	<bean class="org.anon.service.admin.BackupService"/>
+	
+</beans>

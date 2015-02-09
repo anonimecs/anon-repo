@@ -20,7 +20,7 @@ sleep 5
 echo "database started"
 
 
-nohup java -Dspring.profiles.active=enterprise_edition -jar anonimecsEnterprise.war > anonimecs.log 2>&1 &
+nohup java -Dspring.profiles.active=enterprise_edition -Dderby.dir=$SCRIPTDIR -jar anonimecsEnterprise.war > anonimecs.log 2>&1 &
 echo "waiting to start the application"
 sleep 10
 echo "application started"

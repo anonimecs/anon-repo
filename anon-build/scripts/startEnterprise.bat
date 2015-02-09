@@ -15,7 +15,7 @@ echo "database started"
 
 
 
-start java -Dspring.profiles.active=enterprise_edition -jar anonimecsEnterprise.war
+start java -Dspring.profiles.active=enterprise_edition -Dderby.dir=%mypath% -jar anonimecsEnterprise.war
 
 echo "waiting to start the app"
 ping 192.0.2.3 -n 1 -w 10000 > nul
