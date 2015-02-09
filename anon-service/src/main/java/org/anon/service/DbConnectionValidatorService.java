@@ -20,7 +20,7 @@ public class DbConnectionValidatorService extends AnonStatic{
 		testUrl.append(config.getVendor().getJdbcPrefix()).append(config.getUrl());
 		
 		if(config.getDefaultSchema() != null && !config.getDefaultSchema().isEmpty()) {
-			testUrl.append("/").append(config.getDefaultSchema());
+			testUrl.append(config.getVendor().getSchemaAppendix(config.getDefaultSchema()));
 		}
 		
 		try {

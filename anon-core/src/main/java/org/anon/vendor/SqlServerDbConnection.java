@@ -25,15 +25,12 @@ public class SqlServerDbConnection extends AbstractDbConnection {
 
 	@Override
 	public  List<DatabaseColumnInfo> getColumns(final DatabaseTableInfo  databaseTableInfo) {
-		String SQL = "select cols.name as columnname, types.name as columntype                              "+
-					" from " + databaseTableInfo.getSchema() + "..syscolumns as cols, " + databaseTableInfo.getSchema() + "..sysobjects as objs, " + databaseTableInfo.getSchema() + "..systypes as types   "+
-					" where cols.id = objs.id                                                               "+
-					" and cols.usertype = types.usertype                                                    "+
-					" and objs.type='U'                                                                     "+
-					" and objs.name=?";
+		String SQL = " SELECT  c.name as columnname, t.Name as columntype " +
+				" FROM  " + databaseTableInfo.getSchema() + ".sys.columns c INNER JOIN  " + databaseTableInfo.getSchema() + ".sys.types t ON c.user_type_id = t.user_type_id " +
+				" WHERE c.object_id = OBJECT_ID('"+databaseTableInfo.getName()+"')";
 		
-		//String SQL = "select syscolumns.name as columnname, systypes.name as columntype from syscolumns, sysobjects, systypes where syscolumns.id = sysobjects.id and syscolumns.usertype = systypes.usertype and sysobjects.type='U' and sysobjects.name = ?";
-		return jdbcTemplate.query(SQL, new Object[]{databaseTableInfo.getName()}, new RowMapper<DatabaseColumnInfo>(){
+
+		return jdbcTemplate.query(SQL, new RowMapper<DatabaseColumnInfo>(){
 
 			@Override
 			public DatabaseColumnInfo mapRow(ResultSet rs, int rowNum)
@@ -45,17 +42,19 @@ public class SqlServerDbConnection extends AbstractDbConnection {
 			
 		});
 	}
+	
 
 	@Override
 	public List<DatabaseTableInfo> getTableNamesAndRowcounts(String selectedSchema) {
-		String SQL = "select ob.name,st.rowcnt from " + selectedSchema + "..sysobjects ob, " + selectedSchema + "..systabstats st where ob.type='U' and st.id=ob.id and indid = 0 order by ob.name";
+		String SQL = "SELECT distinct t.NAME AS TableName, p.Rows as TableRows "+
+				"FROM   " + selectedSchema + ".sys.tables t INNER JOIN  " + selectedSchema + ".sys.partitions p ON t.object_id = p.OBJECT_ID WHERE  t.NAME NOT LIKE 'dt%' ";
 		return jdbcTemplate.query(SQL, new RowMapper<DatabaseTableInfo>(){
 
 			@Override
 			public DatabaseTableInfo mapRow(ResultSet rs, int rowNum) throws SQLException {
 				DatabaseTableInfo databaseTableInfo = new DatabaseTableInfo();
-				databaseTableInfo.setName(rs.getString("name"));
-				databaseTableInfo.setRowCount(rs.getInt("rowcnt"));
+				databaseTableInfo.setName(rs.getString("TableName"));
+				databaseTableInfo.setRowCount(rs.getInt("TableRows"));
 				return databaseTableInfo;
 			}});
 		
@@ -64,7 +63,7 @@ public class SqlServerDbConnection extends AbstractDbConnection {
 	@Override
 	public void fillExampleValues(DatabaseTableInfo editedTable) {
 		for(DatabaseColumnInfo column: editedTable.getColumns()){
-			String sql = "select distinct top 5 " + column.getName() + " from " + editedTable.getSchema() + ".." + editedTable.getName();
+			String sql = "select distinct top 5 " + column.getName() + " from " + editedTable.getSchema() + ".dbo." + editedTable.getName();
 			if(column.isJavaTypeString()){
 				List<String> values = jdbcTemplate.queryForList(sql, String.class);
 				column.setExampleValues(values);
@@ -91,6 +90,8 @@ public class SqlServerDbConnection extends AbstractDbConnection {
 
 	@Override
 	public List<RelatedTableColumnInfo> findRelatedTables(DatabaseTableInfo editedTable, final DatabaseColumnInfo editedColumn) {
+		// TODO
+		if (true) throw new RuntimeException("unimplemented");
 		String schema = editedTable.getSchema(); 
 		String SQL = "select objs.name as tablename, typs.name columntype " +
 				" from "+schema+"..syscolumns as cols, "+schema+"..sysobjects as objs, "+schema+"..systypes as typs"+
@@ -116,7 +117,7 @@ public class SqlServerDbConnection extends AbstractDbConnection {
 
 	@Override
 	public List<String> getSchemas() {
-		List<String> res = jdbcTemplate.query("sp_helpdb", new RowMapper<String>(){
+		List<String> res = jdbcTemplate.query("SELECT name FROM sys.sysdatabases", new RowMapper<String>(){
 
 			@Override
 			public String mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -150,12 +151,10 @@ public class SqlServerDbConnection extends AbstractDbConnection {
 		if(schema.equalsIgnoreCase("model")){
 			return true;
 		}
-		if(schema.equalsIgnoreCase("auditdb")){
+		if(schema.equalsIgnoreCase("msdb")){
 			return true;
 		}
-		if(schema.equalsIgnoreCase("dbccdb")){
-			return true;
-		}
+
 		
 		return false;
 	}

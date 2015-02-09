@@ -34,4 +34,11 @@ public enum Database {
 	public String[] getVersions() {
 		return versions;
 	}
+	public String getSchemaAppendix(String schema){
+		if(this == SQLSERVER){
+			return ";databaseName=" + schema;
+		}
+		return "/"+ schema;
+	}
+	
 }
