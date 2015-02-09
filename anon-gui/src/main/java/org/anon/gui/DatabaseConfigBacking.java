@@ -15,6 +15,7 @@ import org.anon.service.DatabaseConfigService;
 import org.anon.service.DatabaseLoaderService;
 import org.anon.service.DbConnectionFactory;
 import org.anon.service.ServiceResult;
+import org.anon.service.ServiceResultMessage;
 
 @ManagedBean
 @SessionScoped
@@ -35,6 +36,8 @@ public class DatabaseConfigBacking extends BackingBase {
 	private List<DatabaseConfig> configList;
 	private List<String> schemaList;
 	private DatabaseConfig configBean;
+
+	private List<ServiceResultMessage> unsufficientPermissions;
 
 	@PostConstruct
 	private void init() {
@@ -72,16 +75,31 @@ public class DatabaseConfigBacking extends BackingBase {
 	public void testDatabaseConfig() {
 		logDebug("test databaseConfig " + configBean.getUrl());
 		
+		unsufficientPermissions = null;
+		
 		ServiceResult result = configService.testDatabaseConfig(configBean);
 		
 		if(!result.isFailed()) {
 			databaseLoaderService.connectDb(configBean);
 			schemaList = databaseLoaderService.getSchemas();
 			databaseLoaderService.disconnectDb();
+			configBean.setDefaultSchema(schemaList.get(0));
+			testSufficientPermissions();
+
 		}
 		handleServiceResultAsInfoMessage(result);
 	}
 	
+	public void testSufficientPermissions() {
+		logDebug("Testing perimissions for " + configBean.getDefaultSchema());
+		
+		databaseLoaderService.connectDb(configBean);
+		ServiceResult result = databaseLoaderService.testSufficientPermissions(configBean.getDefaultSchema());
+		databaseLoaderService.disconnectDb();
+		unsufficientPermissions = result.getResultMessages();
+		handleServiceResult(result);
+	}
+
 	public void updateDatabaseConfig() {
 		logDebug("update databaseConfig " + configBean.getUrl());
 		
@@ -164,6 +182,10 @@ public class DatabaseConfigBacking extends BackingBase {
 
 	public void setDbConnectionFactory(DbConnectionFactory dbConnectionFactory) {
 		this.dbConnectionFactory = dbConnectionFactory;
+	}
+	
+	public List<ServiceResultMessage> getUnsufficientPermissions() {
+		return unsufficientPermissions;
 	}
 	
 }

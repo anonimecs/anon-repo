@@ -161,5 +161,23 @@ public class SybaseDbConnection extends AbstractDbConnection {
 	}
 
 
+	@Override
+	public String []  getTestSufficientPermissionsScript(String selectedSchema) {
+		String [] SCRIPT = {
+				"use " + selectedSchema,
+				"create table TMP_TABLE_A(col1 varchar(50) not null,col2 varchar(50) not null,primary key(col1))",
+				"create table TMP_TABLE_B(col1_ref varchar(50) not null,col2_ref varchar(50) not null,CONSTRAINT my_fk    FOREIGN KEY (col1_ref)    REFERENCES TMP_TABLE_A (col1) )",
+				"alter table TMP_TABLE_B drop constraint my_fk",
+				"drop table TMP_TABLE_B",
+				"drop table TMP_TABLE_A"
+				};
+		
+		
+			return SCRIPT;
+
+	}
+
+
+
 
 }

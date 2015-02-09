@@ -55,11 +55,12 @@ xmlns="http://www.w3.org/1999/xhtml"
 						<p:selectOneMenu id="defaultSchema" value="#{databaseConfigBacking.configBean.defaultSchema}" style="width:150px"
 							disabled="#{empty databaseConfigBacking.schemaList}">
 							<f:selectItems value="#{databaseConfigBacking.schemaList}" />
+							<p:ajax event="change" listener="#{databaseConfigBacking.testSufficientPermissions}" update="permissionErrorBox" />
 						</p:selectOneMenu>
 						<p:message id="defaultSchemaMsg" for="defaultSchema"/>
 						
 						<h:panelGrid columns="3">
-							<p:commandButton id="testConnection" value="Test" actionListener="#{databaseConfigBacking.testDatabaseConfig}" update="addConnection,defaultSchema"/>
+							<p:commandButton id="testConnection" value="Test" actionListener="#{databaseConfigBacking.testDatabaseConfig}" update="addConnection,defaultSchema,permissionErrorBox"/>
 							<p:commandButton id="addConnection" value="Save" 
 								actionListener="#{databaseConfigBacking.addDatabaseConfig}" update="panel,:menuForm:menuBar"
 								disabled="#{licenseManager.reachedMaxDbConnections(databaseConfigBacking.configList.size()) or empty databaseConfigBacking.schemaList}"/>
@@ -72,6 +73,16 @@ xmlns="http://www.w3.org/1999/xhtml"
 						
 					</h:panelGrid>
 				</p:outputPanel>	
+				
+				<p:outputPanel id="permissionErrorBox">
+					<p:dataList value="#{databaseConfigBacking.unsufficientPermissions}" var="serviceResultMessage" rendered="#{not empty databaseConfigBacking.unsufficientPermissions}">
+				        <f:facet name="header">
+				            DB User permission problems
+				        </f:facet>						
+        				<h:outputText value="#{serviceResultMessage.headline}"/>
+						<h:outputText value="#{serviceResultMessage.details}"/>
+					</p:dataList>
+				</p:outputPanel>
 			</p:panel>
 		</h:form>
 		

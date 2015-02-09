@@ -210,5 +210,17 @@ public class DatabaseLoaderService {
 	public void schemaChanged() {
 		anonConfig.init();
 	}
-	
+
+	public ServiceResult testSufficientPermissions(String selectedSchema) {
+		ServiceResult result = new ServiceResult();
+		try{
+			dbConnectionFactory.getConnection().testSufficientPermissions(selectedSchema);
+		}
+		catch(Exception e){
+			result.addErrorMessage("User has unsufficient perimissions to anonymise. Grant permissions to run : ", e.getMessage());
+		}
+		return result;
+	}
+
+
 }

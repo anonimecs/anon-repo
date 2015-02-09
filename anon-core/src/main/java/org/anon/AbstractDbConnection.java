@@ -78,5 +78,29 @@ public abstract class AbstractDbConnection {
 
 	abstract public List<String> getSchemas();
 
+	public void testSufficientPermissions(String selectedSchema){
+		String lastSql = null;
+		try{
+			for (String sql : getTestSufficientPermissionsScript(selectedSchema)) {
+				lastSql = sql;
+				jdbcTemplate.execute(sql);
+			}
+		}
+		catch(Exception e){
+			logger.error("testSufficientPermissions error " + e);
+			
+			// force clean up created tables on error
+			try{} catch (Exception ignore ){jdbcTemplate.execute("drop table TMP_TABLE_B");}
+			try{} catch (Exception ignore ){jdbcTemplate.execute("drop table TMP_TABLE_A");}
+			
+			throw new RuntimeException(lastSql);
+		}
+
+	}
+	
+	abstract protected String[]  getTestSufficientPermissionsScript(String selectedSchema);
+
+
+
 
 }
