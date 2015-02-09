@@ -67,6 +67,9 @@
 				<version>2.17</version>
 				<configuration>
 					<skipTests>${skip.tests}</skipTests>
+					<excludes>
+						<exclude>**/SqlServer*.java</exclude> <!-- SqlServer tests should not run on jenkins -->
+					</excludes>
 				</configuration>
 			</plugin>
 
