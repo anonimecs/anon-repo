@@ -31,9 +31,10 @@ public class BackupService {
 	
 	@PostConstruct
 	public void init(){
-		if(derbyDirPath == null || derbyDirPath.isEmpty() || derbyDirPath.contains("\\")){
+		if(derbyDirPath == null || derbyDirPath.isEmpty() ){
 			throw new RuntimeException("Incorrect derby.dir parameter " + derbyDirPath);
 		}
+		derbyDirPath = derbyDirPath.replace("\\", "/");
 		if(!derbyDirPath.endsWith("/")){
 			derbyDirPath += "/";
 		}
