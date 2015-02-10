@@ -19,6 +19,7 @@
 				<p:menuitem value="Edit" url="/app/connection-list/"
 					icon="ui-icon-arrowrefresh-1-w" />
 			</p:submenu>
+			
 			<p:submenu label="Configure">
 				<p:menuitem value="Table list" url="/app/tables-list/" 
 					disabled="#{!databasePanelBacking.connected}" icon="ui-icon-zoomin" />
@@ -27,6 +28,7 @@
 				<p:menuitem value="Anonymize" url="/app/method/" 
 					disabled="#{null eq editedTableBacking.editedColumn}" icon="ui-icon-shuffle" />
 			</p:submenu>
+			
 			<p:submenu label="Run">
 				<p:menuitem value="Execute" action="#{execBacking.onClickExecute}"
 					icon="ui-icon-triangle-1-e" disabled="#{!databasePanelBacking.connected}"/>
@@ -34,7 +36,7 @@
 					icon="ui-icon-folder-collapsed" />					
 			</p:submenu>
 			
-			<p:submenu label="Admin">
+			<p:submenu label="Admin" rendered="#{licenseManager.isEnterpriseEdition()}">
 				<p:menuitem value="Backup" action="#{backupBacking.onMenuClicked}"
 					icon="ui-icon-disk" />
 			</p:submenu>

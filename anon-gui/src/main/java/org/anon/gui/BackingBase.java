@@ -2,9 +2,11 @@ package org.anon.gui;
 
 import javax.faces.application.ConfigurableNavigationHandler;
 import javax.faces.application.FacesMessage;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.context.FacesContext;
 
 import org.anon.gui.navigation.NavigationCaseEnum;
+import org.anon.license.LicenseManager;
 import org.anon.service.ServiceResult;
 import org.anon.service.ServiceResultMessage;
 import org.apache.commons.lang.builder.ReflectionToStringBuilder;
@@ -16,6 +18,13 @@ import org.apache.log4j.Logger;
 public class BackingBase {
 	
 	public static final String INFO_MESSAGE_ID = "infoMessage";
+	
+	@ManagedProperty(value="#{licenseManager}")
+	private LicenseManager licenseManager;
+	
+	public void setLicenseManager(LicenseManager licenseManager) {
+		this.licenseManager = licenseManager;
+	}
 	
 	@Override
 	public String toString() {
@@ -80,4 +89,12 @@ public class BackingBase {
 		
 		handler.performNavigation(nav.getUrl() + "?faces-redirect=true");
 	}
+	
+	protected void failInFreeEdition() {
+		String message = "The free edition does not support this feature";
+		showErrorInGui(message);
+		throw new RuntimeException(message);
+	}
+
+	
 }

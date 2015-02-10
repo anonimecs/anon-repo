@@ -21,6 +21,9 @@ public class BackupBacking extends BackingBase{
 	
 	public void onMenuClicked(){
 		logDebug("loading list of backup files");
+		
+		failInFreeEdition();
+		
 		try{
 			backupFileList = backupService.listBackups();
 			
@@ -32,9 +35,11 @@ public class BackupBacking extends BackingBase{
 		
 	}
 	
+
 	public void createBackup(){
 		logDebug("creating new backup");
 		try {
+			failInFreeEdition();
 			String dirName = backupService.createBackup();
 			showInfoInGui("Backup " + dirName +"  created");
 			backupFileList = backupService.listBackups();
