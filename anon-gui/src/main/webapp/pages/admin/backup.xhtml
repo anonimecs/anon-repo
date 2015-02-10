@@ -1,0 +1,56 @@
+<ui:composition 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+	template="/layout/layout.xhtml">
+
+	<ui:define name="statusDialogContent">
+		<h:outputText value="Backing up the database. Please wait..."/>
+	</ui:define>
+
+	<ui:define name="insert-content">
+
+		<p:panel id="wrapperPanel" header="Back up (dump) your configuration database to a safe location">	
+			
+			<p:spacer height="30" />
+			
+			<h:form id="backupForm">
+				<p:commandButton value="Backup the configuration now" action="#{backupBacking.createBackup()}" update=":backupList"/>
+				<br/>
+				<h:outputLabel value="You will back up all the anonymisation configurations, user settings, and audit info in the backup. 
+					You can revert to this backup any time in the future."/>
+			</h:form>
+			
+			<p:spacer height="30" />
+			
+			<p:panel id="backupList" header="List of existing backups">	
+				<p:dataTable value="#{backupBacking.backupFileList}" var="backupDir" emptyMessage="No backups extist">
+					<p:column headerText="Backup Directory">
+						<h:outputText value="#{backupDir}"/>
+	       			</p:column>					
+					<p:column headerText="Backup Date" sortBy="#{backupDir.backupDate}">
+						<h:outputText value="#{backupDir.backupDate}" converter="weekTimestampConverter"/>
+	       			</p:column>					
+				</p:dataTable>
+			</p:panel>	
+
+			<p:spacer height="30" />
+			
+			<p:panel id="rollbackInfoPanel" header="Rolling back to the above backup">
+				To roll back the configuration to a previous backup do the following:
+				<ul>
+					<li>Stop anonimecs and the derby config database server processes</li>
+					<li>Navigate to the <em>#{backupService.derbyDirPath}</em> directory</li>
+					<li>Rename the <em>anon</em> directory to <em>anon-orig</em></li>
+					<li>From the desired backup directory for example <em>backup_150210_1042.anonbackup</em> move the <em>anon</em> subdirectory up to <em>#{backupService.derbyDirPath}</em></li>
+					<li>Start anonimecs and the derby config database server processes with the standard start scripts</li>
+				</ul>
+			</p:panel>	
+					
+		</p:panel>					
+	</ui:define>
+
+</ui:composition>

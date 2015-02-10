@@ -17,7 +17,9 @@
 		<p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />       
   
   		<p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
-  			<h:outputText value="Loading..."/>
+  			<ui:insert name="statusDialogContent">
+  				<h:outputText value="Loading..."/>
+  			</ui:insert>
 		</p:dialog>
 			
 		<p:growl id="msgs" showDetail="true" autoUpdate="true" globalOnly="false" />

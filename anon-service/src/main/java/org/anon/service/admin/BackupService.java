@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
 import javax.sql.DataSource;
 
 import org.apache.log4j.Logger;
@@ -22,18 +23,28 @@ public class BackupService {
 	private static String EXTENSION = ".anonbackup";
 
 	@Value("${derby.dir}")
-	private String derbyDir;
+	private String derbyDirPath;
 	
 	
 	@Autowired
 	DataSource derbyDataSource;
 	
+	@PostConstruct
+	public void init(){
+		if(derbyDirPath == null || derbyDirPath.isEmpty() || derbyDirPath.contains("\\")){
+			throw new RuntimeException("Incorrect derby.dir parameter " + derbyDirPath);
+		}
+		if(!derbyDirPath.endsWith("/")){
+			derbyDirPath += "/";
+		}
+	}
+	
 	public List<BackupDir> listBackups(){
 		
-		logger.debug("loading backup list from " + derbyDir);
+		logger.debug("loading backup list from " + derbyDirPath);
 		
 		List<BackupDir> result = new LinkedList<>();
-		File dir = new File(derbyDir);
+		File dir = new File(derbyDirPath);
 		String[] dirList = dir.list(new FilenameFilter() {
 			
 			@Override
@@ -42,12 +53,16 @@ public class BackupService {
 			}
 		});
 		
-		for (String dirName : dirList) {
-	    	logger.debug(dirName);
-	    	result.add(new BackupDir(dirName));
+		for (String backupDirName : dirList) {
+	    	logger.debug("Backup found: " + backupDirName);
+	    	result.add(new BackupDir(backupDirName, derbyDirPath));
 		}		
 		
 		return result;
+	}
+	
+	public String getDerbyDirPath() {
+		return derbyDirPath;
 	}
 
 
@@ -66,10 +81,10 @@ public class BackupService {
 
 	protected String createFileName() {
 		String datetime = new SimpleDateFormat("yyMMdd_HHmm").format(new Date());
-		return derbyDir + "/backup_" + datetime + EXTENSION;
+		return derbyDirPath + "/backup_" + datetime + EXTENSION;
 	}
 	
 	void setDerbyDir(String derbyDir) {
-		this.derbyDir = derbyDir;
+		this.derbyDirPath = derbyDir;
 	}
 }
