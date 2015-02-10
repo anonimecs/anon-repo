@@ -91,9 +91,11 @@ public class BackingBase {
 	}
 	
 	protected void failInFreeEdition() {
-		String message = "The free edition does not support this feature";
-		showErrorInGui(message);
-		throw new RuntimeException(message);
+		if(licenseManager.isFreeEdition()){
+			String message = "The free edition does not support this feature";
+			showErrorInGui(message);
+			throw new RuntimeException(message);
+		}
 	}
 
 	

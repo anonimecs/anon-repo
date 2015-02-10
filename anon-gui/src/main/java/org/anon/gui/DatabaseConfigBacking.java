@@ -135,6 +135,7 @@ public class DatabaseConfigBacking extends BackingBase {
 		configList = null;
 		schemaList = new ArrayList<>();
 		configBean = new DatabaseConfig();
+		unsufficientPermissions = new ArrayList<>();
 	}
 	
 	public List<DatabaseConfig> getConfigList() {

@@ -69,9 +69,7 @@ public class ExecBacking extends BackingBase{
 					
 				}
 			});
-			
-			showExtInfoInGui("Disconnect from the DB", "Please close all sessions to the target database." );
-			
+						
 			Thread.sleep(250);
 			
 		} catch (Exception e) {
@@ -101,8 +99,6 @@ public class ExecBacking extends BackingBase{
 					}
 				}
 			});
-
-			showExtInfoInGui("Disconnect from the DB", "Please close all sessions to the target database." );
 			
 			Thread.sleep(250);
 		} catch (Exception e) {
