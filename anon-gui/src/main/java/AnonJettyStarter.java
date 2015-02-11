@@ -7,9 +7,7 @@ import org.eclipse.jetty.webapp.WebAppContext;
 
 /**
  * Main method to start the standalone application with embedded jetty servlet engine
- * The application must be packaged, and then started with 
- * java -jar anon-gui-0.0.1-SNAPSHOT.war
- * and then go to http://localhost:8080/anon-gui/pages/cockpit.jsf
+ * The application must be packaged, and then started with the start scipt in anon-build
  */
 public class AnonJettyStarter {
     public static void main(String[] args) throws Exception
@@ -22,7 +20,7 @@ public class AnonJettyStarter {
         WebAppContext webapp = new WebAppContext();
         webapp.setContextPath("/anon");
         webapp.setWar(location.toExternalForm());
-        webapp.setWelcomeFiles(new String []{"/pages/cockpit/connect.jsf"});
+        webapp.setWelcomeFiles(new String []{"/anon/pages/cockpit/connect.jsf"});
         server.setHandler(webapp);
         
         server.start();
