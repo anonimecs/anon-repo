@@ -17,7 +17,7 @@ public class AnonymisationMethodDestoryMySql extends AnonymisationMethodDestory 
 			return new ExecutionMessage("Updated Numeric records", rows );
 		}
 		else if(col.isJavaTypeDate()){
-			int rows = update("update "+ col.getTable().getName()+ " set " + col.getName() + " = getDate()");
+			int rows = update("update "+ col.getTable().getName()+ " set " + col.getName() + " = CURRENT_DATE()");
 			return new ExecutionMessage("Updated Date records", rows );
 		}
 		
