@@ -40,7 +40,7 @@ public abstract class SqlServerExecTestBase extends BaseExecTest {
 		sqlServerExec.setGuiNotifier(new GuiNotifier() {
 			
 			@Override
-			public void refreshExecGui() {
+			public void refreshExecGui(String message) {
 			}
 		});
 		sqlServerExec.setDbConnectionFactory(new DummyConnectionFactory(dataSourceSqlServer, Database.SYBASE));

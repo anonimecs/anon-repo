@@ -64,7 +64,7 @@ public class ExecBacking extends BackingBase{
 					} catch (Exception e) {
 						logError(e.getMessage(), e);
 					} finally {
-						guiNotifier.refreshExecGui();
+						guiNotifier.refreshExecGui(null);
 					}
 					
 				}
@@ -76,7 +76,7 @@ public class ExecBacking extends BackingBase{
 			logError(e.getMessage(), e);
 			showErrorInGui("Run failed: " + e.getMessage());
 		} finally {
-			guiNotifier.refreshExecGui();
+			guiNotifier.refreshExecGui(null);
 		}
 		
 	}
@@ -95,7 +95,7 @@ public class ExecBacking extends BackingBase{
 					} catch (Exception e) {
 						logError(e.getMessage(), e);
 					} finally {
-						guiNotifier.refreshExecGui();
+						guiNotifier.refreshExecGui(null);
 					}
 				}
 			});
@@ -105,7 +105,7 @@ public class ExecBacking extends BackingBase{
 			logError(e.getMessage(), e);
 			showErrorInGui("Run failed: " + e.getMessage());
 		} finally {
-			guiNotifier.refreshExecGui();
+			guiNotifier.refreshExecGui(null);
 		}
 	}
 	

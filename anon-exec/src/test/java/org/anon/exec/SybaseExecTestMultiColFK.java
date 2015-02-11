@@ -41,7 +41,7 @@ public class SybaseExecTestMultiColFK extends BaseExecTest {
 		sybaseExec.setGuiNotifier(new GuiNotifier() {
 			
 			@Override
-			public void refreshExecGui() {
+			public void refreshExecGui(String message) {
 			}
 		});
 		return sybaseExec;

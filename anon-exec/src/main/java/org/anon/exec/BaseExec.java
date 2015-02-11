@@ -135,7 +135,7 @@ public abstract class BaseExec {
 	
 	private void addMessage(MethodExecution methodExecution, AnonymisedColumnInfo col, ExecutionMessage executionMessage) {
 		methodExecution.addMessage(col, executionMessage);
-		guiNotifier.refreshExecGui();
+		guiNotifier.refreshExecGui(executionMessage.toString());
 		
 	}
 	

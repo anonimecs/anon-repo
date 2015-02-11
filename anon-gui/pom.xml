@@ -31,7 +31,7 @@
 						<directory>../anon-build/License/free</directory>
 						<filtering>false</filtering>
 						<includes>
-							<include>license.txt</include>
+							<include>anonlicense.txt</include>
 						</includes>
 					</resource>
 					<resource>
@@ -55,7 +55,7 @@
 						<directory>../anon-build/License/enterprise</directory>
 						<filtering>false</filtering>
 						<includes>
-							<include>license.txt</include>
+							<include>anonlicense.txt</include>
 						</includes>
 					</resource>
 				</resources>

@@ -16,7 +16,7 @@ public class Lincese3JLicenseManagerTest extends AbstractJUnit4SpringContextTest
 	
 	@Test
 	public void checkFreeLicense() throws Exception {
-		check("../anon-build/License/free/license.txt");
+		check("../anon-build/License/free/anonlicense.txt");
 	}
 
 	protected void check(String file) throws IOException, FileNotFoundException {
@@ -30,7 +30,7 @@ public class Lincese3JLicenseManagerTest extends AbstractJUnit4SpringContextTest
 
 	@Test
 	public void checkEnterpriseLicense() throws Exception {
-		check("../anon-build/License/enterprise/license.txt");
+		check("../anon-build/License/enterprise/anonlicense.txt");
 	}
 
 }

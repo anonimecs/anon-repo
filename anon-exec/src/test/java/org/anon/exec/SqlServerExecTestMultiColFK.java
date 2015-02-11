@@ -41,7 +41,7 @@ public class SqlServerExecTestMultiColFK extends BaseExecTest {
 		sqlServerExec.setGuiNotifier(new GuiNotifier() {
 			
 			@Override
-			public void refreshExecGui() {
+			public void refreshExecGui(String message) {
 			}
 		});
 		return sqlServerExec;

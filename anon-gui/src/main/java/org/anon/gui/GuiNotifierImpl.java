@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 public class GuiNotifierImpl implements GuiNotifier{
 
 	@Override
-	public void refreshExecGui(){
+	public void refreshExecGui(String message){
 		EventBus eventBus = EventBusFactory.getDefault().eventBus();
 		eventBus.publish("/execEvent", "event");
 	}

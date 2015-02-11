@@ -39,7 +39,7 @@ public class MySqlExecTestBase extends BaseExecTest {
 		mysqlExec.setExecAuditor(execAuditor);
 		mysqlExec.setGuiNotifier(new GuiNotifier() {
 			@Override
-			public void refreshExecGui() {
+			public void refreshExecGui(String message) {
 			}
 		});
 		

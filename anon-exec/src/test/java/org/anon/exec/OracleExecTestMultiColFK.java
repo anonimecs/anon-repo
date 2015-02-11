@@ -40,7 +40,7 @@ public class OracleExecTestMultiColFK extends BaseExecTest {
 		oracleExec.setExecAuditor(execAuditor);
 		oracleExec.setGuiNotifier(new GuiNotifier() {
 			@Override
-			public void refreshExecGui() {
+			public void refreshExecGui(String message) {
 			}
 		});
 		

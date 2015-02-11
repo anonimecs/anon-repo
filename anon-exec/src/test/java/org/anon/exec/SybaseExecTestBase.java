@@ -35,7 +35,7 @@ public abstract class SybaseExecTestBase extends BaseExecTest {
 		sybaseExec.setGuiNotifier(new GuiNotifier() {
 			
 			@Override
-			public void refreshExecGui() {
+			public void refreshExecGui(String message) {
 			}
 		});
 		sybaseExec.setDbConnectionFactory(new DummyConnectionFactory(dataSourceSybase, Database.SYBASE));

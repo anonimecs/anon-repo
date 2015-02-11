@@ -14,7 +14,7 @@ import org.anon.service.admin.BackupService;
 @SessionScoped
 public class BackupBacking extends BackingBase{
 	
-	@ManagedProperty(value="#{backupServiceImpl}")
+	@ManagedProperty(value="#{backupService}")
 	private BackupService backupService;
 	
 	private List<BackupDir> backupFileList; 

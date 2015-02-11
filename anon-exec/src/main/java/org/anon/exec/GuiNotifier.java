@@ -1,7 +1,8 @@
 package org.anon.exec;
 
 
+
 public interface GuiNotifier {
 
-	void refreshExecGui();
+	void refreshExecGui(String message);
 }
