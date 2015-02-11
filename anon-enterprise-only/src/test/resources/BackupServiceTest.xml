@@ -15,6 +15,6 @@
 	</bean>
 
 
-	<bean class="org.anon.service.admin.BackupService"/>
+	<bean class="org.anon.service.admin.BackupServiceImpl"/>
 	
 </beans>

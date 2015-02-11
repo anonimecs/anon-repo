@@ -22,6 +22,7 @@ public class AnonJettyStarter {
         WebAppContext webapp = new WebAppContext();
         webapp.setContextPath("/anon");
         webapp.setWar(location.toExternalForm());
+        webapp.setWelcomeFiles(new String []{"/pages/cockpit/connect.jsf"});
         server.setHandler(webapp);
         
         server.start();

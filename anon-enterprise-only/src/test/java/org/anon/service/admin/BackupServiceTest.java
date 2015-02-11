@@ -17,7 +17,7 @@ import org.springframework.test.context.junit4.AbstractJUnit4SpringContextTests;
 public class BackupServiceTest extends AbstractJUnit4SpringContextTests  implements AnonUnitTest{
 
 	@Autowired
-	BackupService backupService;
+	BackupServiceImpl backupService;
 	
 	static int count = 0;
 	
