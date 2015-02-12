@@ -15,7 +15,7 @@ public class AnonymisationMethodReshuffleSqlServer extends AnonymisationMethodRe
 	public void setupInDb() {
 
 		String createTmpTableSql = 
-				" select ROWID=identity(10), COLCOL as orig, COLCOL as reshuffled        " +
+				" select ROW_NUMBER() OVER(ORDER BY COLCOL DESC) AS ROWID, COLCOL as orig, COLCOL as reshuffled        " +
 				" into " + TMP_TABLE + " " +
 				" from ( ";
 
