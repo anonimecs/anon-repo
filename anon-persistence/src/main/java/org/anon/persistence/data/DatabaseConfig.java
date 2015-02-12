@@ -1,5 +1,6 @@
 package org.anon.persistence.data;
 
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -30,7 +31,7 @@ import org.jasypt.hibernate4.type.EncryptedStringType;
 ) 
 
 @Entity
-public class DatabaseConfig {
+public class DatabaseConfig implements Serializable{
 
 	@Id
 	@GeneratedValue( strategy = GenerationType.AUTO)

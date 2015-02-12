@@ -15,4 +15,6 @@ public interface DatabaseConfigDao {
 	void removeDatabaseConfig(DatabaseConfig config);
 
 	DatabaseConfig loadConnectionConfig(String guiName);
+
+	void removeDatabaseConfig(String configGuiName);
 }

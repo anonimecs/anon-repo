@@ -24,16 +24,6 @@
 	<beans profile="enterprise_edition">
 		<import resource="classpath:spring-anon-security-config.xml"/>
 		<import resource="classpath:spring-anon-security-beans.xml"/>		
-
-		<bean id="anonServer" class="org.anon.enterprise.AnonServerImpl"/>
-		<bean class="org.springframework.remoting.rmi.RmiServiceExporter">
-		    <!-- does not necessarily have to be the same name as the bean to be exported -->
-		    <property name="serviceName" value="anonServer"/>
-		    <property name="service" ref="anonServer"/>
-		    <property name="serviceInterface" value="org.anon.enterprise.AnonServer"/>
-		    <!-- defaults to 1099 -->
-		    <property name="registryPort" value="1199"/>
-		</bean>
 	</beans>
 
 </beans>

@@ -1,11 +1,12 @@
 package org.anon.service;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.faces.application.FacesMessage;
 
-public class ServiceResult {
+public class ServiceResult implements Serializable{
 
 	private List<ServiceResultMessage> resultMessages;
 

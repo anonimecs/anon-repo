@@ -48,6 +48,20 @@ public class DatabaseConfigServiceImpl implements DatabaseConfigService {
 	}
 
 	@Override
+	public ServiceResult deleteDatabaseConfig(String configGuiName) {
+		ServiceResult result = new ServiceResult();
+		
+		try {
+			configDao.removeDatabaseConfig(configGuiName);
+		} catch (Exception e) {
+			logger.warn(e.getMessage());
+			result.addErrorMessage("Configuration not deleted", 
+					e.getCause() != null ?  e.getCause().getMessage() : e.getMessage());
+		}
+		return result;
+	}
+
+	@Override
 	@Transactional(readOnly = false)
 	public ServiceResult addDatabaseConfig(DatabaseConfig config) {
 		

@@ -1,10 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:tx="http://www.springframework.org/schema/tx"
-	xmlns:context="http://www.springframework.org/schema/context"
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:context="http://www.springframework.org/schema/context"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
 						http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd">
 
-	<bean id="backupService" class="org.anon.service.admin.BackupServiceImpl"/>
+	<bean id="backupService" class="org.anon.service.admin.BackupServiceImpl" />
+
+	<bean id="anonServer" class="org.anon.enterprise.api.AnonServerImpl" />
+	
+	<bean class="org.springframework.remoting.rmi.RmiServiceExporter">
+		<property name="serviceName" value="anonServer" />
+		<property name="service" ref="anonServer" />
+		<property name="serviceInterface" value="org.anon.enterprise.api.AnonServer" />
+		<!-- defaults to 1099 -->
+		<property name="registryPort" value="1199" />
+	</bean>
+
+	<bean class="org.springframework.remoting.rmi.RmiServiceExporter">
+		<property name="serviceName" value="databaseConfigService" />
+		<property name="service" ref="databaseConfigServiceImpl" />
+		<property name="serviceInterface" value="org.anon.service.DatabaseConfigService" />
+		<!-- defaults to 1099 -->
+		<property name="registryPort" value="1199" />
+	</bean>
 
 </beans>

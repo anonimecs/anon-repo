@@ -32,6 +32,13 @@ public class DatabaseConfigDaoImpl implements DatabaseConfigDao {
 	public void removeDatabaseConfig(DatabaseConfig config) {
 		sessionFactory.getCurrentSession().delete(config);
 	}
+	
+	@Override
+	public void removeDatabaseConfig(String configGuiName) {
+		String hql = "delete from DatabaseConfig where guiName= :guiName";
+		sessionFactory.getCurrentSession().createQuery(hql).setString("guiName", configGuiName).executeUpdate();
+		
+	}
 
 	@Autowired
 	public void setSessionFactory(SessionFactory sessionFactory) {

@@ -1,6 +1,6 @@
 package org.anon.enterprise.runner;
 
-import org.anon.enterprise.AnonServer;
+import org.anon.enterprise.api.AnonServer;
 import org.apache.log4j.Logger;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 

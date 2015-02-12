@@ -12,6 +12,8 @@ public interface DatabaseConfigService {
 	
 	public ServiceResult deleteDatabaseConfig(DatabaseConfig config);
 
+	public ServiceResult deleteDatabaseConfig(String configGuiName);
+	
 	public ServiceResult addDatabaseConfig(DatabaseConfig config);
 	
 	public ServiceResult testDatabaseConfig(DatabaseConfig config);

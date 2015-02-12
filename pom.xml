@@ -14,6 +14,7 @@
 		<module>anon-security</module>
 		<module>anon-gui-skin</module>
 		<module>anon-gui</module>
+		<module>anon-api</module>
 		<module>anon-enterprise-only</module>
 		<module>anon-build</module>
 	</modules>
