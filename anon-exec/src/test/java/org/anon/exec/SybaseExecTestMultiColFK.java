@@ -38,12 +38,7 @@ public class SybaseExecTestMultiColFK extends BaseExecTest {
 		sybaseExec.setDataSource(dataSourceSybase);
 		sybaseExec.setLicenseManager(new LicenseManagerMock());
 		sybaseExec.setExecAuditor(execAuditor);
-		sybaseExec.setGuiNotifier(new GuiNotifier() {
-			
-			@Override
-			public void refreshExecGui(String message) {
-			}
-		});
+		sybaseExec.setGuiNotifier(new NullGuiNotifier());
 		return sybaseExec;
 	}
 	

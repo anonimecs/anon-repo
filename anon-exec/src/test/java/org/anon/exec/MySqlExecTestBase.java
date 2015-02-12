@@ -37,11 +37,7 @@ public class MySqlExecTestBase extends BaseExecTest {
 		mysqlExec.setLicenseManager(new LicenseManagerMock());
 		mysqlExec.setUserName("junit");
 		mysqlExec.setExecAuditor(execAuditor);
-		mysqlExec.setGuiNotifier(new GuiNotifier() {
-			@Override
-			public void refreshExecGui(String message) {
-			}
-		});
+		mysqlExec.setGuiNotifier(new NullGuiNotifier());
 		
 		mysqlExec.setDbConnectionFactory(new DummyConnectionFactory(dataSourceMySql, Database.MYSQL));
 		return mysqlExec;

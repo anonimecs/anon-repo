@@ -38,12 +38,7 @@ public class SqlServerExecTestMultiColFK extends BaseExecTest {
 		sqlServerExec.setDataSource(dataSourceSqlServer);
 		sqlServerExec.setLicenseManager(new LicenseManagerMock());
 		sqlServerExec.setExecAuditor(execAuditor);
-		sqlServerExec.setGuiNotifier(new GuiNotifier() {
-			
-			@Override
-			public void refreshExecGui(String message) {
-			}
-		});
+		sqlServerExec.setGuiNotifier(new NullGuiNotifier());
 		return sqlServerExec;
 	}
 	

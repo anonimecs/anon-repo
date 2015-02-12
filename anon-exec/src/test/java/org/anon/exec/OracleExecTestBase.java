@@ -37,11 +37,7 @@ public abstract class OracleExecTestBase extends BaseExecTest {
 		oracleExec.setUserName("junit");
 		oracleExec.setLicenseManager(new LicenseManagerMock());
 		oracleExec.setExecAuditor(execAuditor);
-		oracleExec.setGuiNotifier(new GuiNotifier() {
-			@Override
-			public void refreshExecGui(String message) {
-			}
-		});
+		oracleExec.setGuiNotifier(new NullGuiNotifier());
 		
 		oracleExec.setDbConnectionFactory(new DummyConnectionFactory(dataSourceOracle, Database.ORACLE));
 		return oracleExec;

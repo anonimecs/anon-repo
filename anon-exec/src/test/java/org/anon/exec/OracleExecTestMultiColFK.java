@@ -38,11 +38,7 @@ public class OracleExecTestMultiColFK extends BaseExecTest {
 		oracleExec.setDataSource(dataSourceOracle);
 		oracleExec.setLicenseManager(new LicenseManagerMock());
 		oracleExec.setExecAuditor(execAuditor);
-		oracleExec.setGuiNotifier(new GuiNotifier() {
-			@Override
-			public void refreshExecGui(String message) {
-			}
-		});
+		oracleExec.setGuiNotifier(new NullGuiNotifier());
 		
 		return oracleExec;
 	}

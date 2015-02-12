@@ -37,12 +37,7 @@ public abstract class SqlServerExecTestBase extends BaseExecTest {
 		sqlServerExec.setUserName("junit");
 		sqlServerExec.setLicenseManager(new LicenseManagerMock());
 		sqlServerExec.setExecAuditor(execAuditor);
-		sqlServerExec.setGuiNotifier(new GuiNotifier() {
-			
-			@Override
-			public void refreshExecGui(String message) {
-			}
-		});
+		sqlServerExec.setGuiNotifier(new NullGuiNotifier());
 		sqlServerExec.setDbConnectionFactory(new DummyConnectionFactory(dataSourceSqlServer, Database.SYBASE));
 		return sqlServerExec;
 	}

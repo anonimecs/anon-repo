@@ -32,12 +32,7 @@ public abstract class SybaseExecTestBase extends BaseExecTest {
 		sybaseExec.setUserName("junit");
 		sybaseExec.setLicenseManager(new LicenseManagerMock());
 		sybaseExec.setExecAuditor(execAuditor);
-		sybaseExec.setGuiNotifier(new GuiNotifier() {
-			
-			@Override
-			public void refreshExecGui(String message) {
-			}
-		});
+		sybaseExec.setGuiNotifier(new NullGuiNotifier());
 		sybaseExec.setDbConnectionFactory(new DummyConnectionFactory(dataSourceSybase, Database.SYBASE));
 		return sybaseExec;
 	}

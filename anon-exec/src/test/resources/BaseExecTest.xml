@@ -18,7 +18,7 @@
 
 	<bean id="entitiesDao" class="org.anon.exec.mock.EntitiesDaoMock"/>
 
-	<bean id="guiNotifier" class="org.anon.exec.EmptyGuiNotifier"/>
+	<bean id="guiNotifier" class="org.anon.exec.NullGuiNotifier"/>
 
 	
 </beans>
