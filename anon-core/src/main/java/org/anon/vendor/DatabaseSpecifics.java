@@ -7,7 +7,42 @@ import java.util.Set;
 
 import org.anon.data.DatabaseColumnInfo;
 
-public abstract class DatabaseSpecifics {
+public enum DatabaseSpecifics {
+
+	MySqlSpecific(
+	    createSet("VARCHAR", "CHAR", "TEXT"),
+		createSet("DATE","DATETIME", "TIMESTAMP", "TIME"),
+		createSet("INT", "TINYINT", "SMALLINT", "MEDIUMINT", "BIGINT"),
+		createSet("DECIMAL","FLOAT", "DOUBLE", "NUMERIC")),
+	
+	OracleSpecific(
+		createSet("VARCHAR", "VARCHAR2", "CHAR", "NCHAR", "NVARCHAR2")
+		,createSet("DATE", "TIMESTAMP")
+		,createSet("NUMBER", "LONG")
+		,createSet("FLOAT", "NUMERIC","BINARY_FLOAT","BINARY_DOUBLE")),
+		
+	SqlServerSpecific(
+		createSet("VARCHAR", "CHAR", "NCHAR", "NVARCHAR")
+		,createSet("DATE", "DATETIME", "DATETIME2", "TIME", "SMALLDATETIME")
+		,createSet("DECIMAL", "INT", "TINYINT", "BIGINT", "SMALLINT", "UINT")
+		,createSet("NUMERIC","FLOAT", "REAL")),
+
+	SybaseSpecific(
+		createSet("VARCHAR", "CHAR", "NCHAR", "NVARCHAR", "UNICHAR", "UNIVARCHAR")
+		,createSet("DATE", "DATETIME", "TIMESTAMP", "SMALLDATETIME", "TIME")
+		,createSet("DECIMAL", "INT", "TINYINT", "BIGINT", "SMALLINT", "UINT")
+		,createSet("NUMERIC","FLOAT", "REAL"))
+		
+	;
+	
+	
+	DatabaseSpecifics(Set<String> javaTypeStringSet, Set<String> javaTypeDateSet, Set<String> javaTypeLongSet,
+			Set<String> javaTypeDoubleSet) {
+		this.javaTypeStringSet = javaTypeStringSet;
+		this.javaTypeDateSet = javaTypeDateSet;
+		this.javaTypeLongSet = javaTypeLongSet;
+		this.javaTypeDoubleSet = javaTypeDoubleSet;
+	}
 
 	/**
 	 * You will need to initialize all these in a subclass

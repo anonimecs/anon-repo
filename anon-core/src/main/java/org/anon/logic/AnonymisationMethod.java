@@ -2,6 +2,7 @@ package org.anon.logic;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.LinkedList;
@@ -17,9 +18,9 @@ import org.apache.log4j.Logger;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.util.FileCopyUtils;
 
-public abstract class AnonymisationMethod {
+public abstract class AnonymisationMethod implements Serializable{
 
-	protected Logger logger = Logger.getLogger(getClass());
+	protected transient Logger logger = Logger.getLogger(getClass());
 	
 	protected Long id;
 	//protected static AtomicLong idCounter = new AtomicLong(); // turn this into a DB ID
@@ -27,7 +28,7 @@ public abstract class AnonymisationMethod {
 	protected AnonymizationType type;
 	protected List<AnonymisedColumnInfo> applyedToColumns = new LinkedList<>();
 	
-	protected DataSource dataSource;
+	protected transient DataSource dataSource;
 	protected List<String> setupSqls = new LinkedList<>();
 	protected List<String> cleanupSqls = new LinkedList<>();
 

@@ -24,4 +24,12 @@
 		<property name="registryPort" value="1199" />
 	</bean>
 
+	<bean class="org.springframework.remoting.rmi.RmiServiceExporter">
+		<property name="serviceName" value="editedTableService" />
+		<property name="service" ref="editedTableService" />
+		<property name="serviceInterface" value="org.anon.service.EditedTableService" />
+		<!-- defaults to 1099 -->
+		<property name="registryPort" value="1199" />
+	</bean>
+
 </beans>

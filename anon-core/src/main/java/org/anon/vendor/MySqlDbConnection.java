@@ -16,7 +16,7 @@ import org.springframework.jdbc.core.RowMapper;
 public class MySqlDbConnection extends AbstractDbConnection   {
 	private Logger logger = Logger.getLogger(getClass());
 
-	public static DatabaseSpecifics databaseSpecifics = new MySqlSpecific();
+	public static DatabaseSpecifics databaseSpecifics = DatabaseSpecifics.MySqlSpecific;
 	
 		
 	public MySqlDbConnection(String defaultSchema) {
