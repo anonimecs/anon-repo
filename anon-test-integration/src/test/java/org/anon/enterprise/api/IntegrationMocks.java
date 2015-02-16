@@ -13,6 +13,7 @@ public class IntegrationMocks {
 		config.setVendor(Database.MYSQL);
 		config.setVersion(null);
 		config.setGuiName("integration-test-mysql_" + id);
+		config.setDefaultSchema("employees");
 		return config;
 	}
 

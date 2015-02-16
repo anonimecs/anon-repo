@@ -75,11 +75,15 @@ public class EntitiesDaoImpl implements EntitiesDao {
 
 	@Override
 	public AnonymisedColumnData loadAnonymisedColumnData(AnonymisedColumnInfo anonymisedColumnInfo) {
-		String hql = "from AnonymisedColumnData where COLUMNNAME= :COLUMNNAME and TABLENAME = :TABLENAME and SCHEMANAME = :SCHEMANAME" ;
+		String hql = "select col from AnonymisedColumnData col inner join col.anonymisationMethodData method "
+				+ " where COLUMNNAME= :COLUMNNAME and TABLENAME = :TABLENAME and SCHEMANAME = :SCHEMANAME "
+				+ " and method.id = :METHOD_ID";
 		return (AnonymisedColumnData)sessionFactory.getCurrentSession().createQuery(hql)
 				.setString("TABLENAME", anonymisedColumnInfo.getTable().getName())
 				.setString("COLUMNNAME", anonymisedColumnInfo.getName())
-				.setString("SCHEMANAME", anonymisedColumnInfo.getTable().getSchema()).uniqueResult();
+				.setString("SCHEMANAME", anonymisedColumnInfo.getTable().getSchema())
+				.setLong("METHOD_ID", anonymisedColumnInfo.getAnonymisationMethod().getId())
+				.uniqueResult();
 	}
 	
 	

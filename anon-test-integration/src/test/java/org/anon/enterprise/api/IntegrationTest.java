@@ -96,7 +96,7 @@ public class IntegrationTest extends AbstractJUnit4SpringContextTests{
 	public void test5_DeleteExecutedDatabaseConfigration() {
 		try{
 			databaseConfigService.deleteDatabaseConfig(savedDatabaseConfig.getGuiName());
-			Assert.fail("Exectuted config can not be deleted");
+			Assert.fail("Exectuted config should not be deletable: " + savedDatabaseConfig);
 		}
 		catch(ServiceException e){
 			System.out.println(e.getResultMessages());
