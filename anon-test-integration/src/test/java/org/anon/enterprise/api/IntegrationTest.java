@@ -11,7 +11,9 @@ import org.anon.logic.AnonymisationMethodDestoryMySql;
 import org.anon.persistence.data.DatabaseConfig;
 import org.anon.service.DatabaseConfigService;
 import org.anon.service.EditedTableService;
+import org.anon.service.ServiceException;
 import org.anon.vendor.DatabaseSpecifics;
+import org.junit.Assert;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
@@ -49,7 +51,7 @@ public class IntegrationTest extends AbstractJUnit4SpringContextTests{
 
 	
 	@Test
-	public void test1_CreateDatabaseConfigration() {
+	public void test1_CreateDatabaseConfigration() throws ServiceException {
 		DatabaseConfig databaseConfig = IntegrationMocks.createDatabaseConfigMySql(id);
 		databaseConfigService.addDatabaseConfig(databaseConfig);
 		savedDatabaseConfig = databaseConfig;
@@ -79,10 +81,27 @@ public class IntegrationTest extends AbstractJUnit4SpringContextTests{
 
 	
 	@Test
-	public void test9_DeleteDatabaseConfigration() {
-		databaseConfigService.deleteDatabaseConfig(savedDatabaseConfig.getGuiName());
+	public void test3_DeleteNotExecutedDatabaseConfigration()  throws ServiceException{
+			databaseConfigService.deleteDatabaseConfig(savedDatabaseConfig.getGuiName());
 	}
-
+	
+	@Test
+	public void test4_createAndExecuteConfig() throws ServiceException{
+		test1_CreateDatabaseConfigration();
+		test2_addAnonymisationMethod();
+		anonServer.runAll(savedDatabaseConfig.getGuiName());
+	}
+		
+	@Test
+	public void test5_DeleteExecutedDatabaseConfigration() {
+		try{
+			databaseConfigService.deleteDatabaseConfig(savedDatabaseConfig.getGuiName());
+			Assert.fail("Exectuted config can not be deleted");
+		}
+		catch(ServiceException e){
+			System.out.println(e.getResultMessages());
+		}
+	}
 
 
 }

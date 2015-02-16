@@ -3,7 +3,9 @@ package org.anon.persistence.dao;
 import java.util.List;
 
 import org.anon.persistence.data.DatabaseConfig;
+import org.hibernate.Criteria;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -35,8 +37,9 @@ public class DatabaseConfigDaoImpl implements DatabaseConfigDao {
 	
 	@Override
 	public void removeDatabaseConfig(String configGuiName) {
-		String hql = "delete from DatabaseConfig where guiName= :guiName";
-		sessionFactory.getCurrentSession().createQuery(hql).setString("guiName", configGuiName).executeUpdate();
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(DatabaseConfig.class).add(Restrictions.eq("guiName", configGuiName));
+		DatabaseConfig config = (DatabaseConfig)criteria.uniqueResult();
+		removeDatabaseConfig(config);
 		
 	}
 

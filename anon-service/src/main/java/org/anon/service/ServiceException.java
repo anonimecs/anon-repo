@@ -1,18 +1,21 @@
 package org.anon.service;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.faces.application.FacesMessage;
 
-public class ServiceResult implements Serializable{
+public class ServiceException extends Exception{
 
 	private List<ServiceResultMessage> resultMessages;
 
-	private boolean failed;
+
+	public ServiceException(String headline, String details) {
+		this();
+		addErrorMessage(headline, details);
+	}
 	
-	public ServiceResult() {
+	public ServiceException() {
 		resultMessages = new ArrayList<ServiceResultMessage>();
 	}
 	
@@ -25,12 +28,11 @@ public class ServiceResult implements Serializable{
 	}
 	
 	public void addErrorMessage(String headline, String details) {
-		failed = true;
+
 		resultMessages.add(new ServiceResultMessage(FacesMessage.SEVERITY_ERROR, headline, details));
 	}
 	
 	public void addFatalMessage(String headline, String details) {
-		failed = true;
 		resultMessages.add(new ServiceResultMessage(FacesMessage.SEVERITY_FATAL, headline, details));
 	}
 	
@@ -42,13 +44,7 @@ public class ServiceResult implements Serializable{
 		this.resultMessages = resultMessages;
 	}
 
-	public boolean isFailed() {
-		return failed;
-	}
 
-	public void setFailed(boolean failed) {
-		this.failed = failed;
-	}
 }
 
 
