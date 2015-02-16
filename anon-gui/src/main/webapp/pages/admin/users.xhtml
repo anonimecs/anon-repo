@@ -1,0 +1,51 @@
+<ui:composition 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	template="/layout/layout.xhtml">
+
+	<ui:define name="insert-content">
+
+		<h:form id="userListForm">
+		
+			<p:panel id="panel" header="User list">
+		
+				<h:panelGrid rendered="#{secBean.hasRole('ROLE_ADMIN')}">
+					<p:commandButton value="Add" action="#{userBacking.prepareNew()}"/>
+					
+				</h:panelGrid>
+			
+				<p:dataTable id="userList"
+							value="#{userBacking.users}" 
+							var="user">
+							
+					<p:column headerText="Username" sortBy="#{user.username}">
+			        	<h:outputText value="#{user.username}" />
+			    	</p:column>
+			    	
+			    	<p:column headerText="Name" sortBy="#{user.name}">
+			        	<h:outputText value="#{user.name}" />
+			    	</p:column>
+			    	
+			    	<p:column headerText="Surname" sortBy="#{user.surname}">
+			        	<h:outputText value="#{user.surname}" />
+			    	</p:column>
+			    	
+			    	<p:column style="width:10%">	
+			    		<p:commandButton id="deleteButton" update=":userListForm:panel" icon="ui-icon-close"
+			        		title="Delete" action="#{userBacking.deleteUser(user)}"
+			        		disabled="#{user.username eq infoBacking.getUserName()}">
+			        	</p:commandButton>
+			        </p:column>
+				
+				</p:dataTable>
+			
+			</p:panel>
+		
+		</h:form>
+						
+	</ui:define>
+
+</ui:composition>

@@ -13,7 +13,9 @@ public enum NavigationCaseEnum {
 	ANONYMIZE			("/pages/cockpit/anonymize.jsf",			"/app/method/"),
 	EXECUTE				("/pages/exec/exec.jsf",					"/app/execute/"),
 	EXE_AUDIT			("/pages/exec/execAudit.jsf",				"/app/execaudit/"),
-	BACKUP				("/pages/admin/backup.jsf",					"/app/backup/");
+	BACKUP				("/pages/admin/backup.jsf",					"/app/backup/"),
+	ADD_USER			("/pages/admin/usersAdd.jsf",				"/app/user-add/"),
+	USERS				("/pages/admin/users.jsf",					"/app/users/");
 	
 	private NavigationCaseEnum(String url, String path) {
 		this.url = url;

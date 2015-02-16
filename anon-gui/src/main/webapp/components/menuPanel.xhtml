@@ -39,6 +39,8 @@
 			<p:submenu label="Admin" rendered="#{licenseManager.isEnterpriseEdition()}">
 				<p:menuitem value="Backup" action="#{backupBacking.onMenuClicked}"
 					icon="ui-icon-disk" />
+				<p:menuitem value="User Management" url="/app/users/" 
+					icon="ui-icon-person" />
 			</p:submenu>
 			
 		</p:menu>

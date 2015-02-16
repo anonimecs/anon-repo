@@ -1,0 +1,53 @@
+<ui:composition 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	template="/layout/layout.xhtml">
+
+	<ui:define name="insert-content">
+
+		<h:form id="userAddForm">
+			<p:panel id="panel" header="Add user">
+		
+				<h:panelGrid id="grid" columns="3" columnClasses="col1style,col2style,col3style">
+				
+					<p:outputLabel for="username" value="Username:" />
+					<p:inputText id="username" value="#{userBacking.selectedUser.username}" required="true" />
+					<p:message for="username" />
+					
+					<p:outputLabel for="password" value="Password:"/>
+					<p:password id="password" value="#{userBacking.selectedUser.password}" required="true" 
+							label="Password">
+					</p:password>
+					<p:message for="password"/>
+					
+					<p:outputLabel for="name" value="Name:" />
+					<p:inputText id="name" value="#{userBacking.selectedUser.name}" required="false" />
+					<p:message for="name" />
+					
+					<p:outputLabel for="surname" value="Surname:" />
+					<p:inputText id="surname" value="#{userBacking.selectedUser.surname}" required="false" />
+					<p:message for="surname" />
+					
+					<p:outputLabel for="role" value="Role:" />
+					<p:selectOneMenu id="role" value="#{userBacking.selectedRole}" required="true">
+				    	<f:selectItems value="#{userBacking.roleSelection}" 
+				    		var="rl" itemLabel="#{rl}" itemValue="#{rl}"/>
+				   	</p:selectOneMenu>
+				   	<p:message for="role" />
+					
+					<p:commandButton value="Save" action="#{userBacking.saveUser()}"/>
+					<p:commandButton value="Clear" update="panel" process="@this">
+						<p:resetInput target="panel" />
+					</p:commandButton>
+					
+				</h:panelGrid>
+			
+			</p:panel>
+		</h:form>
+						
+	</ui:define>
+
+</ui:composition>
