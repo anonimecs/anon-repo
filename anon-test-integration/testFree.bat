@@ -1,8 +1,8 @@
 call setenv.bat
 
-call mvn clean package -P free
+call mvn clean install -P free
 
-cd anon-build-test
+cd anon-test-integration
 call mvn package -P free
 
 cd c:\Temp\anonimecs\anonimecsFreeWin
