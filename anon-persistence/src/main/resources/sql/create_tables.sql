@@ -37,7 +37,8 @@ create table AnonymisationMethodData (
     DATABASECONFIG_ID INT not null,
     anonymizationType VARCHAR(30) NOT NULL,
     anonMethodClass VARCHAR(255) NOT NULL,
-  	CONSTRAINT primary_key_AnonymisationMethodData PRIMARY KEY (ID)
+  	CONSTRAINT primary_key_AnonymisationMethodData PRIMARY KEY (ID),
+    CONSTRAINT fk_AnonymisationMethodData_DatabaseConfig FOREIGN KEY (DATABASECONFIG_ID) REFERENCES DatabaseConfig (ID)
 )
 go
 
@@ -48,7 +49,9 @@ create table AnonymisedColumnData (
     SCHEMANAME VARCHAR(255) NOT NULL,
     COLUMNTYPE VARCHAR(255) NOT NULL,
     AnonymisationMethodData_ID int,
-  	CONSTRAINT primary_key_AnonymisedColumnData PRIMARY KEY (ID)
+  	CONSTRAINT primary_key_AnonymisedColumnData PRIMARY KEY (ID),
+    CONSTRAINT fk_AnonymisedColumnData_AnonymisationMethodData FOREIGN KEY (AnonymisationMethodData_ID) REFERENCES AnonymisationMethodData (ID)
+
 )
 go
 

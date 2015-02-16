@@ -1,6 +1,7 @@
 package org.anon.enterprise.api;
 
 import java.util.Collections;
+import java.util.List;
 
 import org.anon.data.AnonymisedColumnInfo;
 import org.anon.data.DatabaseColumnInfo;
@@ -32,10 +33,24 @@ public class IntegrationTest extends AbstractJUnit4SpringContextTests{
 	AnonServer anonServer;
 	
 	protected static DatabaseConfig savedDatabaseConfig;
+
+	protected static long id = 0;
+
+	@Test
+	public void test0_loadConnectionConfigs() {
+		List<DatabaseConfig> list = databaseConfigService.loadConnectionConfigs();
+		// parse the highest ID
+		for (DatabaseConfig databaseConfig : list) {
+			if(id < databaseConfig.getId()){
+				id = databaseConfig.getId();
+			}
+		}
+	}
+
 	
 	@Test
 	public void test1_CreateDatabaseConfigration() {
-		DatabaseConfig databaseConfig = IntegrationMocks.createDatabaseConfigMySql();
+		DatabaseConfig databaseConfig = IntegrationMocks.createDatabaseConfigMySql(id);
 		databaseConfigService.addDatabaseConfig(databaseConfig);
 		savedDatabaseConfig = databaseConfig;
 	}
