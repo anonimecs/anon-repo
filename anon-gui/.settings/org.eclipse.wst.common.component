@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <?xml version="1.0" encoding="UTF-8"?><project-modules id="moduleCoreId" project-version="1.5.0">
     <wb-module deploy-name="anon-gui">
         <wb-resource deploy-path="/WEB-INF/web.xml" source-path="/src/editionDependent/enterprise_edition_web.xml"/>
@@ -33,3 +34,40 @@
         <property name="context-root" value="anon-gui-2.0-SNAPSHOT-enterprise"/>
     </wb-module>
 </project-modules>
+=======
+<?xml version="1.0" encoding="UTF-8"?><project-modules id="moduleCoreId" project-version="1.5.0">
+    <wb-module deploy-name="anon-gui">
+        <wb-resource deploy-path="/WEB-INF/web.xml" source-path="/src/editionDependent/enterprise_edition_web.xml"/>
+        <wb-resource deploy-path="/" source-path="/target/m2e-wtp/web-resources"/>
+        <wb-resource deploy-path="/" source-path="/src/main/webapp" tag="defaultRootSource"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/java"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/resources"/>
+        <dependent-module archiveName="anon-persistence-2.0-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/anon-persistence/anon-persistence">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="anon-core-2.0-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/anon-core/anon-core">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="anon-exec-2.0-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/anon-exec/anon-exec">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="anon-service-2.0-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/anon-service/anon-service">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="anon-gui-skin-2.0-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/anon-gui-skin/anon-gui-skin">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="anon-enterprise-only-2.0-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/anon-enterprise-only/anon-enterprise-only">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="anon-api-2.0-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/anon-api/anon-api">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="anon-security-2.0-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/anon-security/anon-security">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <property name="java-output-path" value="/anon-gui/target/classes"/>
+        <property name="context-root" value="anon-gui-2.0-SNAPSHOT-enterprise"/>
+    </wb-module>
+</project-modules>
+>>>>>>> f433e150161bc23d087604a6480c2ef237bf6713
