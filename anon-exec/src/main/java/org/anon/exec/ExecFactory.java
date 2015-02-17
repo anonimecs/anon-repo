@@ -1,9 +1,6 @@
 package org.anon.exec;
 
 import org.anon.vendor.DatabaseSpecifics;
-import org.anon.vendor.MySqlDbConnection;
-import org.anon.vendor.OracleDbConnection;
-import org.anon.vendor.SybaseDbConnection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
@@ -19,17 +16,22 @@ public class ExecFactory {
 	
 	public BaseExec createExec(DatabaseSpecifics databaseSpecifics, String user) {
 		
-		if(databaseSpecifics == SybaseDbConnection.databaseSpecifics){
+		if(databaseSpecifics == DatabaseSpecifics.SybaseSpecific){
 			BaseExec exec = applicationContext.getBean(SybaseExec.class);
 			exec.setUserName(user);
 			return exec;
 		}
-		else if(databaseSpecifics == OracleDbConnection.databaseSpecifics){
+		else if(databaseSpecifics == DatabaseSpecifics.OracleSpecific){
 			BaseExec exec = applicationContext.getBean(OracleExec.class);
 			exec.setUserName(user);
 			return exec;
 		} 
-		else if(databaseSpecifics == MySqlDbConnection.databaseSpecifics) {
+		else if(databaseSpecifics == DatabaseSpecifics.MySqlSpecific) {
+			BaseExec exec = applicationContext.getBean(MySqlExec.class);
+			exec.setUserName(user);
+			return exec;
+		}
+		else if(databaseSpecifics == DatabaseSpecifics.SqlServerSpecific) {
 			BaseExec exec = applicationContext.getBean(MySqlExec.class);
 			exec.setUserName(user);
 			return exec;
