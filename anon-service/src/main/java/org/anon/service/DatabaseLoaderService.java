@@ -36,7 +36,7 @@ public interface DatabaseLoaderService {
 
 	void schemaChanged() ;
 
-	ServiceResult testSufficientPermissions(String selectedSchema);
+	void testSufficientPermissions(String selectedSchema) throws ServiceException;
 
 	List<String> getLoadErrors();
 

@@ -1,8 +1,8 @@
 call setenv.bat
 
-call mvn clean package -P enterprise
+call mvn clean install -P enterprise
 
-cd anon-build-test
+cd anon-test-integration
 call mvn package -P enterprise
 
 cd c:\Temp\anonimecs\anonimecs

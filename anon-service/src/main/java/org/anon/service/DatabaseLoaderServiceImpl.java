@@ -225,15 +225,13 @@ public class DatabaseLoaderServiceImpl implements DatabaseLoaderService{
 	}
 
 	@Override
-	public ServiceResult testSufficientPermissions(String selectedSchema) {
-		ServiceResult result = new ServiceResult();
+	public void testSufficientPermissions(String selectedSchema) throws ServiceException{
 		try{
 			dbConnectionFactory.getConnection().testSufficientPermissions(selectedSchema);
 		}
 		catch(Exception e){
-			result.addErrorMessage("User has unsufficient perimissions to anonymise. Grant permissions to run : ", e.getMessage());
+			throw new ServiceException("User has unsufficient perimissions to anonymise. Grant permissions to run : ", e.getMessage());
 		}
-		return result;
 	}
 
 

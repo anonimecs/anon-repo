@@ -58,6 +58,10 @@
 							<include>anonlicense.txt</include>
 						</includes>
 					</resource>
+					<resource>
+						<directory>src/main/resources</directory>
+						<filtering>true</filtering>
+					</resource>
 				</resources>
 			</build>	       	        
 	        

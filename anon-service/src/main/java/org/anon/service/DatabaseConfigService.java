@@ -10,15 +10,15 @@ public interface DatabaseConfigService {
 	
 	public DatabaseConfig loadConnectionConfig(String guiName);
 	
-	public ServiceResult deleteDatabaseConfig(DatabaseConfig config);
+	public void deleteDatabaseConfig(DatabaseConfig config) throws ServiceException;
 
-	public ServiceResult deleteDatabaseConfig(String configGuiName);
+	public void deleteDatabaseConfig(String configGuiName) throws ServiceException;
 	
-	public ServiceResult addDatabaseConfig(DatabaseConfig config);
+	public void addDatabaseConfig(DatabaseConfig config) throws ServiceException;
 	
-	public ServiceResult testDatabaseConfig(DatabaseConfig config);
+	public void testDatabaseConfig(DatabaseConfig config) throws ServiceException;
 	
-	public ServiceResult updateDatabaseConfig(DatabaseConfig config);
+	public void updateDatabaseConfig(DatabaseConfig config) throws ServiceException;
 
 }
 

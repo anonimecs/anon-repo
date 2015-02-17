@@ -12,16 +12,21 @@
 		<property name="serviceName" value="anonServer" />
 		<property name="service" ref="anonServer" />
 		<property name="serviceInterface" value="org.anon.enterprise.api.AnonServer" />
-		<!-- defaults to 1099 -->
-		<property name="registryPort" value="1199" />
+		<property name="registryPort" value="${rmi.port}" />
 	</bean>
 
 	<bean class="org.springframework.remoting.rmi.RmiServiceExporter">
 		<property name="serviceName" value="databaseConfigService" />
 		<property name="service" ref="databaseConfigServiceImpl" />
 		<property name="serviceInterface" value="org.anon.service.DatabaseConfigService" />
-		<!-- defaults to 1099 -->
-		<property name="registryPort" value="1199" />
+		<property name="registryPort" value="${rmi.port}" />
+	</bean>
+
+	<bean class="org.springframework.remoting.rmi.RmiServiceExporter">
+		<property name="serviceName" value="editedTableService" />
+		<property name="service" ref="editedTableService" />
+		<property name="serviceInterface" value="org.anon.service.EditedTableService" />
+		<property name="registryPort" value="${rmi.port}" />
 	</bean>
 
 </beans>

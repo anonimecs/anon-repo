@@ -7,6 +7,7 @@ import javax.faces.context.FacesContext;
 
 import org.anon.gui.navigation.NavigationCaseEnum;
 import org.anon.license.LicenseManager;
+import org.anon.service.ServiceException;
 import org.anon.service.ServiceResult;
 import org.anon.service.ServiceResultMessage;
 import org.apache.commons.lang.builder.ReflectionToStringBuilder;
@@ -65,15 +66,22 @@ public class BackingBase {
 	     FacesContext.getCurrentInstance().addMessage(null, msg);
 	}
 	
-	protected void handleServiceResult(ServiceResult serviceResult) {
-		for(ServiceResultMessage msg : serviceResult.getResultMessages()) {
+	protected void handleServiceResult(ServiceException serviceException) {
+		for(ServiceResultMessage msg : serviceException.getResultMessages()) {
 			FacesContext.getCurrentInstance()
 			.addMessage(null , new FacesMessage(msg.getSeverity(), msg.getHeadline(), msg.getDetails()));
 		}
 	}
 	
-	protected void handleServiceResultAsInfoMessage(ServiceResult serviceResult) {
-		for(ServiceResultMessage msg : serviceResult.getResultMessages()) {
+	protected void handleServiceResultAsInfoMessage(ServiceException serviceException) {
+		for(ServiceResultMessage msg : serviceException.getResultMessages()) {
+			FacesContext.getCurrentInstance()
+			.addMessage(INFO_MESSAGE_ID, new FacesMessage(msg.getSeverity(), msg.getHeadline(), msg.getDetails()));
+		}
+	}
+	
+	protected void handleServiceResultAsInfoMessage(ServiceResult serviceException) {
+		for(ServiceResultMessage msg : serviceException.getResultMessages()) {
 			FacesContext.getCurrentInstance()
 			.addMessage(INFO_MESSAGE_ID, new FacesMessage(msg.getSeverity(), msg.getHeadline(), msg.getDetails()));
 		}

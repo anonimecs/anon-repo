@@ -1,5 +1,7 @@
 package org.anon.enterprise.api;
 
+import org.anon.persistence.data.DatabaseConfig;
+
 
 
 /**
@@ -9,5 +11,6 @@ public interface AnonServer {
 	
 	void runAll(String databaseConfigGuiName);
 
+	void useDatabaseConfig(DatabaseConfig databaseConfig);
 
 }

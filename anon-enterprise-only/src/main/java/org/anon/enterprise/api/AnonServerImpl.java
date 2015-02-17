@@ -65,6 +65,12 @@ public class AnonServerImpl implements AnonServer {
 	}
 
 
+	@Override
+	public void useDatabaseConfig(DatabaseConfig databaseConfig) {
+		dbConnectionFactory.setDatabaseConfig(databaseConfig);
+	}
+
+
 	
 
 }

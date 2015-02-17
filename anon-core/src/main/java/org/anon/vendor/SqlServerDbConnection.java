@@ -16,7 +16,7 @@ import org.springframework.jdbc.core.RowMapper;
 public class SqlServerDbConnection extends AbstractDbConnection {
 
 
-	public static DatabaseSpecifics databaseSpecifics = new SqlServerSpecific();
+	public static DatabaseSpecifics databaseSpecifics = DatabaseSpecifics.SqlServerSpecific;
 
 	public SqlServerDbConnection(String defaultSchema) {
 		super(defaultSchema);

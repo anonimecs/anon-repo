@@ -33,75 +33,68 @@ public class DatabaseConfigServiceImpl implements DatabaseConfigService {
 	
 	@Override
 	@Transactional(readOnly = false)
-	public ServiceResult deleteDatabaseConfig(DatabaseConfig config) {
+	public void deleteDatabaseConfig(DatabaseConfig config)  throws ServiceException{
 		
-		ServiceResult result = new ServiceResult();
 		
 		try {
 			configDao.removeDatabaseConfig(config);
 		} catch (Exception e) {
-			logger.warn(e.getMessage());
-			result.addErrorMessage("Configuration not deleted", 
+			logger.error(e.getMessage(), e);
+			throw new ServiceException("Configuration not deleted", 
 					e.getCause() != null ?  e.getCause().getMessage() : e.getMessage());
 		}
-		return result;
 	}
 
 	@Override
-	public ServiceResult deleteDatabaseConfig(String configGuiName) {
-		ServiceResult result = new ServiceResult();
+	@Transactional(readOnly = false)
+	public void deleteDatabaseConfig(String configGuiName)  throws ServiceException{
+
 		
 		try {
 			configDao.removeDatabaseConfig(configGuiName);
 		} catch (Exception e) {
-			logger.warn(e.getMessage());
-			result.addErrorMessage("Configuration not deleted", 
+			logger.error(e.getMessage(), e);
+			throw new ServiceException("Configuration not deleted", 
 					e.getCause() != null ?  e.getCause().getMessage() : e.getMessage());
 		}
-		return result;
+
 	}
 
 	@Override
 	@Transactional(readOnly = false)
-	public ServiceResult addDatabaseConfig(DatabaseConfig config) {
+	public void addDatabaseConfig(DatabaseConfig config) throws ServiceException{
 		
-		ServiceResult result = connectionValidator.connectionValid(config);
+		connectionValidator.connectionValid(config);
 		
-		if(!result.isFailed()) {
-			try {
-				configDao.addDatabaseConfig(config);
-			} catch (Exception e) {
-				logger.warn(e.getMessage());
-				result.addErrorMessage("Configuration not added", 
-						e.getCause() != null ?  e.getCause().getMessage() : e.getMessage());
-			}
+		try {
+			configDao.addDatabaseConfig(config);
+		} catch (Exception e) {
+			logger.error(e.getMessage(), e);
+			throw new ServiceException("Configuration not added", 
+					e.getCause() != null ?  e.getCause().getMessage() : e.getMessage());
 		}
-		return result;
 	}
 	
 	@Override
 	@Transactional(readOnly = false)
-	public ServiceResult updateDatabaseConfig(DatabaseConfig config) {
+	public void updateDatabaseConfig(DatabaseConfig config)  throws ServiceException{
 		
-		ServiceResult result = connectionValidator.connectionValid(config);
+		testDatabaseConfig(config);
 		
-		if(!result.isFailed()) {
-			try {
-				configDao.updateDatabaseConifg(config);
-			} catch (Exception e) {
-				logger.warn(e.getMessage());
-				result.addErrorMessage("Configuration not updated", 
-						e.getCause() != null ?  e.getCause().getMessage() : e.getMessage());
-			}
+		try {
+			configDao.updateDatabaseConifg(config);
+		} catch (Exception e) {
+			logger.error(e.getMessage(), e);
+			throw new ServiceException("Configuration not updated", 
+					e.getCause() != null ?  e.getCause().getMessage() : e.getMessage());
 		}
-		return result;
 	}
 
 	@Override
-	public ServiceResult testDatabaseConfig(DatabaseConfig config) {
+	public void testDatabaseConfig(DatabaseConfig config)  throws ServiceException{
 		
-		ServiceResult result = connectionValidator.connectionValid(config);
-		return result;
+		connectionValidator.connectionValid(config);
+
 	}
 }
 

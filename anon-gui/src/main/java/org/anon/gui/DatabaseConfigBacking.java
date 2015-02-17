@@ -14,7 +14,7 @@ import org.anon.persistence.data.DatabaseConfig;
 import org.anon.service.DatabaseConfigService;
 import org.anon.service.DatabaseLoaderService;
 import org.anon.service.DbConnectionFactory;
-import org.anon.service.ServiceResult;
+import org.anon.service.ServiceException;
 import org.anon.service.ServiceResultMessage;
 
 @ManagedBean
@@ -47,13 +47,15 @@ public class DatabaseConfigBacking extends BackingBase {
 	public void deleteDatabaseConfig(DatabaseConfig config) {
 		logDebug("delete databaseConfig " + config.getUrl());
 		
-		ServiceResult result = configService.deleteDatabaseConfig(config);
-		
-		if(!result.isFailed()) {
+		try{
+			configService.deleteDatabaseConfig(config);
 			showExtInfoInGui("Config deleted", config.getUrl());
 			reset();
 		}
-		handleServiceResultAsInfoMessage(result);
+		catch(ServiceException exception){
+			handleServiceResultAsInfoMessage(exception);
+			
+		}
 		
 		databasePanelBacking.init();
 	}
@@ -61,13 +63,15 @@ public class DatabaseConfigBacking extends BackingBase {
 	public void addDatabaseConfig() {
 		logDebug("add databaseConfig " + configBean.getUrl());
 		
-		ServiceResult result = configService.addDatabaseConfig(configBean);
-		
-		if(!result.isFailed()) {
+		try{
+			configService.addDatabaseConfig(configBean);
 			showExtInfoInGui("Config added", configBean.getUrl());
 			reset();	
 		}
-		handleServiceResultAsInfoMessage(result);
+		catch(ServiceException exception){
+			handleServiceResultAsInfoMessage(exception);
+			
+		}
 		databasePanelBacking.init();
 		configBean = new DatabaseConfig();
 	}
@@ -77,9 +81,8 @@ public class DatabaseConfigBacking extends BackingBase {
 		
 		unsufficientPermissions = null;
 		
-		ServiceResult result = configService.testDatabaseConfig(configBean);
-		
-		if(!result.isFailed()) {
+		try{
+			configService.testDatabaseConfig(configBean);
 			databaseLoaderService.connectDb(configBean);
 			schemaList = databaseLoaderService.getSchemas();
 			databaseLoaderService.disconnectDb();
@@ -87,31 +90,42 @@ public class DatabaseConfigBacking extends BackingBase {
 			testSufficientPermissions();
 
 		}
-		handleServiceResultAsInfoMessage(result);
+		catch(ServiceException exception){
+			handleServiceResultAsInfoMessage(exception);
+			
+		}
 	}
 	
 	public void testSufficientPermissions() {
 		logDebug("Testing perimissions for " + configBean.getDefaultSchema());
-		
-		databaseLoaderService.connectDb(configBean);
-		ServiceResult result = databaseLoaderService.testSufficientPermissions(configBean.getDefaultSchema());
-		databaseLoaderService.disconnectDb();
-		unsufficientPermissions = result.getResultMessages();
-		handleServiceResult(result);
+
+		try{
+			databaseLoaderService.connectDb(configBean);
+			databaseLoaderService.testSufficientPermissions(configBean.getDefaultSchema());
+			databaseLoaderService.disconnectDb();
+			unsufficientPermissions = new ArrayList<ServiceResultMessage>();
+		}
+		catch(ServiceException exception){
+			handleServiceResultAsInfoMessage(exception);
+			unsufficientPermissions = exception.getResultMessages();
+			
+		}
 	}
 
 	public void updateDatabaseConfig() {
 		logDebug("update databaseConfig " + configBean.getUrl());
 		
-		ServiceResult result = configService.updateDatabaseConfig(configBean);
-		
-		if(!result.isFailed()) {
+		try{
+			configService.updateDatabaseConfig(configBean);
 			showExtInfoInGui("Config updated", configBean.getUrl());
 			configBean = new DatabaseConfig();
 			databasePanelBacking.init();
 			redirectPageTo(NavigationCaseEnum.LIST_CONNECTION);
 		}
-		handleServiceResultAsInfoMessage(result);
+		catch(ServiceException exception){
+			handleServiceResultAsInfoMessage(exception);
+			
+		}
 	}
 	
 	public boolean isConfigInUse(DatabaseConfig config) {

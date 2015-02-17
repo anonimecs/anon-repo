@@ -1,11 +1,13 @@
 package org.anon.data;
 
+import java.io.Serializable;
+
 import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
-public class DataObject {
+public class DataObject implements Serializable{
 
 	@Override
 	public String toString() {

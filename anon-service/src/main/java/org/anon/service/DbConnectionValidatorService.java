@@ -11,10 +11,9 @@ import org.springframework.stereotype.Service;
 @Service
 public class DbConnectionValidatorService extends AnonStatic{
 
-	public ServiceResult connectionValid(DatabaseConfig config) {
+	public void connectionValid(DatabaseConfig config) throws ServiceException{
 		
 		StringBuilder testUrl = new StringBuilder();	
-		ServiceResult result = new ServiceResult();
 		
 		String drvClass = config.getVendor().getDriver();
 		testUrl.append(config.getVendor().getJdbcPrefix()).append(config.getUrl());
@@ -23,19 +22,26 @@ public class DbConnectionValidatorService extends AnonStatic{
 			testUrl.append(config.getVendor().getSchemaAppendix(config.getDefaultSchema()));
 		}
 		
+		Connection conn = null;
 		try {
 			Class.forName(drvClass);
-			Connection conn = DriverManager.getConnection
+			conn = DriverManager.getConnection
 					(testUrl.toString(), config.getLogin(), config.getPassword());
-			result.setFailed(!conn.isValid(3));
-			conn.close();
+			if (!conn.isValid(3)){
+				throw new ServiceException("Connection is not valid", null);
+			};
+			
 		} catch (SQLException e) {
-			result.addErrorMessage("Connection invalid", 
+			throw new ServiceException("Connection invalid", 
 					e.getCause() != null ?  e.getCause().getMessage() : e.getMessage());
 		} catch (ClassNotFoundException e) {
-			result.addErrorMessage("Driver not found", drvClass);
+			throw new ServiceException("Driver not found", drvClass);
 		}
-		return result;
+		finally{
+			try {
+				conn.close();
+			} catch (Exception ignore) {}
+		}
 	}
 	
 	
