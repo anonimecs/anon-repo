@@ -27,7 +27,7 @@ public class SqlServerDbConnection extends AbstractDbConnection {
 	public  List<DatabaseColumnInfo> getColumns(final DatabaseTableInfo  databaseTableInfo) {
 		String SQL = " SELECT  c.name as columnname, t.Name as columntype " +
 				" FROM  " + databaseTableInfo.getSchema() + ".sys.columns c INNER JOIN  " + databaseTableInfo.getSchema() + ".sys.types t ON c.user_type_id = t.user_type_id " +
-				" WHERE c.object_id = OBJECT_ID('"+databaseTableInfo.getName()+"')";
+				" WHERE c.object_id = OBJECT_ID('"+databaseTableInfo.getSchema() + ".dbo."+databaseTableInfo.getName()+"')";
 		
 
 		return jdbcTemplate.query(SQL, new RowMapper<DatabaseColumnInfo>(){
@@ -90,13 +90,15 @@ public class SqlServerDbConnection extends AbstractDbConnection {
 
 	@Override
 	public List<RelatedTableColumnInfo> findRelatedTables(DatabaseTableInfo editedTable, final DatabaseColumnInfo editedColumn) {
-		// TODO
-		if (true) throw new RuntimeException("unimplemented");
+	
+		
 		String schema = editedTable.getSchema(); 
-		String SQL = "select objs.name as tablename, typs.name columntype " +
-				" from "+schema+"..syscolumns as cols, "+schema+"..sysobjects as objs, "+schema+"..systypes as typs"+
-				" where cols.id = objs.id and cols.usertype = typs.usertype and objs.type='U'"+
-				" and cols.name = ? and objs.name != ?";
+		String SQL = "SELECT  c.name as columnname, typ.Name as columntype ,  tab.name as tablename "+
+					" FROM  " + schema + ".sys.columns c "+
+					" INNER JOIN  " + schema + ".sys.types typ ON c.user_type_id = typ.user_type_id "+
+					" INNER JOIN " + schema + ".sys.tables  tab on tab.object_id = c.object_id "+
+					" WHERE c.name = ? and tab.name != ?";
+		
 		List<RelatedTableColumnInfo> res = jdbcTemplate.query(SQL, new Object[]{editedColumn.getName(), editedTable.getName()}, new RowMapper<RelatedTableColumnInfo>(){
 
 			@Override
