@@ -85,7 +85,7 @@ public class DatabaseColumnInfo extends DataObject {
 	
 	@Override
 	public String toString() {
-		return getTable() == null ? "N/A" : getTable().getName() + "." + getName();
+		return getTable() == null ? "N/A." + getName() : getTable().getName() + "." + getName();
 	}
 	
 

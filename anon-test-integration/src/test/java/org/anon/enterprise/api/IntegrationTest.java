@@ -18,12 +18,14 @@ import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.AbstractJUnit4SpringContextTests;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
-@ContextConfiguration(locations = { "classpath:spring-anon-rmi-client.xml" })
+@ContextConfiguration(locations = { "classpath:IntegrationTest.xml" })
 public class IntegrationTest extends AbstractJUnit4SpringContextTests{
+
 
 	@Autowired
 	DatabaseConfigService databaseConfigService;
@@ -34,8 +36,15 @@ public class IntegrationTest extends AbstractJUnit4SpringContextTests{
 	@Autowired
 	AnonServer anonServer;
 	
+	@Value("${mysql.test.url}") String url;
+	@Value("${mysql.test.user}") String login;
+	@Value("${mysql.test.passwd}") String passw; 
+	@Value("${mysql.inttest.schema}") String defaultSchema; 
+	@Value("${mysql.inttest.table}") String tableName;
+	@Value("${mysql.inttest.col}") String columnName;
+	@Value("${mysql.inttest.col.type}") String columnType;
+	
 	protected static DatabaseConfig savedDatabaseConfig;
-
 	protected static long id = 0;
 
 	@Test
@@ -52,7 +61,7 @@ public class IntegrationTest extends AbstractJUnit4SpringContextTests{
 	
 	@Test
 	public void test1_CreateDatabaseConfigration() throws ServiceException {
-		DatabaseConfig databaseConfig = IntegrationMocks.createDatabaseConfigMySql(id);
+		DatabaseConfig databaseConfig = IntegrationMocks.createDatabaseConfigMySql(id, url, login, passw, defaultSchema);
 		databaseConfigService.addDatabaseConfig(databaseConfig);
 		savedDatabaseConfig = databaseConfig;
 	}
@@ -61,9 +70,9 @@ public class IntegrationTest extends AbstractJUnit4SpringContextTests{
 	@Test
 	public void test2_addAnonymisationMethod(){
 		DatabaseTableInfo editedTable= new DatabaseTableInfo();
-		editedTable.setName("dept_manager");
-		editedTable.setSchema("employees");
-		DatabaseColumnInfo editedColumn = new DatabaseColumnInfo("to_date", "date", DatabaseSpecifics.MySqlSpecific);
+		editedTable.setName(tableName);
+		editedTable.setSchema(defaultSchema);
+		DatabaseColumnInfo editedColumn = new DatabaseColumnInfo(columnName, columnType, DatabaseSpecifics.MySqlSpecific);
 		editedTable.addColumn(editedColumn);
 
 		AnonymisedColumnInfo anonymizedColumn = new AnonymisedColumnInfo(editedColumn);
@@ -98,8 +107,8 @@ public class IntegrationTest extends AbstractJUnit4SpringContextTests{
 			databaseConfigService.deleteDatabaseConfig(savedDatabaseConfig.getGuiName());
 			Assert.fail("Exectuted config should not be deletable: " + savedDatabaseConfig);
 		}
-		catch(ServiceException e){
-			System.out.println(e.getResultMessages());
+		catch(Exception e){
+			e.printStackTrace();
 		}
 	}
 
