@@ -20,9 +20,6 @@
         <dependent-module archiveName="anon-gui-skin-2.0-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/anon-gui-skin/anon-gui-skin">
             <dependency-type>uses</dependency-type>
         </dependent-module>
-        <dependent-module archiveName="anon-enterprise-only-2.0-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/anon-enterprise-only/anon-enterprise-only">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
         <dependent-module archiveName="anon-api-2.0-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/anon-api/anon-api">
             <dependency-type>uses</dependency-type>
         </dependent-module>
