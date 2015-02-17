@@ -3,10 +3,8 @@ package org.anon.exec;
 import org.anon.data.AnonConfig;
 import org.anon.logic.AnonymisationMethod;
 import org.anon.logic.AnonymisationMethodDestorySqlServer;
-import org.anon.logic.AnonymisationMethodEncryptOracle;
 import org.anon.logic.AnonymisationMethodEncryptSqlServer;
-import org.anon.vendor.OracleDbConnection;
-import org.anon.vendor.SqlServerDbConnection;
+import org.anon.vendor.DatabaseSpecifics;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -29,7 +27,7 @@ public class SqlServerExecTest extends SqlServerExecTestBase{
 		AnonymisationMethodEncryptSqlServer anonymisationMethod = new AnonymisationMethodEncryptSqlServer();
 	
 		anonymisationMethod.setDataSource(dataSourceSqlServer);
-		Object value = anonymisationMethod.anonymise("abax", getTestAnonimisedColumnInfo("SSY_SourceSystem", "varchar", "TMP_TABLE_A",anonymisationMethod,SqlServerDbConnection.databaseSpecifics,anonConfig));
+		Object value = anonymisationMethod.anonymise("abax", getTestAnonimisedColumnInfo("SSY_SourceSystem", "varchar", "TMP_TABLE_A",anonymisationMethod,DatabaseSpecifics.SqlServerSpecific,anonConfig));
 	
 		Assert.assertNotNull("Anonyised: ", value);
 	}
@@ -103,7 +101,7 @@ public class SqlServerExecTest extends SqlServerExecTestBase{
 	
 
 	protected AnonConfig getTestAnonConfig(String colName, String colType, String tableName, AnonymisationMethod anonymisationMethod) {
-		return getTestAnonConfig(colName, colType, tableName, anonymisationMethod, SqlServerDbConnection.databaseSpecifics);
+		return getTestAnonConfig(colName, colType, tableName, anonymisationMethod, DatabaseSpecifics.SqlServerSpecific);
 	}
 
 	

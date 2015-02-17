@@ -6,7 +6,7 @@ import org.anon.data.DatabaseColumnInfo;
 import org.anon.data.DatabaseTableInfo;
 import org.anon.logic.AnonymisationMethod;
 import org.anon.logic.AnonymisationMethodReshuffleSybase;
-import org.anon.vendor.SybaseDbConnection;
+import org.anon.vendor.DatabaseSpecifics;
 import org.junit.Test;
 import org.springframework.jdbc.core.JdbcTemplate;
 
@@ -72,7 +72,7 @@ public class SybaseRehuffleTest extends SybaseExecTestBase{
 	
 	private void addTable(String colName, String colType, String tableName, AnonymisationMethod anonymisationMethod, AnonConfig anonConfig) {
 		DatabaseTableInfo table = new DatabaseTableInfo();
-		DatabaseColumnInfo databaseColumnInfo = new DatabaseColumnInfo(colName, colType, SybaseDbConnection.databaseSpecifics);
+		DatabaseColumnInfo databaseColumnInfo = new DatabaseColumnInfo(colName, colType, DatabaseSpecifics.SybaseSpecific);
 		table.addColumn(databaseColumnInfo);
 		
 		anonConfig.addTable(table);

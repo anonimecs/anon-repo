@@ -7,6 +7,7 @@ import javax.sql.DataSource;
 import org.anon.data.DatabaseColumnInfo;
 import org.anon.data.DatabaseTableInfo;
 import org.anon.exec.BaseDbTest;
+import org.anon.vendor.DatabaseSpecifics;
 import org.anon.vendor.SybaseDbConnection;
 import org.junit.Assert;
 import org.junit.Test;
@@ -71,11 +72,11 @@ public class SybaseDbConnectionTest extends BaseDbTest{
 		
 		for (DatabaseTableInfo databaseTableInfo : res) {
 			for(DatabaseColumnInfo databaseColumnInfo:databaseTableInfo.getColumns()){
-				if(!sybaseDbConnection.databaseSpecifics.isSupportedDataType(databaseColumnInfo)){
+				if(!DatabaseSpecifics.SybaseSpecific.isSupportedDataType(databaseColumnInfo)){
 					System.out.println("Unsupported datatype on column " + databaseColumnInfo + ":"+   databaseColumnInfo.getType());
 				}
 
-//				Assert.assertTrue("Unsupported datatype on column " + databaseColumnInfo + ":"+  databaseColumnInfo.getType(), sybaseDbConnection.databaseSpecifics.isSupportedDataType(databaseColumnInfo));	
+//				Assert.assertTrue("Unsupported datatype on column " + databaseColumnInfo + ":"+  databaseColumnInfo.getType(), DatabaseSpecifics.SybaseSpecific.isSupportedDataType(databaseColumnInfo));	
 			}
 			
 		}

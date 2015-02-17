@@ -16,7 +16,7 @@ import org.springframework.jdbc.core.RowMapper;
 public class SybaseDbConnection extends AbstractDbConnection {
 
 
-	public static DatabaseSpecifics databaseSpecifics = DatabaseSpecifics.SybaseSpecific;
+	private static DatabaseSpecifics databaseSpecifics = DatabaseSpecifics.SybaseSpecific;
 
 	public SybaseDbConnection(String defaultSchema) {
 		super(defaultSchema);

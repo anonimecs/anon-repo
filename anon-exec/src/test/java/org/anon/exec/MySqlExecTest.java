@@ -4,7 +4,7 @@ import org.anon.data.AnonConfig;
 import org.anon.logic.AnonymisationMethod;
 import org.anon.logic.AnonymisationMethodDestoryMySql;
 import org.anon.logic.AnonymisationMethodEncryptMySql;
-import org.anon.vendor.MySqlDbConnection;
+import org.anon.vendor.DatabaseSpecifics;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -24,7 +24,7 @@ public class MySqlExecTest extends MySqlExecTestBase{
 		AnonymisationMethodEncryptMySql anonymisationMethod = new AnonymisationMethodEncryptMySql();
 		Long input = 100l;
 		anonymisationMethod.setDataSource(dataSourceMySql);
-		Object value = anonymisationMethod.anonymise(input, getTestAnonimisedColumnInfo("COMSIID", "TINYINT", "TMP_TABLE_B",anonymisationMethod,MySqlDbConnection.databaseSpecifics,anonConfig));
+		Object value = anonymisationMethod.anonymise(input, getTestAnonimisedColumnInfo("COMSIID", "TINYINT", "TMP_TABLE_B",anonymisationMethod,DatabaseSpecifics.MySqlSpecific,anonConfig));
 		System.out.println("Anonyised: " + value);
 		Assert.assertNotEquals(input, value);
 	}
@@ -34,7 +34,7 @@ public class MySqlExecTest extends MySqlExecTestBase{
 		AnonymisationMethodEncryptMySql anonymisationMethod = new AnonymisationMethodEncryptMySql();
 		String input = "abax";
 		anonymisationMethod.setDataSource(dataSourceMySql);
-		Object value = anonymisationMethod.anonymise(input, getTestAnonimisedColumnInfo("COMSIID", "VARCHAR", "TMP_TABLE_B",anonymisationMethod,MySqlDbConnection.databaseSpecifics,anonConfig));
+		Object value = anonymisationMethod.anonymise(input, getTestAnonimisedColumnInfo("COMSIID", "VARCHAR", "TMP_TABLE_B",anonymisationMethod,DatabaseSpecifics.MySqlSpecific,anonConfig));
 		System.out.println("Anonyised: " + value);
 		Assert.assertNotEquals(input, value);
 	}
@@ -60,6 +60,6 @@ public class MySqlExecTest extends MySqlExecTestBase{
 	}
 
 	protected AnonConfig getTestAnonConfig(String colName, String colType, String tableName,AnonymisationMethod anonymisationMethod ) {
-		return super.getTestAnonConfig(colName, colType, tableName, anonymisationMethod, MySqlDbConnection.databaseSpecifics);
+		return super.getTestAnonConfig(colName, colType, tableName, anonymisationMethod, DatabaseSpecifics.MySqlSpecific);
 	}
 }

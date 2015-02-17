@@ -4,7 +4,7 @@ import org.anon.data.AnonConfig;
 import org.anon.logic.AnonymisationMethod;
 import org.anon.logic.AnonymisationMethodDestoryOracle;
 import org.anon.logic.AnonymisationMethodEncryptOracle;
-import org.anon.vendor.OracleDbConnection;
+import org.anon.vendor.DatabaseSpecifics;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -29,7 +29,7 @@ public class OracleExecTest extends OracleExecTestBase{
 		AnonymisationMethodEncryptOracle anonymisationMethod = new AnonymisationMethodEncryptOracle();
 	
 		anonymisationMethod.setDataSource(dataSourceOracle);
-		Object value = anonymisationMethod.anonymise(100l, getTestAnonimisedColumnInfo("COMSIID", "NUMBER", "TMP_TABLE_B",anonymisationMethod,OracleDbConnection.databaseSpecifics,anonConfig));
+		Object value = anonymisationMethod.anonymise(100l, getTestAnonimisedColumnInfo("COMSIID", "NUMBER", "TMP_TABLE_B",anonymisationMethod,DatabaseSpecifics.OracleSpecific,anonConfig));
 	
 		System.out.println("Anonyised: " + value);
 	}
@@ -39,7 +39,7 @@ public class OracleExecTest extends OracleExecTestBase{
 		AnonymisationMethodEncryptOracle anonymisationMethod = new AnonymisationMethodEncryptOracle();
 	
 		anonymisationMethod.setDataSource(dataSourceOracle);
-		Object value = anonymisationMethod.anonymise("abax", getTestAnonimisedColumnInfo("COMSIID", "VARCHAR2", "TMP_TABLE_B",anonymisationMethod,OracleDbConnection.databaseSpecifics,anonConfig));
+		Object value = anonymisationMethod.anonymise("abax", getTestAnonimisedColumnInfo("COMSIID", "VARCHAR2", "TMP_TABLE_B",anonymisationMethod,DatabaseSpecifics.OracleSpecific,anonConfig));
 	
 		System.out.println("Anonyised: " + value);
 	}
@@ -66,7 +66,7 @@ public class OracleExecTest extends OracleExecTestBase{
 
 	
 	protected AnonConfig getTestAnonConfig(String colName, String colType, String tableName,AnonymisationMethod anonymisationMethod ) {
-		return super.getTestAnonConfig(colName, colType, tableName, anonymisationMethod, OracleDbConnection.databaseSpecifics);
+		return super.getTestAnonConfig(colName, colType, tableName, anonymisationMethod, DatabaseSpecifics.OracleSpecific);
 	}
 
 	

@@ -52,16 +52,16 @@ public class MethodFactory {
 		
 		Class<AnonymisationMethod>[] methods = null;
 		
-		if(databaseSpecifics == SybaseDbConnection.databaseSpecifics){
+		if(databaseSpecifics == DatabaseSpecifics.SybaseSpecific){
 			methods = SYBASE_METHODS;
 		}
-		else if(databaseSpecifics == OracleDbConnection.databaseSpecifics){
+		else if(databaseSpecifics == DatabaseSpecifics.OracleSpecific){
 			methods = ORACLE_METHODS;
 		} 
-		else if(databaseSpecifics == MySqlDbConnection.databaseSpecifics) {
+		else if(databaseSpecifics == DatabaseSpecifics.MySqlSpecific) {
 			methods = MYSQL_METHODS;
 		}
-		else if(databaseSpecifics == SqlServerDbConnection.databaseSpecifics) {
+		else if(databaseSpecifics == DatabaseSpecifics.SqlServerSpecific) {
 			methods = SQLSERVER_METHODS;
 		}
 		

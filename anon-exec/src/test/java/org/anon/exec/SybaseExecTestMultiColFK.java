@@ -6,7 +6,7 @@ import org.anon.data.AnonConfig;
 import org.anon.exec.audit.ExecAuditor;
 import org.anon.exec.mock.LicenseManagerMock;
 import org.anon.logic.AnonymisationMethodEncryptSybase;
-import org.anon.vendor.SybaseDbConnection;
+import org.anon.vendor.DatabaseSpecifics;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -53,8 +53,8 @@ public class SybaseExecTestMultiColFK extends BaseExecTest {
 		anonConfig.addAnonMethod(method);
 		
 		
-		getTestAnonimisedColumnInfo("col1_ref", "VARCHAR2", "TMP_TABLE_B",method, SybaseDbConnection.databaseSpecifics, anonConfig);
-		getTestAnonimisedColumnInfo("col1", "VARCHAR2", "TMP_TABLE_A",method, SybaseDbConnection.databaseSpecifics, anonConfig);
+		getTestAnonimisedColumnInfo("col1_ref", "VARCHAR2", "TMP_TABLE_B",method, DatabaseSpecifics.SybaseSpecific, anonConfig);
+		getTestAnonimisedColumnInfo("col1", "VARCHAR2", "TMP_TABLE_A",method, DatabaseSpecifics.SybaseSpecific, anonConfig);
 
 		
 		sybaseExec.setExecConfig(anonConfig);

@@ -6,7 +6,7 @@ import org.anon.data.AnonConfig;
 import org.anon.exec.audit.ExecAuditor;
 import org.anon.exec.mock.LicenseManagerMock;
 import org.anon.logic.AnonymisationMethodEncryptOracle;
-import org.anon.vendor.OracleDbConnection;
+import org.anon.vendor.DatabaseSpecifics;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -54,8 +54,8 @@ public class OracleExecTestMultiColFK extends BaseExecTest {
 		anonConfig.addAnonMethod(method);
 		
 		
-		getTestAnonimisedColumnInfo("col1_ref", "VARCHAR2", "TMP_TABLE_B",method, OracleDbConnection.databaseSpecifics, anonConfig);
-		getTestAnonimisedColumnInfo("col1", "VARCHAR2", "TMP_TABLE_A",method, OracleDbConnection.databaseSpecifics, anonConfig);
+		getTestAnonimisedColumnInfo("col1_ref", "VARCHAR2", "TMP_TABLE_B",method, DatabaseSpecifics.OracleSpecific, anonConfig);
+		getTestAnonimisedColumnInfo("col1", "VARCHAR2", "TMP_TABLE_A",method, DatabaseSpecifics.OracleSpecific, anonConfig);
 
 		
 		oracleExec.setExecConfig(anonConfig);

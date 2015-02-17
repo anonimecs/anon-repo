@@ -7,6 +7,7 @@ import javax.sql.DataSource;
 import org.anon.data.DatabaseColumnInfo;
 import org.anon.data.DatabaseTableInfo;
 import org.anon.exec.BaseDbTest;
+import org.anon.vendor.DatabaseSpecifics;
 import org.anon.vendor.OracleDbConnection;
 import org.junit.Assert;
 import org.junit.Test;
@@ -57,7 +58,7 @@ public class OracleDbConnectionTest extends BaseDbTest{
 			for(DatabaseColumnInfo databaseColumnInfo:databaseTableInfo.getColumns()){
 				String type = databaseColumnInfo.getType();
 				if(!type.contains("LOB")){
-					Assert.assertTrue("Unsupported datatype on column " + databaseColumnInfo + ":"+  type, oracleDbConnection.databaseSpecifics.isSupportedDataType(databaseColumnInfo));	
+					Assert.assertTrue("Unsupported datatype on column " + databaseColumnInfo + ":"+  type, DatabaseSpecifics.OracleSpecific.isSupportedDataType(databaseColumnInfo));	
 					
 				}
 			}

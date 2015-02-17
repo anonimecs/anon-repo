@@ -16,7 +16,7 @@ import org.springframework.jdbc.core.RowMapper;
 public class OracleDbConnection extends AbstractDbConnection   {
 	private Logger logger = Logger.getLogger(getClass());
 
-	public static DatabaseSpecifics databaseSpecifics = DatabaseSpecifics.OracleSpecific;
+	private static DatabaseSpecifics databaseSpecifics = DatabaseSpecifics.OracleSpecific;
 	
 		
 	public OracleDbConnection(String defaultSchema) {

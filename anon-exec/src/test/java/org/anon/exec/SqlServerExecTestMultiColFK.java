@@ -6,7 +6,7 @@ import org.anon.data.AnonConfig;
 import org.anon.exec.audit.ExecAuditor;
 import org.anon.exec.mock.LicenseManagerMock;
 import org.anon.logic.AnonymisationMethodEncryptSqlServer;
-import org.anon.vendor.SqlServerDbConnection;
+import org.anon.vendor.DatabaseSpecifics;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -53,8 +53,8 @@ public class SqlServerExecTestMultiColFK extends BaseExecTest {
 		anonConfig.addAnonMethod(method);
 		
 		
-		getTestAnonimisedColumnInfo("col1_ref", "VARCHAR2", "TMP_TABLE_B",method, SqlServerDbConnection.databaseSpecifics, anonConfig);
-		getTestAnonimisedColumnInfo("col1", "VARCHAR2", "TMP_TABLE_A",method, SqlServerDbConnection.databaseSpecifics, anonConfig);
+		getTestAnonimisedColumnInfo("col1_ref", "VARCHAR2", "TMP_TABLE_B",method, DatabaseSpecifics.SqlServerSpecific, anonConfig);
+		getTestAnonimisedColumnInfo("col1", "VARCHAR2", "TMP_TABLE_A",method, DatabaseSpecifics.SqlServerSpecific, anonConfig);
 
 		
 		sqlServerExec.setExecConfig(anonConfig);

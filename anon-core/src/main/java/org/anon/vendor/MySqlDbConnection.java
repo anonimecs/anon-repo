@@ -16,7 +16,7 @@ import org.springframework.jdbc.core.RowMapper;
 public class MySqlDbConnection extends AbstractDbConnection   {
 	private Logger logger = Logger.getLogger(getClass());
 
-	public static DatabaseSpecifics databaseSpecifics = DatabaseSpecifics.MySqlSpecific;
+	private static DatabaseSpecifics databaseSpecifics = DatabaseSpecifics.MySqlSpecific;
 	
 		
 	public MySqlDbConnection(String defaultSchema) {
@@ -85,6 +85,7 @@ public class MySqlDbConnection extends AbstractDbConnection   {
 	@Override
 	public List<RelatedTableColumnInfo> findRelatedTables(DatabaseTableInfo editedTable, final DatabaseColumnInfo editedColumn) {
 		return new ArrayList<>();
+		// TODO
 //		String SQL = 
 //			" select src_cc.owner as src_owner, src_cc.table_name as src_table, src_cc.column_name as src_column,                " +
 //			" dest_cc.owner as dest_owner, dest_cc.table_name as dest_table, dest_cc.column_name as dest_column,                 " +

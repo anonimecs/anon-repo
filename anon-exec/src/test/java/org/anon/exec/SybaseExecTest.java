@@ -4,7 +4,7 @@ import org.anon.data.AnonConfig;
 import org.anon.logic.AnonymisationMethod;
 import org.anon.logic.AnonymisationMethodDestorySybase;
 import org.anon.logic.AnonymisationMethodEncryptSybase;
-import org.anon.vendor.SybaseDbConnection;
+import org.anon.vendor.DatabaseSpecifics;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -90,7 +90,7 @@ public class SybaseExecTest extends SybaseExecTestBase{
 	
 
 	protected AnonConfig getTestAnonConfig(String colName, String colType, String tableName, AnonymisationMethod anonymisationMethod) {
-		return getTestAnonConfig(colName, colType, tableName, anonymisationMethod, SybaseDbConnection.databaseSpecifics);
+		return getTestAnonConfig(colName, colType, tableName, anonymisationMethod, DatabaseSpecifics.SybaseSpecific);
 	}
 
 	
