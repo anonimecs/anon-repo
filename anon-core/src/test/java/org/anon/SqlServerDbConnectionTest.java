@@ -6,9 +6,11 @@ import javax.sql.DataSource;
 
 import org.anon.data.DatabaseColumnInfo;
 import org.anon.data.DatabaseTableInfo;
+import org.anon.data.RelatedTableColumnInfo;
 import org.anon.exec.BaseDbTest;
 import org.anon.vendor.DatabaseSpecifics;
 import org.anon.vendor.SqlServerDbConnection;
+import org.anon.vendor.SybaseDbConnection;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -82,5 +84,24 @@ public class SqlServerDbConnectionTest extends BaseDbTest{
 		}
 		
 	}
+	
+	@Test
+	public void testNorthwindSchemaRelatedTables(){
+		SqlServerDbConnection dbConnection = new SqlServerDbConnection("Northwind");
+		dbConnection.setDataSource(dataSourceSqlServer);
+		if(dbConnection.getSchemas().contains("Northwind")){
+			DatabaseTableInfo editedTable = new DatabaseTableInfo();
+			editedTable.setName("EmployeeTerritories");
+			editedTable.setSchema("Northwind");
+			DatabaseColumnInfo editedColumn = new DatabaseColumnInfo();
+			editedColumn.setName("EmployeeID");
+			List<RelatedTableColumnInfo> res  = dbConnection.findRelatedTables(editedTable, editedColumn);
+			Assert.assertEquals("2 records expected", 2, res.size());
+		}
+		else {
+			Assert.fail("Northwind schema not available in the test database");
+		}
+	}
+
 
 }

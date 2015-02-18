@@ -21,7 +21,7 @@ public class OracleExec extends BaseExec{
 		return new ConstraintManager(dataSource) {
 			
 			@Override
-			protected List<OracleConstraint> loadConstraints(String tableName) {
+			protected List<OracleConstraint> loadConstraints(String tableName, String schema) {
 				String sql_select = "SELECT a.table_name sourceTableName, a.column_name, a.constraint_name constraintName, c.owner, c.r_owner, c_pk.table_name targetTableName " +
 								  " FROM all_cons_columns a                                                                                  " +
 								  " JOIN all_constraints c ON a.owner = c.owner AND a.constraint_name = c.constraint_name                    " +

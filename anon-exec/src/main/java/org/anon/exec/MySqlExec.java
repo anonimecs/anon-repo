@@ -20,7 +20,7 @@ public class MySqlExec extends BaseExec{
 		return new ConstraintManager(dataSource) {
 
 			@Override
-			protected List<MySqlConstraint> loadConstraints(String tableName) {
+			protected List<MySqlConstraint> loadConstraints(String tableName, String schema) {
 				String sql_select = "select  TABLE_NAME, GROUP_CONCAT(COLUMN_NAME) as sourceColumns,CONSTRAINT_NAME, REFERENCED_TABLE_NAME, GROUP_CONCAT(REFERENCED_COLUMN_NAME) as targetColumns" +
 									" from INFORMATION_SCHEMA.KEY_COLUMN_USAGE " +
 									" where  (REFERENCED_TABLE_NAME = ? or TABLE_NAME = ? and REFERENCED_TABLE_NAME is not null) " +

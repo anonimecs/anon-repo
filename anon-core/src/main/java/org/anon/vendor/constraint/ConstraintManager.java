@@ -18,7 +18,8 @@ public abstract class ConstraintManager {
 	}
 
 	public List<? extends Constraint> deactivateConstraints(AnonymisedColumnInfo anonymisedColumnInfo) {
-		List<? extends Constraint> referentialConstraints = loadConstraints(anonymisedColumnInfo.getTable().getName());
+		List<? extends Constraint> referentialConstraints = loadConstraints(anonymisedColumnInfo.getTable().getName(),
+																			anonymisedColumnInfo.getTable().getSchema());
 		
 		for(Constraint constraint:referentialConstraints){
 			String dropConstraint = constraint.createDeactivateSql();
@@ -49,7 +50,7 @@ public abstract class ConstraintManager {
 	}
 	
 
-	abstract protected List<? extends Constraint> loadConstraints(String tableName);
+	abstract protected List<? extends Constraint> loadConstraints(String tableName, String schema);
 
 
 }

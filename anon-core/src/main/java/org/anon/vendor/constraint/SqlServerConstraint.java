@@ -7,16 +7,22 @@ public class SqlServerConstraint extends Constraint {
 
 	private String constraintName;
 	private String sourceTableName;
+	private String sourceColumnName;
 	
 	public SqlServerConstraint(ResultSet rs) throws SQLException {
 		constraintName = rs.getString("FK_CONSTRAINT_NAME");
-		sourceTableName = rs.getString("FK_TABLE_NAME");
+		sourceTableName = rs.getString("SOURCE_TABLE_NAME");
+		sourceColumnName = rs.getString("SOURCE_COLUMN_NAME");
 	}
 
 	public String getConstraintName() {
 		return constraintName;
 	}
 
+	public String getSourceColumnName() {
+		return sourceColumnName;
+	}
+	
 	public String getSourceTableName() {
 		return sourceTableName;
 	}

@@ -97,7 +97,7 @@ public class SybaseDbConnection extends AbstractDbConnection {
 	protected Collection<RelatedTableColumnInfo> findRelatedTablesByForeignKey(DatabaseTableInfo editedTable,
 			DatabaseColumnInfo editedColumn) {
 		SybaseConstraintManager sybaseConstraintManager = new SybaseConstraintManager(getDataSource());
-		List<SybaseConstraint> fkList = sybaseConstraintManager.loadConstraints(editedTable.getName());
+		List<SybaseConstraint> fkList = sybaseConstraintManager.loadConstraints(editedTable.getName(), editedTable.getSchema());
 		Collection<RelatedTableColumnInfo> res = new ArrayList<>();
 		for (SybaseConstraint sybaseConstraint: fkList) {
 			if(!sybaseConstraint.isMultiColumnReferentialConstraint()){

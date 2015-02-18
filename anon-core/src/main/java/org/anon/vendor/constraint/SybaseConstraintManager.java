@@ -15,7 +15,8 @@ public class SybaseConstraintManager extends ConstraintManager {
 	}
 
 	@Override
-	public List<SybaseConstraint> loadConstraints(String tableName) {
+	public List<SybaseConstraint> loadConstraints(String tableName, String schema) {
+		jdbcTemplate.execute("use " + schema);
 		String sp_helpconstraint = "sp_helpconstraint '" + tableName + "', 'detail'";
 		List<SybaseConstraint> allConstraints = jdbcTemplate.query(sp_helpconstraint, new RowMapper<SybaseConstraint>(){
 			@Override
