@@ -47,7 +47,9 @@ public class MySqlDbConnectionTest extends BaseDbTest{
 	@Before
 	public void createTable() throws IOException{
 		
-		new TestTableCreatorMySql().createTables(new JdbcTemplate(dataSourceMySql));
+		JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSourceMySql);
+		jdbcTemplate.execute("use "+schema);
+		new TestTableCreatorMySql().createTables(jdbcTemplate);
 	}
 	
 	@After
