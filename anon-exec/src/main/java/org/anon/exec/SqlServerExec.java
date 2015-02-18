@@ -2,15 +2,12 @@ package org.anon.exec;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.sql.DataSource;
 
 import org.anon.data.AnonymisedColumnInfo;
-import org.anon.exec.constraint.Constraint;
 import org.anon.exec.constraint.ConstraintManager;
-import org.anon.exec.constraint.OracleConstraint;
 import org.anon.exec.constraint.SqlServerConstraint;
 import org.springframework.context.annotation.Scope;
 import org.springframework.jdbc.core.RowMapper;

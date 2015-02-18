@@ -12,8 +12,6 @@ public class WeekTimestampConverter extends WeekDayConverter {
     private static final String TIME_PATTERN = "HH:mm:ss";
     private static final String TIMESTAMP_PATTERN = "dd.MM.yyyy "+ TIME_PATTERN;
 
-    private static final long serialVersionUID = 1L;
-
     private final DateFormat timeFormat = new SimpleDateFormat(TIME_PATTERN);
     
     @Override
