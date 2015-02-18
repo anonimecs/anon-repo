@@ -50,6 +50,7 @@ public abstract class DbEntitiesTest extends AbstractJUnit4SpringContextTests im
 			config.setVendor(Database.SYBASE);
 			config.setVersion("16.0");
 			config.setGuiName(GUINAME);
+			config.setDefaultSchema("test_default_schema");
 			return config;
 		}
 
