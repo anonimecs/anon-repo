@@ -6,9 +6,8 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
-import org.anon.data.AnonymisedColumnInfo;
-import org.anon.exec.constraint.ConstraintManager;
-import org.anon.exec.constraint.OracleConstraint;
+import org.anon.vendor.constraint.ConstraintManager;
+import org.anon.vendor.constraint.OracleConstraint;
 import org.springframework.context.annotation.Scope;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
@@ -22,14 +21,14 @@ public class OracleExec extends BaseExec{
 		return new ConstraintManager(dataSource) {
 			
 			@Override
-			protected List<OracleConstraint> loadConstraints(AnonymisedColumnInfo anonymisedColumnInfo) {
+			protected List<OracleConstraint> loadConstraints(String tableName) {
 				String sql_select = "SELECT a.table_name sourceTableName, a.column_name, a.constraint_name constraintName, c.owner, c.r_owner, c_pk.table_name targetTableName " +
 								  " FROM all_cons_columns a                                                                                  " +
 								  " JOIN all_constraints c ON a.owner = c.owner AND a.constraint_name = c.constraint_name                    " +
 								  " JOIN all_constraints c_pk ON c.r_owner = c_pk.owner AND c.r_constraint_name = c_pk.constraint_name       " +
 								  " WHERE c.constraint_type = 'R'   AND (c_pk.table_name = ? or a.table_name = ?)";
 				
-				List<OracleConstraint> constraints = jdbcTemplate.query(sql_select, new Object [] {anonymisedColumnInfo.getTable().getName(), anonymisedColumnInfo.getTable().getName()}, 
+				List<OracleConstraint> constraints = jdbcTemplate.query(sql_select, new Object [] {tableName, tableName}, 
 				new RowMapper<OracleConstraint>(){
 					@Override
 					public OracleConstraint mapRow(ResultSet rs, int rowNum) throws SQLException {

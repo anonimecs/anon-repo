@@ -69,14 +69,18 @@ public class MySqlDbConnectionTest extends BaseDbTest{
 	public void testEmployeesSchemaRelatedTables(){
 		MySqlDbConnection mysqlDbConnection = new MySqlDbConnection("employees");
 		mysqlDbConnection.setDataSource(dataSourceMySql);
-		DatabaseTableInfo editedTable = new DatabaseTableInfo();
-		editedTable.setName("departments");
-		editedTable.setSchema("employees");
-		DatabaseColumnInfo editedColumn = new DatabaseColumnInfo();
-		editedColumn.setName("dept_no");
-		List<RelatedTableColumnInfo> res  = mysqlDbConnection.findRelatedTables(editedTable, editedColumn);
-		Assert.assertEquals("2 records expected", 2, res.size());
-		
+		if(mysqlDbConnection.getSchemas().contains("employees")){
+			DatabaseTableInfo editedTable = new DatabaseTableInfo();
+			editedTable.setName("departments");
+			editedTable.setSchema("employees");
+			DatabaseColumnInfo editedColumn = new DatabaseColumnInfo();
+			editedColumn.setName("dept_no");
+			List<RelatedTableColumnInfo> res  = mysqlDbConnection.findRelatedTables(editedTable, editedColumn);
+			Assert.assertEquals("2 records expected", 2, res.size());
+		}
+		else {
+			Assert.fail("employees schema not available in the test database");
+		}
 	}
 
 }

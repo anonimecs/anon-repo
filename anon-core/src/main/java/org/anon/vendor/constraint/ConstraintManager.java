@@ -1,4 +1,4 @@
-package org.anon.exec.constraint;
+package org.anon.vendor.constraint;
 
 import java.util.List;
 
@@ -18,7 +18,7 @@ public abstract class ConstraintManager {
 	}
 
 	public List<? extends Constraint> deactivateConstraints(AnonymisedColumnInfo anonymisedColumnInfo) {
-		List<? extends Constraint> referentialConstraints = loadConstraints(anonymisedColumnInfo);
+		List<? extends Constraint> referentialConstraints = loadConstraints(anonymisedColumnInfo.getTable().getName());
 		
 		for(Constraint constraint:referentialConstraints){
 			String dropConstraint = constraint.createDeactivateSql();
@@ -49,7 +49,7 @@ public abstract class ConstraintManager {
 	}
 	
 
-	abstract protected List<? extends Constraint> loadConstraints(AnonymisedColumnInfo anonymisedColumnInfo);
+	abstract protected List<? extends Constraint> loadConstraints(String tableName);
 
 
 }

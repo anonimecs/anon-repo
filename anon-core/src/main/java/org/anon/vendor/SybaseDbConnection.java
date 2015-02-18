@@ -2,6 +2,7 @@ package org.anon.vendor;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.Iterator;
@@ -12,6 +13,8 @@ import org.anon.data.DatabaseColumnInfo;
 import org.anon.data.DatabaseTableInfo;
 import org.anon.data.RelatedTableColumnInfo;
 import org.anon.data.RelatedTableColumnInfo.Relation;
+import org.anon.vendor.constraint.SybaseConstraint;
+import org.anon.vendor.constraint.SybaseConstraintManager;
 import org.springframework.jdbc.core.RowMapper;
 
 public class SybaseDbConnection extends AbstractDbConnection {
@@ -93,8 +96,16 @@ public class SybaseDbConnection extends AbstractDbConnection {
 	@Override
 	protected Collection<RelatedTableColumnInfo> findRelatedTablesByForeignKey(DatabaseTableInfo editedTable,
 			DatabaseColumnInfo editedColumn) {
-		// TODO Auto-generated method stub
-		return null;
+		SybaseConstraintManager sybaseConstraintManager = new SybaseConstraintManager(getDataSource());
+		List<SybaseConstraint> fkList = sybaseConstraintManager.loadConstraints(editedTable.getName());
+		Collection<RelatedTableColumnInfo> res = new ArrayList<>();
+		for (SybaseConstraint sybaseConstraint: fkList) {
+			if(!sybaseConstraint.isMultiColumnReferentialConstraint()){
+				res.add(new RelatedTableColumnInfo(sybaseConstraint.getSourceColumnNames()[0], sybaseConstraint.getSourceTableName(), Relation.ForeignKey));
+			}
+			// TODO: add suport for multi column FKs 
+		}
+		return res;
 	}
 	
 	@Override

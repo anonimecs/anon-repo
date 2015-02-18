@@ -1,4 +1,4 @@
-package org.anon.exec.constraint;
+package org.anon.vendor.constraint;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -54,6 +54,15 @@ public class SybaseConstraint extends Constraint {
 		return "alter table " +getSourceTableName() + " add constraint " + getName() + " " + getStrippedDefinition();
 	}
 
+	public boolean isMultiColumnReferentialConstraint(){
+		return getSourceColumnNames().length > 1;
+	}
+
+	public String[] getSourceColumnNames() {
+		// example: Table1 FOREIGN KEY (Column1) REFERENCES Table2(Column2)
+		// example2: Table1   FOREIGN KEY (col1_ref, col2_ref)    REFERENCES Table2 (col1, col2)
+		return definition.split("\\(")[1].split("\\)")[0].split(",");
+	}
 	
 	
 }

@@ -6,9 +6,8 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
-import org.anon.data.AnonymisedColumnInfo;
-import org.anon.exec.constraint.ConstraintManager;
-import org.anon.exec.constraint.SqlServerConstraint;
+import org.anon.vendor.constraint.ConstraintManager;
+import org.anon.vendor.constraint.SqlServerConstraint;
 import org.springframework.context.annotation.Scope;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
@@ -23,7 +22,7 @@ public class SqlServerExec extends BaseExec {
 		return new ConstraintManager(dataSource){
 
 			@Override
-			protected List<SqlServerConstraint> loadConstraints(AnonymisedColumnInfo anonymisedColumnInfo) {
+			protected List<SqlServerConstraint> loadConstraints(String tableName) {
 				String sql_select = "SELECT       KCU1.CONSTRAINT_NAME AS FK_CONSTRAINT_NAME                     " +
 							 " ,KCU1.TABLE_NAME AS FK_TABLE_NAME "+
 							 " FROM INFORMATION_SCHEMA.REFERENTIAL_CONSTRAINTS AS RC                             " +
@@ -39,7 +38,7 @@ public class SqlServerExec extends BaseExec {
 							 " where (KCU1.TABLE_NAME = ?) " +
 							 " or (KCU2.TABLE_NAME = ?) ";
 
-				List<SqlServerConstraint> constraints = jdbcTemplate.query(sql_select, new Object [] {anonymisedColumnInfo.getTable().getName(), anonymisedColumnInfo.getTable().getName()}, 
+				List<SqlServerConstraint> constraints = jdbcTemplate.query(sql_select, new Object [] {tableName, tableName}, 
 						new RowMapper<SqlServerConstraint>(){
 							@Override
 							public SqlServerConstraint mapRow(ResultSet rs, int rowNum) throws SQLException {

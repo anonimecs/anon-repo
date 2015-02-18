@@ -104,8 +104,8 @@ public abstract class AbstractDbConnection {
 	
 	final public List<RelatedTableColumnInfo> findRelatedTables(DatabaseTableInfo editedTable, DatabaseColumnInfo editedColumn){
 		Set<RelatedTableColumnInfo> res = new HashSet<>();
-		res.addAll(findRelatedTablesByName(editedTable, editedColumn));
-		res.addAll(findRelatedTablesByForeignKey(editedTable, editedColumn)); // this will replace the same RelatedTableColumnInfo
+		res.addAll(findRelatedTablesByForeignKey(editedTable, editedColumn)); 
+		res.addAll(findRelatedTablesByName(editedTable, editedColumn)); // this will not replace the same RelatedTableColumnInfo loaded already as FK 
 		return new ArrayList<>(res);
 	}
 

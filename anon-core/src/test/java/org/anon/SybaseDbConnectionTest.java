@@ -6,6 +6,7 @@ import javax.sql.DataSource;
 
 import org.anon.data.DatabaseColumnInfo;
 import org.anon.data.DatabaseTableInfo;
+import org.anon.data.RelatedTableColumnInfo;
 import org.anon.exec.BaseDbTest;
 import org.anon.vendor.DatabaseSpecifics;
 import org.anon.vendor.SybaseDbConnection;
@@ -82,5 +83,24 @@ public class SybaseDbConnectionTest extends BaseDbTest{
 		}
 		
 	}
+	
+	@Test
+	public void testEmployeesSchemaRelatedTables(){
+		SybaseDbConnection sybaseDbConnection = new SybaseDbConnection("LIMEX_d");
+		sybaseDbConnection.setDataSource(dataSourceSybase);
+		if(sybaseDbConnection.getSchemas().contains("LIMEX_d")){
+			DatabaseTableInfo editedTable = new DatabaseTableInfo();
+			editedTable.setName("LOGGING_PDLC_AUDIT");
+			editedTable.setSchema("LIMEX_d");
+			DatabaseColumnInfo editedColumn = new DatabaseColumnInfo();
+			editedColumn.setName("LPA_ID");
+			List<RelatedTableColumnInfo> res  = sybaseDbConnection.findRelatedTables(editedTable, editedColumn);
+			Assert.assertEquals("2 records expected", 2, res.size());
+		}
+		else {
+			Assert.fail("LIMEX_d schema not available in the test database");
+		}
+	}
+
 
 }
