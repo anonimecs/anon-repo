@@ -157,7 +157,6 @@ public abstract class AnonymisationMethod implements Serializable{
 
 
 	public ExecutionMessage runOnColumn(AnonymisedColumnInfo col){
-		// TODO
 		throw new RuntimeException("UNIMPLEMENTED");
 	}
 	

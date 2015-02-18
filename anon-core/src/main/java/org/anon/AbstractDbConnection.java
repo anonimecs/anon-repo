@@ -1,8 +1,12 @@
 package org.anon;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Properties;
+import java.util.Set;
 
 import javax.sql.DataSource;
 
@@ -72,11 +76,11 @@ public abstract class AbstractDbConnection {
 
 	abstract public void fillExampleValues(DatabaseTableInfo editedTable);
 
-	abstract public List<RelatedTableColumnInfo> findRelatedTables(DatabaseTableInfo editedTable, DatabaseColumnInfo editedColumn);
-
 	abstract public DatabaseSpecifics getDatabaseSpecifics();
 
 	abstract public List<String> getSchemas();
+
+	abstract protected String[]  getTestSufficientPermissionsScript(String selectedSchema);
 
 	public void testSufficientPermissions(String selectedSchema){
 		String lastSql = null;
@@ -98,7 +102,16 @@ public abstract class AbstractDbConnection {
 
 	}
 	
-	abstract protected String[]  getTestSufficientPermissionsScript(String selectedSchema);
+	final public List<RelatedTableColumnInfo> findRelatedTables(DatabaseTableInfo editedTable, DatabaseColumnInfo editedColumn){
+		Set<RelatedTableColumnInfo> res = new HashSet<>();
+		res.addAll(findRelatedTablesByName(editedTable, editedColumn));
+		res.addAll(findRelatedTablesByForeignKey(editedTable, editedColumn)); // this will replace the same RelatedTableColumnInfo
+		return new ArrayList<>(res);
+	}
+
+	protected abstract Collection<RelatedTableColumnInfo> findRelatedTablesByForeignKey(DatabaseTableInfo editedTable,DatabaseColumnInfo editedColumn);
+
+	protected abstract Collection<RelatedTableColumnInfo> findRelatedTablesByName(DatabaseTableInfo editedTable, DatabaseColumnInfo editedColumn);
 
 
 

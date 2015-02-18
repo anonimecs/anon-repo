@@ -1,5 +1,8 @@
 package org.anon.data;
 
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+
 public class RelatedTableColumnInfo extends DataObject{
 
 	public enum Relation{ForeignKey, SameColumnName}
@@ -7,6 +10,7 @@ public class RelatedTableColumnInfo extends DataObject{
 	private String columnName;
 	private String tableName;
 	private Relation relation;
+	private String remark;
 	
 	
 	
@@ -44,6 +48,31 @@ public class RelatedTableColumnInfo extends DataObject{
 		return col.getName().equals(columnName)
 				&&
 			   col.getTable().getName().equals(tableName);
+	}
+	public String getRemark() {
+		return remark;
+	}
+	public void setRemark(String remark) {
+		this.remark = remark;
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+        if (obj == null || !(obj instanceof RelatedTableColumnInfo)) return false;
+        RelatedTableColumnInfo other = (RelatedTableColumnInfo) obj;
+
+        return new EqualsBuilder()
+    		.append(columnName, other.columnName)
+        	.append(tableName, other.tableName)
+        	.isEquals();
+	}
+	
+	@Override
+	public int hashCode() {
+		return new HashCodeBuilder()
+			.append(columnName)
+			.append(tableName)
+			.hashCode();
 	}
 	
 	

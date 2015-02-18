@@ -5,7 +5,9 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
+import org.anon.data.DatabaseColumnInfo;
 import org.anon.data.DatabaseTableInfo;
+import org.anon.data.RelatedTableColumnInfo;
 import org.anon.exec.BaseDbTest;
 import org.anon.exec.TestTableCreatorMySql;
 import org.anon.vendor.MySqlDbConnection;
@@ -61,6 +63,20 @@ public class MySqlDbConnectionTest extends BaseDbTest{
 		List<DatabaseTableInfo> res = mysqlDbConnection.getTableList(schema);
 		
 		Assert.assertTrue("at least two tables exist", res.size() >= 2);
+	}
+	
+	@Test
+	public void testEmployeesSchemaRelatedTables(){
+		MySqlDbConnection mysqlDbConnection = new MySqlDbConnection("employees");
+		mysqlDbConnection.setDataSource(dataSourceMySql);
+		DatabaseTableInfo editedTable = new DatabaseTableInfo();
+		editedTable.setName("departments");
+		editedTable.setSchema("employees");
+		DatabaseColumnInfo editedColumn = new DatabaseColumnInfo();
+		editedColumn.setName("dept_no");
+		List<RelatedTableColumnInfo> res  = mysqlDbConnection.findRelatedTables(editedTable, editedColumn);
+		Assert.assertEquals("2 records expected", 2, res.size());
+		
 	}
 
 }

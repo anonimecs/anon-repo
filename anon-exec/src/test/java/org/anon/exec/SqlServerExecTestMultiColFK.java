@@ -4,14 +4,13 @@ import javax.sql.DataSource;
 
 import org.anon.data.AnonConfig;
 import org.anon.exec.audit.ExecAuditor;
-import org.anon.exec.mock.LicenseManagerMock;
 import org.anon.logic.AnonymisationMethodEncryptSqlServer;
 import org.anon.vendor.DatabaseSpecifics;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 
-public class SqlServerExecTestMultiColFK extends BaseExecTest {
+public class SqlServerExecTestMultiColFK extends SqlServerExecTestBase {
 
 	@Autowired
 	DataSource dataSourceSqlServer;
@@ -31,15 +30,6 @@ public class SqlServerExecTestMultiColFK extends BaseExecTest {
 
 	public TestTableCreatorSqlServer getTestTableCreator() {
 		return testTableCreator;
-	}
-	
-	protected SqlServerExec createSqlServerExec() {
-		SqlServerExec sqlServerExec = new SqlServerExec();
-		sqlServerExec.setDataSource(dataSourceSqlServer);
-		sqlServerExec.setLicenseManager(new LicenseManagerMock());
-		sqlServerExec.setExecAuditor(execAuditor);
-		sqlServerExec.setGuiNotifier(new NullGuiNotifier());
-		return sqlServerExec;
 	}
 	
 	@Test

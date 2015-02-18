@@ -2,6 +2,7 @@ package org.anon.vendor;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Collection;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
@@ -87,11 +88,17 @@ public class SqlServerDbConnection extends AbstractDbConnection {
 		}
 		
 	}
-
-	@Override
-	public List<RelatedTableColumnInfo> findRelatedTables(DatabaseTableInfo editedTable, final DatabaseColumnInfo editedColumn) {
 	
-		
+	@Override
+	protected Collection<RelatedTableColumnInfo> findRelatedTablesByForeignKey(DatabaseTableInfo editedTable,
+			DatabaseColumnInfo editedColumn) {
+		// TODO
+		return null;
+	}
+	
+	@Override
+	protected Collection<RelatedTableColumnInfo> findRelatedTablesByName(DatabaseTableInfo editedTable,
+			final DatabaseColumnInfo editedColumn) {
 		String schema = editedTable.getSchema(); 
 		String SQL = "SELECT  c.name as columnname, typ.Name as columntype ,  tab.name as tablename "+
 					" FROM  " + schema + ".sys.columns c "+
@@ -99,7 +106,7 @@ public class SqlServerDbConnection extends AbstractDbConnection {
 					" INNER JOIN " + schema + ".sys.tables  tab on tab.object_id = c.object_id "+
 					" WHERE c.name = ? and tab.name != ?";
 		
-		List<RelatedTableColumnInfo> res = jdbcTemplate.query(SQL, new Object[]{editedColumn.getName(), editedTable.getName()}, new RowMapper<RelatedTableColumnInfo>(){
+		return jdbcTemplate.query(SQL, new Object[]{editedColumn.getName(), editedTable.getName()}, new RowMapper<RelatedTableColumnInfo>(){
 
 			@Override
 			public RelatedTableColumnInfo mapRow(ResultSet rs, int rowNum)
@@ -108,9 +115,8 @@ public class SqlServerDbConnection extends AbstractDbConnection {
 			}
 			
 		});
-		
-		return res;
 	}
+
 
 	@Override
 	public DatabaseSpecifics getDatabaseSpecifics() {

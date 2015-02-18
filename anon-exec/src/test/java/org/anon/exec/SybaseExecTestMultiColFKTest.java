@@ -4,14 +4,13 @@ import javax.sql.DataSource;
 
 import org.anon.data.AnonConfig;
 import org.anon.exec.audit.ExecAuditor;
-import org.anon.exec.mock.LicenseManagerMock;
 import org.anon.logic.AnonymisationMethodEncryptSybase;
 import org.anon.vendor.DatabaseSpecifics;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 
-public class SybaseExecTestMultiColFK extends BaseExecTest {
+public class SybaseExecTestMultiColFKTest extends SybaseExecTestBase {
 
 	@Autowired
 	DataSource dataSourceSybase;
@@ -32,15 +31,7 @@ public class SybaseExecTestMultiColFK extends BaseExecTest {
 	public TestTableCreatorSybase getTestTableCreator() {
 		return testTableCreator;
 	}
-	
-	protected SybaseExec createSybaseExec() {
-		SybaseExec sybaseExec = new SybaseExec();
-		sybaseExec.setDataSource(dataSourceSybase);
-		sybaseExec.setLicenseManager(new LicenseManagerMock());
-		sybaseExec.setExecAuditor(execAuditor);
-		sybaseExec.setGuiNotifier(new NullGuiNotifier());
-		return sybaseExec;
-	}
+
 	
 	@Test
 	public void test_anonymiseString() {

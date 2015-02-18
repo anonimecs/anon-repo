@@ -22,8 +22,8 @@ public class SybaseConstraint extends Constraint {
 	public boolean isReferentialConstraint(){
 		return "referential constraint".equalsIgnoreCase(type);
 	}
-	
-	public String getTableName() {
+
+	public String getSourceTableName() {
 		// it is the first word in the definition
 		return definition.split(" ", 2)[0];
 	}
@@ -45,13 +45,13 @@ public class SybaseConstraint extends Constraint {
 	
 	@Override
 	public String createDeactivateSql() {
-		return "alter table " + getTableName() + " drop constraint " + getName();
+		return "alter table " + getSourceTableName() + " drop constraint " + getName();
 	}
 
 
 	@Override
 	public String createActivateSql() {
-		return "alter table " +getTableName() + " add constraint " + getName() + " " + getStrippedDefinition();
+		return "alter table " +getSourceTableName() + " add constraint " + getName() + " " + getStrippedDefinition();
 	}
 
 	

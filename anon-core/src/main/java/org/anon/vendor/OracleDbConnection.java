@@ -2,6 +2,7 @@ package org.anon.vendor;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
@@ -81,33 +82,37 @@ public class OracleDbConnection extends AbstractDbConnection   {
 		}
 		
 	}
-
+	
 	@Override
-	public List<RelatedTableColumnInfo> findRelatedTables(DatabaseTableInfo editedTable, final DatabaseColumnInfo editedColumn) {
-		
+	protected Collection<RelatedTableColumnInfo> findRelatedTablesByForeignKey(DatabaseTableInfo editedTable,
+			DatabaseColumnInfo editedColumn) {
 		String SQL = 
-			" select src_cc.owner as src_owner, src_cc.table_name as src_table, src_cc.column_name as src_column,                " +
-			" dest_cc.owner as dest_owner, dest_cc.table_name as dest_table, dest_cc.column_name as dest_column,                 " +
-			" c.constraint_name                                                                                                  " +
-			" from all_constraints c                                                                                             " +
-			" inner join all_cons_columns dest_cc on c.r_constraint_name = dest_cc.constraint_name and c.r_owner = dest_cc.owner " +
-			" inner join all_cons_columns src_cc on c.constraint_name = src_cc.constraint_name and c.owner = src_cc.owner        " +
-			" where c.constraint_type = 'R'                                                                                      " +
-			" and dest_cc.owner = ?                                                                                        		 " +
-			" and dest_cc.table_name = ?                                                                                    	 " +
-			" and dest_cc.column_name = ?																				 		 ";		
-		List<RelatedTableColumnInfo> res = jdbcTemplate.query(SQL, new Object[]{editedTable.getSchema(), editedTable.getName(), editedColumn.getName()}, new RowMapper<RelatedTableColumnInfo>(){
+				" select src_cc.owner as src_owner, src_cc.table_name as src_table, src_cc.column_name as src_column,                " +
+				" dest_cc.owner as dest_owner, dest_cc.table_name as dest_table, dest_cc.column_name as dest_column,                 " +
+				" c.constraint_name                                                                                                  " +
+				" from all_constraints c                                                                                             " +
+				" inner join all_cons_columns dest_cc on c.r_constraint_name = dest_cc.constraint_name and c.r_owner = dest_cc.owner " +
+				" inner join all_cons_columns src_cc on c.constraint_name = src_cc.constraint_name and c.owner = src_cc.owner        " +
+				" where c.constraint_type = 'R'                                                                                      " +
+				" and dest_cc.owner = ?                                                                                        		 " +
+				" and dest_cc.table_name = ?                                                                                    	 " +
+				" and dest_cc.column_name = ?																				 		 ";		
+			return jdbcTemplate.query(SQL, new Object[]{editedTable.getSchema(), editedTable.getName(), editedColumn.getName()}, new RowMapper<RelatedTableColumnInfo>(){
 
-			@Override
-			public RelatedTableColumnInfo mapRow(ResultSet rs, int rowNum)
-					throws SQLException {
-				return new RelatedTableColumnInfo(rs.getString("src_column"), rs.getString("src_table"), Relation.ForeignKey);
-			}
-			
-		});
-		
-		SQL = "select table_name from all_tab_columns where column_name=? and TABLE_NAME != ? and DATA_TYPE = ? and OWNER = ?";
-		res.addAll(jdbcTemplate.query(SQL, new Object[]{editedColumn.getName(), editedTable.getName(), editedColumn.getType(), editedTable.getSchema()}, new RowMapper<RelatedTableColumnInfo>(){
+				@Override
+				public RelatedTableColumnInfo mapRow(ResultSet rs, int rowNum)
+						throws SQLException {
+					return new RelatedTableColumnInfo(rs.getString("src_column"), rs.getString("src_table"), Relation.ForeignKey);
+				}
+				
+			});
+	}
+	
+	@Override
+	protected Collection<RelatedTableColumnInfo> findRelatedTablesByName(DatabaseTableInfo editedTable,
+			final DatabaseColumnInfo editedColumn) {
+		String SQL = "select table_name from all_tab_columns where column_name=? and TABLE_NAME != ? and DATA_TYPE = ? and OWNER = ?";
+		return jdbcTemplate.query(SQL, new Object[]{editedColumn.getName(), editedTable.getName(), editedColumn.getType(), editedTable.getSchema()}, new RowMapper<RelatedTableColumnInfo>(){
 
 			@Override
 			public RelatedTableColumnInfo mapRow(ResultSet rs, int rowNum)
@@ -115,11 +120,9 @@ public class OracleDbConnection extends AbstractDbConnection   {
 				return new RelatedTableColumnInfo(editedColumn.getName(), rs.getString("table_name"), Relation.SameColumnName);
 			}
 			
-		}));
-		
-		return res;
-		
+		});
 	}
+
 
 
 	@Override
