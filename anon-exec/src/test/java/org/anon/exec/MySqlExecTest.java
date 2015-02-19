@@ -11,6 +11,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 
 public class MySqlExecTest extends MySqlExecTestBase{
 
+	
 	@Test
 	public void testAnonymisationMethodDestory() {
 		MySqlExec mysqlExec = createExec();

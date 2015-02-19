@@ -7,6 +7,7 @@ import org.anon.data.Database;
 import org.anon.exec.audit.ExecAuditor;
 import org.anon.exec.mock.LicenseManagerMock;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 
 
 public abstract class OracleExecTestBase extends BaseExecTest {
@@ -27,6 +28,16 @@ public abstract class OracleExecTestBase extends BaseExecTest {
 	
 	TestTableCreatorOracle testTableCreator = new TestTableCreatorOracle();
 
+	@Value("${oracle.test.schema}")
+	private String schema;
+	
+	
+	@Override
+	protected String getSchema() {
+		return schema;
+	}
+
+	
 	public TestTableCreatorOracle getTestTableCreator() {
 		return testTableCreator;
 	}

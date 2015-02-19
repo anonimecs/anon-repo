@@ -6,6 +6,7 @@ import org.anon.data.Database;
 import org.anon.exec.audit.ExecAuditor;
 import org.anon.exec.mock.LicenseManagerMock;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 
 public abstract class SybaseExecTestBase extends BaseExecTest {
 
@@ -22,6 +23,16 @@ public abstract class SybaseExecTestBase extends BaseExecTest {
 	
 	TestTableCreatorSybase testTableCreator = new TestTableCreatorSybase();
 
+	@Value("${sybase.test.schema}")
+	private String schema;
+	
+	
+	@Override
+	protected String getSchema() {
+		return schema;
+	}
+
+	
 	public SybaseExecTestBase() {
 		super();
 	}

@@ -7,8 +7,9 @@ import org.anon.data.Database;
 import org.anon.exec.audit.ExecAuditor;
 import org.anon.exec.mock.LicenseManagerMock;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 
-public class MySqlExecTestBase extends BaseExecTest {
+public abstract class MySqlExecTestBase extends BaseExecTest {
 	
 	@Autowired
 	DataSource dataSourceMySql;
@@ -20,6 +21,16 @@ public class MySqlExecTestBase extends BaseExecTest {
 	ExecAuditor execAuditor;
 	
 	TestTableCreatorMySql testTableCreator = new TestTableCreatorMySql();
+	
+	@Value("${mysql.test.schema}")
+	private String schema;
+	
+	
+	@Override
+	protected String getSchema() {
+		return schema;
+	}
+
 	
 	@Override
 	DataSource getDataSource() {

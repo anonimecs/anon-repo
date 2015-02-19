@@ -18,6 +18,7 @@ import org.springframework.test.context.ContextConfiguration;
 @ContextConfiguration("classpath:BaseExecTest.xml")
 public abstract class BaseExecTest extends BaseDbTest{
 	
+	abstract protected String getSchema();
 
 	
 	protected AnonConfig getTestAnonConfig(String colName, String colType, String tableName, AnonymisationMethod anonymisationMethod, DatabaseSpecifics databaseSpecifics) {
@@ -42,9 +43,11 @@ public abstract class BaseExecTest extends BaseDbTest{
 		AnonymisedColumnInfo anonymizedColumn = new AnonymisedColumnInfo(databaseColumnInfo);
 		anonymisationMethod.addColumn(anonymizedColumn);
 		table.addAnonymisedColumn(anonymizedColumn);
+		table.setSchema(getSchema());
 		
 		return anonymizedColumn;
 	}
+
 
 	@Before
 	public void createTable() throws IOException{

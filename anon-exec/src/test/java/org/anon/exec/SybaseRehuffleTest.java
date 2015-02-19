@@ -80,6 +80,7 @@ public class SybaseRehuffleTest extends SybaseExecTestBase{
 		AnonymisedColumnInfo anonymizedColumn = new AnonymisedColumnInfo(databaseColumnInfo);
 		anonymisationMethod.addColumn(anonymizedColumn);
 		table.addAnonymisedColumn(anonymizedColumn);
+		table.setSchema(getSchema());
 		
 		
 
