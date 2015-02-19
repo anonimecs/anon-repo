@@ -4,8 +4,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class SybaseConstraint extends Constraint {
-	/** example: fk_RBE_CodeCpty_POS */
-	private String name; 
+	
 	/** example: referential constraint */
 	private String type; 
 	/** example: POSITION FOREIGN KEY (RBE_CodeCpty) REFERENCES CPTY(RBE_CodeCpty) */
@@ -14,18 +13,26 @@ public class SybaseConstraint extends Constraint {
 	
 	
 	public SybaseConstraint(ResultSet rs) throws SQLException {
-		name = rs.getString("name");
 		type = rs.getString("type");
 		definition = rs.getString("definition");
+
+		if(isReferentialConstraint()){
+			constraintName = rs.getString("name");
+			sourceTableName = parseSourceTableName();
+			targetTableName = parseTargetTableName();
+		}
 	}
 	
 	public boolean isReferentialConstraint(){
 		return "referential constraint".equalsIgnoreCase(type);
 	}
 
-	public String getSourceTableName() {
-		// it is the first word in the definition
-		return definition.split(" ", 2)[0];
+	private String parseSourceTableName() {
+		return definition.split(" ", 2)[0].trim();
+	}
+
+	private String parseTargetTableName() {
+		return definition.split("REFERENCES")[1].split("\\(")[0].trim();
 	}
 
 	public String getStrippedDefinition() {
@@ -33,9 +40,6 @@ public class SybaseConstraint extends Constraint {
 		return definition.split(" ", 2)[1];
 	}
 
-	public String getName() {
-		return name;
-	}
 	public String getType() {
 		return type;
 	}
@@ -45,24 +49,31 @@ public class SybaseConstraint extends Constraint {
 	
 	@Override
 	public String createDeactivateSql() {
-		return "alter table " + getSourceTableName() + " drop constraint " + getName();
+		return "alter table " + getSourceTableName() + " drop constraint " + getConstraintName();
 	}
 
 
 	@Override
 	public String createActivateSql() {
-		return "alter table " +getSourceTableName() + " add constraint " + getName() + " " + getStrippedDefinition();
+		return "alter table " +getSourceTableName() + " add constraint " + getConstraintName() + " " + getStrippedDefinition();
 	}
 
-	public boolean isMultiColumnReferentialConstraint(){
-		return getSourceColumnNames().length > 1;
-	}
 
+	@Override
 	public String[] getSourceColumnNames() {
 		// example: Table1 FOREIGN KEY (Column1) REFERENCES Table2(Column2)
 		// example2: Table1   FOREIGN KEY (col1_ref, col2_ref)    REFERENCES Table2 (col1, col2)
 		return definition.split("\\(")[1].split("\\)")[0].split(",");
 	}
 	
+	@Override
+	public String[] getTargetColumnNames() {
+		// example: Table1 FOREIGN KEY (Column1) REFERENCES Table2(Column2)
+		// example2: Table1   FOREIGN KEY (col1_ref, col2_ref)    REFERENCES Table2 (col1, col2)
+		return definition.split("REFERENCES")[1]
+				.split("\\(")[1].split("\\)")[0]
+				.split(",");
+	}
+
 	
 }

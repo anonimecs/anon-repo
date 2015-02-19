@@ -95,7 +95,7 @@ public class SybaseDbConnectionTest extends BaseDbTest{
 			DatabaseColumnInfo editedColumn = new DatabaseColumnInfo();
 			editedColumn.setName("LPA_ID");
 			List<RelatedTableColumnInfo> res  = sybaseDbConnection.findRelatedTables(editedTable, editedColumn);
-			Assert.assertEquals("2 records expected", 2, res.size());
+			Assert.assertEquals("9 records expected", 9, res.size());
 		}
 		else {
 			Assert.fail("LIMEX_d schema not available in the test database");

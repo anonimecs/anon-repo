@@ -8,7 +8,7 @@ import org.anon.data.AnonymisedColumnInfo;
 import org.apache.log4j.Logger;
 import org.springframework.jdbc.core.JdbcTemplate;
 
-public abstract class ConstraintManager {
+public abstract class ConstraintManager <C extends Constraint>{
 	protected Logger logger = Logger.getLogger(getClass());
 
 	protected JdbcTemplate jdbcTemplate;
@@ -17,8 +17,9 @@ public abstract class ConstraintManager {
 		this.jdbcTemplate = new JdbcTemplate(dataSource);
 	}
 
-	public List<? extends Constraint> deactivateConstraints(AnonymisedColumnInfo anonymisedColumnInfo) {
-		List<? extends Constraint> referentialConstraints = loadConstraints(anonymisedColumnInfo.getTable().getName(),
+	public List<C> deactivateConstraints(AnonymisedColumnInfo anonymisedColumnInfo) {
+		List<C> referentialConstraints = loadConstraints(anonymisedColumnInfo.getTable().getName(),
+																			anonymisedColumnInfo.getName(),
 																			anonymisedColumnInfo.getTable().getSchema());
 		
 		for(Constraint constraint:referentialConstraints){
@@ -31,9 +32,9 @@ public abstract class ConstraintManager {
 		return referentialConstraints;
 	}
 
-	public void activateConstraints(AnonymisedColumnInfo anonymisedColumnInfo, List<? extends Constraint> referentialConstraints) {
+	public void activateConstraints(AnonymisedColumnInfo anonymisedColumnInfo, List<C> referentialConstraints) {
 		
-		for(Constraint constraint:referentialConstraints){
+		for(C constraint:referentialConstraints){
 			if(!constraint.isActive()){
 				String createConstraint = constraint.createActivateSql();
 				logger.debug(createConstraint);
@@ -50,7 +51,13 @@ public abstract class ConstraintManager {
 	}
 	
 
-	abstract protected List<? extends Constraint> loadConstraints(String tableName, String schema);
+	public List<C> loadConstraints(String tableName, String columnName, String schema){
+		List<C> res= loadForeignKeysTo(tableName, columnName, schema);
+		res.addAll(loadForeignKeysFrom(tableName, columnName, schema));
+		return res;
+	}
+	abstract protected List<C> loadForeignKeysTo(String tableName, String columnName, String schema);
+	abstract protected List<C> loadForeignKeysFrom(String tableName, String columnName, String schema);
 
 
 }

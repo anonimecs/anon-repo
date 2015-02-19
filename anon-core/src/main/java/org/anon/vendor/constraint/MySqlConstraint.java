@@ -5,9 +5,6 @@ import java.sql.SQLException;
 
 public class MySqlConstraint extends Constraint {
 
-	private String constraintName;
-	private String sourceTableName;
-	private String targetTableName;
 	private String sourceColumns;
 	private String targetColumns;
 	
@@ -31,23 +28,22 @@ public class MySqlConstraint extends Constraint {
 				" add constraint " + constraintName + "  FOREIGN KEY (" + sourceColumns +")    REFERENCES " + targetTableName + " (" +targetColumns+ ")";
 	}
 
-	public String getConstraintName() {
-		return constraintName;
-	}
 
-	public String getSourceTableName() {
-		return sourceTableName;
-	}
-	
-	public String getTargetTableName() {
-		return targetTableName;
-	}
-	
 
 	public String getSourceColumns() {
 		return sourceColumns;
 	}
 	public String getTargetColumns() {
 		return targetColumns;
+	}
+
+	@Override
+	public String[] getSourceColumnNames() {
+		return sourceColumns.split(",");
+	}
+
+	@Override
+	public String[] getTargetColumnNames() {
+		return targetColumns.split(",");
 	}
 }

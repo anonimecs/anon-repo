@@ -8,13 +8,25 @@ import javax.sql.DataSource;
 
 import org.springframework.jdbc.core.RowMapper;
 
-public class SqlServerConstraintManager extends ConstraintManager {
+public class SqlServerConstraintManager extends ConstraintManager<SqlServerConstraint> {
 	public SqlServerConstraintManager(DataSource dataSource) {
 		super(dataSource);
 	}
 
 	@Override
-	public List<SqlServerConstraint> loadConstraints(String tableName, String schema) {
+	protected List<SqlServerConstraint> loadForeignKeysFrom(String tableName, String columnName, String schema) {
+		// TODO Auto-generated method stub
+		return doloadConstraints(tableName, schema);
+	}
+	
+	@Override
+	protected List<SqlServerConstraint> loadForeignKeysTo(String tableName, String columnName, String schema) {
+		// TODO Auto-generated method stub
+		return doloadConstraints(tableName, schema);
+	}
+	
+
+	private List<SqlServerConstraint> doloadConstraints(String tableName, String schema) {
 		String sql_select = "SELECT       KCU1.CONSTRAINT_NAME AS FK_CONSTRAINT_NAME                     "+ 
 					 " ,KCU1.TABLE_NAME AS SOURCE_TABLE_NAME 											 "+
 					 " , KCU1.COLUMN_NAME AS SOURCE_COLUMN_NAME											 "+

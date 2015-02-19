@@ -3,28 +3,19 @@ package org.anon.vendor.constraint;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+// TODO: support for multi column FKs
 public class OracleConstraint extends Constraint {
 
-	private String constraintName;
-	private String sourceTableName;
-	private String targetTableName;
+	private String sourceColumn;
+	private String targetColumn;
+
 	
 	public OracleConstraint(ResultSet rs) throws SQLException {
 		constraintName = rs.getString("constraintName");
 		sourceTableName = rs.getString("sourceTableName");
 		targetTableName = rs.getString("targetTableName");
-	}
-
-	public String getConstraintName() {
-		return constraintName;
-	}
-
-	public String getSourceTableName() {
-		return sourceTableName;
-	}
-	
-	public String getTargetTableName() {
-		return targetTableName;
+		sourceColumn = rs.getString("sourceColumnName");
+		targetColumn = rs.getString("targetColumnName");
 	}
 
 	@Override
@@ -35,6 +26,16 @@ public class OracleConstraint extends Constraint {
 	@Override
 	public String createActivateSql() {
 		return "alter table " + getSourceTableName() + " ENABLE constraint " + getConstraintName();
+	}
+
+	@Override
+	public String[] getSourceColumnNames() {
+		return new String[]{sourceColumn};
+	}
+
+	@Override
+	public String[] getTargetColumnNames() {
+		return new String[]{targetColumn};
 	}			
 
 }

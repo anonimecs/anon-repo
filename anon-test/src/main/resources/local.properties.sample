@@ -17,3 +17,8 @@ sqlserver.test.url=jdbc:sqlserver://sqlserver:1433
 sqlserver.test.user=sa
 sqlserver.test.passwd=secret
 sqlserver.test.schema=anon
+
+mysql.available=true
+sybase.available=true
+oracle.available=true
+sqlserver.available=false

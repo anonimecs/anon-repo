@@ -96,7 +96,7 @@ public class SqlServerDbConnection extends AbstractDbConnection {
 	protected Collection<RelatedTableColumnInfo> findRelatedTablesByForeignKey(DatabaseTableInfo editedTable,
 			DatabaseColumnInfo editedColumn) {
 		SqlServerConstraintManager sqlServerConstraintManager = new SqlServerConstraintManager(getDataSource());
-		List<SqlServerConstraint> fkList = sqlServerConstraintManager.loadConstraints(editedTable.getName(), editedTable.getSchema());
+		List<SqlServerConstraint> fkList = sqlServerConstraintManager.loadConstraints(editedTable.getName(),editedColumn.getName(), editedTable.getSchema());
 		Collection<RelatedTableColumnInfo> res = new ArrayList<>();
 		for (SqlServerConstraint constraint: fkList) {
 			if(constraint.getSourceColumnName().equals(editedColumn.getName())){
