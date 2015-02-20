@@ -6,7 +6,7 @@
 						http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd">
 
 	
-	<context:property-placeholder  location="classpath:jenkins.test.properties,classpath:local.test.properties"  ignore-unresolvable="true" ignore-resource-not-found="false"/>
+	<context:property-placeholder  location="classpath:jenkins.test.properties,classpath:local.test.properties"  ignore-unresolvable="true" ignore-resource-not-found="true"/>
 
 	<import resource="classpath:spring-anon-rmi-client.xml"/>
 	
