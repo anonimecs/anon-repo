@@ -10,6 +10,8 @@ public interface UserDao {
 	
 	SecurityUser loadUserById(Long id);
 	
+	SecurityUser loadUserByUsername(String username);
+	
 	void addUser(SecurityUser user);
 	
 	void updateUser(SecurityUser user);

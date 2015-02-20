@@ -1,5 +1,6 @@
 package org.anon.gui;
 
+import java.util.Iterator;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -11,7 +12,7 @@ import org.anon.gui.navigation.NavigationCaseEnum;
 import org.anon.persistence.data.SecurityRole;
 import org.anon.persistence.data.SecurityRoleEnum;
 import org.anon.persistence.data.SecurityUser;
-import org.anon.service.ServiceResult;
+import org.anon.service.ServiceException;
 import org.anon.service.admin.UserService;
 
 @ManagedBean
@@ -25,6 +26,7 @@ public class UserBacking extends BackingBase {
 	
 	private SecurityUser selectedUser;
 	private SecurityRoleEnum selectedRole;
+	private String newPassword;
 	
 	@PostConstruct
 	public void init() {
@@ -38,29 +40,57 @@ public class UserBacking extends BackingBase {
 		redirectPageTo(NavigationCaseEnum.ADD_USER);
 	}
 	
+	public void prepareEdit(SecurityUser user) {
+		selectedUser = user;
+		selectedRole = getFirstRole(user).getRole();
+		redirectPageTo(NavigationCaseEnum.EDIT_USER);
+	}
+	
 	public void saveUser() {
 		
 		SecurityRole role = new SecurityRole();
 		role.setRole(getSelectedRole());
 		selectedUser.getRoles().add(role);
-		ServiceResult result = userService.addNewUser(selectedUser);
 		
-		if(!result.isFailed()) {
+		try {
+			userService.addNewUser(selectedUser);
 			showExtInfoInGui("User added", selectedUser.getUsername());
-			init();
+		} catch (ServiceException e) {
+			handleServiceResultAsInfoMessage(e);
 		}
-		handleServiceResultAsInfoMessage(result);	
+		init();
+		redirectPageTo(NavigationCaseEnum.USERS);
+	}
+	
+	public void saveEditUser() {
+		
+		try {
+			userService.updateUser(selectedUser, newPassword);
+			showExtInfoInGui("User changed", selectedUser.getUsername());
+		} catch (ServiceException e) {
+			handleServiceResultAsInfoMessage(e);
+		}
+		init();
 		redirectPageTo(NavigationCaseEnum.USERS);
 	}
 	
 	public void deleteUser(SecurityUser user) {
-		ServiceResult result = userService.deleteUser(user);
 		
-		if(!result.isFailed()) {
+		try {
+			userService.deleteUser(user);
 			showExtInfoInGui("User deleted", user.getUsername());
+		} catch (ServiceException e) {
+			handleServiceResultAsInfoMessage(e);
 		}
 		init();
-		handleServiceResultAsInfoMessage(result);	
+	}
+	
+	public SecurityRole getFirstRole(SecurityUser user) {
+		Iterator<SecurityRole> iter = user.getRoles().iterator();
+		if(iter.hasNext()) {
+			return (SecurityRole) iter.next();
+		}
+		return null;
 	}
 
 	public List<SecurityUser> getUsers() {
@@ -79,6 +109,14 @@ public class UserBacking extends BackingBase {
 		this.userService = userService;
 	}
 	
+	public String getNewPassword() {
+		return newPassword;
+	}
+
+	public void setNewPassword(String newPassword) {
+		this.newPassword = newPassword;
+	}
+
 	public SecurityRoleEnum getSelectedRole() {
 		return selectedRole;
 	}

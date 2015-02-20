@@ -15,6 +15,7 @@ public enum NavigationCaseEnum {
 	EXE_AUDIT			("/pages/exec/execAudit.jsf",				"/app/execaudit/"),
 	BACKUP				("/pages/admin/backup.jsf",					"/app/backup/"),
 	ADD_USER			("/pages/admin/usersAdd.jsf",				"/app/user-add/"),
+	EDIT_USER			("/pages/admin/usersEdit.jsf",				"/app/user-edit/"),
 	USERS				("/pages/admin/users.jsf",					"/app/users/");
 	
 	private NavigationCaseEnum(String url, String path) {

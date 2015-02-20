@@ -3,6 +3,7 @@ package org.anon.gui.security;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 
+import org.anon.persistence.data.SecurityRoleEnum;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -22,5 +23,9 @@ public class SecurityBean {
 			 }
 		 }
 		 return false;
+	}
+	
+	public boolean hasRole(SecurityRoleEnum role) {
+		return hasRole(role.getRoleType());
 	}
 }

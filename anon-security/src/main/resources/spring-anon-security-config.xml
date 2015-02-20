@@ -20,5 +20,7 @@
 			<sec:password-encoder ref="passwordEncoder" />
 		</sec:authentication-provider>
 	</sec:authentication-manager>
+	
+	<sec:global-method-security pre-post-annotations="enabled"/>
 
 </beans>

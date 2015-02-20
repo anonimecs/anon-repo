@@ -62,4 +62,10 @@ public class UserDaoImpl implements UserDao {
 	public void setSessionFactory(SessionFactory sessionFactory) {
 		this.sessionFactory = sessionFactory;
 	}
+
+	@Override
+	public SecurityUser loadUserByUsername(String username) {
+		return (SecurityUser) sessionFactory.getCurrentSession()
+				.createQuery("from SecurityUser where username=:username").setString("username", username).uniqueResult();
+	}
 }

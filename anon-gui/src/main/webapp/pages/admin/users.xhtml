@@ -14,7 +14,6 @@
 		
 				<h:panelGrid rendered="#{secBean.hasRole('ROLE_ADMIN')}">
 					<p:commandButton value="Add" action="#{userBacking.prepareNew()}"/>
-					
 				</h:panelGrid>
 			
 				<p:dataTable id="userList"
@@ -23,6 +22,10 @@
 							
 					<p:column headerText="Username" sortBy="#{user.username}">
 			        	<h:outputText value="#{user.username}" />
+			    	</p:column>
+			    	
+			    	<p:column headerText="Role" sortBy="#{userBacking.getFirstRole(user).role}">
+			    		<h:outputText value="#{userBacking.getFirstRole(user).role}" />
 			    	</p:column>
 			    	
 			    	<p:column headerText="Name" sortBy="#{user.name}">
@@ -36,8 +39,9 @@
 			    	<p:column style="width:10%">	
 			    		<p:commandButton id="deleteButton" update=":userListForm:panel" icon="ui-icon-close"
 			        		title="Delete" action="#{userBacking.deleteUser(user)}"
-			        		disabled="#{user.username eq infoBacking.getUserName()}">
-			        	</p:commandButton>
+			        		disabled="#{user.username eq infoBacking.getUserName()}" />
+			        	<p:commandButton id="editButton" icon="ui-icon-pencil" 
+			        		title="Edit" action="#{userBacking.prepareEdit(user)}"/>
 			        </p:column>
 				
 				</p:dataTable>

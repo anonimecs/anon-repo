@@ -8,7 +8,6 @@ import javax.faces.context.FacesContext;
 import org.anon.gui.navigation.NavigationCaseEnum;
 import org.anon.license.LicenseManager;
 import org.anon.service.ServiceException;
-import org.anon.service.ServiceResult;
 import org.anon.service.ServiceResultMessage;
 import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
@@ -74,13 +73,6 @@ public class BackingBase {
 	}
 	
 	protected void handleServiceResultAsInfoMessage(ServiceException serviceException) {
-		for(ServiceResultMessage msg : serviceException.getResultMessages()) {
-			FacesContext.getCurrentInstance()
-			.addMessage(INFO_MESSAGE_ID, new FacesMessage(msg.getSeverity(), msg.getHeadline(), msg.getDetails()));
-		}
-	}
-	
-	protected void handleServiceResultAsInfoMessage(ServiceResult serviceException) {
 		for(ServiceResultMessage msg : serviceException.getResultMessages()) {
 			FacesContext.getCurrentInstance()
 			.addMessage(INFO_MESSAGE_ID, new FacesMessage(msg.getSeverity(), msg.getHeadline(), msg.getDetails()));
