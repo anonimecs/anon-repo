@@ -57,6 +57,8 @@ public class ConstraintManagerTest extends BaseParametrisedDbTest{
         if(isDbAvailable(DB.mysql)) res.add(new Object[]{ MySqlConstraintManager.class , "departments", "dept_no", "employees", 2, 0});
         if(isDbAvailable(DB.oracle)) res.add(new Object[]{ OracleConstraintManager.class , "RIGHT", "ID", "ECAP", 1, 0});
         if(isDbAvailable(DB.oracle)) res.add(new Object[]{ OracleConstraintManager.class , "ROLE_RIGHT", "ROLE_ID", "ECAP", 0, 1});
+        if(isDbAvailable(DB.sqlserver)) res.add(new Object[]{ SqlServerConstraintManager.class , "EmployeeTerritories", "EmployeeId", "Northwind", 0, 1});
+        if(isDbAvailable(DB.sqlserver)) res.add(new Object[]{ SqlServerConstraintManager.class , "Employees", "EmployeeId", "Northwind", 3, 0});
 		
 		return res;
 	}

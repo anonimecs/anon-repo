@@ -3,19 +3,27 @@ package org.anon.vendor.constraint;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+// TODO support for multi col FKs
 public class SqlServerConstraint extends Constraint {
 
 	private String sourceColumnName;
+	private String targetColumnName;
 	
 	public SqlServerConstraint(ResultSet rs) throws SQLException {
 		constraintName = rs.getString("FK_CONSTRAINT_NAME");
 		sourceTableName = rs.getString("SOURCE_TABLE_NAME");
 		sourceColumnName = rs.getString("SOURCE_COLUMN_NAME");
+		targetTableName = rs.getString("TARGET_TABLE_NAME");
+		targetColumnName = rs.getString("TARGET_COLUMN_NAME");
 	}
 
 
 	public String getSourceColumnName() {
 		return sourceColumnName;
+	}
+	
+	public String getTargetColumnName() {
+		return targetColumnName;
 	}
 	
 
@@ -32,15 +40,13 @@ public class SqlServerConstraint extends Constraint {
 
 	@Override
 	public String[] getSourceColumnNames() {
-		// TODO Auto-generated method stub
-		return null;
+		return new String[]{sourceColumnName};
 	}
 
 
 	@Override
 	public String[] getTargetColumnNames() {
-		// TODO Auto-generated method stub
-		return null;
+		return new String[]{targetColumnName};
 	}			
 
 }
