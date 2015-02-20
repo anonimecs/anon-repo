@@ -230,7 +230,7 @@ public class DatabaseLoaderServiceImpl implements DatabaseLoaderService{
 			dbConnectionFactory.getConnection().testSufficientPermissions(selectedSchema);
 		}
 		catch(Exception e){
-			throw new ServiceException("User has unsufficient perimissions to anonymise. Grant permissions to run : ", e.getMessage());
+			throw new ServiceException("User has unsufficient perimissions to anonymise. Grant permissions to run : ", e.getMessage(), e);
 		}
 	}
 

@@ -28,14 +28,14 @@ public class DbConnectionValidatorService extends AnonStatic{
 			conn = DriverManager.getConnection
 					(testUrl.toString(), config.getLogin(), config.getPassword());
 			if (!conn.isValid(3)){
-				throw new ServiceException("Connection is not valid", null);
+				throw new ServiceException("Connection is not valid", null, null);
 			};
 			
 		} catch (SQLException e) {
 			throw new ServiceException("Connection invalid", 
-					e.getCause() != null ?  e.getCause().getMessage() : e.getMessage());
+					e.getCause() != null ?  e.getCause().getMessage() : e.getMessage(), e);
 		} catch (ClassNotFoundException e) {
-			throw new ServiceException("Driver not found", drvClass);
+			throw new ServiceException("Driver not found", drvClass, e);
 		}
 		finally{
 			try {

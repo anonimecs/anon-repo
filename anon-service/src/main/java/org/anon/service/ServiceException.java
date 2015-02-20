@@ -7,16 +7,12 @@ import javax.faces.application.FacesMessage;
 
 public class ServiceException extends Exception{
 
-	private List<ServiceResultMessage> resultMessages;
+	private List<ServiceResultMessage> resultMessages = new ArrayList<ServiceResultMessage>();;
 
 
-	public ServiceException(String headline, String details) {
-		this();
+	public ServiceException(String headline, String details, Exception e) {
+		super(e);
 		addErrorMessage(headline, details);
-	}
-	
-	public ServiceException() {
-		resultMessages = new ArrayList<ServiceResultMessage>();
 	}
 	
 	public void addInfoMessage(String headline, String details) {

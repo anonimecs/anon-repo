@@ -57,7 +57,7 @@ public class UserServiceImpl implements UserService {
 		} catch (Exception e) {
 			logger.warn(e.getMessage());
 			throw new ServiceException("User not changed", 
-					e.getCause() != null ?  e.getCause().getMessage() : e.getMessage());
+					e.getCause() != null ?  e.getCause().getMessage() : e.getMessage(), e);
 		}
 	}
 
@@ -74,7 +74,7 @@ public class UserServiceImpl implements UserService {
 		} catch (Exception e) {
 			logger.warn(e.getMessage());
 			throw new ServiceException("User not added", 
-					e.getCause() != null ?  e.getCause().getMessage() : e.getMessage());
+					e.getCause() != null ?  e.getCause().getMessage() : e.getMessage(), e);
 		}
 	}
 
@@ -88,7 +88,7 @@ public class UserServiceImpl implements UserService {
 		} catch (Exception e) {
 			logger.warn(e.getMessage());
 			throw new ServiceException("User not removed", 
-					e.getCause() != null ?  e.getCause().getMessage() : e.getMessage());
+					e.getCause() != null ?  e.getCause().getMessage() : e.getMessage(), e);
 		}
 	}
 

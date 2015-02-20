@@ -41,7 +41,7 @@ public class DatabaseConfigServiceImpl implements DatabaseConfigService {
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
 			throw new ServiceException("Configuration not deleted", 
-					e.getCause() != null ?  e.getCause().getMessage() : e.getMessage());
+					e.getCause() != null ?  e.getCause().getMessage() : e.getMessage(), e);
 		}
 	}
 
@@ -55,7 +55,7 @@ public class DatabaseConfigServiceImpl implements DatabaseConfigService {
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
 			throw new ServiceException("Configuration not deleted", 
-					e.getCause() != null ?  e.getCause().getMessage() : e.getMessage());
+					e.getCause() != null ?  e.getCause().getMessage() : e.getMessage(), e);
 		}
 
 	}
@@ -71,7 +71,7 @@ public class DatabaseConfigServiceImpl implements DatabaseConfigService {
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
 			throw new ServiceException("Configuration not added", 
-					e.getCause() != null ?  e.getCause().getMessage() : e.getMessage());
+					e.getCause() != null ?  e.getCause().getMessage() : e.getMessage(), e);
 		}
 	}
 	
@@ -86,7 +86,7 @@ public class DatabaseConfigServiceImpl implements DatabaseConfigService {
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
 			throw new ServiceException("Configuration not updated", 
-					e.getCause() != null ?  e.getCause().getMessage() : e.getMessage());
+					e.getCause() != null ?  e.getCause().getMessage() : e.getMessage(), e);
 		}
 	}
 
