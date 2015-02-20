@@ -20,6 +20,16 @@ public abstract class BaseExecTest extends BaseDbTest{
 	
 	abstract protected String getSchema();
 
+	private JdbcTemplate jdbcTemplate;
+	
+	protected JdbcTemplate getJdbcTemplate() {
+		if(jdbcTemplate == null){
+			jdbcTemplate = new JdbcTemplate(getDataSource());
+			jdbcTemplate.execute("use " + getSchema());
+		}
+		return jdbcTemplate;
+	}
+
 	
 	protected AnonConfig getTestAnonConfig(String colName, String colType, String tableName, AnonymisationMethod anonymisationMethod, DatabaseSpecifics databaseSpecifics) {
 		AnonConfig anonConfig = new AnonConfig();
@@ -52,24 +62,26 @@ public abstract class BaseExecTest extends BaseDbTest{
 	@Before
 	public void createTable() throws IOException{
 		dropTables();
-		getTestTableCreator().createTables(new JdbcTemplate(getDataSource()));
+		getTestTableCreator().createTables(getJdbcTemplate());
 	}
+
+
 	
 	@After
 	public void dropTables() {
 		try{
-			getTestTableCreator().dropTableB(new JdbcTemplate(getDataSource()));
+			getTestTableCreator().dropTableB(getJdbcTemplate());
 		}
 		catch(Exception e){}
 		try {
-			getTestTableCreator().dropTableA(new JdbcTemplate(getDataSource()));
+			getTestTableCreator().dropTableA(getJdbcTemplate());
 		} catch (Exception e) {}
 	}
 	
 	@Test
 	public void test1_simpleTest() {
-		Assert.assertEquals(getTestTableCreator().getRowcountTableB(), new JdbcTemplate(getDataSource()).queryForInt("select count(*) from TMP_TABLE_B"));
-		Assert.assertEquals(getTestTableCreator().getRowcountTableA(), new JdbcTemplate(getDataSource()).queryForInt("select count(*) from TMP_TABLE_A"));
+		Assert.assertEquals(getTestTableCreator().getRowcountTableB(), getJdbcTemplate().queryForInt("select count(*) from TMP_TABLE_B"));
+		Assert.assertEquals(getTestTableCreator().getRowcountTableA(), getJdbcTemplate().queryForInt("select count(*) from TMP_TABLE_A"));
 	}
 	
 	protected abstract TestTableCreator getTestTableCreator();
