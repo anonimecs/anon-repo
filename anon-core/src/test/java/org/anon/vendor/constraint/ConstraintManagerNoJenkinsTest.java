@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
+import org.anon.exec.BaseParametrisedDbTest;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -17,7 +18,7 @@ import org.springframework.test.context.ContextConfiguration;
 @SuppressWarnings({"rawtypes", "unchecked"})
 @RunWith(Parameterized.class)
 @ContextConfiguration("classpath:spring-test-datasources.xml")
-public class ConstraintManagerTest extends BaseParametrisedDbTest{
+public class ConstraintManagerNoJenkinsTest extends BaseParametrisedDbTest{
 
 	
 	private ConstraintManager constraintManager;
@@ -28,7 +29,7 @@ public class ConstraintManagerTest extends BaseParametrisedDbTest{
 	private int incomingConstraints;
 	private int outgoingConstraints;
 	
-	public ConstraintManagerTest(Class<ConstraintManager> constraintManagerClass, String tableName, String columnName, String schema, 
+	public ConstraintManagerNoJenkinsTest(Class<ConstraintManager> constraintManagerClass, String tableName, String columnName, String schema, 
 			int incomingConstraints, int outgoingConstraints) {
 		super();
 		this.constraintManagerClass = constraintManagerClass;

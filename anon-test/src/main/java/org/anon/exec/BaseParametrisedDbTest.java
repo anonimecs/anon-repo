@@ -1,4 +1,4 @@
-package org.anon.vendor.constraint;
+package org.anon.exec;
 
 import java.util.Properties;
 
@@ -9,7 +9,7 @@ import org.springframework.test.context.TestContextManager;
 
 public abstract class BaseParametrisedDbTest {
 	
-	enum DB {mysql, sybase, oracle, sqlserver}
+	public enum DB {mysql, sybase, oracle, sqlserver}
 	
 	@Autowired	DataSource dataSourceSybase;
 	@Autowired	DataSource dataSourceOracle;
