@@ -22,7 +22,7 @@
 				<h:outputText value="Enterprise Edition" rendered="#{licenseManager.isEnterpriseEdition()}"/>				
 			</h:panelGrid>
 		
-			<h:panelGrid columns="4" style="float: right;">	
+			<h:panelGrid columns="5" style="float: right;">	
 				<h:outputText value="Connected to #{databasePanelBacking.databaseConfig.guiName} (#{databasePanelBacking.databaseConfig.url})" styleClass="headline" rendered="#{databasePanelBacking.connected}"/>
 
 				<p:selectOneMenu id="connection" value="#{databasePanelBacking.selectedConnectionId}" rendered="#{not databasePanelBacking.connected}">
@@ -46,7 +46,7 @@
 					style="margin-left: 10px"/>
 					
 				<p:button id="logout" value="Logout" icon="ui-icon-locked" rendered="#{infoBacking.isEnterprise()}" href="/perform_logout" style="margin-left: 10px"/>
-			
+						
 			</h:panelGrid>
 		
 		</p:panel>

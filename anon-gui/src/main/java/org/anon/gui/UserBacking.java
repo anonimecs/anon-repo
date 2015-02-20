@@ -92,6 +92,10 @@ public class UserBacking extends BackingBase {
 		}
 		return null;
 	}
+	
+	public String getUsername() {
+		return userService.getUsername();
+	}
 
 	public List<SecurityUser> getUsers() {
 		return users;
