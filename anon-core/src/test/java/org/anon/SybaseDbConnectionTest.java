@@ -11,6 +11,7 @@ import org.anon.exec.BaseDbTest;
 import org.anon.vendor.DatabaseSpecifics;
 import org.anon.vendor.SybaseDbConnection;
 import org.junit.Assert;
+import org.junit.Assume;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -88,18 +89,15 @@ public class SybaseDbConnectionTest extends BaseDbTest{
 	public void testEmployeesSchemaRelatedTables(){
 		SybaseDbConnection sybaseDbConnection = new SybaseDbConnection("LIMEX_d");
 		sybaseDbConnection.setDataSource(dataSourceSybase);
-		if(sybaseDbConnection.getSchemas().contains("LIMEX_d")){
-			DatabaseTableInfo editedTable = new DatabaseTableInfo();
-			editedTable.setName("LOGGING_PDLC_AUDIT");
-			editedTable.setSchema("LIMEX_d");
-			DatabaseColumnInfo editedColumn = new DatabaseColumnInfo();
-			editedColumn.setName("LPA_ID");
-			List<RelatedTableColumnInfo> res  = sybaseDbConnection.findRelatedTables(editedTable, editedColumn);
-			Assert.assertEquals("9 records expected", 9, res.size());
-		}
-		else {
-			Assert.fail("LIMEX_d schema not available in the test database");
-		}
+		Assume.assumeTrue(sybaseDbConnection.getSchemas().contains("LIMEX_d"));
+
+		DatabaseTableInfo editedTable = new DatabaseTableInfo();
+		editedTable.setName("LOGGING_PDLC_AUDIT");
+		editedTable.setSchema("LIMEX_d");
+		DatabaseColumnInfo editedColumn = new DatabaseColumnInfo();
+		editedColumn.setName("LPA_ID");
+		List<RelatedTableColumnInfo> res  = sybaseDbConnection.findRelatedTables(editedTable, editedColumn);
+		Assert.assertEquals("9 records expected", 9, res.size());
 	}
 
 
