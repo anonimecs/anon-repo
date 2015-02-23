@@ -12,10 +12,16 @@ public class LessThan extends MappingRule {
 		this.mappedValue = mappedValue;
 	}
 	
+	@Override
+	public String getCodition(){
+		return getBoundary();
+	}
+	
 	public String getBoundary() {
 		return boundary;
 	}
 	
+	@Override
 	public String getMappedValue() {
 		return mappedValue;
 	}

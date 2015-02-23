@@ -19,7 +19,7 @@
 			<h:outputLabel for="anonymizationMethodSelect">Method</h:outputLabel>
 			<h:form>        
 				<p:selectOneMenu id="anonymizationMethodSelect" value="#{editedTableBacking.anonymisationMethod}" converter="methodConverter" var="a">
-					<p:ajax event="change" update=":anonymizeTabView"
+					<p:ajax event="change" update=":anonymizeTabView,:buttons"
 					    listener="#{editedTableBacking.onAnonymisatationTypeChanged()}" oncomplete=""/>
 					<f:selectItems value="#{editedTableBacking.supportedAnonymisationMethods}" var="anonMethod" 
 						itemLabel="#{anonMethod.type}" itemValue="#{anonMethod}" />
@@ -29,11 +29,19 @@
 	       		</p:selectOneMenu>
 			</h:form>
 
-			<p:commandButton 
-				id="saveColumnSettingsButton" actionListener="#{editedTableBacking.onSaveColumnSettings()}" 
-				value="Save Changes" update="anonymizeTabView,:menuForm:menuBar" 
-				process="@this" icon="ui-icon-disk"/>		
-			
+			<p:outputPanel id="buttons">
+				<p:commandButton value="Configure Mappings" type="button"
+					onclick="PF('configureMappingsPopup').show();" rendered="#{editedTableBacking.anonymisationMethod.type == 'MAP'}"/>
+
+				<p:commandButton id="saveColumnSettingsButton"
+					actionListener="#{editedTableBacking.onSaveColumnSettings()}"
+					value="Save Changes" update="anonymizeTabView,:menuForm:menuBar"
+					process="@this" icon="ui-icon-disk" />
+		
+		
+			</p:outputPanel>
+
+
 		</h:panelGrid>
 		
 		<h:outputText value="#{editedTableBacking.anonymisationMethod}" />
@@ -146,6 +154,39 @@
 			</p:tab>
 		
 		</p:tabView>
+		
+		<p:dialog header="Configure Mappings" widgetVar="configureMappingsPopup" height="500" width="500">
+			<p:outputLabel>
+		    You can configure the mapping details in here. Please note, that you always need
+		    to define a default unconditional mapping, and in addition, you can specify a list of optional conditional mappings.
+		    The conditions will be than applied top down to arrive at a mapped value for your anonymised column.
+		    </p:outputLabel>
+		    <h:form>
+			    <p:outputLabel value="Mapping default:"/>
+			    <p:inputText value="#{configureMappingsPopupBacking.mappingDefault.defaultValue}"/>
+			    
+			    <p:dataTable value="#{configureMappingsPopupBacking.mappingRuleList}" var="mappingRule">
+			    	<p:column headerText="Type">
+			    		<p:outputLabel value="#{mappingRule.class.simpleName}"/>
+			    	</p:column>
+			    	<p:column headerText="Condition">
+			    		<p:outputLabel value="#{mappingRule.getCondition()}"/>
+			    	</p:column>
+			    	<p:column headerText="Value">
+			    		<p:outputLabel value="#{mappingRule.getValue()}"/>
+			    	</p:column>
+			    </p:dataTable>
+			    <p:selectOneMenu id="conditionSelect"  >
+					<f:selectItem 
+						itemLabel="Less Than" itemValue="Less Than" />
+	       		</p:selectOneMenu>
+	       		
+			    <p:commandButton value="Add"/>
+			    
+			    <p:commandButton value="Save and Close"/>
+			</h:form>
+		</p:dialog> 
+		
 		
 	</ui:define>
 </ui:composition>

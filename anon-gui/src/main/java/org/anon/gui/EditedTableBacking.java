@@ -19,6 +19,7 @@ import org.anon.logic.AnonymisationMethodNone;
 import org.anon.logic.MethodFactory;
 import org.anon.service.DatabaseLoaderService;
 import org.anon.service.EditedTableService;
+import org.apache.catalina.startup.ContextConfig;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.primefaces.event.SelectEvent;
@@ -30,12 +31,16 @@ public class EditedTableBacking extends BackingBase {
 	
 	private DatabaseTableInfo editedTable; 
 	private DatabaseColumnInfo editedColumn;
+	private AnonymisationMethod anonymisationMethod = null;
+
 	private List<RelatedTableColumnInfo> relatedTableColumns;
 	private List<RelatedTableColumnInfo> filteredRelatedTableColumns;
 	private List<RelatedTableColumnInfo> selectedRelatedTableColumns;
 	private List<RelatedTableColumnInfo> selectedRelatedTableColumnsToRemove;
-	private AnonymisationMethod anonymisationMethod = null;
 	private List<AnonymisationMethod> supportedAnonymisationMethods;
+	
+	@ManagedProperty(value="#{configContext}")
+	private ConfigContext configContext;
 
 	@ManagedProperty(value="#{methodFactory}")
 	private MethodFactory methodFactory;
@@ -103,6 +108,7 @@ public class EditedTableBacking extends BackingBase {
 			supportedAnonymisationMethods = methodFactory.getSupportedMethods(getAnonymizedColumn(), databaseLoaderService.getDatabaseSpecifics());
 			selectedRelatedTableColumns = null;
 			selectedRelatedTableColumnsToRemove = null;
+			configContext.setTestValue(editedColumn.getExampleValues().get(0).toString());
 			
 		}else {
 			// anonymised column clicked
@@ -112,6 +118,7 @@ public class EditedTableBacking extends BackingBase {
 			selectedRelatedTableColumnsToRemove = new LinkedList<RelatedTableColumnInfo>(selectedRelatedTableColumns);
 			supportedAnonymisationMethods = methodFactory.getSupportedMethods(getAnonymizedColumn(), databaseLoaderService.getDatabaseSpecifics());
 			replaceInSupported();
+			configContext.setTestValue(editedColumn.getExampleValues().get(0).toString());
 		}
 		
 		redirectPageTo(NavigationCaseEnum.ANONYMIZE);
@@ -297,5 +304,14 @@ public class EditedTableBacking extends BackingBase {
 		this.selectedRelatedTableColumnsToRemove = selectedRelatedTableColumnsToRemove;
 	}
 	
+	public ConfigContext getConfigContext() {
+		return configContext;
+	}
+
+
+	public void setConfigContext(ConfigContext configContext) {
+		this.configContext = configContext;
+	}
+
 	
 }

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.anon.data.AnonymisedColumnInfo;
+import org.anon.logic.map.AnonymisationMethodMappingSybase;
 import org.anon.vendor.DatabaseSpecifics;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +18,7 @@ public class MethodFactory {
 		,AnonymisationMethodEncryptSybase.class
 		,AnonymisationMethodDestorySybase.class
 		,AnonymisationMethodReshuffleSybase.class
+		,AnonymisationMethodMappingSybase.class
 	};
 	
 	@SuppressWarnings("unchecked")

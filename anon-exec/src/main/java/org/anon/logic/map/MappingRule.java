@@ -6,4 +6,9 @@ public abstract class MappingRule {
 
 	public abstract String generateWhenSql(AnonymisedColumnInfo col);
 
+	public abstract String getCodition();
+
+	public abstract String getMappedValue();
+	
+	
 }
