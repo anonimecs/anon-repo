@@ -1,7 +1,7 @@
 package org.anon.exec;
 
 
-public class TestTableCreatorMySql extends TestTableCreator{
+public class TestTableCreatorMySql extends TwoTestTablesCreator{
 
 
 	public TestTableCreatorMySql() {

@@ -1,7 +1,7 @@
 package org.anon.exec;
 
 
-public class TestTableCreatorOracle extends TestTableCreator{
+public class TestTableCreatorOracle extends TwoTestTablesCreator{
 
 	
 	

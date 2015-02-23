@@ -38,7 +38,7 @@ public abstract class MySqlExecTestBase extends BaseExecTest {
 	}
 
 	@Override
-	protected TestTableCreator getTestTableCreator() {
+	protected TwoTestTablesCreator getTestTableCreator() {
 		return testTableCreator;
 	}
 	

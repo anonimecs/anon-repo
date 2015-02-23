@@ -21,7 +21,7 @@ public class OracleConstraintManager extends ConstraintManager<OracleConstraint>
 		" FROM all_cons_columns sourceColumn                                                                                                                                  "+
 		" JOIN all_constraints sourceConstraint ON sourceColumn.owner = sourceConstraint.owner AND sourceColumn.constraint_name = sourceConstraint.constraint_name            "+       
 		" JOIN all_constraints targetConstraint ON sourceConstraint.r_owner = targetConstraint.owner AND sourceConstraint.r_constraint_name = targetConstraint.constraint_name"+       
-		" JOIN all_cons_columns targetCoumn ON targetCoumn.owner = targetConstraint.owner AND targetCoumn.constraint_name = targetConstraint.constraint_name                  "+
+		" JOIN all_cons_columns targetCoumn ON targetCoumn.owner = targetConstraint.owner AND targetCoumn.constraint_name = targetConstraint.constraint_name   and sourceColumn.POSITION = targetCoumn.POSITION               "+
 		" WHERE sourceConstraint.constraint_type = 'R'  AND sourceConstraint.table_name = ? and sourceColumn.COLUMN_NAME = ? and  sourceColumn.owner = ?                        ";
 
 		return doLoad(tableName, columnName, schema, SQL);
@@ -34,7 +34,7 @@ public class OracleConstraintManager extends ConstraintManager<OracleConstraint>
 		" FROM all_cons_columns sourceColumn                                                                                                                                  "+
 		" JOIN all_constraints sourceConstraint ON sourceColumn.owner = sourceConstraint.owner AND sourceColumn.constraint_name = sourceConstraint.constraint_name            "+       
 		" JOIN all_constraints targetConstraint ON sourceConstraint.r_owner = targetConstraint.owner AND sourceConstraint.r_constraint_name = targetConstraint.constraint_name"+       
-		" JOIN all_cons_columns targetCoumn ON targetCoumn.owner = targetConstraint.owner AND targetCoumn.constraint_name = targetConstraint.constraint_name                  "+
+		" JOIN all_cons_columns targetCoumn ON targetCoumn.owner = targetConstraint.owner AND targetCoumn.constraint_name = targetConstraint.constraint_name   and sourceColumn.POSITION = targetCoumn.POSITION               "+
 		" WHERE sourceConstraint.constraint_type = 'R'  AND targetConstraint.table_name = ? and targetCoumn.COLUMN_NAME = ? and  targetCoumn.owner = ?                        ";
 
 		return doLoad(tableName, columnName, schema, SQL);

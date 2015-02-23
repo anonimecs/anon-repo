@@ -48,7 +48,7 @@ public class MySqlConstraintManager extends ConstraintManager<MySqlConstraint> {
 	protected List<MySqlConstraint> loadForeignKeysTo(String tableName, String columnName, String schema) {
 		String sql_select = "select  TABLE_NAME, GROUP_CONCAT(COLUMN_NAME) as sourceColumns,CONSTRAINT_NAME, REFERENCED_TABLE_NAME, GROUP_CONCAT(REFERENCED_COLUMN_NAME) as targetColumns" +
 				" from INFORMATION_SCHEMA.KEY_COLUMN_USAGE " +
-				"  where  REFERENCED_TABLE_NAME = ? and COLUMN_NAME = ? and CONSTRAINT_SCHEMA = ? " +
+				"  where  REFERENCED_TABLE_NAME = ? and REFERENCED_COLUMN_NAME = ? and CONSTRAINT_SCHEMA = ? " +
 				" group by TABLE_NAME " +
 				" order by CONSTRAINT_NAME";
 		return doLoad(tableName, columnName, schema, sql_select);

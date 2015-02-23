@@ -63,16 +63,23 @@ public class SybaseConstraint extends Constraint {
 	public String[] getSourceColumnNames() {
 		// example: Table1 FOREIGN KEY (Column1) REFERENCES Table2(Column2)
 		// example2: Table1   FOREIGN KEY (col1_ref, col2_ref)    REFERENCES Table2 (col1, col2)
-		return definition.split("\\(")[1].split("\\)")[0].split(",");
+		return trim(definition.split("\\(")[1].split("\\)")[0].split(","));
 	}
 	
+	private String[] trim(String[] array) {
+		for (int i = 0; i < array.length; i++) {
+			array[i] = array[i].trim();
+		}
+		return array;
+	}
+
 	@Override
 	public String[] getTargetColumnNames() {
 		// example: Table1 FOREIGN KEY (Column1) REFERENCES Table2(Column2)
 		// example2: Table1   FOREIGN KEY (col1_ref, col2_ref)    REFERENCES Table2 (col1, col2)
-		return definition.split("REFERENCES")[1]
+		return trim(definition.split("REFERENCES")[1]
 				.split("\\(")[1].split("\\)")[0]
-				.split(",");
+				.split(","));
 	}
 
 	

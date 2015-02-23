@@ -84,7 +84,7 @@ public abstract class BaseExecTest extends BaseDbTest{
 		Assert.assertEquals(getTestTableCreator().getRowcountTableA(), getJdbcTemplate().queryForInt("select count(*) from TMP_TABLE_A"));
 	}
 	
-	protected abstract TestTableCreator getTestTableCreator();
+	protected abstract TwoTestTablesCreator getTestTableCreator();
 	
 
 

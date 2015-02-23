@@ -1,7 +1,7 @@
 package org.anon.exec;
 
 
-public class TestTableCreatorSybase extends TestTableCreator{
+public class TestTableCreatorSybase extends TwoTestTablesCreator{
 
 
 
@@ -16,7 +16,7 @@ public class TestTableCreatorSybase extends TestTableCreator{
 
 	
 	@Override
-	protected String[] split(String fileContent) {
+	public String[] split(String fileContent) {
 		return fileContent.split("GO");
 	}
 }
