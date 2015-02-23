@@ -1,3 +1,3 @@
 package org.anon.data;
 
-public enum AnonymizationType{ NONE, ENCRYPT, RESHUFFLE, DIR_LOOKUP, DESTROY}
+public enum AnonymizationType{ NONE, ENCRYPT, RESHUFFLE, MAP, DESTROY}

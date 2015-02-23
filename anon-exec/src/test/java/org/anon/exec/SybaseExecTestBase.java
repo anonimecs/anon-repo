@@ -11,10 +11,10 @@ import org.springframework.beans.factory.annotation.Value;
 public abstract class SybaseExecTestBase extends BaseExecTest {
 
 	@Autowired
-	DataSource dataSourceSybase;
+	protected DataSource dataSourceSybase;
 	
 	@Autowired
-	ExecAuditor execAuditor;
+	protected ExecAuditor execAuditor;
 	
 	@Override
 	DataSource getDataSource() {
