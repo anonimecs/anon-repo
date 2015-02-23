@@ -49,8 +49,8 @@ public class TestTableCreatorSupport {
 		return res;
 	}
 
-	public void runScript(JdbcTemplate jdbcTemplate, String filePath, String schema) throws IOException{
-		jdbcTemplate.execute("use " + schema);
+	public void runScript(JdbcTemplate jdbcTemplate, String filePath, String useSchemaSql) throws IOException{
+		jdbcTemplate.execute(useSchemaSql);
 		for(String sql:getStatements(filePath)){
 			jdbcTemplate.execute(sql);
 		}

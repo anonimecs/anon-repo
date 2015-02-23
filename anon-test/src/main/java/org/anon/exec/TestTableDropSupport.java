@@ -10,8 +10,8 @@ import org.springframework.jdbc.core.JdbcTemplate;
 public class TestTableDropSupport extends TestTableCreatorSupport {
 
 	@Override
-	public void runScript(JdbcTemplate jdbcTemplate, String filePath, String schema) throws IOException {
-		jdbcTemplate.execute("use " + schema);
+	public void runScript(JdbcTemplate jdbcTemplate, String filePath, String useSchemaSql) throws IOException {
+		jdbcTemplate.execute(useSchemaSql);
 		for (String sql : getStatements(filePath)) {
 			try {
 				jdbcTemplate.execute(sql);

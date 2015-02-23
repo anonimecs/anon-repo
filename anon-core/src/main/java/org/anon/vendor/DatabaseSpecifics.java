@@ -13,35 +13,43 @@ public enum DatabaseSpecifics {
 	    createSet("VARCHAR", "CHAR", "TEXT"),
 		createSet("DATE","DATETIME", "TIMESTAMP", "TIME"),
 		createSet("INT", "TINYINT", "SMALLINT", "MEDIUMINT", "BIGINT"),
-		createSet("DECIMAL","FLOAT", "DOUBLE", "NUMERIC")),
+		createSet("DECIMAL","FLOAT", "DOUBLE", "NUMERIC"),
+		"use "
+		),
 	
 	OracleSpecific(
 		createSet("VARCHAR", "VARCHAR2", "CHAR", "NCHAR", "NVARCHAR2")
 		,createSet("DATE", "TIMESTAMP")
 		,createSet("NUMBER", "LONG")
-		,createSet("FLOAT", "NUMERIC","BINARY_FLOAT","BINARY_DOUBLE")),
+		,createSet("FLOAT", "NUMERIC","BINARY_FLOAT","BINARY_DOUBLE"),
+		"ALTER SESSION SET CURRENT_SCHEMA = "
+		),
 		
 	SqlServerSpecific(
 		createSet("VARCHAR", "CHAR", "NCHAR", "NVARCHAR")
 		,createSet("DATE", "DATETIME", "DATETIME2", "TIME", "SMALLDATETIME")
 		,createSet("DECIMAL", "INT", "TINYINT", "BIGINT", "SMALLINT", "UINT")
-		,createSet("NUMERIC","FLOAT", "REAL")),
+		,createSet("NUMERIC","FLOAT", "REAL"),
+		"use "),
 
 	SybaseSpecific(
 		createSet("VARCHAR", "CHAR", "NCHAR", "NVARCHAR", "UNICHAR", "UNIVARCHAR")
 		,createSet("DATE", "DATETIME", "TIMESTAMP", "SMALLDATETIME", "TIME")
 		,createSet("DECIMAL", "INT", "TINYINT", "BIGINT", "SMALLINT", "UINT")
-		,createSet("NUMERIC","FLOAT", "REAL"))
+		,createSet("NUMERIC","FLOAT", "REAL"),
+		"use ")
 		
 	;
 	
 	
-	DatabaseSpecifics(Set<String> javaTypeStringSet, Set<String> javaTypeDateSet, Set<String> javaTypeLongSet,
-			Set<String> javaTypeDoubleSet) {
+	DatabaseSpecifics(Set<String> javaTypeStringSet, Set<String> javaTypeDateSet, 
+			Set<String> javaTypeLongSet,Set<String> javaTypeDoubleSet,
+			String useSchemaPrefixSql) {
 		this.javaTypeStringSet = javaTypeStringSet;
 		this.javaTypeDateSet = javaTypeDateSet;
 		this.javaTypeLongSet = javaTypeLongSet;
 		this.javaTypeDoubleSet = javaTypeDoubleSet;
+		this.useSchemaPrefixSql = useSchemaPrefixSql;
 	}
 
 	/**
@@ -51,6 +59,7 @@ public enum DatabaseSpecifics {
 	protected Set<String> javaTypeDateSet;
 	protected Set<String> javaTypeLongSet;
 	protected Set<String> javaTypeDoubleSet;
+	protected String useSchemaPrefixSql; 
 	
 	public boolean isJavaTypeString(DatabaseColumnInfo databaseColumnInfo){
 		return test(javaTypeStringSet, databaseColumnInfo);
@@ -100,4 +109,7 @@ public enum DatabaseSpecifics {
 		return false;
 	}
 
+	public String getUseSchemaSql(String schema){
+		return useSchemaPrefixSql  + schema;
+	}
 }

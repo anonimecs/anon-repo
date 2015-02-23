@@ -10,6 +10,7 @@ import javax.sql.DataSource;
 import org.anon.exec.BaseParametrisedDbTest;
 import org.anon.exec.TestTableCreatorSupport;
 import org.anon.exec.TestTableDropSupport;
+import org.anon.vendor.DatabaseSpecifics;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -27,11 +28,13 @@ public class ConstraintManagerMultiColTest extends BaseParametrisedDbTest{
 	private ConstraintManager constraintManager;
 	private Class<ConstraintManager> constraintManagerClass;
 	private String schema;
+	private DatabaseSpecifics databaseSpecifics;
 	
-	public ConstraintManagerMultiColTest(Class<ConstraintManager> constraintManagerClass,  String schema) {
+	public ConstraintManagerMultiColTest(Class<ConstraintManager> constraintManagerClass,  String schema, DatabaseSpecifics databaseSpecifics) {
 		super();
 		this.constraintManagerClass = constraintManagerClass;
 		this.schema = schema;
+		this.databaseSpecifics = databaseSpecifics;
 	}
 
 	@Before
@@ -45,21 +48,21 @@ public class ConstraintManagerMultiColTest extends BaseParametrisedDbTest{
 
 	private void createMultiColumnTables() throws IOException {
 	    DataSource dataSource = getDataSourceFor(constraintManagerClass);
-	    new TestTableCreatorSupport().runScript(new JdbcTemplate(dataSource), "/MULTI_COL_FK_TABLES.sql", schema);
+	    new TestTableCreatorSupport().runScript(new JdbcTemplate(dataSource), "/MULTI_COL_FK_TABLES.sql", databaseSpecifics.getUseSchemaSql(schema));
 	}
 	
 	private void dropMultiColumnTables() throws IOException{
 	    DataSource dataSource = getDataSourceFor(constraintManagerClass);
-	    new TestTableDropSupport().runScript(new JdbcTemplate(dataSource), "/MULTI_COL_FK_TABLES_DROP.sql", schema);
+	    new TestTableDropSupport().runScript(new JdbcTemplate(dataSource), "/MULTI_COL_FK_TABLES_DROP.sql", databaseSpecifics.getUseSchemaSql(schema));
 	}
 
 	@Parameters(name= "schema:{1}, {0}")
 	public static Collection<Object []> generateData() {
 		List<Object[]> res = new ArrayList<>();
-        if(isDbAvailable(DB.sybase)) res.add(new Object[]{ SybaseConstraintManager.class, "LIMEX_d"});
-        if(isDbAvailable(DB.mysql)) res.add(new Object[]{ MySqlConstraintManager.class , "employees"});
-        if(isDbAvailable(DB.oracle)) res.add(new Object[]{ OracleConstraintManager.class , "ECAP"});
-        if(isDbAvailable(DB.sqlserver)) res.add(new Object[]{ SqlServerConstraintManager.class , "Northwind"});
+        if(isDbAvailable(DB.sybase)) res.add(new Object[]{ SybaseConstraintManager.class, "LIMEX_d", DatabaseSpecifics.SybaseSpecific});
+        if(isDbAvailable(DB.mysql)) res.add(new Object[]{ MySqlConstraintManager.class , "employees", DatabaseSpecifics.MySqlSpecific});
+        if(isDbAvailable(DB.oracle)) res.add(new Object[]{ OracleConstraintManager.class , "ECAP", DatabaseSpecifics.OracleSpecific});
+        if(isDbAvailable(DB.sqlserver)) res.add(new Object[]{ SqlServerConstraintManager.class , "Northwind", DatabaseSpecifics.SqlServerSpecific});
 		
 		return res;
 	}
