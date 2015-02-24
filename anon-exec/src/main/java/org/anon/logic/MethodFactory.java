@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.anon.data.AnonymisedColumnInfo;
+import org.anon.logic.map.AnonymisationMethodMappingMySql;
 import org.anon.logic.map.AnonymisationMethodMappingSybase;
 import org.anon.vendor.DatabaseSpecifics;
 import org.springframework.stereotype.Service;
@@ -35,6 +36,7 @@ public class MethodFactory {
 		,AnonymisationMethodDestoryMySql.class
 		,AnonymisationMethodEncryptMySql.class
 		,AnonymisationMethodReshuffleMySql.class
+		,AnonymisationMethodMappingMySql.class
 	};
 
 	@SuppressWarnings("unchecked")

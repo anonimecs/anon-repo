@@ -30,8 +30,8 @@
 			</h:form>
 
 			<p:outputPanel id="buttons">
-				<p:commandButton value="Configure Mappings" type="button"
-					onclick="PF('configureMappingsPopup').show();" rendered="#{editedTableBacking.anonymisationMethod.type == 'MAP'}"/>
+				<p:commandButton value="Configure Mappings" action="#{configureMappingsPopupBacking.onConfigureMappingsClicked()}"
+					oncomplete="PF('configureMappingsPopup').show();" rendered="#{editedTableBacking.anonymisationMethod.type == 'MAP'}" update=":configureMappingsPopupId"/>
 
 				<p:commandButton id="saveColumnSettingsButton"
 					actionListener="#{editedTableBacking.onSaveColumnSettings()}"
@@ -178,18 +178,18 @@
 		
 	
 	
-		<p:dialog header="Configure Mappings" widgetVar="configureMappingsPopup" modal="true" height="600" width="700">
+		<p:dialog id="configureMappingsPopupId" header="Configure Mappings" widgetVar="configureMappingsPopup" modal="true" height="600" width="700">
 			<p:outputLabel>
 			    You can configure the mapping details in here. Please note, that you always need
 			    to define a default unconditional mapping, and in addition, you can specify a list of optional conditional mappings.
 			    The conditions will be than applied top down to arrive at a mapped value for your anonymised column.
 		    </p:outputLabel>
-		    <h:form id="configureMappingsPopupForm">
+		    <h:form id="configureMappingsPopupForm" rendered="#{editedTableBacking.anonymisationMethod.type == 'MAP'}">
 			    <p:outputLabel value="Mapping default:"/>
-			    <p:inputText value="#{configureMappingsPopupBacking.mappingDefault.defaultValue}"/>
+			    <p:inputText value="#{configureMappingsPopupBacking.anonymisationMethodMapping.mappingDefault.defaultValue}"/>
 			    
 			    <p:outputPanel style="width:550px">
-				    <p:dataTable value="#{configureMappingsPopupBacking.mappingRuleList}" var="mappingRule" >
+				    <p:dataTable id="configureMappingsDataTable" value="#{configureMappingsPopupBacking.mappingRuleList}" var="mappingRule" >
 				    	<p:column headerText="Type" styleClass="colTypeStyle">
 				    		<p:outputLabel value="#{mappingRule.getClass().getSimpleName()}"/>
 				    	</p:column>
@@ -202,9 +202,9 @@
 						<p:column styleClass="col4Style">					
 				        	<p:commandButton id="deleteButton" update=":configureMappingsPopupForm" icon="ui-icon-close"
 				        		title="Delete" actionListener="#{configureMappingsPopupBacking.onDelete(mappingRule)}"/>
-				        	<p:commandButton id="upButton" icon="ui-icon-arrow-1-n" 
+				        	<p:commandButton id="upButton" update="configureMappingsDataTable" icon="ui-icon-arrow-1-n" 
 				        		title="Move one up" actionListener="#{configureMappingsPopupBacking.onUp(mappingRule)}"/>
-				        	<p:commandButton id="downButton" icon="ui-icon-arrow-1-s" 
+				        	<p:commandButton id="downButton" update="configureMappingsDataTable" icon="ui-icon-arrow-1-s" 
 				        		title="Move one down" actionListener="#{configureMappingsPopupBacking.onDown(mappingRule)}"/>
 				        </p:column>				    	
 				    </p:dataTable>

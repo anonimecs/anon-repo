@@ -1,28 +1,27 @@
 package org.anon.gui;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
-import javax.faces.bean.SessionScoped;
+import javax.faces.bean.ViewScoped;
 
+import org.anon.logic.map.AnonymisationMethodMapping;
 import org.anon.logic.map.LessThan;
 import org.anon.logic.map.MappingDefault;
 import org.anon.logic.map.MappingRule;
 import org.anon.logic.map.MappingRule.MappingRuleType;
 
 @ManagedBean
-@SessionScoped
+@ViewScoped
 public class ConfigureMappingsPopupBacking extends BackingBase{
 
 	@ManagedProperty(value="#{configContext}")
 	private ConfigContext configContext;
 	
-	private MappingDefault mappingDefault;
-	private List<MappingRule> mappingRuleList = new ArrayList<>();
+//	private MappingDefault mappingDefault;
+//	private List<MappingRule> mappingRuleList = new ArrayList<>();
 	
 	
 	private List<MappingRuleType> mappingRuleTypeList;
@@ -30,32 +29,34 @@ public class ConfigureMappingsPopupBacking extends BackingBase{
 	private String condition;
 	private String mappedValue;
 	
-	@PostConstruct
-	public void init(){
-		mappingDefault = new MappingDefault(configContext.getTestValue());
+	public void onConfigureMappingsClicked(){
+		logDebug("onConfigureMappingsClicked ");
+		MappingDefault mappingDefault = new MappingDefault(configContext.getTestValue());
+		getAnonymisationMethodMapping().setMappingDefault(mappingDefault);
 		mappingRuleTypeList = Arrays.asList(MappingRule.MappingRuleType.values());
 	}
 	
 	public void onUp(MappingRule mappingRule){
 		logDebug("onUp " + mappingRule);
-	
+		getAnonymisationMethodMapping().moveUp(mappingRule);
 	}
 	
 	public void onDown(MappingRule mappingRule){
 		logDebug("onDown " + mappingRule);
+		getAnonymisationMethodMapping().moveDown(mappingRule);
 	
 	}
 	
 	public void onDelete(MappingRule mappingRule){
 		logDebug("onDelete " + mappingRule);
-		mappingRuleList.remove(mappingRule);
+		getAnonymisationMethodMapping().deleteMappingRule(mappingRule);
 	}
 	
 	public void onAddClicked(){
 		logDebug("on_addClicked");
 		
 		MappingRule mappingRule = new LessThan(condition, mappedValue);
-		mappingRuleList.add(mappingRule);
+		getAnonymisationMethodMapping().addMappingRule(mappingRule);
 		
 	}
 	
@@ -65,15 +66,10 @@ public class ConfigureMappingsPopupBacking extends BackingBase{
 		
 	}
 	
-
-	public MappingDefault getMappingDefault() {
-		return mappingDefault;
+	public AnonymisationMethodMapping getAnonymisationMethodMapping(){
+		return (AnonymisationMethodMapping)configContext.getAnonymisationMethod();
 	}
-
-	public void setMappingDefault(MappingDefault mappingDefault) {
-		this.mappingDefault = mappingDefault;
-	}
-
+	
 
 	public ConfigContext getConfigContext() {
 		return configContext;
@@ -86,13 +82,9 @@ public class ConfigureMappingsPopupBacking extends BackingBase{
 
 
 	public List<MappingRule> getMappingRuleList() {
-		return mappingRuleList;
+		return getAnonymisationMethodMapping().getMappingRulesList();
 	}
 
-
-	public void setMappingRuleList(List<MappingRule> mappingRuleList) {
-		this.mappingRuleList = mappingRuleList;
-	}
 
 	public MappingRuleType getSelectedMappingRuleType() {
 		return selectedMappingRuleType;

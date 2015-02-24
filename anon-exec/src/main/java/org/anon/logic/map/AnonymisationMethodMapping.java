@@ -30,6 +30,10 @@ public abstract class AnonymisationMethodMapping extends AnonymisationMethod {
 		this.mappingDefault = mappingDefault;
 	}
 	
+	public MappingDefault getMappingDefault() {
+		return mappingDefault;
+	}
+	
 	public void addMappingRule(MappingRule mappingRule){
 		mappingRulesList.add(mappingRule);
 	}

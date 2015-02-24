@@ -19,7 +19,6 @@ import org.anon.logic.AnonymisationMethodNone;
 import org.anon.logic.MethodFactory;
 import org.anon.service.DatabaseLoaderService;
 import org.anon.service.EditedTableService;
-import org.apache.catalina.startup.ContextConfig;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.primefaces.event.SelectEvent;
@@ -31,7 +30,6 @@ public class EditedTableBacking extends BackingBase {
 	
 	private DatabaseTableInfo editedTable; 
 	private DatabaseColumnInfo editedColumn;
-	private AnonymisationMethod anonymisationMethod = null;
 
 	private List<RelatedTableColumnInfo> relatedTableColumns;
 	private List<RelatedTableColumnInfo> filteredRelatedTableColumns;
@@ -55,7 +53,7 @@ public class EditedTableBacking extends BackingBase {
 	public void onSaveColumnSettings(){
 		logDebug("onSaveColumnSettings" + editedColumn);
 		// no anoymisation selected
-		if(anonymisationMethod.getType() == AnonymizationType.NONE){
+		if(configContext.getAnonymisationMethod().getType() == AnonymizationType.NONE){
 			if(getAnonymizedColumn().getAnonymisationMethod() == null){
 				// nothing to do here
 				showInfoInGui("No change to save");
@@ -70,12 +68,12 @@ public class EditedTableBacking extends BackingBase {
 		else {
 			// new anonymisation
 			if(getAnonymizedColumn().getAnonymisationMethod() == null){
-				editedTableService.addAnonymisation(editedTable, getAnonymizedColumn(), selectedRelatedTableColumns, anonymisationMethod);
+				editedTableService.addAnonymisation(editedTable, getAnonymizedColumn(), selectedRelatedTableColumns, configContext.getAnonymisationMethod());
 				showInfoInGui("Anonymisation ADDED for " + getAnonymizedColumn() + " and selected related tables");
 			}
 			// change anonymisation
 			else {
-				editedTableService.changeAnonymisation(editedTable, getAnonymizedColumn(), selectedRelatedTableColumns, anonymisationMethod);
+				editedTableService.changeAnonymisation(editedTable, getAnonymizedColumn(), selectedRelatedTableColumns, configContext.getAnonymisationMethod());
 				showInfoInGui("Anonymisation CHANGED for " + getAnonymizedColumn() + " and selected related tables");
 				
 			}
@@ -88,7 +86,7 @@ public class EditedTableBacking extends BackingBase {
 		 logDebug("Line Selected" + editedTable);
 		 databaseLoaderService.fillExampleValues(editedTable);
 		 editedColumn = null;
-		 anonymisationMethod = null;	 
+		 configContext.setAnonymisationMethod(null);	 
 		 
 		 redirectPageTo(NavigationCaseEnum.COLUMNS);
 	}
@@ -104,7 +102,7 @@ public class EditedTableBacking extends BackingBase {
 			AnonymisedColumnInfo anonymisedColumn = new AnonymisedColumnInfo(editedColumn);
 			editedColumn = anonymisedColumn;
 			//selectedAnonymizationType = AnonymizationType.NONE;
-			anonymisationMethod = AnonymisationMethodNone.INSTANCE;
+			configContext.setAnonymisationMethod(AnonymisationMethodNone.INSTANCE);
 			supportedAnonymisationMethods = methodFactory.getSupportedMethods(getAnonymizedColumn(), databaseLoaderService.getDatabaseSpecifics());
 			selectedRelatedTableColumns = null;
 			selectedRelatedTableColumnsToRemove = null;
@@ -113,7 +111,7 @@ public class EditedTableBacking extends BackingBase {
 		}else {
 			// anonymised column clicked
 			//selectedAnonymizationType = getAnonymizedColumn().getAnonymisationMethod().getType();
-			anonymisationMethod = getAnonymizedColumn().getAnonymisationMethod();			
+			configContext.setAnonymisationMethod(getAnonymizedColumn().getAnonymisationMethod());			
 			selectedRelatedTableColumns = convertToRelatedTableInfoSelection(getAnonymizedColumn().getAnonymisationMethod().getApplyedToColumns());
 			selectedRelatedTableColumnsToRemove = new LinkedList<RelatedTableColumnInfo>(selectedRelatedTableColumns);
 			supportedAnonymisationMethods = methodFactory.getSupportedMethods(getAnonymizedColumn(), databaseLoaderService.getDatabaseSpecifics());
@@ -128,9 +126,9 @@ public class EditedTableBacking extends BackingBase {
 
 	private void replaceInSupported() {
 		for(int index = 0; index < supportedAnonymisationMethods.size();index++){
-			if(anonymisationMethod.getType() == supportedAnonymisationMethods.get(index).getType()){
+			if(configContext.getAnonymisationMethod().getType() == supportedAnonymisationMethods.get(index).getType()){
 				supportedAnonymisationMethods.remove(index);
-				supportedAnonymisationMethods.add(index, anonymisationMethod);
+				supportedAnonymisationMethods.add(index, configContext.getAnonymisationMethod());
 				break;
 			}
 		}
@@ -156,22 +154,22 @@ public class EditedTableBacking extends BackingBase {
 
 
 	public void onAnonymisatationTypeChanged(){
-		logDebug("anonymisatationTypeChanged" + anonymisationMethod);
-		anonymisationMethod.setDataSource(databaseLoaderService.getDataSource());
+		logDebug("anonymisatationTypeChanged" + configContext.getAnonymisationMethod());
+		configContext.getAnonymisationMethod().setDataSource(databaseLoaderService.getDataSource());
 	}
 
 
 
 	public Object anonymiseValue(Object exampleValue){
-		anonymisationMethod.setDataSource(databaseLoaderService.getDataSource());
+		configContext.getAnonymisationMethod().setDataSource(databaseLoaderService.getDataSource());
 		if(exampleValue == null){
 			return null;
 		}
-		else if(anonymisationMethod.getType() == AnonymizationType.NONE){
+		else if(configContext.getAnonymisationMethod().getType() == AnonymizationType.NONE){
 			return exampleValue;
 		}
 		try {
-			return anonymisationMethod.anonymise(exampleValue, getAnonymizedColumn());
+			return configContext.getAnonymisationMethod().anonymise(exampleValue, getAnonymizedColumn());
 		} catch (Exception e) {
 			Logger.getLogger(getClass()).log(Level.ERROR, "failed anonymiseValue: " + e.getLocalizedMessage(), e);
 			return "FAILED:" + exampleValue;
@@ -257,11 +255,11 @@ public class EditedTableBacking extends BackingBase {
 	}
 
 	public void setAnonymisationMethod(AnonymisationMethod anonymisationMethod) {
-		this.anonymisationMethod = anonymisationMethod;
+		this.configContext.setAnonymisationMethod(anonymisationMethod);
 	}
 	
 	public AnonymisationMethod getAnonymisationMethod() {
-		return anonymisationMethod;
+		return configContext.getAnonymisationMethod();
 	}
 
 
