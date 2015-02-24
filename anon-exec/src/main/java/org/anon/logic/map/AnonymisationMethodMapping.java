@@ -34,6 +34,10 @@ public abstract class AnonymisationMethodMapping extends AnonymisationMethod {
 		mappingRulesList.add(mappingRule);
 	}
 	
+	public void deleteMappingRule(MappingRule mappingRule){
+		mappingRulesList.remove(mappingRule);
+	}
+	
 	/**
 	 * Moves this rule one up in the list 
 	 */
@@ -58,6 +62,10 @@ public abstract class AnonymisationMethodMapping extends AnonymisationMethod {
 		else{
 			logger.warn("Can not move down rule on the bottom");
 		}
+	}
+	
+	public List<MappingRule> getMappingRulesList() {
+		return mappingRulesList;
 	}
 
 }

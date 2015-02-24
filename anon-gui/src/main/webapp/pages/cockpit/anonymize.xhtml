@@ -155,38 +155,82 @@
 		
 		</p:tabView>
 		
-		<p:dialog header="Configure Mappings" widgetVar="configureMappingsPopup" height="500" width="500">
+		
+		
+	</ui:define>
+	
+	<ui:define name="includedDialogs">
+		<style>
+			.colTypeStyle{
+				width: 150px;
+			}
+			.colConditionStyle{
+				width: 150px;
+			}
+			.colValueStyle{
+				width: 150px;
+			}
+			.col4Style{
+				width: 100px;
+			}
+		</style>
+
+		
+	
+	
+		<p:dialog header="Configure Mappings" widgetVar="configureMappingsPopup" modal="true" height="600" width="700">
 			<p:outputLabel>
-		    You can configure the mapping details in here. Please note, that you always need
-		    to define a default unconditional mapping, and in addition, you can specify a list of optional conditional mappings.
-		    The conditions will be than applied top down to arrive at a mapped value for your anonymised column.
+			    You can configure the mapping details in here. Please note, that you always need
+			    to define a default unconditional mapping, and in addition, you can specify a list of optional conditional mappings.
+			    The conditions will be than applied top down to arrive at a mapped value for your anonymised column.
 		    </p:outputLabel>
-		    <h:form>
+		    <h:form id="configureMappingsPopupForm">
 			    <p:outputLabel value="Mapping default:"/>
 			    <p:inputText value="#{configureMappingsPopupBacking.mappingDefault.defaultValue}"/>
 			    
-			    <p:dataTable value="#{configureMappingsPopupBacking.mappingRuleList}" var="mappingRule">
-			    	<p:column headerText="Type">
-			    		<p:outputLabel value="#{mappingRule.class.simpleName}"/>
-			    	</p:column>
-			    	<p:column headerText="Condition">
-			    		<p:outputLabel value="#{mappingRule.getCondition()}"/>
-			    	</p:column>
-			    	<p:column headerText="Value">
-			    		<p:outputLabel value="#{mappingRule.getValue()}"/>
-			    	</p:column>
-			    </p:dataTable>
-			    <p:selectOneMenu id="conditionSelect"  >
-					<f:selectItem 
-						itemLabel="Less Than" itemValue="Less Than" />
-	       		</p:selectOneMenu>
-	       		
-			    <p:commandButton value="Add"/>
+			    <p:outputPanel style="width:550px">
+				    <p:dataTable value="#{configureMappingsPopupBacking.mappingRuleList}" var="mappingRule" >
+				    	<p:column headerText="Type" styleClass="colTypeStyle">
+				    		<p:outputLabel value="#{mappingRule.getClass().getSimpleName()}"/>
+				    	</p:column>
+				    	<p:column headerText="Condition" styleClass="colConditionStyle">
+				    		<p:outputLabel value="#{mappingRule.getCondition()}"/>
+				    	</p:column>
+				    	<p:column headerText="Value" styleClass="colValueStyle">
+				    		<p:outputLabel value="#{mappingRule.getMappedValue()}"/>
+				    	</p:column>
+						<p:column styleClass="col4Style">					
+				        	<p:commandButton id="deleteButton" update=":configureMappingsPopupForm" icon="ui-icon-close"
+				        		title="Delete" actionListener="#{configureMappingsPopupBacking.onDelete(mappingRule)}"/>
+				        	<p:commandButton id="upButton" icon="ui-icon-arrow-1-n" 
+				        		title="Move one up" actionListener="#{configureMappingsPopupBacking.onUp(mappingRule)}"/>
+				        	<p:commandButton id="downButton" icon="ui-icon-arrow-1-s" 
+				        		title="Move one down" actionListener="#{configureMappingsPopupBacking.onDown(mappingRule)}"/>
+				        </p:column>				    	
+				    </p:dataTable>
+				</p:outputPanel>
+					       		
+	       		<p:panelGrid id="addPanel" columns="4" columnClasses="colTypeStyle,colConditionStyle,colValueStyle,col4Style">
+				    <p:selectOneMenu id="conditionSelect"  value="#{configureMappingsPopupBacking.selectedMappingRuleType}" >
+						<p:ajax event="change" update="addPanel"
+						    listener="#{configureMappingsPopupBacking.onConditionSelectChanged()}"/>
+						<f:selectItems value="#{configureMappingsPopupBacking.mappingRuleTypeList}" var="mappingRuleType" 
+							itemLabel="#{mappingRuleType}" itemValue="#{mappingRuleType}" />
+						<p:column>
+		               		<h:outputText value="#{mappingRuleType}" />
+		           		</p:column>
+		       		</p:selectOneMenu>
+
+					<p:inputText value="#{configureMappingsPopupBacking.condition}"/>
+					<p:inputText value="#{configureMappingsPopupBacking.mappedValue}"/>
+
+			    	<p:commandButton value="Add" action="#{configureMappingsPopupBacking.onAddClicked()}"  update=":configureMappingsPopupForm"/>
+			    	
+			    </p:panelGrid>
 			    
-			    <p:commandButton value="Save and Close"/>
+			    <p:spacer height="50px"/>
 			</h:form>
 		</p:dialog> 
-		
-		
+	
 	</ui:define>
 </ui:composition>

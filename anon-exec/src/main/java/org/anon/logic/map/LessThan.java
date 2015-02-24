@@ -13,7 +13,7 @@ public class LessThan extends MappingRule {
 	}
 	
 	@Override
-	public String getCodition(){
+	public String getCondition(){
 		return getBoundary();
 	}
 	
@@ -29,5 +29,10 @@ public class LessThan extends MappingRule {
 	@Override
 	public String generateWhenSql(AnonymisedColumnInfo col) {
 		return " when " + col.getName() + " < '" + boundary + "' then '" +  mappedValue + "'";
+	}
+
+	@Override
+	public MappingRuleType getMappingRuleType() {
+		return MappingRuleType.LessThan;
 	}
 }
