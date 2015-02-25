@@ -1,3 +1,5 @@
+drop table User_Database
+go
 drop table ExecutionMessageData
 go 
 drop table ExecutionColumnData
@@ -15,3 +17,4 @@ go
 drop table AnonymisationMethodData 
 go
 drop table DatabaseConfig
+

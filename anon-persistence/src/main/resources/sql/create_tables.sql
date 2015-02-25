@@ -103,6 +103,15 @@ create table ExecutionMessageData(
 )
 go
 
+create table User_Database(
+	USER_ID INT NOT NULL,
+	DATABASE_ID INT NOT NULL,
+	PRIMARY KEY (USER_ID, DATABASE_ID),
+	CONSTRAINT fk_SecurityUser_pk FOREIGN KEY (USER_ID) REFERENCES SecurityUser (ID),
+	CONSTRAINT fk_DatabaseConfig_pk FOREIGN KEY (DATABASE_ID) REFERENCES DatabaseConfig (ID)
+)
+go
+
 INSERT INTO APP.SECURITYUSER(USERNAME, PASSWORD, NAME, SURNAME, ENABLED, ENCRYPTED) 
 	VALUES('admin', '123456', 'Admin', 'Fellow', 'Y', 'N')
 go
