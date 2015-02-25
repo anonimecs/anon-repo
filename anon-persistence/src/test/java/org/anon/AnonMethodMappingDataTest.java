@@ -1,5 +1,7 @@
 package org.anon;
 
+import static org.junit.Assert.assertEquals;
+
 import java.io.IOException;
 import java.util.List;
 
@@ -21,6 +23,7 @@ public class AnonMethodMappingDataTest extends DbEntitiesTest {
 
 		static MappingDefaultData mappingDefaultData;
 		static MappingRuleData mappingRuleData;
+		static AnonymisationMethodMappingData anonymisationMethodMappingData;
 	
 		@Test
 		public void test0_0_dbSetup() throws IOException {
@@ -67,26 +70,32 @@ public class AnonMethodMappingDataTest extends DbEntitiesTest {
 			Assert.assertNotNull("id was assigned", methodId);
 			Assert.assertNotNull("id was assigned", anonymisedColumnData.getId());
 			
+			
 		}
 		
 		@Test
-		public void test2LoadAnonymisationMethodMappedData() {
+		public void test3LoadAnonymisationMethodMappedData() {
 			List<AnonymisationMethodData> list = entitiesDao.loadAllAnonMethods(databaseConfig);
 			Assert.assertEquals("two items loaded",2, list.size());
 			for (AnonymisationMethodData anonymisationMethodData : list) {
 				if(anonymisationMethodData instanceof AnonymisationMethodMappingData){
-					AnonymisationMethodMappingData anonymisationMethodMappingData = (AnonymisationMethodMappingData)anonymisationMethodData;
-					Assert.assertEquals(mappingDefaultData.getDefaultValue(), anonymisationMethodMappingData.getMappingDefaultData().getDefaultValue());
+					anonymisationMethodMappingData = (AnonymisationMethodMappingData)anonymisationMethodData;
 					Assert.assertEquals(1, anonymisationMethodMappingData.getMappingRules().size());
 					Assert.assertEquals(mappingRuleData.getMappingRuleType(), anonymisationMethodMappingData.getMappingRules().iterator().next().getMappingRuleType());
 					Assert.assertEquals(mappingRuleData.getBoundary(), anonymisationMethodMappingData.getMappingRules().iterator().next().getBoundary());
+					Assert.assertEquals(mappingDefaultData.getDefaultValue(), anonymisationMethodMappingData.getMappingDefaultData().getDefaultValue());
 					return;
 				}
 			}
 			Assert.fail("One of the loaded data must have been the AnonymisationMethodMappedData");
 		}
 
-
+		@Test
+		public void test4RemoveAnonymisationMethodMappedData() {
+			assertEquals(1, entitiesDao.removeAnonymisationMethodData(anonymisationMethodMappingData.getId()));
+			List<AnonymisationMethodData> list = entitiesDao.loadAllAnonMethods(databaseConfig);
+			Assert.assertEquals("one item loaded",1, list.size());
+		}
 
 		
 

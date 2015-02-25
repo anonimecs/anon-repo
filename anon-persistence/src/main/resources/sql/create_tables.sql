@@ -51,7 +51,7 @@ create table AnonymisedColumnData (
     COLUMNTYPE VARCHAR(255) NOT NULL,
     AnonymisationMethodData_ID int,
   	CONSTRAINT primary_key_AnonymisedColumnData PRIMARY KEY (ID),
-    CONSTRAINT fk_AnonymisedColumnData_AnonymisationMethodData FOREIGN KEY (AnonymisationMethodData_ID) REFERENCES AnonymisationMethodData (ID)
+    CONSTRAINT fk_AnonymisedColumnData_AnonymisationMethodData FOREIGN KEY (AnonymisationMethodData_ID) REFERENCES AnonymisationMethodData (ID) ON DELETE CASCADE
 
 )
 go
@@ -68,7 +68,7 @@ CREATE TABLE MappingRuleData (
     MAPPEDVALUE VARCHAR(100),
     AnonymisationMethodData_ID int,
   	CONSTRAINT primary_key_MappingRuleData PRIMARY KEY (ID),
-    CONSTRAINT fk_MappingRuleData_AnonymisationMethodData FOREIGN KEY (AnonymisationMethodData_ID) REFERENCES AnonymisationMethodData (ID)
+    CONSTRAINT fk_MappingRuleData_AnonymisationMethodData FOREIGN KEY (AnonymisationMethodData_ID) REFERENCES AnonymisationMethodData (ID) ON DELETE CASCADE
     
 )
 go
@@ -78,7 +78,7 @@ CREATE TABLE MappingDefaultData (
     AnonymisationMethodData_ID int,
     DEFAULTVALUE VARCHAR(100),
   	CONSTRAINT primary_key_MappingDefaultData PRIMARY KEY (ID),
-    CONSTRAINT fk_MappingDefaultData_AnonymisationMethodData FOREIGN KEY (AnonymisationMethodData_ID) REFERENCES AnonymisationMethodData (ID)
+    CONSTRAINT fk_MappingDefaultData_AnonymisationMethodData FOREIGN KEY (AnonymisationMethodData_ID) REFERENCES AnonymisationMethodData (ID) ON DELETE CASCADE
 )
 go
 

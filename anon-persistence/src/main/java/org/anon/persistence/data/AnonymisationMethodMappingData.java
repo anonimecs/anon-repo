@@ -34,6 +34,7 @@ public class AnonymisationMethodMappingData extends AnonymisationMethodData{
 
 	public void setMappingDefaultData(MappingDefaultData mappingDefaultData) {
 		this.mappingDefaultData = mappingDefaultData;
+		mappingDefaultData.setAnonymisationMethodMappingData(this);
 	}
 
 	public Set<MappingRuleData> getMappingRules() {

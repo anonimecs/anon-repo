@@ -1,6 +1,8 @@
 package org.anon;
 
 import java.io.IOException;
+import java.util.List;
+import java.util.Map;
 
 import javax.sql.DataSource;
 
@@ -16,6 +18,8 @@ import org.anon.persistence.data.DatabaseConfig;
 import org.anon.test.AnonUnitTest;
 import org.junit.Assert;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.ColumnMapRowMapper;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.AbstractJUnit4SpringContextTests;
 
@@ -86,5 +90,9 @@ public abstract class DbEntitiesTest extends AbstractJUnit4SpringContextTests im
 			derbyInMemCreator.createTables();
 		}
 		
+	    protected List<Map<String, Object>> loadFromDb(String sqlQuery) {
+	        return new JdbcTemplate(dataSource).query(sqlQuery, new ColumnMapRowMapper());
+	    }
+
 
 }

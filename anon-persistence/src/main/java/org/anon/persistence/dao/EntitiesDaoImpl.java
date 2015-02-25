@@ -1,6 +1,5 @@
 package org.anon.persistence.dao;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.anon.data.AnonymisedColumnInfo;
@@ -10,6 +9,7 @@ import org.anon.persistence.data.DatabaseConfig;
 import org.anon.persistence.data.DatabaseTableData;
 import org.hibernate.Hibernate;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -48,10 +48,11 @@ public class EntitiesDaoImpl implements EntitiesDao {
 		anonymisationMethodData.setId(id);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<AnonymisationMethodData> loadAllAnonMethods(DatabaseConfig databaseConfig) {
-		databaseConfig = (DatabaseConfig) sessionFactory.getCurrentSession().merge(databaseConfig);
-		return new ArrayList<>(databaseConfig.getAnonymisationMethodData());
+		List<AnonymisationMethodData> res = sessionFactory.getCurrentSession().createCriteria(AnonymisationMethodData.class).add(Restrictions.eq("databaseConfig", databaseConfig)).list();
+		return res;
 	}
 
 	@Override
