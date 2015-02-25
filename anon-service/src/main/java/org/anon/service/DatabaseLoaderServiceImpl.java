@@ -11,10 +11,16 @@ import org.anon.data.DatabaseColumnInfo;
 import org.anon.data.DatabaseTableInfo;
 import org.anon.data.RelatedTableColumnInfo;
 import org.anon.logic.AnonymisationMethod;
+import org.anon.logic.AnonymisationMethodMapping;
+import org.anon.logic.map.LessThan;
+import org.anon.logic.map.MappingDefault;
+import org.anon.logic.map.MappingRule;
 import org.anon.persistence.dao.EntitiesDao;
 import org.anon.persistence.data.AnonymisationMethodData;
+import org.anon.persistence.data.AnonymisationMethodMappingData;
 import org.anon.persistence.data.AnonymisedColumnData;
 import org.anon.persistence.data.DatabaseConfig;
+import org.anon.persistence.data.MappingRuleData;
 import org.anon.vendor.DatabaseSpecifics;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -132,10 +138,21 @@ public class DatabaseLoaderServiceImpl implements DatabaseLoaderService{
 					
 				}
 			}
+			if(anonymisationMethod instanceof AnonymisationMethodMapping){
+				AnonymisationMethodMappingData anonymisationMethodMappingData = (AnonymisationMethodMappingData)anonymisationMethodData;
+				AnonymisationMethodMapping anonymisationMethodMapping = (AnonymisationMethodMapping)anonymisationMethod;
+				anonymisationMethodMapping.setMappingDefault(new MappingDefault(anonymisationMethodMappingData.getMappingDefaultData().getDefaultValue()));
+				for(MappingRuleData mappingRuleData:anonymisationMethodMappingData.getMappingRules()){
+					// TODO
+					MappingRule mappingRule = new LessThan(mappingRuleData.getBoundary(), mappingRuleData.getMappedValue());
+					anonymisationMethodMapping.addMappingRule(mappingRule);
+				}
+			}
 			anonConfig.addAnonMethod(anonymisationMethod);
 		}
 	}
 	
+	// TODO: this method duplication must be removed
 	@Override
 	public void loadExecConfig() {
 		
