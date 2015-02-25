@@ -102,6 +102,11 @@ public class UserServiceImpl implements UserService {
 		}
 		return false;
 	}
+	
+	@Override
+	public SecurityUser loadSecurityUser() {
+		return userDao.loadUserByUsername(getUsername());
+	}
 
 	@Override
 	public String getUsername() {
@@ -111,6 +116,5 @@ public class UserServiceImpl implements UserService {
 	private UserDetails getUserDetails() {
 		return (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 	}
-	
 	
 }

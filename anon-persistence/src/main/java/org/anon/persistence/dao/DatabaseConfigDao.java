@@ -8,6 +8,8 @@ public interface DatabaseConfigDao {
 
 	List<DatabaseConfig> findAll();
 	
+	List<DatabaseConfig> findConfigForUser(String username);
+	
 	void addDatabaseConfig(DatabaseConfig config);
 	
 	void updateDatabaseConifg(DatabaseConfig config);

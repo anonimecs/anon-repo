@@ -11,6 +11,9 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -27,7 +30,8 @@ public class SecurityUser implements Serializable {
 	private String surname;
 	private String enabled;
 	private String encrypted;
-	private Set<SecurityRole> roles = new HashSet<SecurityRole>(0);	
+	private Set<SecurityRole> roles = new HashSet<SecurityRole>(0);
+	private Set<DatabaseConfig> assignedDatabases = new HashSet<DatabaseConfig>(0);
 	
 	@Id
 	@GeneratedValue( strategy = GenerationType.AUTO)
@@ -101,5 +105,17 @@ public class SecurityUser implements Serializable {
 	
 	public void setRoles(Set<SecurityRole> roles) {
 		this.roles = roles;
+	}
+
+	@ManyToMany(fetch = FetchType.LAZY, cascade=CascadeType.ALL)
+	@JoinTable(name = "USER_DATABASE",
+		joinColumns = { @JoinColumn(name = "USER_ID", nullable = false, updatable = false) },
+    	inverseJoinColumns = { @JoinColumn(name = "DATABASE_ID", nullable = false, updatable = false) } )
+	public Set<DatabaseConfig> getAssignedDatabases() {
+		return assignedDatabases;
+	}
+
+	public void setAssignedDatabases(Set<DatabaseConfig> assignedDatabases) {
+		this.assignedDatabases = assignedDatabases;
 	}
 }

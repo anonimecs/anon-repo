@@ -26,7 +26,7 @@ public class DatabaseConfigDaoImpl implements DatabaseConfigDao {
 
 	@Override
 	public void addDatabaseConfig(DatabaseConfig config) {
-		Long id = (Long)sessionFactory.getCurrentSession().save(config);	
+		Long id =  (Long) sessionFactory.getCurrentSession().save(config);	
 		config.setId(id);
 	}
 
@@ -57,5 +57,15 @@ public class DatabaseConfigDaoImpl implements DatabaseConfigDao {
 	@Override
 	public void updateDatabaseConifg(DatabaseConfig config) {
 		sessionFactory.getCurrentSession().update(config);
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<DatabaseConfig> findConfigForUser(String username) {
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(DatabaseConfig.class, "config");
+		criteria.createAlias("config.assingendUser", "user");
+		criteria.add(Restrictions.eq("user.username", username));
+		
+		return criteria.list();
 	}
 }

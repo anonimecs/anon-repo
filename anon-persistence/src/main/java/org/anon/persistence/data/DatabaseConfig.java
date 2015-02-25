@@ -12,6 +12,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 
 import org.anon.data.Database;
@@ -33,6 +34,8 @@ import org.jasypt.hibernate4.type.EncryptedStringType;
 @Entity
 public class DatabaseConfig implements Serializable{
 
+	private static final long serialVersionUID = 1L;
+
 	@Id
 	@GeneratedValue( strategy = GenerationType.AUTO)
 	protected Long id;	
@@ -52,6 +55,9 @@ public class DatabaseConfig implements Serializable{
 	private String version;
 	
 	private String guiName;
+	
+	@ManyToMany(mappedBy="assignedDatabases", fetch = FetchType.LAZY)
+	private Set<SecurityUser> assingendUser = new HashSet<SecurityUser>(0);
 	
 	@OneToMany(fetch=FetchType.LAZY, cascade=CascadeType.ALL, orphanRemoval=true, mappedBy = "databaseConfig")
 	@Fetch(FetchMode.SELECT)
@@ -112,7 +118,12 @@ public class DatabaseConfig implements Serializable{
 			Set<AnonymisationMethodData> anonymisationMethodData) {
 		this.anonymisationMethodData = anonymisationMethodData;
 	}
-	
+	public Set<SecurityUser> getAssingendUser() {
+		return assingendUser;
+	}
+	public void setAssingendUser(Set<SecurityUser> assingendUser) {
+		this.assingendUser = assingendUser;
+	}
 	public String toString() {
 		return id + " / " + url + " / " + login + " / " + guiName;
 	}

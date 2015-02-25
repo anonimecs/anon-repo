@@ -18,5 +18,7 @@ public interface UserService {
 	
 	boolean userHasRole(SecurityRoleEnum role);
 	
+	SecurityUser loadSecurityUser();
+	
 	String getUsername();
 }

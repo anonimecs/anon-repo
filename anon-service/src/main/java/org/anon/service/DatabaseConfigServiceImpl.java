@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.anon.persistence.dao.DatabaseConfigDao;
 import org.anon.persistence.data.DatabaseConfig;
+import org.anon.persistence.data.SecurityUser;
+import org.anon.service.admin.UserService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,13 +19,16 @@ public class DatabaseConfigServiceImpl implements DatabaseConfigService {
 	
 	@Autowired
 	private DatabaseConfigDao configDao;
-	
+
 	@Autowired
 	private DbConnectionValidatorService connectionValidator;
 	
+	@Autowired
+	private UserService userService;
+	
 	@Override
-	public List<DatabaseConfig> loadConnectionConfigs() {
-		return configDao.findAll();
+	public List<DatabaseConfig> loadConnectionConfigs() {		
+		return configDao.findConfigForUser(userService.getUsername());
 	}
 
 	@Override
@@ -67,7 +72,12 @@ public class DatabaseConfigServiceImpl implements DatabaseConfigService {
 		connectionValidator.connectionValid(config);
 		
 		try {
+			SecurityUser user = userService.loadSecurityUser();
+			
 			configDao.addDatabaseConfig(config);
+			user.getAssignedDatabases().add(config);
+			userService.updateUser(user, null);
+			
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
 			throw new ServiceException("Configuration not added", 
@@ -96,5 +106,6 @@ public class DatabaseConfigServiceImpl implements DatabaseConfigService {
 		connectionValidator.connectionValid(config);
 
 	}
+
 }
 
