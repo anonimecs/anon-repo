@@ -14,6 +14,10 @@ drop table SecurityUser
 go
 drop table AnonymisedColumnData
 go
+drop table MappingRuleData
+go
+drop table MappingDefaultData
+go
 drop table AnonymisationMethodData 
 go
 drop table DatabaseConfig

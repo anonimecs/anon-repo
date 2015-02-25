@@ -37,6 +37,7 @@ create table AnonymisationMethodData (
     DATABASECONFIG_ID INT not null,
     anonymizationType VARCHAR(30) NOT NULL,
     anonMethodClass VARCHAR(255) NOT NULL,
+    DTYPE VARCHAR(255),
   	CONSTRAINT primary_key_AnonymisationMethodData PRIMARY KEY (ID),
     CONSTRAINT fk_AnonymisationMethodData_DatabaseConfig FOREIGN KEY (DATABASECONFIG_ID) REFERENCES DatabaseConfig (ID)
 )
@@ -59,6 +60,30 @@ ALTER TABLE AnonymisedColumnData
 	ADD CONSTRAINT unique_col_anonymisation
 	 UNIQUE (COLUMNNAME, TABLENAME, SCHEMANAME, AnonymisationMethodData_ID) 
 go
+
+CREATE TABLE MappingRuleData (
+    ID INT NOT NULL GENERATED ALWAYS AS IDENTITY,
+    MAPPINGRULETYPE VARCHAR(30) NOT NULL,
+    BOUNDARY VARCHAR(100),
+    MAPPEDVALUE VARCHAR(100),
+    AnonymisationMethodData_ID int,
+  	CONSTRAINT primary_key_MappingRuleData PRIMARY KEY (ID),
+    CONSTRAINT fk_MappingRuleData_AnonymisationMethodData FOREIGN KEY (AnonymisationMethodData_ID) REFERENCES AnonymisationMethodData (ID)
+    
+)
+go
+
+CREATE TABLE MappingDefaultData (
+    ID INT NOT NULL GENERATED ALWAYS AS IDENTITY,
+    AnonymisationMethodData_ID int,
+    DEFAULTVALUE VARCHAR(100),
+  	CONSTRAINT primary_key_MappingDefaultData PRIMARY KEY (ID),
+    CONSTRAINT fk_MappingDefaultData_AnonymisationMethodData FOREIGN KEY (AnonymisationMethodData_ID) REFERENCES AnonymisationMethodData (ID)
+)
+go
+
+
+
 
 
 create table ExecutionData(
