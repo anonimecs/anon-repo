@@ -17,7 +17,7 @@
 				<h:panelGrid columns="3" style="padding-top:15px;">
 					<p:commandButton id="execAllBtn" value="Run All" action="#{execBacking.onRun()}" />
 					<h:outputLabel for="execAllBtn" value="#{execConfig.anonMethods.size()} anonimisation methods on #{execConfig.getAnonTableCount()} columns"/>
-					<p:lightBox iframe="true" id="anonimexHomeLightBox1" rendered="#{licenseManager.reachedMaxTablesAnonimised(execConfig.getAnonTableCount())}" onShow="poll.stop()"> 
+					<p:lightBox iframe="true" id="anonimexHomeLightBox1" rendered="#{licenseManager.reachedMaxTablesAnonimised(execConfig.getAnonTableCount())}" > 
 					    <h:outputLink value="http://www.anonimecs.com/products.html" title="Anonimecs" >
 					        <h:outputText value="Free edition is limited to anonimse #{licenseManager.getMaxTablesAnonimised()} columns. Consider upgrading your license."/>
 					    </h:outputLink>
@@ -62,7 +62,7 @@
 							<h:outputText value="Error: #{execConfig.getMethodExecution(anonMethod).getLastException()}" rendered="#{null != execConfig.getMethodExecution(anonMethod).getLastException()}"/>
 				
 					        <p:commandButton value="Run" action="#{execBacking.onRunSingle(anonMethod)}" disabled="#{licenseManager.isFreeEdition() or execConfig.getMethodExecution(anonMethod).getStatus() == 'RUNNING'}" />
-							<p:lightBox iframe="true" id="anonimexHomeLightBox2" rendered="#{licenseManager.isFreeEdition()}" onShow="poll.stop()"> 
+							<p:lightBox iframe="true" id="anonimexHomeLightBox2" rendered="#{licenseManager.isFreeEdition()}" > 
 							    <h:outputLink value="http://www.anonimecs.com/products.html" title="Anonimecs" onclick="poll.stop()">
 							        <h:outputText value="Free edition does not support selective runs. Consider upgrading your license." />
 							    </h:outputLink>
