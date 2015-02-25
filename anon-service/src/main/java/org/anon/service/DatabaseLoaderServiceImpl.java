@@ -123,36 +123,14 @@ public class DatabaseLoaderServiceImpl implements DatabaseLoaderService{
 			AnonymisationMethod anonymisationMethod = instantiate(anonymisationMethodData);
 			for(AnonymisedColumnData anonymisedColumnData: anonymisationMethodData.getApplyedToColumns()){
 				if(selectedSchema.equalsIgnoreCase(anonymisedColumnData.getSchemaName())){
-					
-					AnonymisedColumnInfo anonymisedColumnInfo = new AnonymisedColumnInfo(anonymisedColumnData.getColumnName(), anonymisedColumnData.getColumnType(), dbConnectionFactory.getConnection().getDatabaseSpecifics());
-					anonymisationMethod.addColumn(anonymisedColumnInfo);
-	
-					DatabaseTableInfo table = lookupTable(anonymisedColumnData.getTableName());
-					if(table == null){
-						loadErrors.add("Failed to find anonymised column " + anonymisedColumnData.getTableName() + "." + anonymisedColumnData.getColumnName());
-						logger.error("failed to find table and column " + anonymisedColumnData, new Exception());
-					} else {
-						anonymisedColumnInfo.setTable(table);
-						table.addAnonymisedColumn(anonymisedColumnInfo);
-					}
-					
+					addColumn(anonymisationMethod, anonymisedColumnData);
 				}
 			}
-			if(anonymisationMethod instanceof AnonymisationMethodMapping){
-				AnonymisationMethodMappingData anonymisationMethodMappingData = (AnonymisationMethodMappingData)anonymisationMethodData;
-				AnonymisationMethodMapping anonymisationMethodMapping = (AnonymisationMethodMapping)anonymisationMethod;
-				anonymisationMethodMapping.setMappingDefault(new MappingDefault(anonymisationMethodMappingData.getMappingDefaultData().getDefaultValue()));
-				for(MappingRuleData mappingRuleData:anonymisationMethodMappingData.getMappingRules()){
-					// TODO
-					MappingRule mappingRule = new LessThan(mappingRuleData.getBoundary(), mappingRuleData.getMappedValue());
-					anonymisationMethodMapping.addMappingRule(mappingRule);
-				}
-			}
+			handleAnonMethodMapping(anonymisationMethodData, anonymisationMethod);
 			anonConfig.addAnonMethod(anonymisationMethod);
 		}
 	}
-	
-	// TODO: this method duplication must be removed
+
 	@Override
 	public void loadExecConfig() {
 		
@@ -160,27 +138,46 @@ public class DatabaseLoaderServiceImpl implements DatabaseLoaderService{
 		for(AnonymisationMethodData anonymisationMethodData: anonymisationMethodDatas){
 			
 			if(!execConfigHasAnonMethod(anonymisationMethodData)) {
-				
 				AnonymisationMethod anonymisationMethod = instantiate(anonymisationMethodData);
 				for(AnonymisedColumnData anonymisedColumnData: anonymisationMethodData.getApplyedToColumns()){
-					
-					AnonymisedColumnInfo anonymisedColumnInfo = new AnonymisedColumnInfo(anonymisedColumnData.getColumnName(), anonymisedColumnData.getColumnType(), dbConnectionFactory.getConnection().getDatabaseSpecifics());
-					anonymisationMethod.addColumn(anonymisedColumnInfo);
-		
-					DatabaseTableInfo table = lookupTableBySchema(anonymisedColumnData.getTableName(), anonymisedColumnData.getSchemaName());
-					if(table == null){
-						loadErrors.add("Failed to find anonymised column " + anonymisedColumnData.getTableName() + "." + anonymisedColumnData.getColumnName());
-						logger.error("failed to find table and column " + anonymisedColumnData, new Exception());
-					} else {
-						anonymisedColumnInfo.setTable(table);
-						table.addAnonymisedColumn(anonymisedColumnInfo);
-					}
+					addColumn(anonymisationMethod, anonymisedColumnData);
 				}
+				handleAnonMethodMapping(anonymisationMethodData, anonymisationMethod);
 				execConfig.addAnonMethod(anonymisationMethod);
-				
 			}
 		}
 	}
+	
+	private void handleAnonMethodMapping(
+			AnonymisationMethodData anonymisationMethodData,
+			AnonymisationMethod anonymisationMethod) {
+		if(anonymisationMethod instanceof AnonymisationMethodMapping){
+			AnonymisationMethodMappingData anonymisationMethodMappingData = (AnonymisationMethodMappingData)anonymisationMethodData;
+			AnonymisationMethodMapping anonymisationMethodMapping = (AnonymisationMethodMapping)anonymisationMethod;
+			anonymisationMethodMapping.setMappingDefault(new MappingDefault(anonymisationMethodMappingData.getMappingDefaultData().getDefaultValue()));
+			for(MappingRuleData mappingRuleData:anonymisationMethodMappingData.getMappingRules()){
+				// TODO
+				MappingRule mappingRule = new LessThan(mappingRuleData.getBoundary(), mappingRuleData.getMappedValue());
+				anonymisationMethodMapping.addMappingRule(mappingRule);
+			}
+		}
+	}
+
+	private void addColumn(AnonymisationMethod anonymisationMethod, AnonymisedColumnData anonymisedColumnData) {
+		AnonymisedColumnInfo anonymisedColumnInfo = new AnonymisedColumnInfo(anonymisedColumnData.getColumnName(), anonymisedColumnData.getColumnType(), dbConnectionFactory.getConnection().getDatabaseSpecifics());
+		anonymisationMethod.addColumn(anonymisedColumnInfo);
+
+		DatabaseTableInfo table = lookupTable(anonymisedColumnData.getTableName());
+		if(table == null){
+			loadErrors.add("Failed to find anonymised column " + anonymisedColumnData.getTableName() + "." + anonymisedColumnData.getColumnName());
+			logger.error("failed to find table and column " + anonymisedColumnData, new Exception());
+		} else {
+			anonymisedColumnInfo.setTable(table);
+			table.addAnonymisedColumn(anonymisedColumnInfo);
+		}
+	}
+	
+
 	
 	private boolean execConfigHasAnonMethod(AnonymisationMethodData anonymisationMethodData) {
 		for(AnonymisationMethod anonymisationMethod : execConfig.getAnonMethods()) {

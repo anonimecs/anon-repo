@@ -33,7 +33,7 @@ public class ConfigureMappingsPopupBacking extends BackingBase{
 	
 	public void onConfigureMappingsClicked(){
 		logDebug("onConfigureMappingsClicked ");
-		MappingDefault mappingDefault = new MappingDefault(configContext.getTestValue());
+		MappingDefault mappingDefault = new MappingDefault("XXXXX");
 		getAnonymisationMethodMapping().setMappingDefault(mappingDefault);
 		mappingRuleTypeList = Arrays.asList(MappingRule.MappingRuleType.values());
 	}

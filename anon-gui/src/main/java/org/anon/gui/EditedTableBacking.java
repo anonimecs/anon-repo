@@ -106,7 +106,6 @@ public class EditedTableBacking extends BackingBase {
 			supportedAnonymisationMethods = methodFactory.getSupportedMethods(getAnonymizedColumn(), databaseLoaderService.getDatabaseSpecifics());
 			selectedRelatedTableColumns = null;
 			selectedRelatedTableColumnsToRemove = null;
-			configContext.setTestValue(editedColumn.getExampleValues().get(0).toString());
 			
 		}else {
 			// anonymised column clicked
@@ -116,7 +115,6 @@ public class EditedTableBacking extends BackingBase {
 			selectedRelatedTableColumnsToRemove = new LinkedList<RelatedTableColumnInfo>(selectedRelatedTableColumns);
 			supportedAnonymisationMethods = methodFactory.getSupportedMethods(getAnonymizedColumn(), databaseLoaderService.getDatabaseSpecifics());
 			replaceInSupported();
-			configContext.setTestValue(editedColumn.getExampleValues().get(0).toString());
 		}
 		
 		redirectPageTo(NavigationCaseEnum.ANONYMIZE);
