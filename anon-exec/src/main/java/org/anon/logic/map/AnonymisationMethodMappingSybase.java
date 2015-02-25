@@ -2,6 +2,7 @@ package org.anon.logic.map;
 
 import org.anon.data.AnonymisedColumnInfo;
 import org.anon.data.ExecutionMessage;
+import org.anon.logic.AnonymisationMethodMapping;
 
 public class AnonymisationMethodMappingSybase extends AnonymisationMethodMapping {
 

@@ -7,7 +7,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 
-import org.anon.logic.map.AnonymisationMethodMapping;
+import org.anon.logic.AnonymisationMethodMapping;
 import org.anon.logic.map.LessThan;
 import org.anon.logic.map.MappingDefault;
 import org.anon.logic.map.MappingRule;
@@ -20,14 +20,16 @@ public class ConfigureMappingsPopupBacking extends BackingBase{
 	@ManagedProperty(value="#{configContext}")
 	private ConfigContext configContext;
 	
-//	private MappingDefault mappingDefault;
-//	private List<MappingRule> mappingRuleList = new ArrayList<>();
-	
 	
 	private List<MappingRuleType> mappingRuleTypeList;
 	private MappingRuleType selectedMappingRuleType;
 	private String condition;
 	private String mappedValue;
+	
+	public void onClose(){
+		logDebug("onClose ");
+		
+	}
 	
 	public void onConfigureMappingsClicked(){
 		logDebug("onConfigureMappingsClicked ");

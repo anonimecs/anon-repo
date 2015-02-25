@@ -178,7 +178,7 @@
 		
 	
 	
-		<p:dialog id="configureMappingsPopupId" header="Configure Mappings" widgetVar="configureMappingsPopup" modal="true" height="600" width="700">
+		<p:dialog id="configureMappingsPopupId" header="Configure Mappings" widgetVar="configureMappingsPopup" modal="true" width="700" onHide="#{configureMappingsPopupBacking.onClose()}">
 			<p:outputLabel>
 			    You can configure the mapping details in here. Please note, that you always need
 			    to define a default unconditional mapping, and in addition, you can specify a list of optional conditional mappings.
@@ -227,6 +227,8 @@
 			    	<p:commandButton value="Add" action="#{configureMappingsPopupBacking.onAddClicked()}"  update=":configureMappingsPopupForm"/>
 			    	
 			    </p:panelGrid>
+
+			    <p:commandButton value="Close" action="#{configureMappingsPopupBacking.onClose()}"/>
 			    
 			    <p:spacer height="50px"/>
 			</h:form>

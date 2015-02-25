@@ -9,9 +9,15 @@ import org.anon.data.DatabaseColumnInfo;
 import org.anon.data.DatabaseTableInfo;
 import org.anon.data.RelatedTableColumnInfo;
 import org.anon.logic.AnonymisationMethod;
+import org.anon.logic.AnonymisationMethodMapping;
+import org.anon.logic.map.LessThan;
+import org.anon.logic.map.MappingRule;
 import org.anon.persistence.dao.EntitiesDao;
 import org.anon.persistence.data.AnonymisationMethodData;
+import org.anon.persistence.data.AnonymisationMethodMappingData;
 import org.anon.persistence.data.AnonymisedColumnData;
+import org.anon.persistence.data.MappingDefaultData;
+import org.anon.persistence.data.MappingRuleData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -43,7 +49,14 @@ public class EditedTableServiceImpl implements EditedTableService{
 	}
 
 	private void persist_AddAnonymisation(AnonymisationMethod anonymisationMethod) {
-		AnonymisationMethodData anonymisationMethodData = new AnonymisationMethodData();
+		AnonymisationMethodData anonymisationMethodData;
+		if(anonymisationMethod instanceof AnonymisationMethodMapping){
+			anonymisationMethodData = createAnonymisationMethodMappingData((AnonymisationMethodMapping)anonymisationMethod);
+		}
+		else {
+			anonymisationMethodData = new AnonymisationMethodData();
+		}
+		
 		anonymisationMethodData.setDatabaseConfigId(dbConnectionFactory.getDatabaseConfig().getId());
 		anonymisationMethodData.setAnonymizationType(anonymisationMethod.getType());
 		anonymisationMethodData.setAnonMethodClass(anonymisationMethod.getClass().getName());
@@ -56,8 +69,34 @@ public class EditedTableServiceImpl implements EditedTableService{
 			anonymisedColumnData.setSchemaName(column.getTable().getSchema());
 			anonymisationMethodData.addColumn(anonymisedColumnData);	
 		}
+		
+		
 		entitiesDao.save(anonymisationMethodData);
 		anonymisationMethod.setId(anonymisationMethodData.getId());
+	}
+	
+	private AnonymisationMethodMappingData createAnonymisationMethodMappingData(AnonymisationMethodMapping anonymisationMethodMapping){
+		AnonymisationMethodMappingData anonymisationMethodMappingData = new AnonymisationMethodMappingData();
+		MappingDefaultData mappingDefaultData = new MappingDefaultData();
+		mappingDefaultData.setDefaultValue(anonymisationMethodMapping.getMappingDefault().getDefaultValue());
+		anonymisationMethodMappingData.setMappingDefaultData(mappingDefaultData);
+		
+		for(MappingRule mappingRule:anonymisationMethodMapping.getMappingRulesList()){
+			if(mappingRule instanceof LessThan){
+				MappingRuleData mappingRuleData = new MappingRuleData();
+				mappingRuleData.setMappingRuleType(mappingRule.getMappingRuleType());
+				mappingRuleData.setMappedValue(mappingRule.getMappedValue());
+				mappingRuleData.setBoundary(mappingRule.getCondition());
+				
+				anonymisationMethodMappingData.addMappingRuleData(mappingRuleData);
+			}
+			else {
+				throw new RuntimeException("Unmapped class " + mappingRule);
+			}
+			
+		}
+		
+		return anonymisationMethodMappingData;
 	}
 
 	public void removeAnonymisation(DatabaseTableInfo selectedEditedTable,

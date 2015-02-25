@@ -1,4 +1,4 @@
-package org.anon.logic.map;
+package org.anon.logic;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -6,7 +6,8 @@ import java.util.List;
 
 import org.anon.data.AnonymisedColumnInfo;
 import org.anon.data.AnonymizationType;
-import org.anon.logic.AnonymisationMethod;
+import org.anon.logic.map.MappingDefault;
+import org.anon.logic.map.MappingRule;
 
 
 public abstract class AnonymisationMethodMapping extends AnonymisationMethod {
