@@ -28,21 +28,26 @@ public abstract class BaseParametrisedDbTest {
 		}
 
 	}
-	
-	protected DataSource getDataSourceFor(Class clazz) {
-		if(clazz.getSimpleName().contains("Sybase")){
+
+	protected DataSource getDataSourceFor(String name) {
+		if(name.toLowerCase().contains("sybase")){
 			return dataSourceSybase;
 		}
-		if(clazz.getSimpleName().contains("Oracle")){
+		if(name.toLowerCase().contains("oracle")){
 			return dataSourceOracle;
 		}
-		if(clazz.getSimpleName().contains("SqlServer")){
+		if(name.toLowerCase().contains("sqlserver")){
 			return dataSourceSqlServer;
 		}
-		if(clazz.getSimpleName().contains("MySql")){
+		if(name.toLowerCase().contains("mysql")){
 			return dataSourceMySql;
 		}
-		throw new RuntimeException("Unsupported class " + clazz);
+		throw new RuntimeException("Unsupported " + name);
+	
+	}
+	
+	protected DataSource getDataSourceFor(Class clazz) {
+		return getDataSourceFor(clazz.getSimpleName());
 	}
 	
 	protected static boolean isDbAvailable(DB db){
