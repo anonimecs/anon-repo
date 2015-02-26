@@ -3,6 +3,7 @@ package org.anon.logic.map;
 import org.anon.data.AnonConfig;
 import org.anon.exec.SybaseExec;
 import org.anon.exec.SybaseExecTestBase;
+import org.anon.logic.AnonymisationMethodMapping;
 import org.anon.vendor.DatabaseSpecifics;
 import org.junit.Test;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -12,7 +13,7 @@ public class AnonymisationMethodMappingSybaseTest extends SybaseExecTestBase{
 	@Test
 	public void testMapIntegersSybase() {
 
-		AnonymisationMethodMappingSybase anonymisationMethod = new AnonymisationMethodMappingSybase();
+		AnonymisationMethodMapping anonymisationMethod = new AnonymisationMethodMapping();
 		anonymisationMethod.setMappingDefault(new MappingDefault("xxxx"));
 		
 		anonymisationMethod.addMappingRule(new LessThan("K", "aaa"));
