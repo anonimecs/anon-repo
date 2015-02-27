@@ -10,6 +10,7 @@ import org.anon.exec.TwoTestTablesCreator;
 import org.anon.logic.AnonymisationMethod;
 import org.anon.logic.AnonymisationMethodMapping;
 import org.anon.vendor.DatabaseSpecifics;
+import org.junit.Assert;
 import org.junit.Test;
 
 public class AnonymisationMethodMappingTest extends TwoTablesAllDbTest{
@@ -71,10 +72,33 @@ public class AnonymisationMethodMappingTest extends TwoTablesAllDbTest{
 		
 		anonymisationMethod.addMappingRule(new LessThan("1", "0"));
 		anonymisationMethod.addMappingRule(new LessThan("2", "-1"));
-		getTestAnonimisedColumnInfo("COL3", "VARCHAR2", "TMP_TABLE_A3", anonymisationMethod, DatabaseSpecifics.SybaseSpecific, anonConfig);
+		getTestAnonimisedColumnInfo("COL3", "INT", "TMP_TABLE_A3", anonymisationMethod, DatabaseSpecifics.SybaseSpecific, anonConfig);
+		
+		runConfig(anonConfig, anonymisationMethod);
+		
+		String anonimisedDbValue = loadFromDbObject("select COL3 from TMP_TABLE_A3 where COL1 = 'AAA'", String.class);
+		Assert.assertEquals("anonimisedDbValue", -1, Integer.parseInt(anonimisedDbValue));
+
+	}
+	
+	@Test
+	public void testMapFloatOnNoConstraintCol() {
+
+		AnonConfig anonConfig = new AnonConfig();
+		anonConfig.init();
+
+		AnonymisationMethodMapping anonymisationMethod = new AnonymisationMethodMapping();
+		anonymisationMethod.setMappingDefault(new MappingDefault("1.0"));
+		
+		anonymisationMethod.addMappingRule(new LessThan("1.0", "0"));
+		anonymisationMethod.addMappingRule(new LessThan("2", "0.9"));
+		getTestAnonimisedColumnInfo("COL4", "FLOAT", "TMP_TABLE_A3", anonymisationMethod, DatabaseSpecifics.SybaseSpecific, anonConfig);
 		
 		runConfig(anonConfig, anonymisationMethod);
 
+		String anonimisedDbValue = loadFromDbObject("select COL4 from TMP_TABLE_A3 where COL1 = 'AAA'", String.class);
+		Assert.assertEquals("anonimisedDbValue", 0.9, Double.parseDouble(anonimisedDbValue), 0.0);
+		
 	}
 	
 	protected AnonymisedColumnInfo getTestAnonimisedColumnInfo(String colName, String colType,String tableName, AnonymisationMethod anonymisationMethod, DatabaseSpecifics databaseSpecifics, AnonConfig anonConfig) {

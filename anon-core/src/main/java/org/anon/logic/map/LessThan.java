@@ -28,7 +28,7 @@ public class LessThan extends MappingRule {
 
 	@Override
 	public String generateWhenSql(AnonymisedColumnInfo col) {
-		return " when " + col.getName() + " < '" + boundary + "' then '" +  mappedValue + "'";
+		return " when " + col.getName() + " < " + col.getQuoteIfNeeded() + boundary + col.getQuoteIfNeeded() + " then "+ col.getQuoteIfNeeded() +  mappedValue + col.getQuoteIfNeeded();
 	}
 
 	@Override

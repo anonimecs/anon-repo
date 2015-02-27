@@ -1,10 +1,10 @@
 package org.anon.logic.map;
 
+import org.anon.data.DatabaseColumnInfo;
+
 public class MappingDefault {
 	private String defaultValue;
 	
-	public MappingDefault() {
-	}
 	
 	public MappingDefault(String defaultValue) {
 		super();
@@ -19,5 +19,10 @@ public class MappingDefault {
 	
 	public void setDefaultValue(String defaultValue) {
 		this.defaultValue = defaultValue;
+	}
+
+	
+	public String getDefaultValueSql(DatabaseColumnInfo databaseColumnInfo) {
+		return databaseColumnInfo.getQuoteIfNeeded() + getDefaultValue() + databaseColumnInfo.getQuoteIfNeeded();
 	}
 }

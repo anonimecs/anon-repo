@@ -52,8 +52,8 @@ public abstract class TwoTablesAllDbTest extends BaseParametrisedDbTest{
 	
 	protected JdbcTemplate getJdbcTemplate() {
 		if(jdbcTemplate == null){
-			jdbcTemplate = new JdbcTemplate(getDataSourceFor(database.toString()));
-			jdbcTemplate.execute("use " + schema);
+			jdbcTemplate = new JdbcTemplate(getDataSource());
+			jdbcTemplate.execute(database.getDatabaseSpecifics().getUseSchemaSql(schema));
 		}
 		return jdbcTemplate;
 	}
@@ -110,7 +110,7 @@ public abstract class TwoTablesAllDbTest extends BaseParametrisedDbTest{
 		} else if(database == Database.SQLSERVER){
 			baseExec = new SqlServerExec();
 		}
-		DataSource dataSource = getDataSourceFor(database.toString());
+		DataSource dataSource = getDataSource();
 		baseExec.setDataSource(dataSource);
 		baseExec.setUserName("junit");
 		baseExec.setLicenseManager(new LicenseManagerMock());
@@ -118,6 +118,12 @@ public abstract class TwoTablesAllDbTest extends BaseParametrisedDbTest{
 		baseExec.setGuiNotifier(new NullGuiNotifier());
 		baseExec.setDbConnectionFactory(new DummyConnectionFactory(dataSource, database));
 		return baseExec;
+	}
+
+
+	@Override
+	protected DataSource getDataSource() {
+		return getDataSourceFor(database.toString());
 	}
 	
 	

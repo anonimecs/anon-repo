@@ -44,8 +44,13 @@ public class ConstraintManagerNoJenkinsTest extends BaseParametrisedDbTest{
 	public void setUpContext() throws Exception {
 		setUpContextBase();
 		
-	    DataSource dataSource = getDataSourceFor(constraintManagerClass);
+	    DataSource dataSource = getDataSource();
 	    constraintManager = constraintManagerClass.getConstructor(DataSource.class).newInstance(new Object[] {dataSource});
+	}
+
+	@Override
+	protected DataSource getDataSource() {
+		return getDataSourceFor(constraintManagerClass);
 	}
 	
 

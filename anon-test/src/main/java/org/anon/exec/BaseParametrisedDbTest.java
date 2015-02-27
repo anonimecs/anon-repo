@@ -1,10 +1,14 @@
 package org.anon.exec;
 
+import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.ColumnMapRowMapper;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.TestContextManager;
 
 public abstract class BaseParametrisedDbTest {
@@ -58,5 +62,27 @@ public abstract class BaseParametrisedDbTest {
 	    this.testContextManager = new TestContextManager(getClass());
 	    this.testContextManager.prepareTestInstance(this);
 	}
+
+	
+    /**
+     * Run a custom SQL against the database to validate your result
+     */
+    protected List<Map<String, Object>> loadFromDb(String sqlQuery) {
+        return new JdbcTemplate(getDataSource()).query(sqlQuery, new ColumnMapRowMapper());
+    }
+
+    protected <T> T loadFromDbObject(String sqlQuery, Class <T> clazz) {
+        return new JdbcTemplate(getDataSource()).queryForObject(sqlQuery, clazz);
+    }
+
+    /**
+     * Clean up something in the DB
+     */
+    protected void updateDB(String sqlUpdate) {
+        new JdbcTemplate(getDataSource()).update(sqlUpdate);
+    }
+
+	protected abstract DataSource getDataSource();
+    
 
 }

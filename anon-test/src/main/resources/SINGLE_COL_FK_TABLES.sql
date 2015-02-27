@@ -2,12 +2,13 @@ create table TMP_TABLE_A3(
 COL1 varchar(50) not null,
 COL2 varchar(50) not null,
 COL3 int not null,
+COL4 float not null,
 primary key(COL1)
 );
 
-insert into TMP_TABLE_A3 values ('AAA', 'AAA', 1);
-insert into TMP_TABLE_A3 values ('BBB', 'BBB', 2);
-insert into TMP_TABLE_A3 values ('CCC', 'CCC', 3);
+insert into TMP_TABLE_A3 values ('AAA', 'AAA', 1, 1.1);
+insert into TMP_TABLE_A3 values ('BBB', 'BBB', 2, 1.2);
+insert into TMP_TABLE_A3 values ('CCC', 'CCC', 3, 3.3);
 
 create table TMP_TABLE_B3(
 COL1_REF varchar(50) not null,

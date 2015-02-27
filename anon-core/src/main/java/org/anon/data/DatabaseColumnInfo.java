@@ -49,6 +49,13 @@ public class DatabaseColumnInfo extends DataObject {
 	public boolean isJavaTypeDouble() {
 		return databaseSpecifics.isJavaTypeDouble(this);
 	}
+	
+	public String getQuoteIfNeeded(){
+		if(isJavaTypeString() || isJavaTypeDate()){
+			return "'";
+		}
+		return "";
+	}
 
 	public String getName() {
 		return name;

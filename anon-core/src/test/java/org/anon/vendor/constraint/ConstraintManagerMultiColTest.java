@@ -41,18 +41,23 @@ public class ConstraintManagerMultiColTest extends BaseParametrisedDbTest{
 	public void setUpContext() throws Exception {
 		setUpContextBase();
 
-	    DataSource dataSource = getDataSourceFor(constraintManagerClass);
+	    DataSource dataSource = getDataSource();
 	    constraintManager = constraintManagerClass.getConstructor(DataSource.class).newInstance(new Object[] {dataSource});
+	}
+
+	@Override
+	protected DataSource getDataSource() {
+		return getDataSourceFor(constraintManagerClass);
 	}
 	
 
 	private void createMultiColumnTables() throws IOException {
-	    DataSource dataSource = getDataSourceFor(constraintManagerClass);
+	    DataSource dataSource = getDataSource();
 	    new TestTableCreatorSupport().runScript(new JdbcTemplate(dataSource), "/MULTI_COL_FK_TABLES.sql", databaseSpecifics.getUseSchemaSql(schema));
 	}
 	
 	private void dropMultiColumnTables() throws IOException{
-	    DataSource dataSource = getDataSourceFor(constraintManagerClass);
+	    DataSource dataSource = getDataSource();
 	    new TestTableDropSupport().runScript(new JdbcTemplate(dataSource), "/MULTI_COL_FK_TABLES_DROP.sql", databaseSpecifics.getUseSchemaSql(schema));
 	}
 
