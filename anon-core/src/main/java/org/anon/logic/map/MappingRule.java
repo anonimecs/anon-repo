@@ -4,14 +4,26 @@ import org.anon.data.AnonymisedColumnInfo;
 
 public abstract class MappingRule {
 
-	public enum MappingRuleType{LessThan}
+	protected String boundary;
+	protected String mappedValue;
 	
-	public abstract String generateWhenSql(AnonymisedColumnInfo col);
-
-	public abstract String getCondition();
-
-	public abstract String getMappedValue();
+	public enum MappingRuleType{LessThan, MoreThan, EqualsTo}
 	
+	public String getMappedValue() {
+		return mappedValue;
+	}
+	
+	public String getBoundary() {
+		return boundary;
+	}
+	
+	public String generateWhenSql(AnonymisedColumnInfo col) {
+		return " when " + col.getName() + getSqlCondition() + col.getQuoteIfNeeded() + boundary + col.getQuoteIfNeeded() + " then "+ col.getQuoteIfNeeded() +  mappedValue + col.getQuoteIfNeeded();
+	}
+
+	
+	public abstract String getSqlCondition();
+
 	public abstract MappingRuleType getMappingRuleType();
 	
 	

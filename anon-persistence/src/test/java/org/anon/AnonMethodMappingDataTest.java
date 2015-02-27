@@ -22,7 +22,7 @@ import org.junit.runners.MethodSorters;
 public class AnonMethodMappingDataTest extends DbEntitiesTest {
 
 		static MappingDefaultData mappingDefaultData;
-		static MappingRuleData mappingRuleData;
+		static MappingRuleData lessThanMapping;
 		static AnonymisationMethodMappingData anonymisationMethodMappingData;
 	
 		@Test
@@ -51,11 +51,11 @@ public class AnonMethodMappingDataTest extends DbEntitiesTest {
 			mappingDefaultData.setDefaultValue("testvalue");
 			anonymisationMethodMappingData.setMappingDefaultData(mappingDefaultData);
 			
-			mappingRuleData = new MappingRuleData();
-			mappingRuleData.setBoundary("AAA");
-			mappingRuleData.setMappedValue("BBB");
-			mappingRuleData.setMappingRuleType(MappingRuleType.LessThan);
-			anonymisationMethodMappingData.addMappingRuleData(mappingRuleData);
+			lessThanMapping = new MappingRuleData();
+			lessThanMapping.setBoundary("AAA");
+			lessThanMapping.setMappedValue("BBB");
+			lessThanMapping.setMappingRuleType(MappingRuleType.LessThan);
+			anonymisationMethodMappingData.addMappingRuleData(lessThanMapping);
 			
 			anonymisedColumnData = new AnonymisedColumnData();
 			anonymisedColumnData.setColumnName("TESTCOLNAME2");
@@ -81,8 +81,8 @@ public class AnonMethodMappingDataTest extends DbEntitiesTest {
 				if(anonymisationMethodData instanceof AnonymisationMethodMappingData){
 					anonymisationMethodMappingData = (AnonymisationMethodMappingData)anonymisationMethodData;
 					Assert.assertEquals(1, anonymisationMethodMappingData.getMappingRules().size());
-					Assert.assertEquals(mappingRuleData.getMappingRuleType(), anonymisationMethodMappingData.getMappingRules().iterator().next().getMappingRuleType());
-					Assert.assertEquals(mappingRuleData.getBoundary(), anonymisationMethodMappingData.getMappingRules().iterator().next().getBoundary());
+					Assert.assertEquals(lessThanMapping.getMappingRuleType(), anonymisationMethodMappingData.getMappingRules().iterator().next().getMappingRuleType());
+					Assert.assertEquals(lessThanMapping.getBoundary(), anonymisationMethodMappingData.getMappingRules().iterator().next().getBoundary());
 					Assert.assertEquals(mappingDefaultData.getDefaultValue(), anonymisationMethodMappingData.getMappingDefaultData().getDefaultValue());
 					return;
 				}

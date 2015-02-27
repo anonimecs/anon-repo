@@ -10,7 +10,6 @@ import org.anon.data.DatabaseTableInfo;
 import org.anon.data.RelatedTableColumnInfo;
 import org.anon.logic.AnonymisationMethod;
 import org.anon.logic.AnonymisationMethodMapping;
-import org.anon.logic.map.LessThan;
 import org.anon.logic.map.MappingRule;
 import org.anon.persistence.dao.EntitiesDao;
 import org.anon.persistence.data.AnonymisationMethodData;
@@ -82,17 +81,12 @@ public class EditedTableServiceImpl implements EditedTableService{
 		anonymisationMethodMappingData.setMappingDefaultData(mappingDefaultData);
 		
 		for(MappingRule mappingRule:anonymisationMethodMapping.getMappingRulesList()){
-			if(mappingRule instanceof LessThan){
-				MappingRuleData mappingRuleData = new MappingRuleData();
-				mappingRuleData.setMappingRuleType(mappingRule.getMappingRuleType());
-				mappingRuleData.setMappedValue(mappingRule.getMappedValue());
-				mappingRuleData.setBoundary(mappingRule.getCondition());
-				
-				anonymisationMethodMappingData.addMappingRuleData(mappingRuleData);
-			}
-			else {
-				throw new RuntimeException("Unmapped class " + mappingRule);
-			}
+			MappingRuleData mappingRuleData = new MappingRuleData();
+			mappingRuleData.setMappingRuleType(mappingRule.getMappingRuleType());
+			mappingRuleData.setMappedValue(mappingRule.getMappedValue());
+			mappingRuleData.setBoundary(mappingRule.getBoundary());
+			
+			anonymisationMethodMappingData.addMappingRuleData(mappingRuleData);
 			
 		}
 		

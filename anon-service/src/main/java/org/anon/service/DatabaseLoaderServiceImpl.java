@@ -12,9 +12,12 @@ import org.anon.data.DatabaseTableInfo;
 import org.anon.data.RelatedTableColumnInfo;
 import org.anon.logic.AnonymisationMethod;
 import org.anon.logic.AnonymisationMethodMapping;
+import org.anon.logic.map.EqualsTo;
 import org.anon.logic.map.LessThan;
 import org.anon.logic.map.MappingDefault;
 import org.anon.logic.map.MappingRule;
+import org.anon.logic.map.MappingRule.MappingRuleType;
+import org.anon.logic.map.MoreThan;
 import org.anon.persistence.dao.EntitiesDao;
 import org.anon.persistence.data.AnonymisationMethodData;
 import org.anon.persistence.data.AnonymisationMethodMappingData;
@@ -156,8 +159,19 @@ public class DatabaseLoaderServiceImpl implements DatabaseLoaderService{
 			AnonymisationMethodMapping anonymisationMethodMapping = (AnonymisationMethodMapping)anonymisationMethod;
 			anonymisationMethodMapping.setMappingDefault(new MappingDefault(anonymisationMethodMappingData.getMappingDefaultData().getDefaultValue()));
 			for(MappingRuleData mappingRuleData:anonymisationMethodMappingData.getMappingRules()){
-				// TODO
-				MappingRule mappingRule = new LessThan(mappingRuleData.getBoundary(), mappingRuleData.getMappedValue());
+				MappingRule mappingRule = null; 
+				if(mappingRuleData.getMappingRuleType() == MappingRuleType.LessThan){
+					mappingRule = new LessThan(mappingRuleData.getBoundary(), mappingRuleData.getMappedValue());
+				}
+				else if(mappingRuleData.getMappingRuleType() == MappingRuleType.MoreThan){
+					mappingRule = new MoreThan(mappingRuleData.getBoundary(), mappingRuleData.getMappedValue());
+				}
+				else if(mappingRuleData.getMappingRuleType() == MappingRuleType.EqualsTo){
+					mappingRule = new EqualsTo(mappingRuleData.getBoundary(), mappingRuleData.getMappedValue());
+				}
+				else {
+					throw new RuntimeException("Unmapped " + mappingRuleData);
+				}
 				anonymisationMethodMapping.addMappingRule(mappingRule);
 			}
 		}
