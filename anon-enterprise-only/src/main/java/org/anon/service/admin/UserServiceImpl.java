@@ -116,5 +116,15 @@ public class UserServiceImpl implements UserService {
 	private UserDetails getUserDetails() {
 		return (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 	}
+
+	@Override
+	public boolean isHeadlessMode() {
+		if(SecurityContextHolder.getContext().getAuthentication() == null) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
 	
 }

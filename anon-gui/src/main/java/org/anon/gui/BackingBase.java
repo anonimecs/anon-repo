@@ -44,7 +44,7 @@ public class BackingBase {
 	}
 	
 	protected void showInfoInGui(String guiMessage) {
-		showExtInfoInGui(guiMessage, null);
+		showExtInfoInGui(guiMessage, "");
 	}
 	
 	protected void showExtInfoInGui(String head, String message) {
@@ -53,7 +53,7 @@ public class BackingBase {
 	}
 	
 	protected void showErrorInGui(String guiMessage) {
-		showExtErrorInGui(guiMessage, null);
+		showExtErrorInGui(guiMessage, "");
 	}
 	
 	protected void showErrorInGui(String guiMessage, String detail) {

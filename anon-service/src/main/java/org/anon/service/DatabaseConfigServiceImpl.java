@@ -27,7 +27,12 @@ public class DatabaseConfigServiceImpl implements DatabaseConfigService {
 	private UserService userService;
 	
 	@Override
-	public List<DatabaseConfig> loadConnectionConfigs() {		
+	public List<DatabaseConfig> loadConnectionConfigs() {
+		
+		if(userService.isHeadlessMode()) {
+			return configDao.findAll();
+		}
+		
 		return configDao.findConfigForUser(userService.getUsername());
 	}
 
