@@ -5,6 +5,7 @@ import java.util.List;
 import org.anon.persistence.data.DatabaseConfig;
 import org.hibernate.Criteria;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -67,5 +68,15 @@ public class DatabaseConfigDaoImpl implements DatabaseConfigDao {
 		criteria.add(Restrictions.eq("user.username", username));
 		
 		return criteria.list();
+	}
+
+	@Override
+	public boolean isGuiNameUnique(String guiName, Long id) {
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(DatabaseConfig.class);
+		criteria.add(Restrictions.eq("guiName", guiName));
+		if(id != null) {
+			criteria.add(Restrictions.ne("id", id));
+		}
+		return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult() > 0;
 	}
 }

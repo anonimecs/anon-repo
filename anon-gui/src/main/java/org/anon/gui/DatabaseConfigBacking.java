@@ -72,6 +72,7 @@ public class DatabaseConfigBacking extends BackingBase {
 			handleServiceResultAsInfoMessage(exception);
 			
 		}
+
 		databasePanelBacking.init();
 		configBean = new DatabaseConfig();
 	}

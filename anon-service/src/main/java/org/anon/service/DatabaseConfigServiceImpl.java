@@ -74,7 +74,7 @@ public class DatabaseConfigServiceImpl implements DatabaseConfigService {
 	@Transactional(readOnly = false)
 	public void addDatabaseConfig(DatabaseConfig config) throws ServiceException{
 		
-		connectionValidator.connectionValid(config);
+		testDatabaseConfig(config);
 		
 		try {
 			SecurityUser user = userService.loadSecurityUser();
@@ -104,13 +104,18 @@ public class DatabaseConfigServiceImpl implements DatabaseConfigService {
 					e.getCause() != null ?  e.getCause().getMessage() : e.getMessage(), e);
 		}
 	}
+	
+	
+	
 
 	@Override
 	public void testDatabaseConfig(DatabaseConfig config)  throws ServiceException{
 		
 		connectionValidator.connectionValid(config);
-
+		
+		if(configDao.isGuiNameUnique(config.getGuiName(), config.getId())) {
+			throw new ServiceException("Duplicate GUI Name", config.getGuiName() + " already exits. Enter another name.", null);
+		}
 	}
-
 }
 

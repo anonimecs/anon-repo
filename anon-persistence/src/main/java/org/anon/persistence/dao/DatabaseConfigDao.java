@@ -17,6 +17,8 @@ public interface DatabaseConfigDao {
 	void removeDatabaseConfig(DatabaseConfig config);
 
 	DatabaseConfig loadConnectionConfig(String guiName);
+	
+	boolean isGuiNameUnique(String guiName, Long id);
 
 	void removeDatabaseConfig(String configGuiName);
 }
