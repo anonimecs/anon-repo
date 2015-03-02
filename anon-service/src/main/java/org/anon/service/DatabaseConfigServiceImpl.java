@@ -2,6 +2,7 @@ package org.anon.service;
 
 import java.util.List;
 
+import org.anon.license.LicenseManager;
 import org.anon.persistence.dao.DatabaseConfigDao;
 import org.anon.persistence.data.DatabaseConfig;
 import org.anon.persistence.data.SecurityUser;
@@ -23,13 +24,16 @@ public class DatabaseConfigServiceImpl implements DatabaseConfigService {
 	@Autowired
 	private DbConnectionValidatorService connectionValidator;
 	
-	@Autowired
+	@Autowired(required=false)
 	private UserService userService;
+	
+	@Autowired
+	private LicenseManager licenseManager;
 	
 	@Override
 	public List<DatabaseConfig> loadConnectionConfigs() {
 		
-		if(userService.isHeadlessMode()) {
+		if(licenseManager.isFreeEdition() || userService.isHeadlessMode()) {
 			return configDao.findAll();
 		}
 		
@@ -77,11 +81,13 @@ public class DatabaseConfigServiceImpl implements DatabaseConfigService {
 		testDatabaseConfig(config);
 		
 		try {
-			SecurityUser user = userService.loadSecurityUser();
-			
 			configDao.addDatabaseConfig(config);
-			user.getAssignedDatabases().add(config);
-			userService.updateUser(user, null);
+			
+			if(licenseManager.isEnterpriseEdition()) {
+				SecurityUser user = userService.loadSecurityUser();
+				user.getAssignedDatabases().add(config);
+				userService.updateUser(user, null);
+			}
 			
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
