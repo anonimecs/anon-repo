@@ -228,7 +228,7 @@
 			    	
 			    </p:panelGrid>
 
-			    <p:commandButton value="Close" action="#{configureMappingsPopupBacking.onClose()}" oncomplete="PF('configureMappingsPopup').hide();"/>
+			    <p:commandButton value="Close" action="#{configureMappingsPopupBacking.onClose()}" oncomplete="PF('configureMappingsPopup').hide();" update=":anonymizeTabView"/>
 			    
 			    <p:spacer height="50px"/>
 			</h:form>

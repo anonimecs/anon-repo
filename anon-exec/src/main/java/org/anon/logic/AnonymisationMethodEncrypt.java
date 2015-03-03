@@ -4,6 +4,7 @@ import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Date;
 
 import org.anon.data.AnonymisedColumnInfo;
 import org.anon.data.AnonymizationType;
@@ -38,6 +39,10 @@ public abstract class AnonymisationMethodEncrypt extends AnonymisationMethod {
 	}
 
 
+	@Override
+	protected Object anonymiseDate(Date exampleValue) {
+		throw new RuntimeException("Anonimising date is not supported");
+	}
 
 
 	protected abstract <T> T  anonymiseNum(Number exampleValue, Class<T> clazz);

@@ -15,8 +15,10 @@ import org.anon.data.DatabaseTableInfo;
 import org.anon.data.RelatedTableColumnInfo;
 import org.anon.gui.navigation.NavigationCaseEnum;
 import org.anon.logic.AnonymisationMethod;
+import org.anon.logic.AnonymisationMethodMapping;
 import org.anon.logic.AnonymisationMethodNone;
 import org.anon.logic.MethodFactory;
+import org.anon.logic.map.MappingDefault;
 import org.anon.service.DatabaseLoaderService;
 import org.anon.service.EditedTableService;
 import org.apache.log4j.Level;
@@ -154,6 +156,10 @@ public class EditedTableBacking extends BackingBase {
 	public void onAnonymisatationTypeChanged(){
 		logDebug("anonymisatationTypeChanged" + configContext.getAnonymisationMethod());
 		configContext.getAnonymisationMethod().setDataSource(databaseLoaderService.getDataSource());
+		if(configContext.getAnonymisationMethod() instanceof AnonymisationMethodMapping){
+			MappingDefault mappingDefault = new MappingDefault("");
+			((AnonymisationMethodMapping)configContext.getAnonymisationMethod()).setMappingDefault(mappingDefault);
+		}
 	}
 
 

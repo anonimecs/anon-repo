@@ -9,6 +9,7 @@ import org.anon.data.AnonymizationType;
 import org.anon.data.ExecutionMessage;
 import org.anon.logic.map.MappingDefault;
 import org.anon.logic.map.MappingRule;
+import org.springframework.jdbc.core.JdbcTemplate;
 
 public class AnonymisationMethodMapping extends AnonymisationMethod {
 
@@ -116,6 +117,39 @@ public class AnonymisationMethodMapping extends AnonymisationMethod {
 			return SQL.toString();
 		}
 
+		public String compilePreviewSql(Object value) {
+			StringBuffer SQL = new StringBuffer();
+			SQL.append("select  ");
+			if(mappingRulesList.size() > 0){
+				SQL.append(" case");
+				for (int i = 0; i < mappingRulesList.size(); i++) {
+					MappingRule mappingRule = mappingRulesList.get(i);
+					SQL.append(" " + mappingRule.generatePreviewWhenSql(value, col));
+	
+				}
+				SQL.append(" else " + mappingDefault.getDefaultValueSql(col));
+				SQL.append(" end ");
+			}
+			else {
+				SQL.append(mappingDefault.getDefaultValueSql(col));
+			}
+			SQL.append(col.getDatabaseSpecifics().getFromDual());
+
+			return SQL.toString();
+		}
+
+	}
+
+	@Override
+	public Object anonymise(Object exampleValue, AnonymisedColumnInfo anonymizedColumn) {
+//		if(!mappingRulesList.isEmpty() && mappingDefault != null){
+			BasicSqlCreator sqlCreator = createSqlCreator(anonymizedColumn);
+			String sql = sqlCreator.compilePreviewSql(exampleValue);
+			return new JdbcTemplate(dataSource).queryForObject(sql, exampleValue.getClass());
+//		}
+//		else {
+//			return exampleValue;
+//		}
 	}
 
 }

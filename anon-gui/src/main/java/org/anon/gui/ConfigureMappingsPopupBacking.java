@@ -9,7 +9,6 @@ import javax.faces.bean.ViewScoped;
 
 import org.anon.logic.AnonymisationMethodMapping;
 import org.anon.logic.map.LessThan;
-import org.anon.logic.map.MappingDefault;
 import org.anon.logic.map.MappingRule;
 import org.anon.logic.map.MappingRule.MappingRuleType;
 
@@ -33,8 +32,6 @@ public class ConfigureMappingsPopupBacking extends BackingBase{
 	
 	public void onConfigureMappingsClicked(){
 		logDebug("onConfigureMappingsClicked ");
-		MappingDefault mappingDefault = new MappingDefault("XXXXX");
-		getAnonymisationMethodMapping().setMappingDefault(mappingDefault);
 		mappingRuleTypeList = Arrays.asList(MappingRule.MappingRuleType.values());
 	}
 	
