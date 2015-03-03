@@ -31,14 +31,22 @@ public class AnonymisationMethodMappingTest extends TwoTablesAllDbTest{
 		
 		anonymisationMethod.addMappingRule(new LessThan("K", "aaa"));
 		anonymisationMethod.addMappingRule(new LessThan("O", "lll"));
-		getTestAnonimisedColumnInfo("COL1", "VARCHAR2", "TMP_TABLE_A3", anonymisationMethod, DatabaseSpecifics.SybaseSpecific, anonConfig);
+		AnonymisedColumnInfo anonymisedColumnInfo = getTestAnonimisedColumnInfo("COL1", "VARCHAR2", "TMP_TABLE_A3", anonymisationMethod, DatabaseSpecifics.SybaseSpecific, anonConfig);
 		
 		runConfig(anonConfig, anonymisationMethod);
+		
+		Assert.assertEquals("aaa", anonymisationMethod.anonymise("J", anonymisedColumnInfo));
+		Assert.assertEquals("lll", anonymisationMethod.anonymise("K", anonymisedColumnInfo));
+		Assert.assertEquals("xxxx", anonymisationMethod.anonymise("X", anonymisedColumnInfo));
+
 	}
 
 
 	protected void runConfig(AnonConfig anonConfig, AnonymisationMethodMapping anonymisationMethod) {
 		anonConfig.addAnonMethod(anonymisationMethod);
+		
+		anonymisationMethod.setDataSource(getDataSource());
+		
 		BaseExec baseExec = createBaseExec();
 		baseExec.setExecConfig(anonConfig);
 		baseExec.runAll();
@@ -55,9 +63,13 @@ public class AnonymisationMethodMappingTest extends TwoTablesAllDbTest{
 		
 		anonymisationMethod.addMappingRule(new LessThan("K", "aaa"));
 		anonymisationMethod.addMappingRule(new LessThan("O", "lll"));
-		getTestAnonimisedColumnInfo("COL2", "VARCHAR2", "TMP_TABLE_A3", anonymisationMethod, DatabaseSpecifics.SybaseSpecific, anonConfig);
+		AnonymisedColumnInfo anonymisedColumnInfo = getTestAnonimisedColumnInfo("COL2", "VARCHAR2", "TMP_TABLE_A3", anonymisationMethod, DatabaseSpecifics.SybaseSpecific, anonConfig);
 		
 		runConfig(anonConfig, anonymisationMethod);
+
+		Assert.assertEquals("aaa", anonymisationMethod.anonymise("J", anonymisedColumnInfo));
+		Assert.assertEquals("lll", anonymisationMethod.anonymise("K", anonymisedColumnInfo));
+		Assert.assertEquals("xxxx", anonymisationMethod.anonymise("X", anonymisedColumnInfo));
 
 	}
 	
@@ -72,12 +84,16 @@ public class AnonymisationMethodMappingTest extends TwoTablesAllDbTest{
 		
 		anonymisationMethod.addMappingRule(new LessThan("1", "0"));
 		anonymisationMethod.addMappingRule(new LessThan("2", "-1"));
-		getTestAnonimisedColumnInfo("COL3", "INT", "TMP_TABLE_A3", anonymisationMethod, DatabaseSpecifics.SybaseSpecific, anonConfig);
+		AnonymisedColumnInfo anonymisedColumnInfo = getTestAnonimisedColumnInfo("COL3", "INT", "TMP_TABLE_A3", anonymisationMethod, DatabaseSpecifics.SybaseSpecific, anonConfig);
 		
 		runConfig(anonConfig, anonymisationMethod);
 		
 		String anonimisedDbValue = loadFromDbObject("select COL3 from TMP_TABLE_A3 where COL1 = 'AAA'", String.class);
 		Assert.assertEquals("anonimisedDbValue", -1, Integer.parseInt(anonimisedDbValue));
+
+		Assert.assertEquals(0, (int)anonymisationMethod.anonymise(0, anonymisedColumnInfo));
+		Assert.assertEquals(-1, (int)anonymisationMethod.anonymise(1, anonymisedColumnInfo));
+		Assert.assertEquals(1, (int)anonymisationMethod.anonymise(10, anonymisedColumnInfo));
 
 	}
 	

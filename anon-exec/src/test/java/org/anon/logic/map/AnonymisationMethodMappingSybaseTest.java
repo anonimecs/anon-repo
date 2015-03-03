@@ -11,7 +11,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 public class AnonymisationMethodMappingSybaseTest extends SybaseExecTestBase{
 
 	@Test
-	public void testMapIntegersSybase() {
+	public void testMapIntegersSybaseUniqueKeyOnColumn() {
 
 		AnonymisationMethodMapping anonymisationMethod = new AnonymisationMethodMapping();
 		anonymisationMethod.setMappingDefault(new MappingDefault("xxxx"));
