@@ -83,7 +83,7 @@ public class DatabaseConfigServiceImpl implements DatabaseConfigService {
 		try {
 			configDao.addDatabaseConfig(config);
 			
-			if(licenseManager.isEnterpriseEdition()) {
+			if(licenseManager.isEnterpriseEdition() && !userService.isHeadlessMode()) {
 				SecurityUser user = userService.loadSecurityUser();
 				user.getAssignedDatabases().add(config);
 				userService.updateUser(user, null);
