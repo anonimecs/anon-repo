@@ -6,6 +6,8 @@ import org.springframework.jdbc.BadSqlGrammarException;
 
 public class AnonymisationMethodReshuffleOracle extends AnonymisationMethodReshuffle {
 
+	private static final long serialVersionUID = 1L;
+	
 	public static final String SHUFFLE_RAN = "TMP_SHUFFLE_1";
 	public static final String SHUFFLE_ORG = "TMP_SHUFFLE_2";
 	

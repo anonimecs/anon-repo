@@ -5,6 +5,8 @@ import org.anon.data.ExecutionMessage;
 
 public class AnonymisationMethodReshuffleMySql extends AnonymisationMethodReshuffle {
 	
+	private static final long serialVersionUID = 1L;
+	
 	public static final String SHUFFLE_RAN = "TMP_SHUFFLE_1";
 	public static final String SHUFFLE_ORG = "TMP_SHUFFLE_2";
 

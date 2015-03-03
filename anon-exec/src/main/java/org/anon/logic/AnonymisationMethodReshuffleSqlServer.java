@@ -6,10 +6,11 @@ import org.springframework.jdbc.core.JdbcTemplate;
 
 public class AnonymisationMethodReshuffleSqlServer extends AnonymisationMethodReshuffle {
 
+	private static final long serialVersionUID = 1L;
+	
 	public static final String TMP_TABLE = "TMP_TABLE"; 
 	public static final String LOOKUP_TABLE = "TMP_TABLE_LOOKUP"; 
 	
-
 	
 	@Override
 	public void setupInDb() {
