@@ -18,7 +18,7 @@ import org.springframework.test.context.ContextConfiguration;
 @SuppressWarnings({"rawtypes", "unchecked"})
 @RunWith(Parameterized.class)
 @ContextConfiguration("classpath:spring-test-datasources.xml")
-public class ConstraintManagerNoJenkinsTest extends BaseParametrisedDbTest{
+public class NoJenkinsConstraintManagerTest extends BaseParametrisedDbTest{
 
 	
 	private ConstraintManager constraintManager;
@@ -29,7 +29,7 @@ public class ConstraintManagerNoJenkinsTest extends BaseParametrisedDbTest{
 	private int incomingConstraints;
 	private int outgoingConstraints;
 	
-	public ConstraintManagerNoJenkinsTest(Class<ConstraintManager> constraintManagerClass, String tableName, String columnName, String schema, 
+	public NoJenkinsConstraintManagerTest(Class<ConstraintManager> constraintManagerClass, String tableName, String columnName, String schema, 
 			int incomingConstraints, int outgoingConstraints) {
 		super();
 		this.constraintManagerClass = constraintManagerClass;

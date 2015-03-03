@@ -70,7 +70,7 @@
 					<skipTests>${skip.tests}</skipTests>
 					<excludes>
 						<exclude>**/SqlServer*.java</exclude> <!-- SqlServer tests should not run on jenkins -->
-						<exclude>**/*NoJenkins*.java</exclude> <!-- not jenkins capable tests should not run on jenkins -->
+						<exclude>**/NoJenkins*.java</exclude> <!-- not jenkins capable tests should not run on jenkins -->
 					</excludes>
 				</configuration>
 			</plugin>
