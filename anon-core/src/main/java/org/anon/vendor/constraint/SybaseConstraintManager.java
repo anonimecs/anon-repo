@@ -3,6 +3,7 @@ package org.anon.vendor.constraint;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -15,22 +16,29 @@ public class SybaseConstraintManager extends ConstraintManager<SybaseConstraint>
 	}
 
 
+	@SuppressWarnings("unchecked")
 	protected List<SybaseConstraint> spHelpconstraint(String tableName, String schema) {
 		jdbcTemplate.execute("use " + schema);
 		String sp_helpconstraint = "sp_helpconstraint '" + tableName + "', 'detail'";
-		List<SybaseConstraint> allConstraints = jdbcTemplate.query(sp_helpconstraint, new RowMapper<SybaseConstraint>(){
-			@Override
-			public SybaseConstraint mapRow(ResultSet rs, int rowNum) throws SQLException {
-				try {
-					return new SybaseConstraint(rs);
-				} catch (Exception e) {
-					logger.error("deactivateConstraints failed", e);
-					return null;
+		try {
+			List<SybaseConstraint> allConstraints = jdbcTemplate.query(sp_helpconstraint, new RowMapper<SybaseConstraint>(){
+				@Override
+				public SybaseConstraint mapRow(ResultSet rs, int rowNum) throws SQLException {
+					try {
+						return new SybaseConstraint(rs);
+					} catch (Exception e) {
+						logger.error("deactivateConstraints failed", e);
+						return null;
+					}
 				}
-			}
-			
-		});
-		return allConstraints;
+				
+			});
+			return allConstraints;
+		} catch (Exception e) {
+			// sybase sp_helpconstraint fails for tables with no constraints
+			logger.error("Probably unconstrained table. Failed " + sp_helpconstraint, e);
+			return (List<SybaseConstraint>)Collections.EMPTY_LIST;
+		}
 	}
 	
 	@Override
