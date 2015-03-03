@@ -19,7 +19,12 @@ public enum DatabaseSpecifics {
 			public String getUseSchemaSql(String schema) {
 				return "use "  + schema;
 			}
-		},
+
+			@Override
+			public String getFromDual(){
+				return "";
+			}		
+	},
 	
 	OracleSpecific(
 		createSet("VARCHAR", "VARCHAR2", "CHAR", "NCHAR", "NVARCHAR2")
@@ -48,6 +53,10 @@ public enum DatabaseSpecifics {
 			public String getUseSchemaSql(String schema) {
 				return "use "  + schema;
 			}
+			@Override
+			public String getFromDual(){
+				return "";
+			}		
 		},
 
 	SybaseSpecific(
@@ -60,6 +69,10 @@ public enum DatabaseSpecifics {
 			public String getUseSchemaSql(String schema) {
 				return "use "  + schema;
 			}
+			@Override
+			public String getFromDual(){
+				return "";
+			}		
 		}
 		
 	;
@@ -131,7 +144,5 @@ public enum DatabaseSpecifics {
 
 	public abstract String getUseSchemaSql(String schema);
 
-	public String getFromDual(){
-		return "";
-	}
+	public abstract String getFromDual();
 }
