@@ -21,6 +21,10 @@ public abstract class MappingRule {
 		return " when " + col.getName() + getSqlCondition() + col.getQuoteIfNeeded() + boundary + col.getQuoteIfNeeded() + " then "+ col.getQuoteIfNeeded() +  mappedValue + col.getQuoteIfNeeded();
 	}
 
+	public String generatePreviewWhenSql(Object value, AnonymisedColumnInfo col) {
+		return " when " + col.getQuoteIfNeeded() + value.toString() + col.getQuoteIfNeeded() + getSqlCondition() + col.getQuoteIfNeeded() + boundary + col.getQuoteIfNeeded() + " then "+ col.getQuoteIfNeeded() +  mappedValue + col.getQuoteIfNeeded();
+	}
+
 	
 	public abstract String getSqlCondition();
 

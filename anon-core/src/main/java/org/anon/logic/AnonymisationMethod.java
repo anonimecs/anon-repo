@@ -110,25 +110,25 @@ public abstract class AnonymisationMethod implements Serializable{
 	}
 	
 	protected Object anonymiseDate(Date exampleValue) {
-		return exampleValue;
+		throw new RuntimeException("Unsupported");
 	}
 
 
 
 	protected Long anonymiseLong(Long exampleValue) {
-		return exampleValue;
+		throw new RuntimeException("Unsupported");
 	}
 
 
 
 	protected Double anonymiseDouble(Double exampleValue) {
-		return exampleValue;
+		throw new RuntimeException("Unsupported");
 	}
 
 
 
 	protected String anonymiseString(String exampleValue) {
-		return "Unimplemented : " + exampleValue;
+		throw new RuntimeException("Unsupported");
 	}
 
 

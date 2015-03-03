@@ -90,6 +90,10 @@ public class DatabaseColumnInfo extends DataObject {
 		return anonCandidate;
 	}
 	
+	public DatabaseSpecifics getDatabaseSpecifics() {
+		return databaseSpecifics;
+	}
+	
 	@Override
 	public String toString() {
 		return getTable() == null ? "N/A." + getName() : getTable().getName() + "." + getName();
