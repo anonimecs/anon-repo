@@ -10,8 +10,9 @@ import org.anon.data.RelatedTableColumnInfo;
 import org.anon.exec.BaseDbTest;
 import org.anon.vendor.DatabaseSpecifics;
 import org.anon.vendor.SqlServerDbConnection;
-import org.anon.vendor.SybaseDbConnection;
 import org.junit.Assert;
+import org.junit.Assume;
+import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -23,6 +24,15 @@ public class SqlServerDbConnectionTest extends BaseDbTest{
 	
 	@Value("${sqlserver.test.schema}")
 	protected String schema;
+	
+	@Value("${sqlserver.available}")
+	protected Boolean sqlserverAvailable;
+	
+	@Before
+	public void assumeDbAvailable(){
+		Assume.assumeTrue("database exists check", sqlserverAvailable);
+	}
+	
 	
     @Test
     public void testSchemas(){
