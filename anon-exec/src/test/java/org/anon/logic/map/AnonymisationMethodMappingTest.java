@@ -31,7 +31,7 @@ public class AnonymisationMethodMappingTest extends TwoTablesAllDbTest{
 		
 		anonymisationMethod.addMappingRule(new LessThan("K", "aaa"));
 		anonymisationMethod.addMappingRule(new LessThan("O", "lll"));
-		AnonymisedColumnInfo anonymisedColumnInfo = getTestAnonimisedColumnInfo("COL1", "VARCHAR2", "TMP_TABLE_A3", anonymisationMethod, DatabaseSpecifics.SybaseSpecific, anonConfig);
+		AnonymisedColumnInfo anonymisedColumnInfo = getTestAnonimisedColumnInfo("COL1", "VARCHAR2", "TMP_TABLE_A3", anonymisationMethod, database.getDatabaseSpecifics(), anonConfig);
 		
 		runConfig(anonConfig, anonymisationMethod);
 		
@@ -63,7 +63,7 @@ public class AnonymisationMethodMappingTest extends TwoTablesAllDbTest{
 		
 		anonymisationMethod.addMappingRule(new LessThan("K", "aaa"));
 		anonymisationMethod.addMappingRule(new LessThan("O", "lll"));
-		AnonymisedColumnInfo anonymisedColumnInfo = getTestAnonimisedColumnInfo("COL2", "VARCHAR2", "TMP_TABLE_A3", anonymisationMethod, DatabaseSpecifics.SybaseSpecific, anonConfig);
+		AnonymisedColumnInfo anonymisedColumnInfo = getTestAnonimisedColumnInfo("COL2", "VARCHAR2", "TMP_TABLE_A3", anonymisationMethod, database.getDatabaseSpecifics(), anonConfig);
 		
 		runConfig(anonConfig, anonymisationMethod);
 
@@ -84,7 +84,7 @@ public class AnonymisationMethodMappingTest extends TwoTablesAllDbTest{
 		
 		anonymisationMethod.addMappingRule(new LessThan("1", "0"));
 		anonymisationMethod.addMappingRule(new LessThan("2", "-1"));
-		AnonymisedColumnInfo anonymisedColumnInfo = getTestAnonimisedColumnInfo("COL3", "INT", "TMP_TABLE_A3", anonymisationMethod, DatabaseSpecifics.SybaseSpecific, anonConfig);
+		AnonymisedColumnInfo anonymisedColumnInfo = getTestAnonimisedColumnInfo("COL3", "INT", "TMP_TABLE_A3", anonymisationMethod, database.getDatabaseSpecifics(), anonConfig);
 		
 		runConfig(anonConfig, anonymisationMethod);
 		
@@ -108,7 +108,7 @@ public class AnonymisationMethodMappingTest extends TwoTablesAllDbTest{
 		
 		anonymisationMethod.addMappingRule(new LessThan("1.0", "0"));
 		anonymisationMethod.addMappingRule(new LessThan("2", "0.9"));
-		getTestAnonimisedColumnInfo("COL4", "FLOAT", "TMP_TABLE_A3", anonymisationMethod, DatabaseSpecifics.SybaseSpecific, anonConfig);
+		getTestAnonimisedColumnInfo("COL4", "FLOAT", "TMP_TABLE_A3", anonymisationMethod, database.getDatabaseSpecifics(), anonConfig);
 		
 		runConfig(anonConfig, anonymisationMethod);
 

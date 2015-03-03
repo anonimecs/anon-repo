@@ -90,9 +90,9 @@ public abstract class TwoTablesAllDbTest extends BaseParametrisedDbTest{
 	@Parameters(name= "schema:{1}, {0}")
 	public static Collection<Object []> generateData() {
 		List<Object[]> res = new ArrayList<>();
-        if(isDbAvailable(DB.sybase)) res.add(new Object[]{ "LIMEX_d", Database.SYBASE, new TestTableCreatorSybase()});
+        if(isDbAvailable(DB.sybase)) res.add(new Object[]{ getTestSchema(DB.sybase), Database.SYBASE, new TestTableCreatorSybase()});
         if(isDbAvailable(DB.mysql)) res.add(new Object[]{ "employees", Database.MYSQL, new TestTableCreatorMySql()});
-        if(isDbAvailable(DB.oracle)) res.add(new Object[]{  "ECAP", Database.ORACLE, new TestTableCreatorOracle() });
+        if(isDbAvailable(DB.oracle)) res.add(new Object[]{  getTestSchema(DB.oracle), Database.ORACLE, new TestTableCreatorOracle() });
         if(isDbAvailable(DB.sqlserver)) res.add(new Object[]{  "Northwind", Database.SQLSERVER, new TestTableCreatorSqlServer()});
 		
 		return res;
