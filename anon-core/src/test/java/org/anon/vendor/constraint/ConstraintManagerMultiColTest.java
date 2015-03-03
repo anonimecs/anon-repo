@@ -64,9 +64,9 @@ public class ConstraintManagerMultiColTest extends BaseParametrisedDbTest{
 	@Parameters(name= "schema:{1}, {0}")
 	public static Collection<Object []> generateData() {
 		List<Object[]> res = new ArrayList<>();
-        if(isDbAvailable(DB.sybase)) res.add(new Object[]{ SybaseConstraintManager.class, "LIMEX_d", DatabaseSpecifics.SybaseSpecific});
+        if(isDbAvailable(DB.sybase)) res.add(new Object[]{ SybaseConstraintManager.class, getTestSchema(DB.sybase), DatabaseSpecifics.SybaseSpecific});
         if(isDbAvailable(DB.mysql)) res.add(new Object[]{ MySqlConstraintManager.class , "employees", DatabaseSpecifics.MySqlSpecific});
-        if(isDbAvailable(DB.oracle)) res.add(new Object[]{ OracleConstraintManager.class , "ECAP", DatabaseSpecifics.OracleSpecific});
+        if(isDbAvailable(DB.oracle)) res.add(new Object[]{ OracleConstraintManager.class , getTestSchema(DB.oracle), DatabaseSpecifics.OracleSpecific});
         if(isDbAvailable(DB.sqlserver)) res.add(new Object[]{ SqlServerConstraintManager.class , "Northwind", DatabaseSpecifics.SqlServerSpecific});
 		
 		return res;

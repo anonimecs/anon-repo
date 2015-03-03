@@ -58,6 +58,10 @@ public abstract class BaseParametrisedDbTest {
 		return Boolean.valueOf(properties.getProperty(db+".available", "false"));
 	}
 	
+	protected static String getTestSchema(DB db){
+		return properties.getProperty(db+".test.schema");
+	}
+	
 	public void setUpContextBase() throws Exception {
 	    this.testContextManager = new TestContextManager(getClass());
 	    this.testContextManager.prepareTestInstance(this);
