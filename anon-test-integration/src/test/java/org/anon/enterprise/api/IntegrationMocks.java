@@ -7,12 +7,12 @@ public class IntegrationMocks {
 
 	public static DatabaseConfig createDatabaseConfigMySql(long id, String url, String login, String passw, String defaultSchema) {
 		DatabaseConfig config = new DatabaseConfig();
-		config.setUrl("localhost:3306");
-		config.setLogin("root");
-		config.setPassword("secret");
+		config.setUrl(url);
+		config.setLogin(login);
+		config.setPassword(passw);
 		config.setVendor(Database.MYSQL);
 		config.setVersion(null);
-		config.setDefaultSchema("employees");
+		config.setDefaultSchema(defaultSchema);
 		config.setGuiName("integration-test-mysql_" + id);
 		return config;
 	}
