@@ -13,6 +13,7 @@ import javax.sql.DataSource;
 import org.anon.data.AnonymisedColumnInfo;
 import org.anon.data.AnonymizationType;
 import org.anon.data.ExecutionMessage;
+import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -42,6 +43,31 @@ public abstract class AnonymisationMethod implements Serializable{
 		this.type = type;
 		calcHashMod();
 		//id=idCounter.incrementAndGet();
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if(this == obj){
+			return true;
+		}
+		
+        if (obj == null || !(obj instanceof AnonymisationMethod)) {
+        	return false;
+        }
+        
+        AnonymisationMethod other = (AnonymisationMethod) obj;
+
+        return new EqualsBuilder().append(this.id, other.id).isEquals();
+	}
+	
+	@Override
+	public int hashCode() {
+		if(id == null){
+			return super.hashCode();
+		}
+		else {
+			return id.hashCode();
+		}
 	}
 
 	protected void calcHashMod() {

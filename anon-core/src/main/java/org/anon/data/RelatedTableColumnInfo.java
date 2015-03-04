@@ -72,7 +72,7 @@ public class RelatedTableColumnInfo extends DataObject{
 		return new HashCodeBuilder()
 			.append(columnName)
 			.append(tableName)
-			.hashCode();
+			.toHashCode();
 	}
 	
 	
