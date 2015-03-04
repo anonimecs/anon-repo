@@ -67,7 +67,7 @@ public class AnonymisationMethodReshuffleSybase extends AnonymisationMethodReshu
 	
 	private void dropTableIdExists(String table) {
 		String dropSql = 
-				"IF EXISTS ( SELECT 1 FROM sysobjects WHERE name = '" + table + "' AND type = 'U' " +
+				"IF EXISTS ( SELECT 1 FROM sysobjects WHERE name = '" + table + "' AND type = 'U' ) " +
 				"EXECUTE('DROP TABLE "+ table +"')";
 		
 		execute(dropSql);
