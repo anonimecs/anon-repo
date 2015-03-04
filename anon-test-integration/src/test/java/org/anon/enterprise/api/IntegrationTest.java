@@ -36,7 +36,7 @@ public class IntegrationTest extends AbstractJUnit4SpringContextTests{
 	@Autowired
 	AnonServer anonServer;
 	
-	@Value("${mysql.test.url}") String url;
+	@Value("${mysql.test.url.partial}") String url;
 	@Value("${mysql.test.user}") String login;
 	@Value("${mysql.test.passwd}") String passw; 
 	@Value("${mysql.inttest.schema}") String defaultSchema; 
