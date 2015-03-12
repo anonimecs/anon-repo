@@ -13,38 +13,39 @@ public class MethodFactory {
 
 	@SuppressWarnings("unchecked")
 	public static Class<AnonymisationMethod>[] SYBASE_METHODS = new Class[]{
-		AnonymisationMethodNone.class
-		,AnonymisationMethodEncryptSybase.class
+		AnonymisationMethodEncryptSybase.class
 		,AnonymisationMethodDestorySybase.class
 		,AnonymisationMethodReshuffleSybase.class
 		,AnonymisationMethodMapping.class
+		,AnonymisationMethodNone.class
+
 	};
 	
 	@SuppressWarnings("unchecked")
 	public static Class<AnonymisationMethod>[] ORACLE_METHODS = new Class[]{
-		AnonymisationMethodNone.class
-		,AnonymisationMethodEncryptOracle.class
+		AnonymisationMethodEncryptOracle.class
 		,AnonymisationMethodDestoryOracle.class
 		,AnonymisationMethodReshuffleOracle.class
 		,AnonymisationMethodMapping.class
+		,AnonymisationMethodNone.class
 	};
 	
 	@SuppressWarnings("unchecked")
 	public static Class<AnonymisationMethod>[] MYSQL_METHODS = new Class[]{
-		AnonymisationMethodNone.class
-		,AnonymisationMethodDestoryMySql.class
+		AnonymisationMethodDestoryMySql.class
 		,AnonymisationMethodEncryptMySql.class
 		,AnonymisationMethodReshuffleMySql.class
 		,AnonymisationMethodMapping.class
+		,AnonymisationMethodNone.class
 	};
 
 	@SuppressWarnings("unchecked")
 	public static Class<AnonymisationMethod>[] SQLSERVER_METHODS = new Class[]{
-		AnonymisationMethodNone.class
-		,AnonymisationMethodDestorySqlServer.class
+		AnonymisationMethodDestorySqlServer.class
 		,AnonymisationMethodEncryptSqlServer.class
 		,AnonymisationMethodReshuffleMySql.class
 		,AnonymisationMethodMapping.class
+		,AnonymisationMethodNone.class
 	};
 
 	public List<AnonymisationMethod> getSupportedMethods(AnonymisedColumnInfo anonymizedColumn, DatabaseSpecifics databaseSpecifics) throws Exception{

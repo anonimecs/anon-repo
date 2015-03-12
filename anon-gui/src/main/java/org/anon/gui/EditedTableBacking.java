@@ -88,7 +88,7 @@ public class EditedTableBacking extends BackingBase {
 		 logDebug("Line Selected" + editedTable);
 		 databaseLoaderService.fillExampleValues(editedTable);
 		 editedColumn = null;
-		 configContext.setAnonymisationMethod(null);	 
+		 configContext.setAnonymisationMethod(AnonymisationMethodNone.INSTANCE);	 
 		 
 		 redirectPageTo(NavigationCaseEnum.COLUMNS);
 	}
