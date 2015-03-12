@@ -104,16 +104,20 @@ public class AnonymisationMethodMapping extends AnonymisationMethod {
 		public String compileSql() {
 			StringBuffer SQL = new StringBuffer();
 			SQL.append("update " + col.getTable().getName());
-			SQL.append(" set " + col.getName() + "=");
-			SQL.append(" case");
-			for (int i = 0; i < mappingRulesList.size(); i++) {
-				MappingRule mappingRule = mappingRulesList.get(i);
-				SQL.append(" " + mappingRule.generateWhenSql(col));
-
+			SQL.append(" set " + col.getName() + " = ");
+			if(mappingRulesList.size() > 0){
+				SQL.append(" case ");
+				for (int i = 0; i < mappingRulesList.size(); i++) {
+					MappingRule mappingRule = mappingRulesList.get(i);
+					SQL.append(" " + mappingRule.generateWhenSql(col));
+	
+				}
+				SQL.append(" else " + mappingDefault.getDefaultValueSql(col));
+				SQL.append(" end ");
 			}
-			SQL.append(" else " + mappingDefault.getDefaultValueSql(col));
-			SQL.append(" end ");
-
+			else {
+				SQL.append(mappingDefault.getDefaultValueSql(col));
+			}
 			return SQL.toString();
 		}
 
