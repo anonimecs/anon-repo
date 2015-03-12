@@ -31,13 +31,13 @@ public class AnonymisationMethodReshuffleSybase extends AnonymisationMethodReshu
 		String createTmpShuffleOrg =
 				"CREATE TABLE " + SHUFFLE_ORG + " ( " +
 				"id INTEGER IDENTITY, " +
-				"orginal_values VARCHAR(255), " +
-				"CONSTRAINT orginal_values UNIQUE (orginal_values))";
+				"original_values VARCHAR(255), " +
+				"CONSTRAINT original_values UNIQUE (original_values))";
 		
 		execute(createTmpShuffleOrg);
 		
 		String insertTmpShuffleOrg = 
-				"INSERT INTO " + SHUFFLE_ORG +" (orginal_values) SELECT COLCOL FROM " +
+				"INSERT INTO " + SHUFFLE_ORG +" (original_values) SELECT COLCOL FROM " +
 				" (" + createUnionSelectForColumns() + ") AAA";
 		
 		execute(insertTmpShuffleOrg);

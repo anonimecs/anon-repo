@@ -56,7 +56,7 @@ public class AnonymisationMethodReshuffleOracle extends AnonymisationMethodReshu
 		
 		String createTmpShuffleOrg =
 				"CREATE TABLE " + SHUFFLE_ORG + " AS " +
-				"SELECT ROWNUM as ROWNUMBER, COLCOL as orginal_values FROM " +
+				"SELECT ROWNUM as ROWNUMBER, COLCOL as original_values FROM " +
 				"( " + createUnionSelectForColumns() + ") AAA " +
 				"ORDER BY ROWNUM";
 		
@@ -109,7 +109,7 @@ public class AnonymisationMethodReshuffleOracle extends AnonymisationMethodReshu
 				"(SELECT " + SHUFFLE_RAN + ".shuffle_values " +
 				"FROM " + SHUFFLE_RAN + " " +
 				"JOIN " + SHUFFLE_ORG + " ON " + SHUFFLE_ORG + ".rownumber=" + SHUFFLE_RAN + ".id " +
-				"WHERE " + tableName + "." + colName + "=" + SHUFFLE_ORG + ".orginal_values)";
+				"WHERE " + tableName + "." + colName + "=" + SHUFFLE_ORG + ".original_values)";
 				
 		int rowCount = update(sql);
 		return new ExecutionMessage("Reshuffled Rows", rowCount);
