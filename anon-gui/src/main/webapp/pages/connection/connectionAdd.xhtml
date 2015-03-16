@@ -16,43 +16,37 @@ xmlns="http://www.w3.org/1999/xhtml"
 		</style>
 	
 		<h:form id="addConnectionForm">
-			<p:panel id="panel" header="Add Connection">	
+			<p:panel id="panel" header="Add Configuration">	
 			
-				<h:panelGrid id="vendorGrid" columns="3" columnClasses="col1style,col2style,col3style">
-
-					<p:outputLabel for="vendor" value="Vendor" />
-				    <p:selectOneMenu id="vendor" value="#{databaseConfigBacking.configBean.vendor}" required="true">
-				    	<f:selectItem itemValue="" itemLabel="Select one"/>
-				    	<f:selectItems value="#{databaseConfigBacking.supportedDatabases}" 
-				    		var="db" itemLabel="#{db.name}" itemValue="#{db}"/>
-				    	<p:ajax event="change" update="databaseColumns" />
-				   	</p:selectOneMenu>
-				   	<p:message id="vendorMSG" for="vendor" />
-
-				</h:panelGrid>
 				
 				<p:outputPanel id="databaseColumns">
-					<h:panelGrid id="grid" columns="3" rendered="#{null != databaseConfigBacking.configBean.vendor}" columnClasses="col1style,col2style,col3style">
-						<p:outputLabel id="urlPrefix" for="url" value="URL: #{databaseConfigBacking.configBean.vendor.jdbcPrefix}" />
-						<p:inputText id="url" value="#{databaseConfigBacking.configBean.url}" required="true" size="70"/>
-						<p:message for="url" />
+					<h:panelGrid id="grid" columns="3"  columnClasses="col1style,col2style,col3style">
 						
-						<p:outputLabel for="guiName" value="GUI Name" />
-						<p:inputText id="guiName" value="#{databaseConfigBacking.configBean.guiName}" required="true"/>
-						<p:message for="guiName" />
+						<p:outputLabel for="configurationName" value="Name" />
+						<p:inputText id="configurationName" value="#{databaseConfigBacking.databaseConfig.configurationName}" required="true"/>
+						<p:message for="configurationName" />
+
+
+
+						<p:outputLabel for="databaseConnection" value="Database Connection" />
+						<p:selectOneMenu id="databaseConnection" value="#{databaseConfigBacking.selectedDatabaseConnection}" required="true" converter="databaseConnectionConverter">
+							<f:selectItems value="#{databaseConfigBacking.databaseConnections}" var="databaseConnection" 
+								itemLabel="#{databaseConnection.guiName}" itemValue="#{databaseConnection}" />
+							<p:column>
+			               		<h:outputText value="#{databaseConnection.guiName}" />
+			           		</p:column>						
+					   	</p:selectOneMenu>
+						<p:commandButton value="New" action="#{databaseConfigBacking.onShowCreateNewConnDialog()}" process="@this" 
+							oncomplete="PF('createNewConnDialog').show();" update=":createNewConnDialogId"/>
+
+
+
+
+
 						
-						<p:outputLabel for="login" value="Login" />
-						<p:inputText id="login" value="#{databaseConfigBacking.configBean.login}" required="true"/>
-						<p:message for="login" />
-							
-						<p:outputLabel for="password" value="Password"/>
-						<p:password id="password" value="#{databaseConfigBacking.configBean.password}" required="true" 
-							label="Password">
-						</p:password>
-						<p:message id="passwordMsg" for="password"/>
 						
 						<p:outputLabel for="defaultSchema" value="Default Schema"/>
-						<p:selectOneMenu id="defaultSchema" value="#{databaseConfigBacking.configBean.defaultSchema}" style="width:150px"
+						<p:selectOneMenu id="defaultSchema" value="#{databaseConfigBacking.databaseConfig.defaultSchema}" style="width:150px"
 							disabled="#{empty databaseConfigBacking.schemaList}">
 							<f:selectItems value="#{databaseConfigBacking.schemaList}" />
 							<p:ajax event="change" listener="#{databaseConfigBacking.testSufficientPermissions}" update="permissionErrorBox" />
@@ -86,15 +80,57 @@ xmlns="http://www.w3.org/1999/xhtml"
 			</p:panel>
 		</h:form>
 		
+
+		
+		
+
+	</ui:define>
+	
+	<ui:define name="includedDialogs">
+		<p:dialog id="createNewConnDialogId" widgetVar="createNewConnDialog" header="Create New Database Connection" 
+			modal="true" width="600" >
+
+			<h:form>
+			
+				<h:panelGrid id="grid" columns="3" columnClasses="col1style,col2style,col3style" rendered="#{null != databaseConfigBacking.newDatabaseConnection}">
+				
+					<p:outputLabel for="vendor" value="Vendor" />
+				    <p:selectOneMenu id="vendor" value="#{databaseConfigBacking.newDatabaseConnection.vendor}" required="true">
+				    	<f:selectItem itemValue="" itemLabel="Select one"/>
+				    	<f:selectItems value="#{databaseConfigBacking.supportedDatabases}" 
+				    		var="db" itemLabel="#{db.name}" itemValue="#{db}"/>
+				    	<p:ajax event="change" update="grid" />
+				   	</p:selectOneMenu>
+				   	<p:message id="vendorMSG" for="vendor" />
+				
+				
+					<p:outputLabel for="login" value="Login" />
+					<p:inputText id="login" value="#{databaseConfigBacking.newDatabaseConnection.login}" required="true"/>
+					<p:message for="login" />
+						
+					<p:outputLabel for="password" value="Password"/>
+					<p:password id="password" value="#{databaseConfigBacking.newDatabaseConnection.password}" required="true" 
+						label="Password">
+					</p:password>
+					<p:message id="passwordMsg" for="password"/>
+			
+				</h:panelGrid>
+			
+				<p:commandButton value="Create" action="#{databaseConfigBacking.onCreateButtonClicked()}"
+					oncomplete="PF('createNewConnDialog').hide();" update=":createNewConnDialogId"/>
+				
+			</h:form>
+		
+		</p:dialog>					
+		
+		
 		<p:dialog header="Upgrade to Enterprise edition" widgetVar="licenseDialog" minHeight="100">
 		    <h:outputText value="You are using the Free edition of Anonimecs." />
 		    <br/>
 		    <h:link  action="http://www.anonimecs.com/products.html" target="_blank">
 		    	<h:outputText value="Upgrade to the Enterpise edition." />
 		    </h:link>
-		</p:dialog>
-		
-		
-
+		</p:dialog>	
 	</ui:define>
+	
 </ui:composition>

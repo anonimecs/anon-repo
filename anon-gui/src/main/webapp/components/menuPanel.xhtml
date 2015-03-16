@@ -11,8 +11,8 @@
 	<h:form id="menuPanelForm">
 		<p:menu id="menuPanel" style="width:200px" >
 		
-			<p:submenu label="Database Connections">
-				<p:menuitem value="Connection" url="/app/connect/"
+			<p:submenu label="Configurations">
+				<p:menuitem value="Connect" url="/app/connect/"
 					icon="ui-icon-star" />
 				<p:menuitem value="Add" url="/app/connection-add/"
 					icon="ui-icon-disk" />
@@ -20,7 +20,7 @@
 					icon="ui-icon-arrowrefresh-1-w" />
 			</p:submenu>
 			
-			<p:submenu label="Configure">
+			<p:submenu label="Database">
 				<p:menuitem value="Table list" url="/app/tables-list/" 
 					disabled="#{!databasePanelBacking.connected}" icon="ui-icon-zoomin" />
 				<p:menuitem value="Column list" url="/app/columns-list/" 

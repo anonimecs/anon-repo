@@ -6,11 +6,12 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
-import javax.faces.bean.SessionScoped;
+import javax.faces.bean.ViewScoped;
 
 import org.anon.data.Database;
 import org.anon.gui.navigation.NavigationCaseEnum;
 import org.anon.persistence.data.DatabaseConfig;
+import org.anon.persistence.data.DatabaseConnection;
 import org.anon.service.DatabaseConfigService;
 import org.anon.service.DatabaseLoaderService;
 import org.anon.service.DbConnectionFactory;
@@ -18,7 +19,7 @@ import org.anon.service.ServiceException;
 import org.anon.service.ServiceResultMessage;
 
 @ManagedBean
-@SessionScoped
+@ViewScoped
 public class DatabaseConfigBacking extends BackingBase {
 
 	@ManagedProperty(value = "#{databaseConfigServiceImpl}")
@@ -37,11 +38,36 @@ public class DatabaseConfigBacking extends BackingBase {
 	private List<String> schemaList;
 	private DatabaseConfig databaseConfig;
 
+	private DatabaseConnection selectedDatabaseConnection;
+	private List<DatabaseConnection> databaseConnections;
+
+	private DatabaseConnection newDatabaseConnection;
+	
 	private List<ServiceResultMessage> unsufficientPermissions;
 
 	@PostConstruct
 	private void init() {
 		reset();
+		databaseConnections = configService.findAllDatabaseConnections();
+		if(!databaseConnections.isEmpty()){
+			selectedDatabaseConnection = databaseConnections.get(0);
+		}
+	}
+	
+	public void onShowCreateNewConnDialog(){
+		logDebug("onShowCreateNewConnDialog");
+		selectedDatabaseConnection = new DatabaseConnection();
+	}
+
+	public void onHideCreateNewConnDialog(){
+		logDebug("not creating " + newDatabaseConnection);
+		newDatabaseConnection = null;
+		
+	}
+	
+	public void onCreateButtonClicked(){
+		logDebug("creating " + newDatabaseConnection);
+		
 	}
 	
 	public void deleteDatabaseConfig(DatabaseConfig config) {
@@ -202,6 +228,30 @@ public class DatabaseConfigBacking extends BackingBase {
 	
 	public List<ServiceResultMessage> getUnsufficientPermissions() {
 		return unsufficientPermissions;
+	}
+
+	public DatabaseConnection getNewDatabaseConnection() {
+		return newDatabaseConnection;
+	}
+
+	public void setNewDatabaseConnection(DatabaseConnection newDatabaseConnection) {
+		this.newDatabaseConnection = newDatabaseConnection;
+	}
+
+	public DatabaseConnection getSelectedDatabaseConnection() {
+		return selectedDatabaseConnection;
+	}
+
+	public void setSelectedDatabaseConnection(DatabaseConnection selectedDatabaseConnection) {
+		this.selectedDatabaseConnection = selectedDatabaseConnection;
+	}
+
+	public List<DatabaseConnection> getDatabaseConnections() {
+		return databaseConnections;
+	}
+
+	public void setDatabaseConnections(List<DatabaseConnection> databaseConnections) {
+		this.databaseConnections = databaseConnections;
 	}
 	
 }

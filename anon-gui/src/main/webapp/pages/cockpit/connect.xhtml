@@ -18,7 +18,7 @@
 						
 			<h:panelGrid columns="3" cellpadding="5">
 	
-				<p:outputLabel for="connection" value="Connection" style="display: block; width:100px;"/>
+				<p:outputLabel for="connection" value="Connect to Configuration" style="display: block; width:200px;"/>
 								
 				<p:selectOneMenu id="connection" value="#{databasePanelBacking.selectedConnectionId}" disabled="#{databasePanelBacking.connected}">
 					<f:selectItems value="#{databasePanelBacking.dbConfigs}" 

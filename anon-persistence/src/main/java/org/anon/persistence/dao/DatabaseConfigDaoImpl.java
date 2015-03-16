@@ -95,8 +95,8 @@ public class DatabaseConfigDaoImpl implements DatabaseConfigDao {
 	@Override
 	public List<DatabaseConfig> findConfigForUser(String username) {
 		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(DatabaseConfig.class, "config");
-		criteria.createAlias("config.assingendUser", "user");
-		criteria.add(Restrictions.eq("user.username", username));
+		criteria.createAlias("config.securityUser", "securityUser");
+		criteria.add(Restrictions.eq("securityUser.username", username));
 		
 		return criteria.list();
 	}
