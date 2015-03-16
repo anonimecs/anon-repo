@@ -65,7 +65,7 @@ public class AnonStandaloneRunner extends Runner{
 		logger.info("Loading configuration " + databaseConfigGuiName);
 
 		
-		DatabaseConfig databaseConfig = databaseConfigService.loadConnectionConfig(databaseConfigGuiName);
+		DatabaseConfig databaseConfig = databaseConfigService.loadDatabaseConfig(databaseConfigGuiName);
 		if(databaseConfig == null){
 			throw new RuntimeException("Configuration with gui name " + databaseConfigGuiName + " can not be found");
 		}

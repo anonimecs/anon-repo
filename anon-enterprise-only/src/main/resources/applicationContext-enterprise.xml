@@ -29,4 +29,11 @@
 		<property name="registryPort" value="${rmi.port}" />
 	</bean>
 
+	<bean class="org.springframework.remoting.rmi.RmiServiceExporter">
+		<property name="serviceName" value="userService" />
+		<property name="service" ref="userServiceImpl" />
+		<property name="serviceInterface" value="org.anon.service.admin.UserService" />
+		<property name="registryPort" value="${rmi.port}" />
+	</bean>
+
 </beans>

@@ -23,6 +23,11 @@
 	    <property name="serviceInterface" value="org.anon.service.EditedTableService"/>
 	</bean>
 
+	<bean id="userService" class="org.springframework.remoting.rmi.RmiProxyFactoryBean">
+	    <property name="serviceUrl" value="rmi://localhost:${rmi.port}/userService"/>
+	    <property name="serviceInterface" value="org.anon.service.admin.UserService"/>
+	</bean>
+
 
 
 </beans>

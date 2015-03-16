@@ -6,8 +6,6 @@ import org.anon.data.AnonymisedColumnInfo;
 import org.anon.persistence.data.AnonymisationMethodData;
 import org.anon.persistence.data.AnonymisedColumnData;
 import org.anon.persistence.data.DatabaseConfig;
-import org.anon.persistence.data.DatabaseTableData;
-import org.hibernate.Hibernate;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,23 +21,6 @@ public class EntitiesDaoImpl implements EntitiesDao {
 	@Autowired
 	public void setSessionFactory(SessionFactory sessionFactory) {
 		this.sessionFactory = sessionFactory;
-	}
-
-	@Override
-	public void insert(DatabaseTableData databaseTableData) {
-		Long id = (Long)sessionFactory.getCurrentSession().save(databaseTableData);
-		databaseTableData.setId(id);
-	}
-
-	@Override
-	public List<DatabaseTableData> loadAllTables() {
-		@SuppressWarnings("unchecked")
-		List<DatabaseTableData> list = sessionFactory.getCurrentSession().createQuery("from DatabaseTableData as table left join fetch table.columns").list();
-		for (DatabaseTableData databaseTableInfo : list) {
-			Hibernate.initialize(databaseTableInfo.getColumns());
-		}
-		return list;
-		
 	}
 	
 	@Override

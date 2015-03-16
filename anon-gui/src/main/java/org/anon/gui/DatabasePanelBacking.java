@@ -50,7 +50,7 @@ public class DatabasePanelBacking extends BackingBase{
 		tableCount = 0;
 		connected = false;
 		
-		dbConfigs = dbConfigService.loadConnectionConfigs();
+		dbConfigs = dbConfigService.loadDatabaseConfigs();
 		if(!dbConfigs.isEmpty()) {
 			selectedConnectionId = dbConfigs.get(0).getId();
 		}

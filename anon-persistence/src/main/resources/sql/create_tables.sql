@@ -19,16 +19,31 @@ CREATE TABLE SecurityUserRoles (
 )
 go
 
-CREATE TABLE DatabaseConfig (	
+CREATE TABLE DatabaseConnection (	
 	ID INT NOT NULL GENERATED ALWAYS AS IDENTITY,
   	URL VARCHAR(255) NOT NULL,
-  	DEFAULTSCHEMA VARCHAR(255) NOT NULL,
   	LOGIN VARCHAR(255) NOT NULL,
   	PASSWORD VARCHAR(255) NOT NULL,
   	VENDOR VARCHAR(255) NOT NULL,
   	VERSION VARCHAR(255),
-    GUINAME VARCHAR(255) not null unique,
-  	CONSTRAINT primary_key_DATABASECONFIG PRIMARY KEY (ID)
+    GUINAME VARCHAR(255) not null,
+   	SecurityUser_ID INT NOT NULL,
+	CONSTRAINT fk_SecurityUser_pk FOREIGN KEY (SecurityUser_ID) REFERENCES SecurityUser (ID),
+  	CONSTRAINT primary_key_DatabaseConnection PRIMARY KEY (ID),
+  	CONSTRAINT DatabaseConnection_UC UNIQUE (GUINAME, SecurityUser_ID)
+)
+go
+
+CREATE TABLE DatabaseConfig (	
+	ID INT NOT NULL GENERATED ALWAYS AS IDENTITY,
+  	DEFAULTSCHEMA VARCHAR(255) NOT NULL,
+    CONFIGURATIONNAME VARCHAR(255) not null,
+    DatabaseConnection_ID INT NOT NULL,
+   	SecurityUser_ID INT NOT NULL,
+	CONSTRAINT fk_SecurityUser_pk2 FOREIGN KEY (SecurityUser_ID) REFERENCES SecurityUser (ID),
+  	CONSTRAINT primary_key_DATABASECONFIG PRIMARY KEY (ID),
+    CONSTRAINT fk_DatabaseConfig_DatabaseConnection FOREIGN KEY (DatabaseConnection_ID) REFERENCES DatabaseConnection (ID),
+  	CONSTRAINT DatabaseConfig_UC UNIQUE (CONFIGURATIONNAME, SecurityUser_ID)
 )
 go
 
@@ -128,17 +143,9 @@ create table ExecutionMessageData(
 )
 go
 
-create table User_Database(
-	USER_ID INT NOT NULL,
-	DATABASE_ID INT NOT NULL,
-	PRIMARY KEY (USER_ID, DATABASE_ID),
-	CONSTRAINT fk_SecurityUser_pk FOREIGN KEY (USER_ID) REFERENCES SecurityUser (ID),
-	CONSTRAINT fk_DatabaseConfig_pk FOREIGN KEY (DATABASE_ID) REFERENCES DatabaseConfig (ID)
-)
-go
 
 INSERT INTO APP.SECURITYUSER(USERNAME, PASSWORD, NAME, SURNAME, ENABLED, ENCRYPTED) 
-	VALUES('admin', '123456', 'Admin', 'Fellow', 'Y', 'N')
+	VALUES('admin', '123456', 'BuiltIn', 'User', 'Y', 'N')
 go
 
 INSERT INTO APP.SECURITYUSERROLES(USER_ID, ROLE) 

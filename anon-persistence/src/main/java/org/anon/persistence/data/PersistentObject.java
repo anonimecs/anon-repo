@@ -1,10 +1,12 @@
 package org.anon.persistence.data;
 
+import java.io.Serializable;
+
 import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 import org.apache.log4j.Logger;
 
-public abstract class PersistentObject  {
+public abstract class PersistentObject  implements Serializable{
 
 	@Override
 	public String toString() {

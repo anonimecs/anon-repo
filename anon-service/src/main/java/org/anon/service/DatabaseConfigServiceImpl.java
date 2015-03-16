@@ -5,7 +5,7 @@ import java.util.List;
 import org.anon.license.LicenseManager;
 import org.anon.persistence.dao.DatabaseConfigDao;
 import org.anon.persistence.data.DatabaseConfig;
-import org.anon.persistence.data.SecurityUser;
+import org.anon.persistence.data.DatabaseConnection;
 import org.anon.service.admin.UserService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,20 +31,30 @@ public class DatabaseConfigServiceImpl implements DatabaseConfigService {
 	private LicenseManager licenseManager;
 	
 	@Override
-	public List<DatabaseConfig> loadConnectionConfigs() {
+	public List<DatabaseConfig> loadDatabaseConfigs() {
 		
 		if(licenseManager.isFreeEdition() || userService.isHeadlessMode()) {
-			return configDao.findAll();
+			return configDao.findAllDatabaseConfigs();
 		}
 		
 		return configDao.findConfigForUser(userService.getUsername());
 	}
 
 	@Override
-	public DatabaseConfig loadConnectionConfig(String guiName) {
-		return configDao.loadConnectionConfig(guiName);
+	public List<DatabaseConnection> findAllDatabaseConnections() {
+		return configDao.findAllDatabaseConnections();
+	}
+
+	@Override
+	public DatabaseConfig loadDatabaseConfig(String configName) {
+		return configDao.loadDatabaseConfig(configName);
 	}
 	
+	@Override
+	public DatabaseConnection loadDatabaseConnection(String guiName) {
+		return configDao.loadDatabaseConnection(guiName);
+	}
+
 	@Override
 	@Transactional(readOnly = false)
 	public void deleteDatabaseConfig(DatabaseConfig config)  throws ServiceException{
@@ -83,11 +93,10 @@ public class DatabaseConfigServiceImpl implements DatabaseConfigService {
 		try {
 			configDao.addDatabaseConfig(config);
 			
-			if(licenseManager.isEnterpriseEdition() && !userService.isHeadlessMode()) {
-				SecurityUser user = userService.loadSecurityUser();
-				user.getAssignedDatabases().add(config);
-				userService.updateUser(user, null);
-			}
+//			if(licenseManager.isEnterpriseEdition() && !userService.isHeadlessMode()) {
+//				SecurityUser user = userService.loadSecurityUser();
+//				userService.updateUser(user, null);
+//			}
 			
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
@@ -98,12 +107,26 @@ public class DatabaseConfigServiceImpl implements DatabaseConfigService {
 	
 	@Override
 	@Transactional(readOnly = false)
+	public void addDatabaseConnection(DatabaseConnection databaseConnection) throws ServiceException {
+		try {
+			configDao.addDatabaseConnection(databaseConnection);
+			
+		} catch (Exception e) {
+			logger.error(e.getMessage(), e);
+			throw new ServiceException("Configuration not added", 
+					e.getCause() != null ?  e.getCause().getMessage() : e.getMessage(), e);
+		}
+		
+	}
+
+	@Override
+	@Transactional(readOnly = false)
 	public void updateDatabaseConfig(DatabaseConfig config)  throws ServiceException{
 		
 		testDatabaseConfig(config);
 		
 		try {
-			configDao.updateDatabaseConifg(config);
+			configDao.updateDatabaseConfig(config);
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
 			throw new ServiceException("Configuration not updated", 
@@ -117,11 +140,13 @@ public class DatabaseConfigServiceImpl implements DatabaseConfigService {
 	@Override
 	public void testDatabaseConfig(DatabaseConfig config)  throws ServiceException{
 		
-		connectionValidator.connectionValid(config);
+		new RuntimeException("TODO").printStackTrace(System.err);
 		
-		if(configDao.isGuiNameUnique(config.getGuiName(), config.getId())) {
-			throw new ServiceException("Duplicate GUI Name", config.getGuiName() + " already exits. Enter another name.", null);
-		}
+//		connectionValidator.connectionValid(config);
+//		
+//		if(configDao.isGuiNameUnique(config.getGuiName(), config.getId())) {
+//			throw new ServiceException("Duplicate GUI Name", config.getGuiName() + " already exits. Enter another name.", null);
+//		}
 	}
 }
 

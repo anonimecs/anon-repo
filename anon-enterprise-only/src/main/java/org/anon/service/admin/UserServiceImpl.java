@@ -126,5 +126,10 @@ public class UserServiceImpl implements UserService {
 			return false;
 		}
 	}
+
+	@Override
+	public SecurityUser loadUser(String username) {
+		return userDao.loadUserByUsername(username);
+	}
 	
 }

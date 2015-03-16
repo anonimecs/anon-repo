@@ -42,7 +42,7 @@ public class DbConnectionFactoryImpl extends AnonStatic implements DbConnectionF
 		
 		AbstractDbConnection execConnection;
 		
-		switch(databaseConfig.getVendor()) {
+		switch(databaseConfig.getDatabaseConnection().getVendor()) {
 			case MYSQL: execConnection = createMySqlConnection(schema);
 				break;
 			case ORACLE: execConnection = createOracleConnection(schema);
@@ -51,7 +51,7 @@ public class DbConnectionFactoryImpl extends AnonStatic implements DbConnectionF
 				break;
 			case SQLSERVER: execConnection = createSqlServerConnection(schema);
 				break;
-			default: throw new RuntimeException(databaseConfig.getVendor() + " not supported.");
+			default: throw new RuntimeException(databaseConfig.getDatabaseConnection().getVendor() + " not supported.");
 		}
 		return execConnection;
 	}
@@ -78,21 +78,12 @@ public class DbConnectionFactoryImpl extends AnonStatic implements DbConnectionF
 		return dbConnection;
 	}
 	
-//	private String parseSybSchemaFromUrl(String url) {
-//		int index = url.lastIndexOf('/');
-//		if(index != -1){
-//			return url.substring(index + 1);
-//		}
-//		else {
-//			return "tempdb";
-//		}
-//	}
 
 	private AbstractDbConnection createOracleConnection(String schema) {	
 		AbstractDbConnection dbConnection = null;
 		Properties props = createDbProps(Database.ORACLE, schema);
 		
-		OracleDbConnection oracleDbConnection = new OracleDbConnection(databaseConfig.getLogin());
+		OracleDbConnection oracleDbConnection = new OracleDbConnection(databaseConfig.getDatabaseConnection().getLogin());
 		dbConnection = oracleDbConnection;
 		dbConnection.setProperties(props);
 		dbConnection.setDataSource(getDatasource(props));	
@@ -104,7 +95,7 @@ public class DbConnectionFactoryImpl extends AnonStatic implements DbConnectionF
 		Properties props = createDbProps(Database.MYSQL, schema);
 		
 		
-		MySqlDbConnection mysqlDbConnection = new MySqlDbConnection(databaseConfig.getLogin());
+		MySqlDbConnection mysqlDbConnection = new MySqlDbConnection(databaseConfig.getDatabaseConnection().getLogin());
 		dbConnection = mysqlDbConnection;
 		dbConnection.setProperties(props);
 		dbConnection.setDataSource(getDatasource(props));	
@@ -132,15 +123,15 @@ public class DbConnectionFactoryImpl extends AnonStatic implements DbConnectionF
 		DataSource ds = null;
 		
 		StringBuilder url = new StringBuilder(props.getProperty("url"))
-			.append(databaseConfig.getUrl());
+			.append(databaseConfig.getDatabaseConnection().getUrl());
 			
 		if(props.containsKey("schema")) {
 			url.append("/").append(props.get("schema"));
 		}
 			
 		props.setProperty("url", url.toString());
-		props.setProperty("username", databaseConfig.getLogin());
-		props.setProperty("password", databaseConfig.getPassword());
+		props.setProperty("username", databaseConfig.getDatabaseConnection().getLogin());
+		props.setProperty("password", databaseConfig.getDatabaseConnection().getPassword());
 		
 		try {
 			ds = BasicDataSourceFactory.createDataSource(props);

@@ -9,9 +9,12 @@ import org.anon.data.DatabaseTableInfo;
 import org.anon.logic.AnonymisationMethod;
 import org.anon.logic.AnonymisationMethodDestoryMySql;
 import org.anon.persistence.data.DatabaseConfig;
+import org.anon.persistence.data.DatabaseConnection;
+import org.anon.persistence.data.SecurityUser;
 import org.anon.service.DatabaseConfigService;
 import org.anon.service.EditedTableService;
 import org.anon.service.ServiceException;
+import org.anon.service.admin.UserService;
 import org.anon.vendor.DatabaseSpecifics;
 import org.junit.Assert;
 import org.junit.FixMethodOrder;
@@ -31,6 +34,9 @@ public class IntegrationTest extends AbstractJUnit4SpringContextTests{
 	DatabaseConfigService databaseConfigService;
 	
 	@Autowired
+	UserService userService;
+	
+	@Autowired
 	EditedTableService editedTableService;
 	
 	@Autowired
@@ -45,30 +51,53 @@ public class IntegrationTest extends AbstractJUnit4SpringContextTests{
 	@Value("${mysql.inttest.col.type}") String columnType;
 	
 	protected static DatabaseConfig savedDatabaseConfig;
-	protected static long id = 0;
+	protected static DatabaseConnection savedDatabaseConnection;
+	protected static long configId = 0;
+	protected static long connectionId = 0;
 
 	@Test
-	public void test0_loadConnectionConfigs() {
-		List<DatabaseConfig> list = databaseConfigService.loadConnectionConfigs();
+	public void test0_loadConfigId() {
+		List<DatabaseConfig> list = databaseConfigService.loadDatabaseConfigs();
 		// parse the highest ID
 		for (DatabaseConfig databaseConfig : list) {
-			if(id < databaseConfig.getId()){
-				id = databaseConfig.getId();
+			if(configId < databaseConfig.getId()){
+				configId = databaseConfig.getId();
 			}
 		}
 	}
 
+	@Test
+	public void test0_loadconnectionId() {
+		List<DatabaseConnection> list = databaseConfigService.findAllDatabaseConnections();
+		// parse the highest ID
+		for (DatabaseConnection databaseConnection : list) {
+			if(connectionId < databaseConnection.getId()){
+				connectionId = databaseConnection.getId();
+			}
+		}
+	}
+
+	@Test
+	public void test1_CreateDatabaseConnection() throws ServiceException {
+		SecurityUser securityUser = userService.loadUser("admin");
+		DatabaseConnection databaseConnection  = IntegrationMocks.createConnection(connectionId, url, login, passw, securityUser);
+		databaseConfigService.addDatabaseConnection(databaseConnection);
+		savedDatabaseConnection = databaseConfigService.loadDatabaseConnection(databaseConnection.getGuiName());
+	}
+	
+
 	
 	@Test
-	public void test1_CreateDatabaseConfigration() throws ServiceException {
-		DatabaseConfig databaseConfig = IntegrationMocks.createDatabaseConfigMySql(id, url, login, passw, defaultSchema);
+	public void test2_CreateDatabaseConfigration() throws ServiceException {
+		SecurityUser securityUser = userService.loadUser("admin");
+		DatabaseConfig databaseConfig = IntegrationMocks.createDatabaseConfigMySql(configId, defaultSchema, savedDatabaseConnection, securityUser);
 		databaseConfigService.addDatabaseConfig(databaseConfig);
-		savedDatabaseConfig = databaseConfig;
+		savedDatabaseConfig = databaseConfigService.loadDatabaseConfig(databaseConfig.getConfigurationName());
 	}
 	
 	
 	@Test
-	public void test2_addAnonymisationMethod(){
+	public void test3_addAnonymisationMethod(){
 		DatabaseTableInfo editedTable= new DatabaseTableInfo();
 		editedTable.setName(tableName);
 		editedTable.setSchema(defaultSchema);
@@ -80,7 +109,7 @@ public class IntegrationTest extends AbstractJUnit4SpringContextTests{
 		AnonymisationMethod anonymisationMethod = new AnonymisationMethodDestoryMySql();
 		
 		
-		DatabaseConfig databaseConfig = databaseConfigService.loadConnectionConfig(savedDatabaseConfig.getGuiName());
+		DatabaseConfig databaseConfig = databaseConfigService.loadDatabaseConfig(savedDatabaseConfig.getConfigurationName());
 		
 		anonServer.useDatabaseConfig(databaseConfig);
 		
@@ -90,21 +119,21 @@ public class IntegrationTest extends AbstractJUnit4SpringContextTests{
 
 	
 	@Test
-	public void test3_DeleteNotExecutedDatabaseConfigration()  throws ServiceException{
-			databaseConfigService.deleteDatabaseConfig(savedDatabaseConfig.getGuiName());
+	public void test4_DeleteNotExecutedDatabaseConfigration()  throws ServiceException{
+			databaseConfigService.deleteDatabaseConfig(savedDatabaseConfig.getConfigurationName());
 	}
 	
 	@Test
-	public void test4_createAndExecuteConfig() throws ServiceException{
-		test1_CreateDatabaseConfigration();
-		test2_addAnonymisationMethod();
-		anonServer.runAll(savedDatabaseConfig.getGuiName());
+	public void test5_createAndExecuteConfig() throws ServiceException{
+		test2_CreateDatabaseConfigration();
+		test3_addAnonymisationMethod();
+		anonServer.runAll(savedDatabaseConfig.getConfigurationName());
 	}
 		
 	@Test
-	public void test5_DeleteExecutedDatabaseConfigration() {
+	public void test6_DeleteExecutedDatabaseConfigration() {
 		try{
-			databaseConfigService.deleteDatabaseConfig(savedDatabaseConfig.getGuiName());
+			databaseConfigService.deleteDatabaseConfig(savedDatabaseConfig.getConfigurationName());
 			Assert.fail("Exectuted config should not be deletable: " + savedDatabaseConfig);
 		}
 		catch(Exception e){

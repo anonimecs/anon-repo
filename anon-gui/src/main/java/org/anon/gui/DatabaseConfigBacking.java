@@ -35,7 +35,7 @@ public class DatabaseConfigBacking extends BackingBase {
 	
 	private List<DatabaseConfig> configList;
 	private List<String> schemaList;
-	private DatabaseConfig configBean;
+	private DatabaseConfig databaseConfig;
 
 	private List<ServiceResultMessage> unsufficientPermissions;
 
@@ -45,11 +45,11 @@ public class DatabaseConfigBacking extends BackingBase {
 	}
 	
 	public void deleteDatabaseConfig(DatabaseConfig config) {
-		logDebug("delete databaseConfig " + config.getUrl());
+		logDebug("delete databaseConfig " + config.getDatabaseConnection().getUrl());
 		
 		try{
 			configService.deleteDatabaseConfig(config);
-			showExtInfoInGui("Config deleted", config.getUrl());
+			showExtInfoInGui("Config deleted", config.getDatabaseConnection().getUrl());
 			reset();
 		}
 		catch(ServiceException exception){
@@ -61,11 +61,11 @@ public class DatabaseConfigBacking extends BackingBase {
 	}
 	
 	public void addDatabaseConfig() {
-		logDebug("add databaseConfig " + configBean.getUrl());
+		logDebug("add databaseConfig " + databaseConfig.getDatabaseConnection().getUrl());
 		
 		try{
-			configService.addDatabaseConfig(configBean);
-			showExtInfoInGui("Config added", configBean.getUrl());
+			configService.addDatabaseConfig(databaseConfig);
+			showExtInfoInGui("Config added", databaseConfig.getDatabaseConnection().getUrl());
 			reset();	
 		}
 		catch(ServiceException exception){
@@ -74,20 +74,20 @@ public class DatabaseConfigBacking extends BackingBase {
 		}
 
 		databasePanelBacking.init();
-		configBean = new DatabaseConfig();
+		databaseConfig = new DatabaseConfig();
 	}
 	
 	public void testDatabaseConfig() {
-		logDebug("test databaseConfig " + configBean.getUrl());
+		logDebug("test databaseConfig " + databaseConfig.getDatabaseConnection().getUrl());
 		
 		unsufficientPermissions = null;
 		
 		try{
-			configService.testDatabaseConfig(configBean);
-			databaseLoaderService.connectDb(configBean);
+			configService.testDatabaseConfig(databaseConfig);
+			databaseLoaderService.connectDb(databaseConfig);
 			schemaList = databaseLoaderService.getSchemas();
 			databaseLoaderService.disconnectDb();
-			configBean.setDefaultSchema(schemaList.get(0));
+			databaseConfig.setDefaultSchema(schemaList.get(0));
 			testSufficientPermissions();
 
 		}
@@ -98,11 +98,11 @@ public class DatabaseConfigBacking extends BackingBase {
 	}
 	
 	public void testSufficientPermissions() {
-		logDebug("Testing perimissions for " + configBean.getDefaultSchema());
+		logDebug("Testing perimissions for " + databaseConfig.getDefaultSchema());
 
 		try{
-			databaseLoaderService.connectDb(configBean);
-			databaseLoaderService.testSufficientPermissions(configBean.getDefaultSchema());
+			databaseLoaderService.connectDb(databaseConfig);
+			databaseLoaderService.testSufficientPermissions(databaseConfig.getDefaultSchema());
 			databaseLoaderService.disconnectDb();
 			unsufficientPermissions = new ArrayList<ServiceResultMessage>();
 		}
@@ -114,12 +114,12 @@ public class DatabaseConfigBacking extends BackingBase {
 	}
 
 	public void updateDatabaseConfig() {
-		logDebug("update databaseConfig " + configBean.getUrl());
+		logDebug("update databaseConfig " + databaseConfig.getDatabaseConnection().getUrl());
 		
 		try{
-			configService.updateDatabaseConfig(configBean);
-			showExtInfoInGui("Config updated", configBean.getUrl());
-			configBean = new DatabaseConfig();
+			configService.updateDatabaseConfig(databaseConfig);
+			showExtInfoInGui("Config updated", databaseConfig.getDatabaseConnection().getUrl());
+			databaseConfig = new DatabaseConfig();
 			databasePanelBacking.init();
 			redirectPageTo(NavigationCaseEnum.LIST_CONNECTION);
 		}
@@ -139,8 +139,8 @@ public class DatabaseConfigBacking extends BackingBase {
 	}
 	
 	public void prepareModify(DatabaseConfig config) {
-		configBean = config;
-		databaseLoaderService.connectDb(configBean);
+		databaseConfig = config;
+		databaseLoaderService.connectDb(databaseConfig);
 		schemaList = databaseLoaderService.getSchemas();
 		databaseLoaderService.disconnectDb();
 		redirectPageTo(NavigationCaseEnum.MODIFY_CONNECTION);
@@ -149,13 +149,13 @@ public class DatabaseConfigBacking extends BackingBase {
 	public void reset() {
 		configList = null;
 		schemaList = new ArrayList<>();
-		configBean = new DatabaseConfig();
+		databaseConfig = new DatabaseConfig();
 		unsufficientPermissions = new ArrayList<>();
 	}
 	
 	public List<DatabaseConfig> getConfigList() {
 		if(configList==null) {
-			configList = configService.loadConnectionConfigs();
+			configList = configService.loadDatabaseConfigs();
 		}
 		return configList;
 	}
@@ -172,12 +172,12 @@ public class DatabaseConfigBacking extends BackingBase {
 		return Database.values();
 	}
 
-	public DatabaseConfig getConfigBean() {
-		return configBean;
+	public DatabaseConfig getDatabaseConfig(){
+		return databaseConfig;
 	}
 
-	public void setConfigBean(DatabaseConfig configBean) {
-		this.configBean = configBean;
+	public void setDatabaseConfig(DatabaseConfig configBean) {
+		this.databaseConfig = configBean;
 	}
 
 	public void setConfigList(List<DatabaseConfig> configList) {

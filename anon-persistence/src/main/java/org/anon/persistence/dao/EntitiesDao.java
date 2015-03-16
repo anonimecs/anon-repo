@@ -6,13 +6,8 @@ import org.anon.data.AnonymisedColumnInfo;
 import org.anon.persistence.data.AnonymisationMethodData;
 import org.anon.persistence.data.AnonymisedColumnData;
 import org.anon.persistence.data.DatabaseConfig;
-import org.anon.persistence.data.DatabaseTableData;
 
 public interface EntitiesDao {
-
-	void insert(DatabaseTableData databaseTableData);
-
-	List<DatabaseTableData> loadAllTables();
 
 	void save(AnonymisationMethodData anonymisationMethodData);
 

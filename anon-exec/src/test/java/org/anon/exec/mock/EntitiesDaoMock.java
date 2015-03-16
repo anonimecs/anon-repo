@@ -7,21 +7,8 @@ import org.anon.persistence.dao.EntitiesDao;
 import org.anon.persistence.data.AnonymisationMethodData;
 import org.anon.persistence.data.AnonymisedColumnData;
 import org.anon.persistence.data.DatabaseConfig;
-import org.anon.persistence.data.DatabaseTableData;
 
 public class EntitiesDaoMock implements EntitiesDao {
-
-	@Override
-	public void insert(DatabaseTableData databaseTableData) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public List<DatabaseTableData> loadAllTables() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 	@Override
 	public void save(AnonymisationMethodData anonymisationMethodData) {

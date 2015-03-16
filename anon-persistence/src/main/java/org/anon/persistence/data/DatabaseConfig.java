@@ -1,67 +1,55 @@
 package org.anon.persistence.data;
 
-import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
-import org.anon.data.Database;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
-import org.hibernate.annotations.Parameter;
-import org.hibernate.annotations.Type;
-import org.hibernate.annotations.TypeDef;
-import org.jasypt.hibernate4.type.EncryptedStringType;
-
-@TypeDef(
-		name="encryptedString",
-		typeClass=EncryptedStringType.class,
-		parameters= {
-			@Parameter(name="encryptorRegisteredName", value="strongHibernateStringEncryptor")
-		}
-) 
 
 @Entity
-public class DatabaseConfig implements Serializable{
+public class DatabaseConfig extends PersistentObject{
 
-	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue( strategy = GenerationType.AUTO)
 	protected Long id;	
 	
-	private String url;	
-	
 	private String defaultSchema;
-	
-	private String login;
-	
-	@Type(type="encryptedString")
-	private String password;
-	
-	@Enumerated(EnumType.STRING)
-	private Database vendor;	
-	
-	private String version;
-	
-	private String guiName;
-	
-	@ManyToMany(mappedBy="assignedDatabases", fetch = FetchType.LAZY)
-	private Set<SecurityUser> assingendUser = new HashSet<SecurityUser>(0);
+
+	private String configurationName;
 	
 	@OneToMany(fetch=FetchType.LAZY, cascade=CascadeType.ALL, orphanRemoval=true, mappedBy = "databaseConfig")
 	@Fetch(FetchMode.SELECT)
 	private Set<AnonymisationMethodData> anonymisationMethodData = new HashSet<AnonymisationMethodData>();
+	
+	@ManyToOne(fetch=FetchType.EAGER, cascade=CascadeType.ALL) @JoinColumn(name="DatabaseConnection_ID")
+	private DatabaseConnection databaseConnection;
+	
+	@ManyToOne(fetch=FetchType.EAGER) @JoinColumn(name="SecurityUser_ID")
+	private SecurityUser securityUser;
+	
+	@Override
+	public boolean equals(Object o) {
+		if (o == this) {
+	        return true;
+	    }
+		if (!(o instanceof DatabaseConfig)) {
+	        return false;
+	    }
+		DatabaseConfig c = (DatabaseConfig) o;
+		
+		return this.id.equals(c.getId());
+	}
 	
 	public Long getId() {
 		return id;
@@ -69,48 +57,14 @@ public class DatabaseConfig implements Serializable{
 	public void setId(Long id) {
 		this.id = id;
 	}
-	public String getUrl() {
-		return url;
-	}
-	public void setUrl(String url) {
-		this.url = url;
-	}
 	public String getDefaultSchema() {
 		return defaultSchema;
 	}
 	public void setDefaultSchema(String defaultSchema) {
 		this.defaultSchema = defaultSchema;
 	}
-	public Database getVendor() {
-		return vendor;
-	}
-	public void setVendor(Database vendor) {
-		this.vendor = vendor;
-	}
-	public String getVersion() {
-		return version;
-	}
-	public void setVersion(String version) {
-		this.version = version;
-	}
-	public String getLogin() {
-		return login;
-	}
-	public void setLogin(String login) {
-		this.login = login;
-	}
-	public String getPassword() {
-		return password;
-	}
-	public void setPassword(String password) {
-		this.password = password;
-	}
-	public String getGuiName() {
-		return guiName;
-	}
-	public void setGuiName(String guiName) {
-		this.guiName = guiName;
-	}
+
+
 	public Set<AnonymisationMethodData> getAnonymisationMethodData() {
 		return anonymisationMethodData;
 	}
@@ -118,26 +72,29 @@ public class DatabaseConfig implements Serializable{
 			Set<AnonymisationMethodData> anonymisationMethodData) {
 		this.anonymisationMethodData = anonymisationMethodData;
 	}
-	public Set<SecurityUser> getAssingendUser() {
-		return assingendUser;
+
+
+	public String getConfigurationName() {
+		return configurationName;
 	}
-	public void setAssingendUser(Set<SecurityUser> assingendUser) {
-		this.assingendUser = assingendUser;
+	public void setConfigurationName(String configurationName) {
+		this.configurationName = configurationName;
 	}
-	public String toString() {
-		return id + " / " + url + " / " + login + " / " + guiName;
+
+	public DatabaseConnection getDatabaseConnection() {
+		return databaseConnection;
 	}
-	@Override
-	public boolean equals(Object o) {
-		if (o == this) {
-            return true;
-        }
-		if (!(o instanceof DatabaseConfig)) {
-            return false;
-        }
-		DatabaseConfig c = (DatabaseConfig) o;
-		
-		return this.id.equals(c.getId());
+
+	public void setDatabaseConnection(DatabaseConnection databaseConnection) {
+		this.databaseConnection = databaseConnection;
+	}
+
+	public SecurityUser getSecurityUser() {
+		return securityUser;
+	}
+
+	public void setSecurityUser(SecurityUser securityUser) {
+		this.securityUser = securityUser;
 	}
 
 }

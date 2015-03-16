@@ -12,9 +12,12 @@ import org.anon.logic.AnonymisationMethod;
 import org.anon.persistence.DerbyInMemCreator;
 import org.anon.persistence.dao.DatabaseConfigDao;
 import org.anon.persistence.dao.EntitiesDao;
+import org.anon.persistence.dao.UserDao;
 import org.anon.persistence.data.AnonymisationMethodData;
 import org.anon.persistence.data.AnonymisedColumnData;
 import org.anon.persistence.data.DatabaseConfig;
+import org.anon.persistence.data.DatabaseConnection;
+import org.anon.persistence.data.SecurityUser;
 import org.anon.test.AnonUnitTest;
 import org.junit.Assert;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,11 +30,16 @@ import org.springframework.test.context.junit4.AbstractJUnit4SpringContextTests;
 @ContextConfiguration(locations = { "classpath:spring-persistence-test.xml","classpath:spring-test-base.xml" })
 public abstract class DbEntitiesTest extends AbstractJUnit4SpringContextTests implements AnonUnitTest{
 
-		protected static final String GUINAME = "test";
+	protected static final String GUINAME = "testguiname";
+	protected static final String CONFIGNAME = "testconfigname";
 
 		@Autowired
 		EntitiesDao entitiesDao;
+
+		@Autowired
+		UserDao userDao;
 		
+
 		@Autowired
 		DatabaseConfigDao databaseConfigDao;
 		
@@ -47,14 +55,25 @@ public abstract class DbEntitiesTest extends AbstractJUnit4SpringContextTests im
 		static DatabaseConfig databaseConfig;
 
 		protected DatabaseConfig createDatabaseConfig() {
+			SecurityUser user = userDao.loadUserById(1l);
+			Assert.assertNotNull(user);
+
+			
+			DatabaseConnection databaseConnection = new DatabaseConnection();
+			databaseConnection.setUrl("test.anon.org");
+			databaseConnection.setLogin("anon");
+			databaseConnection.setPassword("anon");
+			databaseConnection.setVendor(Database.SYBASE);
+			databaseConnection.setVersion("16.0");
+			databaseConnection.setGuiName(GUINAME);
+			databaseConnection.setSecurityUser(user);
+			
+			
 			DatabaseConfig config = new DatabaseConfig();
-			config.setUrl("test.anon.org");
-			config.setLogin("anon");
-			config.setPassword("anon");
-			config.setVendor(Database.SYBASE);
-			config.setVersion("16.0");
-			config.setGuiName(GUINAME);
+			config.setDatabaseConnection(databaseConnection);
+			config.setConfigurationName(CONFIGNAME);
 			config.setDefaultSchema("test_default_schema");
+			config.setSecurityUser(user);
 			return config;
 		}
 
