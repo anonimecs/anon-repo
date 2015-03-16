@@ -22,7 +22,7 @@ echo "database started"
 
 nohup java -Dspring.profiles.active=enterprise_edition -Dderby.dir=$SCRIPTDIR -jar anonimecsEnterprise.war > anonimecs.log 2>&1 &
 echo "waiting to start the application"
-sleep 10
+sleep 25
 echo "application started"
 
 echo "go to http://`hostname`:8080/anon/pages/connection/connectionAdd.jsf"

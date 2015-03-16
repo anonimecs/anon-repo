@@ -18,7 +18,7 @@ echo "database started"
 start java -Dspring.profiles.active=enterprise_edition -Dderby.dir=%mypath% -jar anonimecsEnterprise.war
 
 echo "waiting to start the app"
-timeout /T 20  > nul
+timeout /T 25  > nul
 echo "application started"
 
 
