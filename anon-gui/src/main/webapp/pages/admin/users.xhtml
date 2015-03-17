@@ -13,7 +13,7 @@
 			<p:panel id="panel" header="User list">
 		
 				<h:panelGrid rendered="#{secBean.hasRole('ROLE_ADMIN')}">
-					<p:commandButton value="Add" action="#{userBacking.prepareNew()}"/>
+					<p:commandButton value="Add" action="#{userBacking.prepareNew()}" disabled="true"/>
 				</h:panelGrid>
 			
 				<p:dataTable id="userList"
@@ -39,9 +39,10 @@
 			    	<p:column style="width:10%">	
 			    		<p:commandButton id="deleteButton" update=":userListForm:panel" icon="ui-icon-close"
 			        		title="Delete" action="#{userBacking.deleteUser(user)}"
-			        		disabled="#{user.username eq infoBacking.getUserName()}" />
+			        		disabled="true" />
 			        	<p:commandButton id="editButton" icon="ui-icon-pencil" 
-			        		title="Edit" action="#{userBacking.prepareEdit(user)}"/>
+			        		title="Edit" action="#{userBacking.prepareEdit(user)}"
+			        		disabled="true" />
 			        </p:column>
 				
 				</p:dataTable>
