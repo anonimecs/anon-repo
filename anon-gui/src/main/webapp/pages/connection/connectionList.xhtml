@@ -9,49 +9,85 @@
 	
 	<ui:define name="insert-content">
 
-		<h:form id="showConnectionForm">
-			<p:panel id="panel" header="Connection list">
+		<h:form id="showConfigurationForm">
+			<p:panel id="panel" header="Configuration list">
 			
 				<p:messages id="infoMessage" for="infoMessage" showDetail="true" closable="true"/>
 				
-				<p:dataTable id="configTable" var="config" value="#{databaseConfigBacking.configList}" rowKey="#{config.id}"
-						selection="#{databaseConfigBacking.configBean}" >
-						
-					<p:column headerText="Connection" filterBy="#{config.url}" >
-						<h:outputText value="#{config.guiName}"/>
+				<p:dataTable id="configTable" var="databaseConfig" value="#{databaseConfigBacking.configList}" rowKey="#{databaseConfig.id}"
+						selection="#{databaseConfigBacking.databaseConfig}" >
+
+					<p:column headerText="Configuration" filterBy="#{databaseConfig.configurationName}" >
+						<h:outputText value="#{databaseConfig.configurationName}"/>
+					</p:column>
+
+					<p:column headerText="Schema" filterBy="#{databaseConfig.defaultSchema}">
+						<h:outputText value="#{databaseConfig.defaultSchema}"/>
 					</p:column>
 					
-					<p:column headerText="Url" filterBy="#{config.url}" width="300">
-						<h:outputText value="#{config.url}"/>
+					<p:column headerText="Database" filterBy="#{databaseConfig.databaseConnection.guiName}" >
+						<h:outputText value="#{databaseConfig.databaseConnection.guiName}"/>
 					</p:column>
 					
-					<p:column headerText="Schema" filterBy="#{config.defaultSchema}">
-						<h:outputText value="#{config.defaultSchema}"/>
+					<p:column headerText="Url" filterBy="#{databaseConfig.databaseConnection.url}" width="300">
+						<h:outputText value="#{databaseConfig.databaseConnection.url}"/>
 					</p:column>
-					
-					<p:column headerText="Login" filterBy="#{config.login}">
-						<h:outputText value="#{config.login}"/>
-					</p:column>
-					
-					<p:column headerText="Vendor" filterBy="#{config.vendor}">
-						<h:outputText value="#{config.vendor.name}"/>
-					</p:column>	
-					
-					<p:column headerText="Version" filterBy="#{config.version}">
-						<h:outputText value="#{config.version}"/>
-					</p:column>	
 					
 					<p:column style="width:10%">					
-			        	<p:commandButton id="deleteButton" update=":showConnectionForm:panel,:menuForm:menuBar" icon="ui-icon-close"
-			        		disabled="#{databaseConfigBacking.isConfigInUse(config)}"
-			        		title="Delete" actionListener="#{databaseConfigBacking.deleteDatabaseConfig(config)}">
+			        	<p:commandButton id="deleteButton" update=":showConfigurationForm:panel,:menuForm:menuBar" icon="ui-icon-close"
+			        		disabled="#{databaseConfigBacking.isConfigInUse(databaseConfig)}"
+			        		title="Delete" actionListener="#{databaseConfigBacking.deleteDatabaseConfig(databaseConfig)}">
 			        		<p:confirm header="Confirmation"
-			        			message="Delete this Connection, including all anonymization config ?" 
+			        			message="Delete this configuration including all column configurations?" 
 			        			icon="ui-icon-alert"/>
 			        	</p:commandButton>
-			        	<p:commandButton id="editButton" icon="ui-icon-pencil" disabled="#{databaseConfigBacking.isConfigInUse(config)}"
-			        		title="Edit" actionListener="#{databaseConfigBacking.prepareModify(config)}">
-			        	</p:commandButton>        	
+			        	 	
+			        </p:column>
+				
+				</p:dataTable>
+			</p:panel>
+			
+			 <p:confirmDialog global="true" showEffect="fade" hideEffect="explode">
+				<p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+				<p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+			</p:confirmDialog>
+			
+		</h:form>
+		
+		<h:form id="showConnectionForm">
+			<p:panel id="panel" header="Database Connection list">
+			
+				<p:messages id="infoMessage" for="infoMessage" showDetail="true" closable="true"/>
+				
+				<p:dataTable id="configTable" var="databaseConnection" value="#{databaseConfigBacking.databaseConnections}" rowKey="#{databaseConnection.id}"
+						selection="#{databaseConfigBacking.selectedDatabaseConnection}" >
+
+					<p:column headerText="Database" filterBy="#{databaseConnection.guiName}" >
+						<h:outputText value="#{databaseConnection.guiName}"/>
+					</p:column>
+
+					<p:column headerText="Url" filterBy="#{databaseConnection.url}" width="300">
+						<h:outputText value="#{databaseConnection.url}"/>
+					</p:column>
+					
+					<p:column headerText="Vendor" filterBy="#{databaseConnection.vendor}">
+						<h:outputText value="#{databaseConnection.vendor}"/>
+					</p:column>
+					
+					<p:column headerText="Login" filterBy="#{databaseConnection.login}">
+						<h:outputText value="#{databaseConnection.login}"/>
+					</p:column>
+					
+					<p:column style="width:10%">					
+			        	<p:commandButton id="deleteButton" update=":showConnectionForm:panel" icon="ui-icon-close"
+			        		disabled="#{databaseConfigBacking.isConnectionReferenced(databaseConnection)}"
+			        		title="Delete" actionListener="#{databaseConfigBacking.deleteDatabaseConnection(databaseConnection)}">
+			        		<p:confirm header="Confirmation"
+			        			message="Delete this unused database connection?" 
+			        			icon="ui-icon-alert"/>
+			        	</p:commandButton>
+			        	<p:commandButton title="Change Password"  id="changePassword" action="#{databaseConfigBacking.onChangePasswordPopup(databaseConnection)}" 
+							oncomplete="PF('changePasswordDialog').show();" update=":changePasswordDialogId" icon="ui-icon-pencil"/>
 			        </p:column>
 				
 				</p:dataTable>
@@ -65,4 +101,20 @@
 		</h:form>
 
 	</ui:define>
+	
+	<ui:define name="includedDialogs">
+		<p:dialog id="changePasswordDialogId" widgetVar="changePasswordDialog" header="Change Password for " 
+			modal="true" width="600" >
+
+			<h:form>
+				
+				<p:outputLabel for="password" value="New Password for user #{databaseConfigBacking.selectedDatabaseConnection.login}" />
+				<p:password id="password" value="#{databaseConfigBacking.selectedDatabaseConnection.password}" required="true" label="Password"/>
+				<p:commandButton value="Change Password"  id="changePasswordPopupButton" action="#{databaseConfigBacking.onChangePassword()}" 
+							oncomplete="PF('changePasswordDialog').hide();"/>
+			</h:form>
+		</p:dialog>
+	</ui:define>
+				
+	
 </ui:composition>

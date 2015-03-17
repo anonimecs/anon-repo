@@ -84,6 +84,21 @@ public class DatabaseConfigBacking extends BackingBase {
 			showExceptionInGui(e);
 		}
 	}
+
+	public void onChangePasswordPopup(DatabaseConnection databaseConnection) {
+		logDebug("onChangePasswordPopup " + databaseConnection);
+		selectedDatabaseConnection = databaseConnection;
+	}
+	
+	public void onChangePassword() {
+		logDebug("onChangePassword ");
+		if(testDatabaseConnection(selectedDatabaseConnection)){
+			configService.updateDatabaseConnection(selectedDatabaseConnection);
+			showInfoInGui("Database password updated");
+		}else {
+			showErrorInGui("This password is invalid, and has not been saved");
+		}
+	}
 	
 	public void onSaveDatabaseConfig() {
 			logDebug("add databaseConfig " + databaseConfig);
@@ -103,24 +118,39 @@ public class DatabaseConfigBacking extends BackingBase {
 	//		databaseConfig = new DatabaseConfig();
 		}
 
+	public void deleteDatabaseConnection(DatabaseConnection databaseConnection) {
+		logDebug("delete databaseConnection " + databaseConnection);
+		
+		try{
+			configService.deleteDatabaseConnection(databaseConnection);
+			databaseConnections = configService.findAllDatabaseConnections();
+		}
+		catch(Exception exception){
+			showErrorInGui("Connection " +databaseConnection.getGuiName() + " could not be deleted");
+			showExceptionInGui(exception);
+			
+		}
+		
+	}
 
 	public void deleteDatabaseConfig(DatabaseConfig config) {
-		logDebug("delete databaseConfig " + config.getDatabaseConnection().getUrl());
+		logDebug("delete databaseConfig " + config.getConfigurationName());
 		
 		try{
 			configService.deleteDatabaseConfig(config);
-			showExtInfoInGui("Config deleted", config.getDatabaseConnection().getUrl());
+			showExtInfoInGui("Config deleted", config.getConfigurationName());
 			reset();
 		}
-		catch(ServiceException exception){
-			handleServiceResultAsInfoMessage(exception);
+		catch(Exception exception){
+			showErrorInGui("Configuration " +config.getConfigurationName() + " could not be deleted");
+			showExceptionInGui(exception);
 			
 		}
 		
 		databasePanelBacking.init();
 	}
 	
-	public void testDatabaseConnection(DatabaseConnection databaseConnectionToTest) {
+	public boolean testDatabaseConnection(DatabaseConnection databaseConnectionToTest) {
 		logDebug("testDatabaseConnection " + databaseConnectionToTest);
 		
 		try{
@@ -133,11 +163,12 @@ public class DatabaseConfigBacking extends BackingBase {
 			schemaList = databaseLoaderService.getSchemas();
 			databaseLoaderService.disconnectDb();
 			databaseConfig.setDefaultSchema(schemaList.get(0));
+			return true;
 
 		}
 		catch(ServiceException exception){
 			handleServiceResultAsInfoMessage(exception);
-			
+			return false;
 		}
 	}
 	
@@ -174,6 +205,15 @@ public class DatabaseConfigBacking extends BackingBase {
 		}
 	}
 	
+	public boolean isConnectionReferenced(DatabaseConnection databaseConnection){
+		for(DatabaseConfig databaseConfig:configList){
+			if(databaseConfig.getDatabaseConnection().equals(databaseConnection)){
+				return true;
+			}
+		}
+		return false;
+	}
+	
 	public boolean isConfigInUse(DatabaseConfig config) {
 		
 		if(dbConnectionFactory.getDatabaseConfig() != null && 
@@ -183,25 +223,14 @@ public class DatabaseConfigBacking extends BackingBase {
 		return false;
 	}
 	
-	public void prepareModify(DatabaseConfig config) {
-		databaseConfig = config;
-		databaseLoaderService.connectDb(databaseConfig);
-		schemaList = databaseLoaderService.getSchemas();
-		databaseLoaderService.disconnectDb();
-		redirectPageTo(NavigationCaseEnum.MODIFY_CONNECTION);
-	}
-
 	public void reset() {
-		configList = null;
+		configList = configService.loadDatabaseConfigs();
 		schemaList = new ArrayList<>();
 		databaseConfig = new DatabaseConfig();
 		unsufficientPermissions = new ArrayList<>();
 	}
 	
 	public List<DatabaseConfig> getConfigList() {
-		if(configList==null) {
-			configList = configService.loadDatabaseConfigs();
-		}
 		return configList;
 	}
 

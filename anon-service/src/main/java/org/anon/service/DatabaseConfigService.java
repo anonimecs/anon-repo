@@ -17,6 +17,8 @@ public interface DatabaseConfigService {
 	
 	public void deleteDatabaseConfig(DatabaseConfig config) throws ServiceException;
 
+	public void deleteDatabaseConnection(DatabaseConnection databaseConnection);
+
 	public void deleteDatabaseConfig(String configGuiName) throws ServiceException;
 	
 	public void addDatabaseConfig(DatabaseConfig config) throws ServiceException;
@@ -26,6 +28,8 @@ public interface DatabaseConfigService {
 	public void validateDatabaseConnection(DatabaseConnection databaseConnection) throws ServiceException;
 	
 	public void updateDatabaseConfig(DatabaseConfig config) throws ServiceException;
+
+	public void updateDatabaseConnection(DatabaseConnection selectedDatabaseConnection);
 
 }
 

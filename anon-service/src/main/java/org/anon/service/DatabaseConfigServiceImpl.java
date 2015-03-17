@@ -58,16 +58,17 @@ public class DatabaseConfigServiceImpl implements DatabaseConfigService {
 
 	@Override
 	@Transactional(readOnly = false)
-	public void deleteDatabaseConfig(DatabaseConfig config)  throws ServiceException{
+	public void deleteDatabaseConfig(DatabaseConfig config)  {
 		
 		
-		try {
-			configDao.removeDatabaseConfig(config);
-		} catch (Exception e) {
-			logger.error(e.getMessage(), e);
-			throw new ServiceException("Configuration not deleted", 
-					e.getCause() != null ?  e.getCause().getMessage() : e.getMessage(), e);
-		}
+		configDao.removeDatabaseConfig(config);
+	}
+
+	@Override
+	@Transactional(readOnly = false)
+	public void deleteDatabaseConnection(DatabaseConnection databaseConnection) {
+		configDao.removeDatabaseConnection(databaseConnection);
+		
 	}
 
 	@Override
@@ -139,6 +140,12 @@ public class DatabaseConfigServiceImpl implements DatabaseConfigService {
 	public void validateDatabaseConnection(DatabaseConnection databaseConnection)  throws ServiceException{
 		
 		connectionValidator.connectionValid(databaseConnection);
+		
+	}
+
+	@Override
+	public void updateDatabaseConnection(DatabaseConnection selectedDatabaseConnection) {
+		configDao.updateDatabaseConnection(selectedDatabaseConnection);
 		
 	}
 }
