@@ -51,12 +51,15 @@ public class DatabaseConfigBacking extends BackingBase {
 		databaseConnections = configService.findAllDatabaseConnections();
 		if(!databaseConnections.isEmpty()){
 			selectedDatabaseConnection = databaseConnections.get(0);
+			testDatabaseConnection(selectedDatabaseConnection);
 		}
 	}
+
 	
 	public void onShowCreateNewConnDialog(){
 		logDebug("onShowCreateNewConnDialog");
-		selectedDatabaseConnection = new DatabaseConnection();
+		newDatabaseConnection = new DatabaseConnection();
+		schemaList = null;
 	}
 
 	public void onHideCreateNewConnDialog(){
@@ -65,9 +68,21 @@ public class DatabaseConfigBacking extends BackingBase {
 		
 	}
 	
-	public void onCreateButtonClicked(){
+	public void onSaveConnectionButtonClicked(){
 		logDebug("creating " + newDatabaseConnection);
-		
+		testDatabaseConnection(newDatabaseConnection);
+
+		try{
+			configService.addDatabaseConnection(newDatabaseConnection);
+			databaseConnections = configService.findAllDatabaseConnections();
+			selectedDatabaseConnection = newDatabaseConnection;
+			testDatabaseConnection(selectedDatabaseConnection);
+			showExtInfoInGui("Database connection created.", newDatabaseConnection.getGuiName());
+		}
+		catch(Exception e){
+			logError("onSaveConnectionButtonClicked failed", e);
+			showExceptionInGui(e);
+		}
 	}
 	
 	public void deleteDatabaseConfig(DatabaseConfig config) {
@@ -87,34 +102,36 @@ public class DatabaseConfigBacking extends BackingBase {
 	}
 	
 	public void addDatabaseConfig() {
-		logDebug("add databaseConfig " + databaseConfig.getDatabaseConnection().getUrl());
+		logDebug("add databaseConfig " + databaseConfig);
 		
 		try{
+			databaseConfig.setDatabaseConnection(selectedDatabaseConnection);
 			configService.addDatabaseConfig(databaseConfig);
 			showExtInfoInGui("Config added", databaseConfig.getDatabaseConnection().getUrl());
 			reset();	
 		}
-		catch(ServiceException exception){
-			handleServiceResultAsInfoMessage(exception);
-			
+		catch(Exception e){
+			logError("addDatabaseConfig failed", e);
+			showExceptionInGui(e);
 		}
 
-		databasePanelBacking.init();
-		databaseConfig = new DatabaseConfig();
+//		databasePanelBacking.init();
+//		databaseConfig = new DatabaseConfig();
 	}
 	
-	public void testDatabaseConfig() {
-		logDebug("test databaseConfig " + databaseConfig.getDatabaseConnection().getUrl());
-		
-		unsufficientPermissions = null;
+	public void testDatabaseConnection(DatabaseConnection databaseConnectionToTest) {
+		logDebug("testDatabaseConnection " + databaseConnectionToTest);
 		
 		try{
-			configService.testDatabaseConfig(databaseConfig);
-			databaseLoaderService.connectDb(databaseConfig);
+			
+			configService.validateDatabaseConnection(databaseConnectionToTest);
+			DatabaseConfig tempDatabaseConfig = new DatabaseConfig();
+			tempDatabaseConfig.setDatabaseConnection(databaseConnectionToTest);
+			
+			databaseLoaderService.connectDb(tempDatabaseConfig);
 			schemaList = databaseLoaderService.getSchemas();
 			databaseLoaderService.disconnectDb();
 			databaseConfig.setDefaultSchema(schemaList.get(0));
-			testSufficientPermissions();
 
 		}
 		catch(ServiceException exception){
@@ -127,6 +144,7 @@ public class DatabaseConfigBacking extends BackingBase {
 		logDebug("Testing perimissions for " + databaseConfig.getDefaultSchema());
 
 		try{
+			databaseConfig.setDatabaseConnection(selectedDatabaseConnection);
 			databaseLoaderService.connectDb(databaseConfig);
 			databaseLoaderService.testSufficientPermissions(databaseConfig.getDefaultSchema());
 			databaseLoaderService.disconnectDb();

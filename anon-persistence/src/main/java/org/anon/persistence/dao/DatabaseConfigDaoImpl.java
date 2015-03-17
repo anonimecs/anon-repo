@@ -7,7 +7,6 @@ import org.anon.persistence.data.DatabaseConnection;
 import org.anon.persistence.data.SecurityUser;
 import org.hibernate.Criteria;
 import org.hibernate.SessionFactory;
-import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -101,15 +100,6 @@ public class DatabaseConfigDaoImpl implements DatabaseConfigDao {
 		return criteria.list();
 	}
 
-	@Override
-	public boolean isConfigNameUnique(String configurationName, Long id) {
-		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(DatabaseConfig.class);
-		criteria.add(Restrictions.eq("configurationName", configurationName));
-		if(id != null) {
-			criteria.add(Restrictions.ne("id", id));
-		}
-		return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult() > 0;
-	}
 
 	@SuppressWarnings("unchecked")
 	@Override

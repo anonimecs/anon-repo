@@ -27,9 +27,9 @@ xmlns="http://www.w3.org/1999/xhtml"
 						<p:message for="configurationName" />
 
 
-
 						<p:outputLabel for="databaseConnection" value="Database Connection" />
 						<p:selectOneMenu id="databaseConnection" value="#{databaseConfigBacking.selectedDatabaseConnection}" required="true" converter="databaseConnectionConverter">
+							<p:ajax event="change" update="defaultSchema" listener="#{databaseConfigBacking.testDatabaseConnection(databaseConfigBacking.selectedDatabaseConnection)}"/>
 							<f:selectItems value="#{databaseConfigBacking.databaseConnections}" var="databaseConnection" 
 								itemLabel="#{databaseConnection.guiName}" itemValue="#{databaseConnection}" />
 							<p:column>
@@ -38,8 +38,6 @@ xmlns="http://www.w3.org/1999/xhtml"
 					   	</p:selectOneMenu>
 						<p:commandButton value="New" action="#{databaseConfigBacking.onShowCreateNewConnDialog()}" process="@this" 
 							oncomplete="PF('createNewConnDialog').show();" update=":createNewConnDialogId"/>
-
-
 
 
 
@@ -54,7 +52,6 @@ xmlns="http://www.w3.org/1999/xhtml"
 						<p:message id="defaultSchemaMsg" for="defaultSchema"/>
 						
 						<h:panelGrid columns="3">
-							<p:commandButton id="testConnection" value="Test" actionListener="#{databaseConfigBacking.testDatabaseConfig}" update="addConnection,defaultSchema,permissionErrorBox"/>
 							<p:commandButton id="addConnection" value="Save" 
 								actionListener="#{databaseConfigBacking.addDatabaseConfig}" update="panel,:menuForm:menuBar"
 								disabled="#{licenseManager.reachedMaxDbConnections(databaseConfigBacking.configList.size()) or empty databaseConfigBacking.schemaList}"/>
@@ -66,17 +63,19 @@ xmlns="http://www.w3.org/1999/xhtml"
 						</h:panelGrid>
 						
 					</h:panelGrid>
+					
+					<p:outputPanel id="permissionErrorBox">
+						<p:dataList value="#{databaseConfigBacking.unsufficientPermissions}" var="serviceResultMessage" rendered="#{not empty databaseConfigBacking.unsufficientPermissions}">
+					        <f:facet name="header">
+					            DB User permission problems
+					        </f:facet>						
+	        				<h:outputText value="#{serviceResultMessage.headline}"/>
+							<h:outputText value="#{serviceResultMessage.details}"/>
+						</p:dataList>
+					</p:outputPanel>
 				</p:outputPanel>	
 				
-				<p:outputPanel id="permissionErrorBox">
-					<p:dataList value="#{databaseConfigBacking.unsufficientPermissions}" var="serviceResultMessage" rendered="#{not empty databaseConfigBacking.unsufficientPermissions}">
-				        <f:facet name="header">
-				            DB User permission problems
-				        </f:facet>						
-        				<h:outputText value="#{serviceResultMessage.headline}"/>
-						<h:outputText value="#{serviceResultMessage.details}"/>
-					</p:dataList>
-				</p:outputPanel>
+				
 			</p:panel>
 		</h:form>
 		
@@ -102,7 +101,15 @@ xmlns="http://www.w3.org/1999/xhtml"
 				    	<p:ajax event="change" update="grid" />
 				   	</p:selectOneMenu>
 				   	<p:message id="vendorMSG" for="vendor" />
-				
+
+					<p:outputLabel id="urlPrefix" for="url" value="URL: #{databaseConfigBacking.newDatabaseConnection.vendor.jdbcPrefix}" />
+					<p:inputText id="url" value="#{databaseConfigBacking.newDatabaseConnection.url}" required="true" size="70"/>
+					<p:message for="url" />
+
+					<p:outputLabel for="guiName" value="Connection Name" />
+					<p:inputText id="guiName" value="#{databaseConfigBacking.newDatabaseConnection.guiName}" required="true" size="70"/>
+					<p:message for="guiName" />
+
 				
 					<p:outputLabel for="login" value="Login" />
 					<p:inputText id="login" value="#{databaseConfigBacking.newDatabaseConnection.login}" required="true"/>
@@ -114,10 +121,19 @@ xmlns="http://www.w3.org/1999/xhtml"
 					</p:password>
 					<p:message id="passwordMsg" for="password"/>
 			
-				</h:panelGrid>
 			
-				<p:commandButton value="Create" action="#{databaseConfigBacking.onCreateButtonClicked()}"
-					oncomplete="PF('createNewConnDialog').hide();" update=":createNewConnDialogId"/>
+					<h:panelGrid columns="3">
+						<p:commandButton id="testConnection" value="Test" actionListener="#{databaseConfigBacking.testDatabaseConnection(databaseConfigBacking.newDatabaseConnection)}" update="addConnection"/>
+						<p:commandButton id="addConnection" value="Save" oncomplete="PF('createNewConnDialog').hide();"
+							actionListener="#{databaseConfigBacking.onSaveConnectionButtonClicked}"  update=":addConnectionForm:databaseConnection,:addConnectionForm:defaultSchema"
+							disabled="#{licenseManager.reachedMaxDbConnections(databaseConfigBacking.configList.size()) or empty databaseConfigBacking.schemaList}"/>
+						<p:lightBox iframe="true" id="anonimexHomeLightBox" rendered="#{licenseManager.reachedMaxDbConnections(databaseConfigBacking.configList.size())}"> 
+						    <h:outputLink value="http://www.anonimecs.com/products.html" title="Anonimecs">
+						        <h:outputText value="Maximal connection count reached. Please upgrade your license." />
+						    </h:outputLink>
+						</p:lightBox>
+					</h:panelGrid>
+				</h:panelGrid>
 				
 			</h:form>
 		

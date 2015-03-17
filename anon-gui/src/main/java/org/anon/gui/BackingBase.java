@@ -56,6 +56,10 @@ public class BackingBase {
 		showExtErrorInGui(guiMessage, "");
 	}
 	
+	protected void showExceptionInGui(Exception e) {
+		showExtErrorInGui(e.getMessage(), e.getCause() == null ? "" : e.getCause().getMessage());
+	}
+	
 	protected void showErrorInGui(String guiMessage, String detail) {
 		showExtErrorInGui(guiMessage, detail);
 	}

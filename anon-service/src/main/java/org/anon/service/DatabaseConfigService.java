@@ -23,7 +23,7 @@ public interface DatabaseConfigService {
 	
 	public void addDatabaseConnection(DatabaseConnection databaseConnection) throws ServiceException;
 	
-	public void testDatabaseConfig(DatabaseConfig config) throws ServiceException;
+	public void validateDatabaseConnection(DatabaseConnection databaseConnection) throws ServiceException;
 	
 	public void updateDatabaseConfig(DatabaseConfig config) throws ServiceException;
 

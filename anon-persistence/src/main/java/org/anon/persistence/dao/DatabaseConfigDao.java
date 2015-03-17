@@ -26,8 +26,6 @@ public interface DatabaseConfigDao {
 	
 	DatabaseConnection loadDatabaseConnection(String guiName);
 
-	boolean isConfigNameUnique(String configurationName, Long id);
-
 	void removeDatabaseConfig(String configurationName);
 
 	void removeDatabaseConnection(DatabaseConnection databaseConnection);

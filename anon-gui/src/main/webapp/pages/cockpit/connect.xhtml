@@ -22,7 +22,7 @@
 								
 				<p:selectOneMenu id="connection" value="#{databasePanelBacking.selectedConnectionId}" disabled="#{databasePanelBacking.connected}">
 					<f:selectItems value="#{databasePanelBacking.dbConfigs}" 
-						var="db" itemValue="#{db.id}" itemLabel="#{db.guiName}"/>
+						var="db" itemValue="#{db.id}" itemLabel="#{db.configurationName}"/>
 						<p:ajax event="change" update=":selectConnectionForm"/>
 				</p:selectOneMenu>	
 								
@@ -32,16 +32,20 @@
 				<p:commandButton id="disconnectBtn" icon="ui-icon-circle-close" actionListener="#{databasePanelBacking.disconnectDb()}" 
 					value="Disconnect" update=":selectConnectionForm, :menuForm:menuBar, :menuPanelForm:menuPanel" rendered="#{databasePanelBacking.connected}"  />
 					        
+				<p:outputLabel for="connectionName" value="Database Connection"/>
+				<h:outputText id="connectionName" value="#{databasePanelBacking.databaseConfig.databaseConnection.guiName}" />
+				<h:outputText/>
+				
 				<p:outputLabel for="databaseUrl" value="URL"/>
-				<h:outputText id="databaseUrl" value="#{databasePanelBacking.databaseConfig.url}" />
+				<h:outputText id="databaseUrl" value="#{databasePanelBacking.databaseConfig.databaseConnection.url}" />
 				<h:outputText/>
 				
 				<p:outputLabel for="databaseType" value="Type" />
-				<h:outputText id="databaseType" value="#{databasePanelBacking.databaseConfig.vendor} #{databasePanelBacking.databaseConfig.version}" />
+				<h:outputText id="databaseType" value="#{databasePanelBacking.databaseConfig.databaseConnection.vendor}" />
 				<h:outputText/>
 					            
 				<p:outputLabel for="databaseUser" value="Login"/>
-				<h:outputText id="databaseUser" value="#{databasePanelBacking.databaseConfig.login}" />
+				<h:outputText id="databaseUser" value="#{databasePanelBacking.databaseConfig.databaseConnection.login}" />
 				<h:outputText/>
 			            	
 			</h:panelGrid>

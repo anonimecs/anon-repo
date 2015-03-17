@@ -14,5 +14,12 @@
   		<converter-for-class>java.lang.Enum</converter-for-class>
   		<converter-class>javax.faces.convert.EnumConverter</converter-class>
 	</converter>
+
+	<!-- just for debug purposes. use #{currentDate} in the XHTML-->
+	<managed-bean>
+		<managed-bean-name>currentDate</managed-bean-name>
+		<managed-bean-class>java.util.Date</managed-bean-class>
+		<managed-bean-scope>request</managed-bean-scope>
+	</managed-bean>
 	
 </faces-config>

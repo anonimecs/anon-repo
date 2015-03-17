@@ -36,7 +36,7 @@
 
 				<p:selectOneMenu id="connection" value="#{databasePanelBacking.selectedConnectionId}" rendered="#{not databasePanelBacking.connected}">
 					<f:selectItems value="#{databasePanelBacking.dbConfigs}" 
-						var="db" itemValue="#{db.id}" itemLabel="#{db.guiName}"/>
+						var="db" itemValue="#{db.id}" itemLabel="#{db.configurationName}"/>
 				</p:selectOneMenu>	
 
 				<p:commandButton id="connectHeadBtn" 

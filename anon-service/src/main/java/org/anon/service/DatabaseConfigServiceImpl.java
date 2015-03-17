@@ -6,6 +6,7 @@ import org.anon.license.LicenseManager;
 import org.anon.persistence.dao.DatabaseConfigDao;
 import org.anon.persistence.data.DatabaseConfig;
 import org.anon.persistence.data.DatabaseConnection;
+import org.anon.persistence.data.SecurityUser;
 import org.anon.service.admin.UserService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -86,44 +87,41 @@ public class DatabaseConfigServiceImpl implements DatabaseConfigService {
 
 	@Override
 	@Transactional(readOnly = false)
-	public void addDatabaseConfig(DatabaseConfig config) throws ServiceException{
+	public void addDatabaseConfig(DatabaseConfig config) /*throws ServiceException*/{
+		SecurityUser securityUser = userService.loadSecurityUser();
+		config.setSecurityUser(securityUser);
+		configDao.addDatabaseConfig(config);
 		
-		testDatabaseConfig(config);
-		
-		try {
-			configDao.addDatabaseConfig(config);
+//		try {
+//			configDao.addDatabaseConfig(config);
 			
 //			if(licenseManager.isEnterpriseEdition() && !userService.isHeadlessMode()) {
 //				SecurityUser user = userService.loadSecurityUser();
 //				userService.updateUser(user, null);
 //			}
 			
-		} catch (Exception e) {
-			logger.error(e.getMessage(), e);
-			throw new ServiceException("Configuration not added", 
-					e.getCause() != null ?  e.getCause().getMessage() : e.getMessage(), e);
-		}
+//		} catch (Exception e) {
+//			logger.error(e.getMessage(), e);
+//			throw new ServiceException("Configuration not added", 
+//					e.getCause() != null ?  e.getCause().getMessage() : e.getMessage(), e);
+//		}
 	}
 	
 	@Override
 	@Transactional(readOnly = false)
 	public void addDatabaseConnection(DatabaseConnection databaseConnection) throws ServiceException {
-		try {
-			configDao.addDatabaseConnection(databaseConnection);
-			
-		} catch (Exception e) {
-			logger.error(e.getMessage(), e);
-			throw new ServiceException("Configuration not added", 
-					e.getCause() != null ?  e.getCause().getMessage() : e.getMessage(), e);
-		}
+		validateDatabaseConnection(databaseConnection);
+
+		SecurityUser securityUser = userService.loadSecurityUser();
+		databaseConnection.setSecurityUser(securityUser);
+	
+		configDao.addDatabaseConnection(databaseConnection);
 		
 	}
 
 	@Override
 	@Transactional(readOnly = false)
 	public void updateDatabaseConfig(DatabaseConfig config)  throws ServiceException{
-		
-		testDatabaseConfig(config);
 		
 		try {
 			configDao.updateDatabaseConfig(config);
@@ -138,15 +136,10 @@ public class DatabaseConfigServiceImpl implements DatabaseConfigService {
 	
 
 	@Override
-	public void testDatabaseConfig(DatabaseConfig config)  throws ServiceException{
+	public void validateDatabaseConnection(DatabaseConnection databaseConnection)  throws ServiceException{
 		
-		new RuntimeException("TODO").printStackTrace(System.err);
+		connectionValidator.connectionValid(databaseConnection);
 		
-//		connectionValidator.connectionValid(config);
-//		
-//		if(configDao.isGuiNameUnique(config.getGuiName(), config.getId())) {
-//			throw new ServiceException("Duplicate GUI Name", config.getGuiName() + " already exits. Enter another name.", null);
-//		}
 	}
 }
 
