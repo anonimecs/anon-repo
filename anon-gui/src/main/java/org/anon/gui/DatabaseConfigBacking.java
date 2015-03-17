@@ -85,6 +85,25 @@ public class DatabaseConfigBacking extends BackingBase {
 		}
 	}
 	
+	public void onSaveDatabaseConfig() {
+			logDebug("add databaseConfig " + databaseConfig);
+			
+			try{
+				databaseConfig.setDatabaseConnection(selectedDatabaseConnection);
+				configService.addDatabaseConfig(databaseConfig);
+				showExtInfoInGui("Config added", databaseConfig.getDatabaseConnection().getUrl());
+				reset();	
+			}
+			catch(Exception e){
+				logError("addDatabaseConfig failed", e);
+				showExceptionInGui(e);
+			}
+	
+			databasePanelBacking.init();
+	//		databaseConfig = new DatabaseConfig();
+		}
+
+
 	public void deleteDatabaseConfig(DatabaseConfig config) {
 		logDebug("delete databaseConfig " + config.getDatabaseConnection().getUrl());
 		
@@ -99,24 +118,6 @@ public class DatabaseConfigBacking extends BackingBase {
 		}
 		
 		databasePanelBacking.init();
-	}
-	
-	public void addDatabaseConfig() {
-		logDebug("add databaseConfig " + databaseConfig);
-		
-		try{
-			databaseConfig.setDatabaseConnection(selectedDatabaseConnection);
-			configService.addDatabaseConfig(databaseConfig);
-			showExtInfoInGui("Config added", databaseConfig.getDatabaseConnection().getUrl());
-			reset();	
-		}
-		catch(Exception e){
-			logError("addDatabaseConfig failed", e);
-			showExceptionInGui(e);
-		}
-
-//		databasePanelBacking.init();
-//		databaseConfig = new DatabaseConfig();
 	}
 	
 	public void testDatabaseConnection(DatabaseConnection databaseConnectionToTest) {

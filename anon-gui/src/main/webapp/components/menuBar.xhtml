@@ -32,7 +32,7 @@
 			</h:panelGrid>
 		
 			<h:panelGrid columns="5" style="float: right;">	
-				<h:outputText value="Connected to #{databasePanelBacking.databaseConfig.guiName} (#{databasePanelBacking.databaseConfig.url})" styleClass="headline" rendered="#{databasePanelBacking.connected}"/>
+				<h:outputText value="Connected to #{databasePanelBacking.databaseConfig.configurationName} (#{databasePanelBacking.databaseConfig.databaseConnection.guiName})" styleClass="headline" rendered="#{databasePanelBacking.connected}"/>
 
 				<p:selectOneMenu id="connection" value="#{databasePanelBacking.selectedConnectionId}" rendered="#{not databasePanelBacking.connected}">
 					<f:selectItems value="#{databasePanelBacking.dbConfigs}" 

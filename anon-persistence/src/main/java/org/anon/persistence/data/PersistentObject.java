@@ -15,7 +15,7 @@ public abstract class PersistentObject  implements Serializable{
 		}
 		catch(Exception e){
 			String message = "toString failed on class " + getClass().getSimpleName();
-			Logger.getLogger(getClass()).error(message, e);
+			Logger.getLogger(getClass()).warn(message);
 			return message;
 		}
 	}

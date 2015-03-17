@@ -28,7 +28,14 @@ public class BackingBase {
 	
 	@Override
 	public String toString() {
-		return ReflectionToStringBuilder.toString(this, ToStringStyle.NO_FIELD_NAMES_STYLE);
+		try{
+			return ReflectionToStringBuilder.toString(this, ToStringStyle.NO_FIELD_NAMES_STYLE);
+		}
+		catch (Exception e){
+			String message = "Failed toString on " + this.getClass().getName();
+			logInfo(message);
+			return message;
+		}
 	}
 	
 	protected void logDebug(Object message){
