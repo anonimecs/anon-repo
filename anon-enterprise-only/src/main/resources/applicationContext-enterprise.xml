@@ -8,11 +8,14 @@
 
 	<bean id="anonServer" class="org.anon.enterprise.api.AnonServerImpl" />
 	
+	<bean id="anonRemoteInvocationExecutor" class="org.anon.enterprise.api.AnonRemoteInvocationExecutor"/>
+	
 	<bean class="org.springframework.remoting.rmi.RmiServiceExporter">
 		<property name="serviceName" value="anonServer" />
 		<property name="service" ref="anonServer" />
 		<property name="serviceInterface" value="org.anon.enterprise.api.AnonServer" />
 		<property name="registryPort" value="${rmi.port}" />
+		<property name="remoteInvocationExecutor" ref="anonRemoteInvocationExecutor"/>
 	</bean>
 
 	<bean class="org.springframework.remoting.rmi.RmiServiceExporter">
@@ -20,6 +23,7 @@
 		<property name="service" ref="databaseConfigServiceImpl" />
 		<property name="serviceInterface" value="org.anon.service.DatabaseConfigService" />
 		<property name="registryPort" value="${rmi.port}" />
+		<property name="remoteInvocationExecutor" ref="anonRemoteInvocationExecutor"/>
 	</bean>
 
 	<bean class="org.springframework.remoting.rmi.RmiServiceExporter">
@@ -27,6 +31,7 @@
 		<property name="service" ref="editedTableService" />
 		<property name="serviceInterface" value="org.anon.service.EditedTableService" />
 		<property name="registryPort" value="${rmi.port}" />
+		<property name="remoteInvocationExecutor" ref="anonRemoteInvocationExecutor"/>
 	</bean>
 
 	<bean class="org.springframework.remoting.rmi.RmiServiceExporter">
@@ -34,6 +39,7 @@
 		<property name="service" ref="userServiceImpl" />
 		<property name="serviceInterface" value="org.anon.service.admin.UserService" />
 		<property name="registryPort" value="${rmi.port}" />
+		<property name="remoteInvocationExecutor" ref="anonRemoteInvocationExecutor"/>
 	</bean>
 
 </beans>

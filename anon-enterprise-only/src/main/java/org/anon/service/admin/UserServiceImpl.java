@@ -15,6 +15,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Assert;
 
 @Service
 @Transactional(readOnly = true)
@@ -110,7 +111,20 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public SecurityUser loadUser(String username) {
+		Assert.notNull(username, "username must not be null");
 		return userDao.loadUserByUsername(username);
+	}
+
+	@Override
+	public SecurityUser loadAndAutheticateUser(String username, String password) {
+		SecurityUser securityUser = loadUser(username);
+		Assert.notNull(securityUser, "User " + username + "not found");
+		String dbPasswordEncoded = securityUser.getPassword();
+		
+		Assert.isTrue(passwordEncoder.matches(password, dbPasswordEncoded), "Incorrect password: " + password);
+		Assert.isTrue(securityUser.userEnabled(), "User is disabled");
+		
+		return securityUser;
 	}
 	
 }

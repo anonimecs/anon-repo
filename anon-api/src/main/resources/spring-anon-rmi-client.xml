@@ -7,25 +7,33 @@
 
 	<context:property-placeholder location="classpath:default.properties"  ignore-resource-not-found="false" ignore-unresolvable="true" />
 	
+	<bean id="anonRemoteInvocationFactory" class="org.anon.enterprise.api.AnonRemoteInvocationFactory">
+		<property name="user" value="admin"/>
+		<property name="password" value="123456"/>
+	</bean>
 
 	<bean id="anonServer" class="org.springframework.remoting.rmi.RmiProxyFactoryBean">
 	    <property name="serviceUrl" value="rmi://localhost:${rmi.port}/anonServer"/>
 	    <property name="serviceInterface" value="org.anon.enterprise.api.AnonServer"/>
+	    <property name="remoteInvocationFactory" ref="anonRemoteInvocationFactory"/>
 	</bean>
 
 	<bean id="databaseConfigService" class="org.springframework.remoting.rmi.RmiProxyFactoryBean">
 	    <property name="serviceUrl" value="rmi://localhost:${rmi.port}/databaseConfigService"/>
 	    <property name="serviceInterface" value="org.anon.service.DatabaseConfigService"/>
+	    <property name="remoteInvocationFactory" ref="anonRemoteInvocationFactory"/>
 	</bean>
 
 	<bean id="editedTableService" class="org.springframework.remoting.rmi.RmiProxyFactoryBean">
 	    <property name="serviceUrl" value="rmi://localhost:${rmi.port}/editedTableService"/>
 	    <property name="serviceInterface" value="org.anon.service.EditedTableService"/>
+	    <property name="remoteInvocationFactory" ref="anonRemoteInvocationFactory"/>
 	</bean>
 
 	<bean id="userService" class="org.springframework.remoting.rmi.RmiProxyFactoryBean">
 	    <property name="serviceUrl" value="rmi://localhost:${rmi.port}/userService"/>
 	    <property name="serviceInterface" value="org.anon.service.admin.UserService"/>
+	    <property name="remoteInvocationFactory" ref="anonRemoteInvocationFactory"/>
 	</bean>
 
 

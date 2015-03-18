@@ -23,5 +23,7 @@ public interface UserService {
 	
 	boolean isHeadlessMode();
 
-	SecurityUser loadUser(String string);
+	SecurityUser loadUser(String username);
+
+	SecurityUser loadAndAutheticateUser(String username, String password);
 }

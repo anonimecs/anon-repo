@@ -81,6 +81,10 @@ public class SecurityUser implements Serializable {
 		return enabled;
 	}
 	
+	public boolean userEnabled(){
+		return "Y".equals(getEnabled());
+	}
+	
 	public void setEnabled(String enabled) {
 		this.enabled = enabled;
 	}
