@@ -135,7 +135,7 @@ create table ExecutionMessageData(
 
 
 INSERT INTO APP.SECURITYUSER(USERNAME, PASSWORD, NAME, SURNAME, ENABLED, ENCRYPTED) 
-	VALUES('admin', '123456', 'BuiltIn', 'User', 'Y', 'N');
+	VALUES('admin', '$2a$15$PJDiuHrRUEogTwSfNHYjnudDkSgc.WqkGrowOMND3NVgrJTRAIg1e', 'BuiltIn', 'User', 'Y', 'Y');
 
 INSERT INTO APP.SECURITYUSERROLES(USER_ID, ROLE) 
 	VALUES( 1, 'ROLE_ADMIN');
