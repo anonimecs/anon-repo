@@ -32,6 +32,23 @@ public class DatabaseConfigDaoImpl implements DatabaseConfigDao {
 		return list;
 	}
 
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<DatabaseConnection> findDatabaseConnectionsForUser(SecurityUser securityUser) {
+		return sessionFactory.getCurrentSession().
+			createQuery("from DatabaseConnection c where c.securityUser=:securityUser").setEntity("securityUser", securityUser).list();
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<DatabaseConfig> findDatabaseConfigForUser(String username) {
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(DatabaseConfig.class, "config");
+		criteria.createAlias("config.securityUser", "securityUser");
+		criteria.add(Restrictions.eq("securityUser.username", username));
+		
+		return criteria.list();
+	}
+
 	@Override
 	public void addDatabaseConfig(DatabaseConfig config) {
 		Long id =  (Long) sessionFactory.getCurrentSession().save(config);	
@@ -88,23 +105,5 @@ public class DatabaseConfigDaoImpl implements DatabaseConfigDao {
 	@Override
 	public void updateDatabaseConnection(DatabaseConnection databaseConnection) {
 		sessionFactory.getCurrentSession().update(databaseConnection);
-	}
-
-	@SuppressWarnings("unchecked")
-	@Override
-	public List<DatabaseConfig> findConfigForUser(String username) {
-		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(DatabaseConfig.class, "config");
-		criteria.createAlias("config.securityUser", "securityUser");
-		criteria.add(Restrictions.eq("securityUser.username", username));
-		
-		return criteria.list();
-	}
-
-
-	@SuppressWarnings("unchecked")
-	@Override
-	public List<DatabaseConnection> findAllDatabaseConnectionsForUser(SecurityUser securityUser) {
-		return sessionFactory.getCurrentSession().
-			createQuery("from DatabaseConnection c where c.securityUser=:securityUser").setEntity("securityUser", securityUser).list();
 	}
 }

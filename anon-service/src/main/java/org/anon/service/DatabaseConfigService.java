@@ -7,27 +7,27 @@ import org.anon.persistence.data.DatabaseConnection;
 
 public interface DatabaseConfigService {
 
-	public List<DatabaseConfig> loadDatabaseConfigs();
+	public List<DatabaseConfig> loadDatabaseConfigsForUser();
 	
-	public List<DatabaseConnection> findAllDatabaseConnections();
+	public List<DatabaseConnection> loadDatabaseConnectionsForUser();
 	
 	public DatabaseConfig loadDatabaseConfig(String configName);
 	
 	public DatabaseConnection loadDatabaseConnection(String guiName);
 	
-	public void deleteDatabaseConfig(DatabaseConfig config) throws ServiceException;
+	public void deleteDatabaseConfig(DatabaseConfig config) ;
 
 	public void deleteDatabaseConnection(DatabaseConnection databaseConnection);
 
-	public void deleteDatabaseConfig(String configGuiName) throws ServiceException;
+	public void deleteDatabaseConfig(String configGuiName);
 	
-	public void addDatabaseConfig(DatabaseConfig config) throws ServiceException;
+	public void addDatabaseConfig(DatabaseConfig config) ;
 	
 	public void addDatabaseConnection(DatabaseConnection databaseConnection) throws ServiceException;
 	
 	public void validateDatabaseConnection(DatabaseConnection databaseConnection) throws ServiceException;
 	
-	public void updateDatabaseConfig(DatabaseConfig config) throws ServiceException;
+	public void updateDatabaseConfig(DatabaseConfig config) ;
 
 	public void updateDatabaseConnection(DatabaseConnection selectedDatabaseConnection);
 

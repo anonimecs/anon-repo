@@ -57,7 +57,7 @@ public class IntegrationTest extends AbstractJUnit4SpringContextTests{
 
 	@Test
 	public void test0_loadConfigId() {
-		List<DatabaseConfig> list = databaseConfigService.loadDatabaseConfigs();
+		List<DatabaseConfig> list = databaseConfigService.loadDatabaseConfigsForUser();
 		// parse the highest ID
 		for (DatabaseConfig databaseConfig : list) {
 			if(configId < databaseConfig.getId()){
@@ -68,7 +68,7 @@ public class IntegrationTest extends AbstractJUnit4SpringContextTests{
 
 	@Test
 	public void test0_loadconnectionId() {
-		List<DatabaseConnection> list = databaseConfigService.findAllDatabaseConnections();
+		List<DatabaseConnection> list = databaseConfigService.loadDatabaseConnectionsForUser();
 		// parse the highest ID
 		for (DatabaseConnection databaseConnection : list) {
 			if(connectionId < databaseConnection.getId()){

@@ -125,7 +125,7 @@ xmlns="http://www.w3.org/1999/xhtml"
 					<h:panelGrid columns="3">
 						<p:commandButton id="testConnection" value="Test" actionListener="#{databaseConfigBacking.testDatabaseConnection(databaseConfigBacking.newDatabaseConnection)}" update="addConnection"/>
 						<p:commandButton id="addConnection" value="Save" oncomplete="PF('createNewConnDialog').hide();"
-							actionListener="#{databaseConfigBacking.onSaveConnectionButtonClicked}"  update=":addConnectionForm:databaseConnection,:addConnectionForm:defaultSchema"
+							actionListener="#{databaseConfigBacking.onSaveConnectionButtonClicked}"  update=":addConnectionForm:databaseColumns"
 							disabled="#{licenseManager.reachedMaxDbConnections(databaseConfigBacking.configList.size()) or empty databaseConfigBacking.schemaList}"/>
 						<p:lightBox iframe="true" id="anonimexHomeLightBox" rendered="#{licenseManager.reachedMaxDbConnections(databaseConfigBacking.configList.size())}"> 
 						    <h:outputLink value="http://www.anonimecs.com/products.html" title="Anonimecs">

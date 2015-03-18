@@ -12,7 +12,6 @@ import org.anon.gui.navigation.NavigationCaseEnum;
 import org.anon.persistence.data.SecurityRole;
 import org.anon.persistence.data.SecurityRoleEnum;
 import org.anon.persistence.data.SecurityUser;
-import org.anon.service.ServiceException;
 import org.anon.service.admin.UserService;
 
 @ManagedBean
@@ -48,18 +47,21 @@ public class UserBacking extends BackingBase {
 	
 	public void saveUser() {
 		
-		SecurityRole role = new SecurityRole();
-		role.setRole(getSelectedRole());
-		selectedUser.getRoles().add(role);
 		
 		try {
+			SecurityRole role = new SecurityRole();
+			role.setRole(getSelectedRole());
+			selectedUser.getRoles().add(role);
 			userService.addNewUser(selectedUser);
 			showExtInfoInGui("User added", selectedUser.getUsername());
-		} catch (ServiceException e) {
-			handleServiceResultAsInfoMessage(e);
+			init();
+			redirectPageTo(NavigationCaseEnum.USERS);
+		} catch (Exception e) {
+			String guiMessage = "Failed to save changes";
+			logError(guiMessage, e);
+			showErrorInGui(guiMessage);
+			showExceptionInGui(e);
 		}
-		init();
-		redirectPageTo(NavigationCaseEnum.USERS);
 	}
 	
 	public void saveEditUser() {
@@ -67,11 +69,14 @@ public class UserBacking extends BackingBase {
 		try {
 			userService.updateUser(selectedUser, newPassword);
 			showExtInfoInGui("User changed", selectedUser.getUsername());
-		} catch (ServiceException e) {
-			handleServiceResultAsInfoMessage(e);
+			init();
+			redirectPageTo(NavigationCaseEnum.USERS);
+		} catch (Exception e) {
+			String guiMessage = "Failed to save changes";
+			logError(guiMessage, e);
+			showErrorInGui(guiMessage);
+			showExceptionInGui(e);
 		}
-		init();
-		redirectPageTo(NavigationCaseEnum.USERS);
 	}
 	
 	public void deleteUser(SecurityUser user) {
@@ -79,8 +84,11 @@ public class UserBacking extends BackingBase {
 		try {
 			userService.deleteUser(user);
 			showExtInfoInGui("User deleted", user.getUsername());
-		} catch (ServiceException e) {
-			handleServiceResultAsInfoMessage(e);
+		} catch (Exception e) {
+			String guiMessage = "Failed to delete user";
+			logError(guiMessage, e);
+			showErrorInGui(guiMessage);
+			showExceptionInGui(e);
 		}
 		init();
 	}

@@ -77,7 +77,7 @@ public class AppDbConnectionTest extends DbEntitiesTest {
 		@Test
 		public void test6LoadUserConnections(){
 			
-			List<DatabaseConnection> result = databaseConfigDao.findAllDatabaseConnectionsForUser(userDao.loadUserById(1l));
+			List<DatabaseConnection> result = databaseConfigDao.findDatabaseConnectionsForUser(userDao.loadUserById(1l));
 			Assert.assertEquals("one connection", 1, result.size());
 			
 		}

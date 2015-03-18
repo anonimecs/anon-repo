@@ -9,7 +9,6 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 
 import org.anon.data.Database;
-import org.anon.gui.navigation.NavigationCaseEnum;
 import org.anon.persistence.data.DatabaseConfig;
 import org.anon.persistence.data.DatabaseConnection;
 import org.anon.service.DatabaseConfigService;
@@ -48,7 +47,7 @@ public class DatabaseConfigBacking extends BackingBase {
 	@PostConstruct
 	private void init() {
 		reset();
-		databaseConnections = configService.findAllDatabaseConnections();
+		databaseConnections = configService.loadDatabaseConnectionsForUser();
 		if(!databaseConnections.isEmpty()){
 			selectedDatabaseConnection = databaseConnections.get(0);
 			testDatabaseConnection(selectedDatabaseConnection);
@@ -74,13 +73,14 @@ public class DatabaseConfigBacking extends BackingBase {
 
 		try{
 			configService.addDatabaseConnection(newDatabaseConnection);
-			databaseConnections = configService.findAllDatabaseConnections();
+			databaseConnections = configService.loadDatabaseConnectionsForUser();
 			selectedDatabaseConnection = newDatabaseConnection;
 			testDatabaseConnection(selectedDatabaseConnection);
 			showExtInfoInGui("Database connection created.", newDatabaseConnection.getGuiName());
 		}
 		catch(Exception e){
 			logError("onSaveConnectionButtonClicked failed", e);
+			showErrorInGui("Failed to save the new database connection.");
 			showExceptionInGui(e);
 		}
 	}
@@ -123,7 +123,7 @@ public class DatabaseConfigBacking extends BackingBase {
 		
 		try{
 			configService.deleteDatabaseConnection(databaseConnection);
-			databaseConnections = configService.findAllDatabaseConnections();
+			databaseConnections = configService.loadDatabaseConnectionsForUser();
 		}
 		catch(Exception exception){
 			showErrorInGui("Connection " +databaseConnection.getGuiName() + " could not be deleted");
@@ -188,22 +188,6 @@ public class DatabaseConfigBacking extends BackingBase {
 			
 		}
 	}
-
-	public void updateDatabaseConfig() {
-		logDebug("update databaseConfig " + databaseConfig.getDatabaseConnection().getUrl());
-		
-		try{
-			configService.updateDatabaseConfig(databaseConfig);
-			showExtInfoInGui("Config updated", databaseConfig.getDatabaseConnection().getUrl());
-			databaseConfig = new DatabaseConfig();
-			databasePanelBacking.init();
-			redirectPageTo(NavigationCaseEnum.LIST_CONNECTION);
-		}
-		catch(ServiceException exception){
-			handleServiceResultAsInfoMessage(exception);
-			
-		}
-	}
 	
 	public boolean isConnectionReferenced(DatabaseConnection databaseConnection){
 		for(DatabaseConfig databaseConfig:configList){
@@ -224,7 +208,7 @@ public class DatabaseConfigBacking extends BackingBase {
 	}
 	
 	public void reset() {
-		configList = configService.loadDatabaseConfigs();
+		configList = configService.loadDatabaseConfigsForUser();
 		schemaList = new ArrayList<>();
 		databaseConfig = new DatabaseConfig();
 		unsufficientPermissions = new ArrayList<>();

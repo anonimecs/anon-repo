@@ -32,18 +32,22 @@ public class DatabaseConfigServiceImpl implements DatabaseConfigService {
 	private LicenseManager licenseManager;
 	
 	@Override
-	public List<DatabaseConfig> loadDatabaseConfigs() {
+	public List<DatabaseConfig> loadDatabaseConfigsForUser() {
 		
 		if(licenseManager.isFreeEdition() || userService.isHeadlessMode()) {
 			return configDao.findAllDatabaseConfigs();
 		}
 		
-		return configDao.findConfigForUser(userService.getUsername());
+		return configDao.findDatabaseConfigForUser(userService.getUsername());
 	}
 
 	@Override
-	public List<DatabaseConnection> findAllDatabaseConnections() {
-		return configDao.findAllDatabaseConnections();
+	public List<DatabaseConnection> loadDatabaseConnectionsForUser() {
+		if(licenseManager.isFreeEdition() || userService.isHeadlessMode()) {
+			return configDao.findAllDatabaseConnections();
+		}
+		
+		return configDao.findDatabaseConnectionsForUser(userService.loadSecurityUser());
 	}
 
 	@Override
@@ -73,39 +77,16 @@ public class DatabaseConfigServiceImpl implements DatabaseConfigService {
 
 	@Override
 	@Transactional(readOnly = false)
-	public void deleteDatabaseConfig(String configGuiName)  throws ServiceException{
-
-		
-		try {
-			configDao.removeDatabaseConfig(configGuiName);
-		} catch (Exception e) {
-			logger.error(e.getMessage(), e);
-			throw new ServiceException("Configuration not deleted", 
-					e.getCause() != null ?  e.getCause().getMessage() : e.getMessage(), e);
-		}
-
+	public void deleteDatabaseConfig(String configGuiName) {
+		configDao.removeDatabaseConfig(configGuiName);
 	}
 
 	@Override
 	@Transactional(readOnly = false)
-	public void addDatabaseConfig(DatabaseConfig config) /*throws ServiceException*/{
+	public void addDatabaseConfig(DatabaseConfig config) {
 		SecurityUser securityUser = userService.loadSecurityUser();
 		config.setSecurityUser(securityUser);
 		configDao.addDatabaseConfig(config);
-		
-//		try {
-//			configDao.addDatabaseConfig(config);
-			
-//			if(licenseManager.isEnterpriseEdition() && !userService.isHeadlessMode()) {
-//				SecurityUser user = userService.loadSecurityUser();
-//				userService.updateUser(user, null);
-//			}
-			
-//		} catch (Exception e) {
-//			logger.error(e.getMessage(), e);
-//			throw new ServiceException("Configuration not added", 
-//					e.getCause() != null ?  e.getCause().getMessage() : e.getMessage(), e);
-//		}
 	}
 	
 	@Override
@@ -122,15 +103,8 @@ public class DatabaseConfigServiceImpl implements DatabaseConfigService {
 
 	@Override
 	@Transactional(readOnly = false)
-	public void updateDatabaseConfig(DatabaseConfig config)  throws ServiceException{
-		
-		try {
-			configDao.updateDatabaseConfig(config);
-		} catch (Exception e) {
-			logger.error(e.getMessage(), e);
-			throw new ServiceException("Configuration not updated", 
-					e.getCause() != null ?  e.getCause().getMessage() : e.getMessage(), e);
-		}
+	public void updateDatabaseConfig(DatabaseConfig config) {
+		configDao.updateDatabaseConfig(config);
 	}
 	
 	

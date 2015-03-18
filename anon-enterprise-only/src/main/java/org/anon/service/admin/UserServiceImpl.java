@@ -6,7 +6,6 @@ import java.util.List;
 import org.anon.persistence.dao.UserDao;
 import org.anon.persistence.data.SecurityRoleEnum;
 import org.anon.persistence.data.SecurityUser;
-import org.anon.service.ServiceException;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -46,50 +45,32 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	@Transactional(readOnly = false)
-	public void updateUser(SecurityUser user, String newPassword) throws ServiceException {
+	public void updateUser(SecurityUser user, String newPassword) {
 		
-		try {
-			if(newPassword!=null && !newPassword.isEmpty()) {
-				user.setPassword(passwordEncoder.encode(newPassword));
-				user.setEncrypted("Y");
-			}
-			userDao.updateUser(user);
-		} catch (Exception e) {
-			logger.warn(e.getMessage());
-			throw new ServiceException("User not changed", 
-					e.getCause() != null ?  e.getCause().getMessage() : e.getMessage(), e);
-		}
-	}
-
-	@Override
-	@Transactional(readOnly = false)
-	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	public void addNewUser(SecurityUser user) throws ServiceException {
-		
-		try {
-			user.setPassword(passwordEncoder.encode(user.getPassword()));
-			user.setEnabled("Y");
+		if(newPassword!=null && !newPassword.isEmpty()) {
+			user.setPassword(passwordEncoder.encode(newPassword));
 			user.setEncrypted("Y");
-			userDao.addUser(user);
-		} catch (Exception e) {
-			logger.warn(e.getMessage());
-			throw new ServiceException("User not added", 
-					e.getCause() != null ?  e.getCause().getMessage() : e.getMessage(), e);
 		}
+		userDao.updateUser(user);
 	}
 
 	@Override
 	@Transactional(readOnly = false)
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	public void deleteUser(SecurityUser user) throws ServiceException {
+	public void addNewUser(SecurityUser user) {
 		
-		try {
-			userDao.deleteUser(user);
-		} catch (Exception e) {
-			logger.warn(e.getMessage());
-			throw new ServiceException("User not removed", 
-					e.getCause() != null ?  e.getCause().getMessage() : e.getMessage(), e);
-		}
+		user.setPassword(passwordEncoder.encode(user.getPassword()));
+		user.setEnabled("Y");
+		user.setEncrypted("Y");
+		userDao.addUser(user);
+	}
+
+	@Override
+	@Transactional(readOnly = false)
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	public void deleteUser(SecurityUser user){
+		
+		userDao.deleteUser(user);
 	}
 
 	@Override

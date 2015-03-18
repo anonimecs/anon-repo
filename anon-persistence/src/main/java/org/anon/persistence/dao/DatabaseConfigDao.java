@@ -12,8 +12,10 @@ public interface DatabaseConfigDao {
 	
 	List<DatabaseConnection> findAllDatabaseConnections();
 	
-	List<DatabaseConfig> findConfigForUser(String username);
+	List<DatabaseConfig> findDatabaseConfigForUser(String username);
 	
+	List<DatabaseConnection> findDatabaseConnectionsForUser(SecurityUser user);
+
 	void addDatabaseConfig(DatabaseConfig config);
 	
 	void addDatabaseConnection(DatabaseConnection databaseConnection);
@@ -31,6 +33,4 @@ public interface DatabaseConfigDao {
 	void removeDatabaseConnection(DatabaseConnection databaseConnection);
 
 	void updateDatabaseConnection(DatabaseConnection databaseConnection);
-
-	List<DatabaseConnection> findAllDatabaseConnectionsForUser(SecurityUser user);
 }
