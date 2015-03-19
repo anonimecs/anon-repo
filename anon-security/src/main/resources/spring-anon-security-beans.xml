@@ -32,7 +32,7 @@
         </property>
    </bean>
    
-   <bean id="passwordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder" c:strength="15" />
+   <bean id="passwordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder" c:strength="10" />
    
    <bean id="databasePasswordEncrypter" class="org.anon.security.DBPasswordEncrypter" init-method="encryptDBPassword" depends-on="DerbyDataSource">
         <property name="passwordEncoder" ref="passwordEncoder" />
