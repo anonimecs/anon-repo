@@ -81,7 +81,6 @@ public class ReportBacking extends BackingBase {
 		
 	}
 	
-	
 	public void onClickReport() {
 		databasePanelBacking.disconnectDb();
 		init();
