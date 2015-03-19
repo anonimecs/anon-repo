@@ -39,7 +39,15 @@
 						<filtering>true</filtering>
 					</resource>
 				</resources>
-			</build>	        
+			</build>	    
+			
+			<dependencies>
+				<dependency>
+					<groupId>org.anon</groupId>
+					<artifactId>anon-free-only</artifactId>
+					<version>${project.version}</version>
+				</dependency>
+			</dependencies>			    
 	        
 	    </profile>
 		<profile>

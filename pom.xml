@@ -16,6 +16,7 @@
 		<module>anon-gui</module>
 		<module>anon-api</module>
 		<module>anon-enterprise-only</module>
+		<module>anon-free-only</module>
 		<module>anon-build</module>
 	</modules>
 

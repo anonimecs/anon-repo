@@ -55,6 +55,11 @@
 	        com.sun.faces.config.ConfigureListener
 	    </listener-class>
 	</listener>
+    <listener>
+	    <listener-class>
+	        org.anon.free.AuditUserLoginListener
+	    </listener-class>
+	</listener>
 
     <context-param>
 		<param-name>contextConfigLocation</param-name>
