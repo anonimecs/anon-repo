@@ -47,6 +47,7 @@ public class AuditDaoTest extends DbEntitiesTest {
 			executionData.setStartTime(new Date());
 			executionData.setUserName("test user");
 			executionData.setStatusEnum(Status.RUNNING);
+			executionData.setDatabaseConfig(databaseConfig);
 			
 			
 			auditDao.save(executionData);

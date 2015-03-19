@@ -103,11 +103,13 @@ go
 
 create table ExecutionData(
     ID INT NOT NULL GENERATED ALWAYS AS IDENTITY primary key,
+    DATABASECONFIG_ID INT not null,
     description VARCHAR(1000),
 	userName VARCHAR(50) NOT NULL,
     startTime TIMESTAMP,
     endTime TIMESTAMP,
-    status varchar(20) not null
+    status varchar(20) not null,
+    CONSTRAINT fk_ExecutionData_DatabaseConfig FOREIGN KEY (DATABASECONFIG_ID) REFERENCES DatabaseConfig (ID)
 )
 go
 

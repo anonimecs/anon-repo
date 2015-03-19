@@ -50,9 +50,9 @@ public abstract class BaseExec {
 		tablesAnonimised = 0; 
 		
 		try {
-			execAuditor.insertExecution("Run All", userName);
-		for (AnonymisationMethod anonymisationMethod : execConfig.getAnonMethods()) {
-				do_run(anonymisationMethod);
+			execAuditor.insertExecution("Run All", userName,dbConnectionFactory.getDatabaseConfig());
+			for (AnonymisationMethod anonymisationMethod : execConfig.getAnonMethods()) {
+					do_run(anonymisationMethod);
 			}
 			execAuditor.executionFinished();
 		} catch (RuntimeException e){
@@ -63,7 +63,7 @@ public abstract class BaseExec {
 
 	public void run(AnonymisationMethod anonymisationMethod) {
 		try {
-			execAuditor.insertExecution("Run Method Only", userName);
+			execAuditor.insertExecution("Run Method Only", userName,dbConnectionFactory.getDatabaseConfig());
 			do_run(anonymisationMethod);
 			execAuditor.executionFinished();
 		} catch (RuntimeException e){

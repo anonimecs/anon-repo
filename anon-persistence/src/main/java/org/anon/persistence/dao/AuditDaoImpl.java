@@ -56,6 +56,9 @@ public class AuditDaoImpl implements AuditDao {
 	@Override
 	public List<ExecutionData> loadExecutionDatas() {
 		List<ExecutionData> list = sessionFactory.getCurrentSession().createCriteria(ExecutionData.class).list();
+		for (ExecutionData executionData : list) {
+			Hibernate.initialize(executionData.getDatabaseConfig());
+		}
 		return list;
 	}
 

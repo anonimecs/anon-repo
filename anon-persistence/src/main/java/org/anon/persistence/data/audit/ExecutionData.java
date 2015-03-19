@@ -4,9 +4,14 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+
+import org.anon.persistence.data.DatabaseConfig;
 
 @Entity
 public class ExecutionData extends ExecAuditBaseData{
@@ -26,6 +31,11 @@ public class ExecutionData extends ExecAuditBaseData{
 	
 	@Column 
 	protected String userName;
+	
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="DATABASECONFIG_ID")
+	private DatabaseConfig databaseConfig;
+
 	
 	public Long getId() {
 		return id;
@@ -73,6 +83,14 @@ public class ExecutionData extends ExecAuditBaseData{
 			description = description + " | " + message;
 		}
 		
+	}
+
+	public DatabaseConfig getDatabaseConfig() {
+		return databaseConfig;
+	}
+
+	public void setDatabaseConfig(DatabaseConfig databaseConfig) {
+		this.databaseConfig = databaseConfig;
 	}
 
 

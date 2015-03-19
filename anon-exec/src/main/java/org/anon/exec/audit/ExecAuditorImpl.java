@@ -13,6 +13,7 @@ import org.anon.persistence.dao.AuditDao;
 import org.anon.persistence.dao.EntitiesDao;
 import org.anon.persistence.data.AnonymisationMethodData;
 import org.anon.persistence.data.AnonymisedColumnData;
+import org.anon.persistence.data.DatabaseConfig;
 import org.anon.persistence.data.audit.ExecutionColumnData;
 import org.anon.persistence.data.audit.ExecutionData;
 import org.anon.persistence.data.audit.ExecutionMessageData;
@@ -35,12 +36,13 @@ public class ExecAuditorImpl implements ExecAuditor{
 	public void init() {
 	}
 	
-	public void insertExecution(String description, String username) {
+	public void insertExecution(String description, String username, DatabaseConfig databaseConfig) {
 		executionData = new ExecutionData();
 		executionData.setDescription(description);
 		executionData.setStartTime(new Date());
 		executionData.setUserName(username);
 		executionData.setStatusEnum(Status.RUNNING);
+		executionData.setDatabaseConfig(databaseConfig);
 		
 		auditDao.save(executionData);		
 	}

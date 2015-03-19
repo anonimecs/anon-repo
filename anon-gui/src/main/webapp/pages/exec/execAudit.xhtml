@@ -23,6 +23,9 @@
 					<p:column width="2%">
             			<p:rowToggler />
         			</p:column>
+					<p:column headerText="Configuration" width="8%" sortBy="#{execAuditListTableRow.executionData.databaseConfig.configurationName}">
+						<h:outputText value="#{execAuditListTableRow.executionData.databaseConfig.configurationName}" />
+					</p:column>
 					<p:column headerText="Started" width="8%" sortBy="#{execAuditListTableRow.executionData.startTime}">
 						<h:outputText value="#{execAuditListTableRow.executionData.startTime}"  converter="weekTimestampConverter"/>
 					</p:column>
