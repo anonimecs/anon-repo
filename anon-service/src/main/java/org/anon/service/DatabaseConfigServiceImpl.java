@@ -34,19 +34,11 @@ public class DatabaseConfigServiceImpl implements DatabaseConfigService {
 	@Override
 	public List<DatabaseConfig> loadDatabaseConfigsForUser() {
 		
-		if(licenseManager.isFreeEdition() || userService.isHeadlessMode()) {
-			return configDao.findAllDatabaseConfigs();
-		}
-		
 		return configDao.findDatabaseConfigForUser(userService.getUsername());
 	}
 
 	@Override
 	public List<DatabaseConnection> loadDatabaseConnectionsForUser() {
-		if(licenseManager.isFreeEdition() || userService.isHeadlessMode()) {
-			return configDao.findAllDatabaseConnections();
-		}
-		
 		return configDao.findDatabaseConnectionsForUser(userService.loadSecurityUser());
 	}
 

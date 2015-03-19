@@ -7,6 +7,8 @@ import org.anon.persistence.data.SecurityUser;
 
 public interface UserService {
 	
+	public static final String BUILT_IN_ADMIN_USERNAME = "admin";
+	
 	List<SecurityUser> getAllUser();
 	
 	void updateUser(SecurityUser user, String newPassword);
@@ -21,8 +23,6 @@ public interface UserService {
 	
 	String getUsername();
 	
-	boolean isHeadlessMode();
-
 	SecurityUser loadUser(String username);
 
 	SecurityUser loadAndAutheticateUser(String username, String password);

@@ -100,16 +100,6 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public boolean isHeadlessMode() {
-		if(SecurityContextHolder.getContext().getAuthentication() == null) {
-			return true;
-		}
-		else {
-			return false;
-		}
-	}
-
-	@Override
 	public SecurityUser loadUser(String username) {
 		Assert.notNull(username, "username must not be null");
 		return userDao.loadUserByUsername(username);

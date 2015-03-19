@@ -2,6 +2,7 @@ package org.anon.free;
 
 import java.util.Collection;
 
+import org.anon.service.admin.UserService;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 
@@ -32,7 +33,7 @@ public class AnonFreeAuthenticationToken implements Authentication{
 
 	@Override
 	public Object getPrincipal() {
-		return "admin";
+		return UserService.BUILT_IN_ADMIN_USERNAME;
 
 	}
 
