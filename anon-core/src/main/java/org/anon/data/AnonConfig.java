@@ -53,6 +53,12 @@ public class AnonConfig {
 		this.anonMethods = anonMethods;
 	}
 	
+	public void addAnonMethod(List<AnonymisationMethod> anonMethodList) {
+		for(AnonymisationMethod method : anonMethodList) {
+			addAnonMethod(method);
+		}
+	}
+	
 	public void addAnonMethod(AnonymisationMethod anonymisationMethod) {
 		anonMethods.add(anonymisationMethod);
 		methodExecutions.put(anonymisationMethod, new MethodExecution(anonymisationMethod));

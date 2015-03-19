@@ -1,0 +1,61 @@
+<ui:composition 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+	template="/layout/layout.xhtml">
+
+
+	<ui:define name="insert-content">
+
+		<h:form id="execForm">
+
+			<p:panel id="reportPanel" header="Generate reports of the recent configurations">	
+			
+				<h:panelGrid columns="3" cellpadding="5">
+				
+					<p:selectOneMenu id="connection" value="#{reportBacking.selectedConnectionId}">
+						<f:selectItems value="#{reportBacking.dbConfigs}" 
+							var="db" itemValue="#{db.id}" itemLabel="#{db.configurationName}"/>
+						<p:ajax event="change" listener="#{reportBacking.databaseSelected()}" update="reportPanel" />
+					</p:selectOneMenu>
+					
+					<p:selectOneMenu id="schema" value="#{reportBacking.selectedSchema}">
+						<f:selectItems value="#{reportBacking.schemas}" />
+					</p:selectOneMenu>
+				
+					<p:commandButton value="Generate" action="#{reportBacking.generateReport()}" update="reportPanel"/>
+				
+					<h:commandLink>
+                		<p:graphicImage name="/resources/images/pdf.png" width="24"/>
+                		<h:outputText value="pdf"/>
+               			<p:dataExporter type="pdf" target="methodReportTable" fileName="anon_methods"/>
+            		</h:commandLink>
+				
+				</h:panelGrid>
+			
+				<p:dataTable id="methodReportTable" value="#{reportBacking.reportList}" var="col">
+					<p:column headerText="Column name">
+						<h:outputText value="#{col.name}"/>
+					</p:column>
+					<p:column headerText="Column type">
+						<h:outputText value="#{col.type}"/>
+					</p:column>
+					<p:column headerText="Table name">
+						<h:outputText value="#{col.table.name}"/>
+					</p:column>
+					<p:column headerText="Method">
+						<h:outputText value="#{col.anonymisationMethod.type}"/>
+					</p:column>
+				</p:dataTable>
+				
+            
+            </p:panel>
+
+		</h:form>
+		
+	</ui:define>
+
+</ui:composition>

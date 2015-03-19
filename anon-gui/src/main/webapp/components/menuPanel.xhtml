@@ -33,7 +33,9 @@
 				<p:menuitem value="Execute" action="#{execBacking.onClickExecute}"
 					icon="ui-icon-triangle-1-e" disabled="#{!databasePanelBacking.connected}"/>
 				<p:menuitem value="Audit Logs" url="/app/execaudit/"
-					icon="ui-icon-folder-collapsed" />					
+					icon="ui-icon-folder-collapsed" />		
+				<p:menuitem value="Reports" action="#{reportBacking.onClickReport}"
+					icon="ui-icon-folder-collapsed"/>
 			</p:submenu>
 			
 			<p:submenu label="Admin" rendered="#{licenseManager.isEnterpriseEdition()}">
