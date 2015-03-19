@@ -83,7 +83,7 @@ public class DbConnectionFactoryImpl extends AnonStatic implements DbConnectionF
 		AbstractDbConnection dbConnection = null;
 		Properties props = createDbProps(Database.ORACLE, schema);
 		
-		OracleDbConnection oracleDbConnection = new OracleDbConnection(databaseConfig.getDatabaseConnection().getLogin());
+		OracleDbConnection oracleDbConnection = new OracleDbConnection(databaseConfig.getDefaultSchema());
 		dbConnection = oracleDbConnection;
 		dbConnection.setProperties(props);
 		dbConnection.setDataSource(getDatasource(props));	
@@ -95,7 +95,7 @@ public class DbConnectionFactoryImpl extends AnonStatic implements DbConnectionF
 		Properties props = createDbProps(Database.MYSQL, schema);
 		
 		
-		MySqlDbConnection mysqlDbConnection = new MySqlDbConnection(databaseConfig.getDatabaseConnection().getLogin());
+		MySqlDbConnection mysqlDbConnection = new MySqlDbConnection(databaseConfig.getDefaultSchema());
 		dbConnection = mysqlDbConnection;
 		dbConnection.setProperties(props);
 		dbConnection.setDataSource(getDatasource(props));	

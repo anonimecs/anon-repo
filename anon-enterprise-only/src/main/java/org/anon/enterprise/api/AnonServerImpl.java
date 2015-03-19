@@ -48,7 +48,7 @@ public class AnonServerImpl implements AnonServer {
 		
 
 		AbstractDbConnection connection = dbConnectionFactory.getConnection();
-		databaseLoaderService.loadTableListFromTargetDb(connection.getDefaultSchema());
+		databaseLoaderService.loadTableListFromTargetDb(databaseConfig.getDefaultSchema());
 		List<String> loadErrors = databaseLoaderService.getLoadErrors();
 		if(loadErrors != null && !loadErrors.isEmpty()){
 			throw new RuntimeException("Configuration load errors occured:" + loadErrors);

@@ -24,11 +24,11 @@ public interface DatabaseConfigDao {
 	
 	void removeDatabaseConfig(DatabaseConfig config);
 
-	DatabaseConfig loadDatabaseConfig(String configurationName);
+	DatabaseConfig loadDatabaseConfig(String configurationName, SecurityUser securityUser);
 	
-	DatabaseConnection loadDatabaseConnection(String guiName);
+	DatabaseConnection loadDatabaseConnection(String guiName, SecurityUser securityUser);
 
-	void removeDatabaseConfig(String configurationName);
+	void removeDatabaseConfig(String configurationName, SecurityUser securityUser);
 
 	void removeDatabaseConnection(DatabaseConnection databaseConnection);
 

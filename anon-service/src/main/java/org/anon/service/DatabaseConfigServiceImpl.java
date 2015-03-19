@@ -44,12 +44,12 @@ public class DatabaseConfigServiceImpl implements DatabaseConfigService {
 
 	@Override
 	public DatabaseConfig loadDatabaseConfig(String configName) {
-		return configDao.loadDatabaseConfig(configName);
+		return configDao.loadDatabaseConfig(configName, userService.loadSecurityUser());
 	}
 	
 	@Override
 	public DatabaseConnection loadDatabaseConnection(String guiName) {
-		return configDao.loadDatabaseConnection(guiName);
+		return configDao.loadDatabaseConnection(guiName, userService.loadSecurityUser());
 	}
 
 	@Override
@@ -70,7 +70,7 @@ public class DatabaseConfigServiceImpl implements DatabaseConfigService {
 	@Override
 	@Transactional(readOnly = false)
 	public void deleteDatabaseConfig(String configGuiName) {
-		configDao.removeDatabaseConfig(configGuiName);
+		configDao.removeDatabaseConfig(configGuiName, userService.loadSecurityUser());
 	}
 
 	@Override

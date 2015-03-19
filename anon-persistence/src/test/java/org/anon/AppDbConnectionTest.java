@@ -41,7 +41,7 @@ public class AppDbConnectionTest extends DbEntitiesTest {
 		
 		@Test
 		public void test3LoadConnectionConfig() {
-			DatabaseConfig databaseConfig= databaseConfigDao.loadDatabaseConfig(CONFIGNAME);
+			DatabaseConfig databaseConfig= databaseConfigDao.loadDatabaseConfig(CONFIGNAME,userDao.loadUserById(1l));
 			Assert.assertTrue(databaseConfig != null);
 		}
 		
@@ -62,7 +62,7 @@ public class AppDbConnectionTest extends DbEntitiesTest {
 			
 			databaseConfigDao.addDatabaseConfig(config2);
 			
-			DatabaseConfig databaseConfig2= databaseConfigDao.loadDatabaseConfig(CONFIGNAME+2);
+			DatabaseConfig databaseConfig2= databaseConfigDao.loadDatabaseConfig(CONFIGNAME+2, userDao.loadUserById(1l));
 			
 			Assert.assertEquals("same connection id", connectionId,databaseConfig2.getDatabaseConnection().getId());
 

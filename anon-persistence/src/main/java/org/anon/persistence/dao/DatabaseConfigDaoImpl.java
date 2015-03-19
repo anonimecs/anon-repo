@@ -73,8 +73,11 @@ public class DatabaseConfigDaoImpl implements DatabaseConfigDao {
 	}
 	
 	@Override
-	public void removeDatabaseConfig(String configurationName) {
-		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(DatabaseConfig.class).add(Restrictions.eq("configurationName", configurationName));
+	public void removeDatabaseConfig(String configurationName, SecurityUser securityUser) {
+		Criteria criteria = sessionFactory.getCurrentSession()
+				.createCriteria(DatabaseConfig.class)
+				.add(Restrictions.eq("configurationName", configurationName))
+				.add(Restrictions.eq("securityUser", securityUser));
 		DatabaseConfig config = (DatabaseConfig)criteria.uniqueResult();
 		removeDatabaseConfig(config);
 		
@@ -86,15 +89,21 @@ public class DatabaseConfigDaoImpl implements DatabaseConfigDao {
 	}
 
 	@Override
-	public DatabaseConfig loadDatabaseConfig(String configurationName) {
-		return (DatabaseConfig) sessionFactory.getCurrentSession().
-				createQuery("from DatabaseConfig where configurationName=:configurationName").setString("configurationName", configurationName).uniqueResult();
+	public DatabaseConfig loadDatabaseConfig(String configurationName, SecurityUser securityUser) {
+		return (DatabaseConfig) sessionFactory.getCurrentSession()
+				.createQuery("from DatabaseConfig where configurationName=:configurationName and securityUser=:securityUser")
+				.setString("configurationName", configurationName)
+				.setEntity("securityUser", securityUser)
+				.uniqueResult();
 	}
 
 	@Override
-	public DatabaseConnection loadDatabaseConnection(String guiName) {
-		return (DatabaseConnection) sessionFactory.getCurrentSession().
-				createQuery("from DatabaseConnection where guiName=:guiName").setString("guiName", guiName).uniqueResult();
+	public DatabaseConnection loadDatabaseConnection(String guiName, SecurityUser securityUser) {
+		return (DatabaseConnection) sessionFactory.getCurrentSession()
+				.createQuery("from DatabaseConnection where guiName=:guiName and securityUser=:securityUser")
+				.setString("guiName", guiName)
+				.setEntity("securityUser", securityUser)
+				.uniqueResult();
 	}
 
 	@Override
