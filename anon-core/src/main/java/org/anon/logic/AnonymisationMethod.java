@@ -34,7 +34,6 @@ public abstract class AnonymisationMethod implements Serializable{
 	protected List<String> cleanupSqls = new LinkedList<>();
 
 	protected String password = "default";
-	protected char hashmod;
 	protected int hashmodint;
 	
 	
@@ -72,7 +71,6 @@ public abstract class AnonymisationMethod implements Serializable{
 
 	protected void calcHashMod() {
 		hashmodint = Math.abs(password.hashCode()) % 30;
-		hashmod = (char)hashmodint;
 		
 	}
 	
