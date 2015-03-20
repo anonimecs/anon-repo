@@ -20,7 +20,13 @@ public abstract class AnonymisationMethodDestory extends AnonymisationMethod {
 	
 	@Override
 	protected String anonymiseString(String exampleValue) {
-		return "x";
+		if(exampleValue == null){
+			return null;
+		}
+		if(exampleValue.length() == 0){
+			return "x";
+		}
+		return exampleValue.replaceAll(".", "x");
 	}
 	
 	@Override

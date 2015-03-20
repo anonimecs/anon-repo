@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.anon.data.AnonymisedColumnInfo;
+import org.anon.data.AnonymizationType;
 import org.anon.vendor.DatabaseSpecifics;
 import org.springframework.stereotype.Service;
 
@@ -51,6 +52,18 @@ public class MethodFactory {
 	public List<AnonymisationMethod> getSupportedMethods(AnonymisedColumnInfo anonymizedColumn, DatabaseSpecifics databaseSpecifics) throws Exception{
 		List<AnonymisationMethod> supportedMethods = new ArrayList<>();
 		
+		Class<AnonymisationMethod>[] methods = getAllMethodForDb(databaseSpecifics);
+		
+		for(Class<AnonymisationMethod> anonMethodClass:methods){
+			AnonymisationMethod anonMethod = anonMethodClass.newInstance();
+			if(anonMethod.supports(anonymizedColumn)){
+				supportedMethods.add(anonMethod);				
+			}
+		}
+		return supportedMethods;
+	}
+
+	public Class<AnonymisationMethod>[] getAllMethodForDb(DatabaseSpecifics databaseSpecifics) {
 		Class<AnonymisationMethod>[] methods = null;
 		
 		if(databaseSpecifics == DatabaseSpecifics.SybaseSpecific){
@@ -65,14 +78,16 @@ public class MethodFactory {
 		else if(databaseSpecifics == DatabaseSpecifics.SqlServerSpecific) {
 			methods = SQLSERVER_METHODS;
 		}
-		
-		for(Class<AnonymisationMethod> anonMethodClass:methods){
-			AnonymisationMethod anonMethod = anonMethodClass.newInstance();
-			if(anonMethod.supports(anonymizedColumn)){
-				supportedMethods.add(anonMethod);				
-			}
-		}
-		return supportedMethods;
+		return methods;
 	}
 	
+	public AnonymisationMethod createMethod(AnonymizationType anonymizationType, DatabaseSpecifics databaseSpecifics) throws Exception{
+		for(Class<AnonymisationMethod> anonymisationMethodClass:getAllMethodForDb(databaseSpecifics)){
+			AnonymisationMethod anonymisationMethod = anonymisationMethodClass.newInstance();
+			if(anonymisationMethod.getType() == anonymizationType){
+				return anonymisationMethod;
+			}
+		}
+		throw new RuntimeException(anonymizationType + " is not supported for " + databaseSpecifics);
+	}
 }

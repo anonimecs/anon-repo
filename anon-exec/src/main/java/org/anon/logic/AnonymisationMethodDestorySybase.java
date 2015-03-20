@@ -9,7 +9,7 @@ public class AnonymisationMethodDestorySybase extends AnonymisationMethodDestory
 	public ExecutionMessage runOnColumn(AnonymisedColumnInfo col) {
 		if(col.isJavaTypeString()){
 			
-			int rows = update("update "+ col.getTable().getName()+ " set " + col.getName() + " = 'x'");
+			int rows = update("update "+ col.getTable().getName()+ " set " + col.getName() + " = replicate('x', char_length("+col.getName()+"))");
 			return new ExecutionMessage("Updated String records", rows );
 		}
 		else if(col.isJavaTypeDouble() || col.isJavaTypeLong()){
