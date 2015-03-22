@@ -1,6 +1,7 @@
 package org.anon.gui;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.faces.bean.ManagedBean;
@@ -19,7 +20,7 @@ import org.anon.service.DatabaseLoaderService;
 @SessionScoped
 public class ReportBacking extends BackingBase {
 
-	private List<AnonymisedColumnInfo> reportList;
+	private List<ReportItem> reportList;
 	
 	private List<DatabaseConfig> dbConfigs;
 	
@@ -66,6 +67,8 @@ public class ReportBacking extends BackingBase {
 	
 	public void generateReport() {
 		
+		HashMap<String, ReportItem> reportMap = new HashMap<>();
+		
 		reportList = new ArrayList<>();
 		
 		databaseLoaderService.connectDb(selectedDatabase);
@@ -73,8 +76,23 @@ public class ReportBacking extends BackingBase {
 		
 		for(AnonymisationMethod method : anonConfig.getAnonMethods()) {
 			for(AnonymisedColumnInfo col : method.getApplyedToColumns()) {
-				reportList.add(col);
+				
+				String tabName = col.getTable().getName();
+				if(reportMap.containsKey(tabName)) {
+					reportMap.get(tabName).getCols().add(col);
+				} else {
+					ReportItem newItem = new ReportItem(col.getTable().getName());
+					newItem.getCols().add(col);
+					reportMap.put(tabName, newItem);
+				}
+				
 			}
+		}
+		
+		for(String key : reportMap.keySet()) {
+			
+			reportList.add(reportMap.get(key));
+			
 		}
 		
 		databaseLoaderService.disconnectDb();
@@ -85,6 +103,10 @@ public class ReportBacking extends BackingBase {
 		databasePanelBacking.disconnectDb();
 		init();
 		redirectPageTo(NavigationCaseEnum.REPORT);
+	}
+
+	public DatabaseConfig getSelectedDatabase() {
+		return selectedDatabase;
 	}
 
 	public List<String> getSchemas() {
@@ -119,11 +141,11 @@ public class ReportBacking extends BackingBase {
 		this.selectedConnectionId = selectedConnectionId;
 	}
 
-	public List<AnonymisedColumnInfo> getReportList() {
+	public List<ReportItem> getReportList() {
 		return reportList;
 	}
 
-	public void setReportList(List<AnonymisedColumnInfo> reportList) {
+	public void setReportList(List<ReportItem> reportList) {
 		this.reportList = reportList;
 	}
 	
@@ -141,5 +163,48 @@ public class ReportBacking extends BackingBase {
 
 	public void setAnonConfig(AnonConfig anonConfig) {
 		this.anonConfig = anonConfig;
+	}
+	
+	public class ReportItem  {
+		
+		public ReportItem(String tableName) {
+			this.tableName = tableName;
+			this.cols = new ArrayList<AnonymisedColumnInfo>();
+		}
+		
+		private String tableName;
+		
+		private List<AnonymisedColumnInfo> cols;
+
+		public String getTableName() {
+			return tableName;
+		}
+
+		public void setTableName(String tableName) {
+			this.tableName = tableName;
+		}
+		
+		public List<AnonymisedColumnInfo> getCols() {
+			return cols;
+		}
+
+		public void setCols(List<AnonymisedColumnInfo> cols) {
+			this.cols = cols;
+		}
+
+		@Override
+		public boolean equals(Object obj) {
+		    if (obj == null) {
+		        return false;
+		    }
+		    if (getClass() != obj.getClass()) {
+		        return false;
+		    }
+		    final ReportItem other = (ReportItem) obj;
+		    if ((this.tableName == null) ? (other.tableName != null) : !this.tableName.equals(other.tableName)) {
+		        return false;
+		    }
+		    return true;
+		}
 	}
 }

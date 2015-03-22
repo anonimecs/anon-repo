@@ -28,37 +28,47 @@
 					</p:selectOneMenu>
 				
 					<p:commandButton value="Generate" action="#{reportBacking.generateReport()}" update="reportPanel"/>
-				
-					<h:commandLink>
-                		<p:graphicImage name="/resources/images/pdf.png" width="24"/>
-                		<h:outputText value="PDF Default"/>
-               			<p:dataExporter type="pdf" target="methodReportTable" fileName="anon_methods" 
-               				preProcessor="#{pdfProcessor.preProcessPDF}"/>
-            		</h:commandLink>
             		
+					<h:outputText value="Export: "/>            		
             		<p:commandLink id="generatePDF" ajax="false">
-            			<h:outputText value="PDF Custom"/>
+            			<h:graphicImage library="images" name="pdf.png" />
             			<f:setPropertyActionListener value="true" target="#{exporterController.customExporter}" />
-            			<pe:exporter type="pdf" target="methodReportTable" fileName="anon_methods"/>
+            			<pe:exporter type="pdf" target="methodReportTable" fileName="anon_methods" preProcessor="#{customPdfProcessor.preProcessPDF}" subTable="true" facetBackground="#F2F2F2"/>
             		</p:commandLink>
 				
 				</h:panelGrid>
 			
-				<p:dataTable id="methodReportTable" value="#{reportBacking.reportList}" var="col">
-				
-					<p:column headerText="Column name">
-						<h:outputText value="#{col.name}"/>
-					</p:column>
-					<p:column headerText="Column type">
-						<h:outputText value="#{col.type}"/>
-					</p:column>
-					<p:column headerText="Table name">
-						<h:outputText value="#{col.table.name}"/>
-					</p:column>
-					<p:column headerText="Method">
-						<h:outputText value="#{col.anonymisationMethod.type}"/>
-					</p:column>
+				<p:dataTable id="methodReportTable" value="#{reportBacking.reportList}" var="item">
 					
+					<p:columnGroup type="header">  
+						<p:row>
+							<p:column colspan="3" headerText="Table"/>
+						</p:row>
+				        <p:row>  
+				            <p:column headerText="Column name"/>  
+				            <p:column headerText="Column type"/>  
+				            <p:column headerText="Method"/>  
+				        </p:row>  
+				    </p:columnGroup>
+					
+					
+					<p:subTable var="col" value="#{item.cols}">
+						<f:facet name="header">  
+            				<h:outputText value="#{item.tableName}"/>  
+        				</f:facet>
+        				
+        				<p:column>
+							<h:outputText value="#{col.name}"/>
+						</p:column>
+						<p:column>
+							<h:outputText value="#{col.type}"/>
+						</p:column>
+						<p:column>
+							<h:outputText value="#{col.anonymisationMethod.type}"/>
+						</p:column>
+					
+					</p:subTable>
+
 				</p:dataTable>
 				
             

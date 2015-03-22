@@ -205,10 +205,10 @@ public class PDFCustomExporter extends Exporter {
 				return null;
 			}
 
-			pdfTable = new PdfPTable(columnsCount + 1);
+			pdfTable = new PdfPTable(columnsCount);
 
 			if (table.getHeader() != null) {
-				tableFacet(context, pdfTable, table, columnsCount + 1, "header");
+				tableFacet(context, pdfTable, table, columnsCount, "header");
 			}
 
 			if (hasHeaderColumn(table)) {
@@ -228,7 +228,7 @@ public class PDFCustomExporter extends Exporter {
 			}
 
 			if (table.getFooter() != null) {
-				tableFacet(context, pdfTable, table, columnsCount + 1, "footer");
+				tableFacet(context, pdfTable, table, columnsCount, "footer");
 			}
 
 			table.setRowIndex(-1);
