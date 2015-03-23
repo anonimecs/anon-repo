@@ -71,14 +71,14 @@ public class NoJenkinsConstraintManagerTest extends BaseParametrisedDbTest{
 	
 	@Test
 	public void testLoadConstraintsTo() {
-		List<? extends Constraint> incomingFk = constraintManager.loadForeignKeysTo(tableName, columnName, schema);
+		List<? extends ForeignKeyConstraint> incomingFk = constraintManager.loadForeignKeysTo(tableName, columnName, schema);
 		System.out.println("In:" + incomingFk);
 		Assert.assertEquals("number of constraints", incomingConstraints,  incomingFk.size());
 	}
 
 	@Test
 	public void testLoadConstraintsFrom() {
-		List<? extends Constraint> outFk = constraintManager.loadForeignKeysFrom(tableName, columnName, schema);
+		List<? extends ForeignKeyConstraint> outFk = constraintManager.loadForeignKeysFrom(tableName, columnName, schema);
 		System.out.println("OUT:" + outFk);
 		Assert.assertEquals("number of constraints", outgoingConstraints,  outFk.size());
 	}

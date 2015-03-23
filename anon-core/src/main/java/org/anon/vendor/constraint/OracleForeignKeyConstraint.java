@@ -4,13 +4,13 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 // TODO: support for multi column FKs
-public class OracleConstraint extends Constraint {
+public class OracleForeignKeyConstraint extends ForeignKeyConstraint {
 
 	private String sourceColumn;
 	private String targetColumn;
 
 	
-	public OracleConstraint(ResultSet rs) throws SQLException {
+	public OracleForeignKeyConstraint(ResultSet rs) throws SQLException {
 		constraintName = rs.getString("constraintName");
 		sourceTableName = rs.getString("sourceTableName");
 		targetTableName = rs.getString("targetTableName");

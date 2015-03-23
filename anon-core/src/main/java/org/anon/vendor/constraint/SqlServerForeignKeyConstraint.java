@@ -4,12 +4,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 // TODO support for multi col FKs
-public class SqlServerConstraint extends Constraint {
+public class SqlServerForeignKeyConstraint extends ForeignKeyConstraint {
 
 	private String sourceColumnName;
 	private String targetColumnName;
 	
-	public SqlServerConstraint(ResultSet rs) throws SQLException {
+	public SqlServerForeignKeyConstraint(ResultSet rs) throws SQLException {
 		constraintName = rs.getString("FK_CONSTRAINT_NAME");
 		sourceTableName = rs.getString("SOURCE_TABLE_NAME");
 		sourceColumnName = rs.getString("SOURCE_COLUMN_NAME");

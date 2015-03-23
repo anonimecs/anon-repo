@@ -78,7 +78,7 @@ public class ConstraintManagerMultiColTest extends BaseParametrisedDbTest{
 			dropMultiColumnTables();
 			createMultiColumnTables();
 			
-			List<? extends Constraint> fks = constraintManager.loadForeignKeysTo("TMP_TABLE_A", "COL1", schema);
+			List<? extends ForeignKeyConstraint> fks = constraintManager.loadForeignKeysTo("TMP_TABLE_A", "COL1", schema);
 			Assert.assertEquals("number of loadForeignKeysTo", 1,  fks.size());
 			fks = constraintManager.loadForeignKeysTo("TMP_TABLE_A", "COL2", schema);
 			Assert.assertEquals("number of loadForeignKeysTo", 1,  fks.size());

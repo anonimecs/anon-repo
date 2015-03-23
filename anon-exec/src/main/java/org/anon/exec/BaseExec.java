@@ -14,7 +14,7 @@ import org.anon.license.LicenseException;
 import org.anon.license.LicenseManager;
 import org.anon.logic.AnonymisationMethod;
 import org.anon.service.DbConnectionFactory;
-import org.anon.vendor.constraint.Constraint;
+import org.anon.vendor.constraint.ForeignKeyConstraint;
 import org.anon.vendor.constraint.ConstraintManager;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -91,7 +91,7 @@ public abstract class BaseExec {
 				methodExecution.startedCol(col);
 				addMessage(methodExecution, col, new ExecutionMessage("Deacivating constraints", null));
 				ConstraintManager constraintManager = getConstraintManager(dataSource);
-				List<? extends Constraint> deactivatedContstraints = constraintManager.deactivateConstraints(col);
+				List<? extends ForeignKeyConstraint> deactivatedContstraints = constraintManager.deactivateConstraints(col);
 				addMessage(methodExecution, col, new ExecutionMessage("Deacivated constraints", deactivatedContstraints.size()));
 
 				ExecutionMessage runResult;
@@ -139,8 +139,8 @@ public abstract class BaseExec {
 		
 	}
 	
-	private void showConstaintProblems(AnonymisedColumnInfo col, MethodExecution methodExecution,List<? extends Constraint> deactivatedContstraints) {
-		for (Constraint constraint : deactivatedContstraints) {
+	private void showConstaintProblems(AnonymisedColumnInfo col, MethodExecution methodExecution,List<? extends ForeignKeyConstraint> deactivatedContstraints) {
+		for (ForeignKeyConstraint constraint : deactivatedContstraints) {
 			if(! constraint.isActive()){
 				methodExecution.addMessage(col, new ExecutionMessage(constraint.getMessage(), null));
 			}
