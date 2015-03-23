@@ -7,23 +7,12 @@ import org.apache.commons.lang.builder.ToStringStyle;
 
 
 
-public abstract class ForeignKeyConstraint {
+public abstract class ForeignKeyConstraint extends Constraint{
 
-	private boolean active = true;
-	private String message = null;
-	
-	protected String constraintName;
 	protected String sourceTableName;
 	protected String targetTableName;
 
 	
-	public void setActive(boolean active) {
-		this.active = active;
-	}
-	
-	public boolean isActive() {
-		return active;
-	}
 	
 	@Override
 	public String toString() {
@@ -36,13 +25,6 @@ public abstract class ForeignKeyConstraint {
 		}
 	}
 	
-	public void setMessage(String message) {
-		this.message = message;
-	}
-	
-	public String getMessage() {
-		return message;
-	}
 	
 	public boolean isMultiColumnReferentialConstraint(){
 		return getSourceColumnNames().length > 1;
@@ -69,8 +51,6 @@ public abstract class ForeignKeyConstraint {
 	}
 
 	
-	abstract public String createActivateSql();
-	abstract public String createDeactivateSql();
 	
 	abstract public String[] getSourceColumnNames();
 	abstract public String[] getTargetColumnNames();

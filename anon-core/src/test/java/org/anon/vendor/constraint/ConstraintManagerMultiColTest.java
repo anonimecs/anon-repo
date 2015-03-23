@@ -25,12 +25,12 @@ import org.springframework.test.context.ContextConfiguration;
 @ContextConfiguration("classpath:spring-test-datasources.xml")
 public class ConstraintManagerMultiColTest extends BaseParametrisedDbTest{
 
-	private ConstraintManager constraintManager;
-	private Class<ConstraintManager> constraintManagerClass;
+	private ForeignKeyConstraintManager constraintManager;
+	private Class<ForeignKeyConstraintManager> constraintManagerClass;
 	private String schema;
 	private DatabaseSpecifics databaseSpecifics;
 	
-	public ConstraintManagerMultiColTest(Class<ConstraintManager> constraintManagerClass,  String schema, DatabaseSpecifics databaseSpecifics) {
+	public ConstraintManagerMultiColTest(Class<ForeignKeyConstraintManager> constraintManagerClass,  String schema, DatabaseSpecifics databaseSpecifics) {
 		super();
 		this.constraintManagerClass = constraintManagerClass;
 		this.schema = schema;

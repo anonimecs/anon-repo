@@ -8,7 +8,7 @@ import javax.sql.DataSource;
 
 import org.springframework.jdbc.core.RowMapper;
 
-public class MySqlConstraintManager extends ConstraintManager<MySqlForeignKeyConstraint> {
+public class MySqlConstraintManager extends ForeignKeyConstraintManager<MySqlForeignKeyConstraint> {
 	public MySqlConstraintManager(DataSource dataSource) {
 		super(dataSource);
 	}
