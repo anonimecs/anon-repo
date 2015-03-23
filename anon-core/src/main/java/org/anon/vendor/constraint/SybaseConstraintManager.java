@@ -10,22 +10,22 @@ import javax.sql.DataSource;
 
 import org.springframework.jdbc.core.RowMapper;
 
-public class SybaseConstraintManager extends ConstraintManager<SybaseConstraint> {
+public class SybaseConstraintManager extends ConstraintManager<SybaseForeignKeyConstraint> {
 	public SybaseConstraintManager(DataSource dataSource) {
 		super(dataSource);
 	}
 
 
 	@SuppressWarnings("unchecked")
-	protected List<SybaseConstraint> spHelpconstraint(String tableName, String schema) {
+	protected List<SybaseForeignKeyConstraint> spHelpconstraint(String tableName, String schema) {
 		jdbcTemplate.execute("use " + schema);
 		String sp_helpconstraint = "sp_helpconstraint '" + tableName + "', 'detail'";
 		try {
-			List<SybaseConstraint> allConstraints = jdbcTemplate.query(sp_helpconstraint, new RowMapper<SybaseConstraint>(){
+			List<SybaseForeignKeyConstraint> allConstraints = jdbcTemplate.query(sp_helpconstraint, new RowMapper<SybaseForeignKeyConstraint>(){
 				@Override
-				public SybaseConstraint mapRow(ResultSet rs, int rowNum) throws SQLException {
+				public SybaseForeignKeyConstraint mapRow(ResultSet rs, int rowNum) throws SQLException {
 					try {
-						return new SybaseConstraint(rs);
+						return new SybaseForeignKeyConstraint(rs);
 					} catch (Exception e) {
 						logger.error("deactivateConstraints failed", e);
 						return null;
@@ -37,16 +37,16 @@ public class SybaseConstraintManager extends ConstraintManager<SybaseConstraint>
 		} catch (Exception e) {
 			// sybase sp_helpconstraint fails for tables with no constraints
 			logger.error("Probably unconstrained table. Failed " + sp_helpconstraint, e);
-			return (List<SybaseConstraint>)Collections.EMPTY_LIST;
+			return (List<SybaseForeignKeyConstraint>)Collections.EMPTY_LIST;
 		}
 	}
 	
 	@Override
-	protected List<SybaseConstraint> loadForeignKeysTo(String tableName, String columnName, String schema) {
-		List<SybaseConstraint> allConstraints = spHelpconstraint(tableName, schema);
+	protected List<SybaseForeignKeyConstraint> loadForeignKeysTo(String tableName, String columnName, String schema) {
+		List<SybaseForeignKeyConstraint> allConstraints = spHelpconstraint(tableName, schema);
 
-		List<SybaseConstraint> res = new ArrayList<>();
-		for(SybaseConstraint sybaseConstraint:allConstraints){
+		List<SybaseForeignKeyConstraint> res = new ArrayList<>();
+		for(SybaseForeignKeyConstraint sybaseConstraint:allConstraints){
 			if(sybaseConstraint != null && sybaseConstraint.isReferentialConstraint() 
 					&& sybaseConstraint.getTargetTableName().equalsIgnoreCase(tableName)
 					&& sybaseConstraint.containsTargetColumn(columnName)){
@@ -57,11 +57,11 @@ public class SybaseConstraintManager extends ConstraintManager<SybaseConstraint>
 	}
 	
 	@Override
-	protected List<SybaseConstraint> loadForeignKeysFrom(String tableName, String columnName, String schema) {
-		List<SybaseConstraint> allConstraints = spHelpconstraint(tableName, schema);
+	protected List<SybaseForeignKeyConstraint> loadForeignKeysFrom(String tableName, String columnName, String schema) {
+		List<SybaseForeignKeyConstraint> allConstraints = spHelpconstraint(tableName, schema);
 
-		List<SybaseConstraint> res = new ArrayList<>();
-		for(SybaseConstraint sybaseConstraint:allConstraints){
+		List<SybaseForeignKeyConstraint> res = new ArrayList<>();
+		for(SybaseForeignKeyConstraint sybaseConstraint:allConstraints){
 			if(sybaseConstraint != null && sybaseConstraint.isReferentialConstraint() 
 					&& sybaseConstraint.getSourceTableName().equalsIgnoreCase(tableName)
 					&& sybaseConstraint.containsSourceColumn(columnName)){

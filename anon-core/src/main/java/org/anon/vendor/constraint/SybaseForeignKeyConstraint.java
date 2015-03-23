@@ -3,7 +3,7 @@ package org.anon.vendor.constraint;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class SybaseConstraint extends Constraint {
+public class SybaseForeignKeyConstraint extends ForeignKeyConstraint {
 	
 	/** example: referential constraint */
 	private String type; 
@@ -12,7 +12,7 @@ public class SybaseConstraint extends Constraint {
 	
 	
 	
-	public SybaseConstraint(ResultSet rs) throws SQLException {
+	public SybaseForeignKeyConstraint(ResultSet rs) throws SQLException {
 		type = rs.getString("type");
 		definition = rs.getString("definition");
 

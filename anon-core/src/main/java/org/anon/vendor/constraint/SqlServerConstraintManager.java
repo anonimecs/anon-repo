@@ -8,13 +8,13 @@ import javax.sql.DataSource;
 
 import org.springframework.jdbc.core.RowMapper;
 
-public class SqlServerConstraintManager extends ConstraintManager<SqlServerConstraint> {
+public class SqlServerConstraintManager extends ConstraintManager<SqlServerForeignKeyConstraint> {
 	public SqlServerConstraintManager(DataSource dataSource) {
 		super(dataSource);
 	}
 
 	@Override
-	protected List<SqlServerConstraint> loadForeignKeysFrom(String tableName, String columnName, String schema) {
+	protected List<SqlServerForeignKeyConstraint> loadForeignKeysFrom(String tableName, String columnName, String schema) {
 		String SQL = " SELECT                                                             "+
 		" column1.CONSTRAINT_NAME AS FK_CONSTRAINT_NAME                                           "+
 		" ,column1.TABLE_NAME AS SOURCE_TABLE_NAME                                                "+
@@ -36,7 +36,7 @@ public class SqlServerConstraintManager extends ConstraintManager<SqlServerConst
 	}
 	
 	@Override
-	protected List<SqlServerConstraint> loadForeignKeysTo(String tableName, String columnName, String schema) {
+	protected List<SqlServerForeignKeyConstraint> loadForeignKeysTo(String tableName, String columnName, String schema) {
 		String SQL = " SELECT                                                             "+
 		" column1.CONSTRAINT_NAME AS FK_CONSTRAINT_NAME                                           "+
 		" ,column1.TABLE_NAME AS SOURCE_TABLE_NAME                                                "+
@@ -57,14 +57,14 @@ public class SqlServerConstraintManager extends ConstraintManager<SqlServerConst
 		return doloadConstraints(SQL, tableName, columnName, schema);	}
 	
 
-	private List<SqlServerConstraint> doloadConstraints(String sql, String tableName, String columnName, String schema) {
+	private List<SqlServerForeignKeyConstraint> doloadConstraints(String sql, String tableName, String columnName, String schema) {
 
-		List<SqlServerConstraint> constraints = jdbcTemplate.query(sql, new Object [] {tableName, columnName}, 
-				new RowMapper<SqlServerConstraint>(){
+		List<SqlServerForeignKeyConstraint> constraints = jdbcTemplate.query(sql, new Object [] {tableName, columnName}, 
+				new RowMapper<SqlServerForeignKeyConstraint>(){
 					@Override
-					public SqlServerConstraint mapRow(ResultSet rs, int rowNum) throws SQLException {
+					public SqlServerForeignKeyConstraint mapRow(ResultSet rs, int rowNum) throws SQLException {
 						try {
-							return new SqlServerConstraint(rs);
+							return new SqlServerForeignKeyConstraint(rs);
 						} catch (Exception e) {
 							logger.error("deactivateConstraints failed", e);
 							return null;

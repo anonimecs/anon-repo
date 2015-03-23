@@ -3,12 +3,12 @@ package org.anon.vendor.constraint;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class MySqlConstraint extends Constraint {
+public class MySqlForeignKeyConstraint extends ForeignKeyConstraint {
 
 	private String sourceColumns;
 	private String targetColumns;
 	
-	public MySqlConstraint(ResultSet rs) throws SQLException {
+	public MySqlForeignKeyConstraint(ResultSet rs) throws SQLException {
 		constraintName = rs.getString("CONSTRAINT_NAME");
 		sourceTableName = rs.getString("TABLE_NAME");
 		targetTableName = rs.getString("REFERENCED_TABLE_NAME");

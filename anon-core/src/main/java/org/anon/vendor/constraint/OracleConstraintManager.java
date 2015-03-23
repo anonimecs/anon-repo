@@ -8,14 +8,14 @@ import javax.sql.DataSource;
 
 import org.springframework.jdbc.core.RowMapper;
 
-public class OracleConstraintManager extends ConstraintManager<OracleConstraint> {
+public class OracleConstraintManager extends ConstraintManager<OracleForeignKeyConstraint> {
 	
 	public OracleConstraintManager(DataSource dataSource) {
 		super(dataSource);
 	}
 
 	@Override
-	protected List<OracleConstraint> loadForeignKeysFrom(String tableName, String columnName, String schema) {
+	protected List<OracleForeignKeyConstraint> loadForeignKeysFrom(String tableName, String columnName, String schema) {
 		String SQL = "SELECT sourceColumn.table_name sourceTableName, sourceColumn.column_name sourceColumnName, sourceColumn.constraint_name constraintName,                              "+
 		" targetConstraint.table_name targetTableName, targetCoumn.COLUMN_NAME targetColumnName                                                                               "+
 		" FROM all_cons_columns sourceColumn                                                                                                                                  "+
@@ -28,7 +28,7 @@ public class OracleConstraintManager extends ConstraintManager<OracleConstraint>
 	}
 	
 	@Override
-	protected List<OracleConstraint> loadForeignKeysTo(String tableName, String columnName, String schema) {
+	protected List<OracleForeignKeyConstraint> loadForeignKeysTo(String tableName, String columnName, String schema) {
 		String SQL = "SELECT sourceColumn.table_name sourceTableName, sourceColumn.column_name sourceColumnName, sourceColumn.constraint_name constraintName,                              "+
 		" targetConstraint.table_name targetTableName, targetCoumn.COLUMN_NAME targetColumnName                                                                               "+
 		" FROM all_cons_columns sourceColumn                                                                                                                                  "+
@@ -40,13 +40,13 @@ public class OracleConstraintManager extends ConstraintManager<OracleConstraint>
 		return doLoad(tableName, columnName, schema, SQL);
 	}
 
-	protected List<OracleConstraint> doLoad(String tableName, String columnName, String schema, String sql_select) {
-		List<OracleConstraint> constraints = jdbcTemplate.query(sql_select, new Object [] {tableName, columnName, schema}, 
-		new RowMapper<OracleConstraint>(){
+	protected List<OracleForeignKeyConstraint> doLoad(String tableName, String columnName, String schema, String sql_select) {
+		List<OracleForeignKeyConstraint> constraints = jdbcTemplate.query(sql_select, new Object [] {tableName, columnName, schema}, 
+		new RowMapper<OracleForeignKeyConstraint>(){
 			@Override
-			public OracleConstraint mapRow(ResultSet rs, int rowNum) throws SQLException {
+			public OracleForeignKeyConstraint mapRow(ResultSet rs, int rowNum) throws SQLException {
 				try {
-					return new OracleConstraint(rs);
+					return new OracleForeignKeyConstraint(rs);
 				} catch (Exception e) {
 					logger.error("constraint loading failed", e);
 					return null;

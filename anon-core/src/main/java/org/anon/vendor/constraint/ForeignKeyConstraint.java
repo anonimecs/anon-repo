@@ -7,7 +7,7 @@ import org.apache.commons.lang.builder.ToStringStyle;
 
 
 
-public abstract class Constraint {
+public abstract class ForeignKeyConstraint {
 
 	private boolean active = true;
 	private String message = null;

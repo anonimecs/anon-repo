@@ -13,7 +13,7 @@ import org.anon.data.DatabaseColumnInfo;
 import org.anon.data.DatabaseTableInfo;
 import org.anon.data.RelatedTableColumnInfo;
 import org.anon.data.RelatedTableColumnInfo.Relation;
-import org.anon.vendor.constraint.SqlServerConstraint;
+import org.anon.vendor.constraint.SqlServerForeignKeyConstraint;
 import org.anon.vendor.constraint.SqlServerConstraintManager;
 import org.springframework.jdbc.core.RowMapper;
 
@@ -96,9 +96,9 @@ public class SqlServerDbConnection extends AbstractDbConnection {
 	protected Collection<RelatedTableColumnInfo> findRelatedTablesByForeignKey(DatabaseTableInfo editedTable,
 			DatabaseColumnInfo editedColumn) {
 		SqlServerConstraintManager sqlServerConstraintManager = new SqlServerConstraintManager(getDataSource());
-		List<SqlServerConstraint> fkList = sqlServerConstraintManager.loadConstraints(editedTable.getName(),editedColumn.getName(), editedTable.getSchema());
+		List<SqlServerForeignKeyConstraint> fkList = sqlServerConstraintManager.loadForeignKeys(editedTable.getName(),editedColumn.getName(), editedTable.getSchema());
 		Collection<RelatedTableColumnInfo> res = new ArrayList<>();
-		for (SqlServerConstraint constraint: fkList) {
+		for (SqlServerForeignKeyConstraint constraint: fkList) {
 			if(constraint.getSourceColumnName().equals(editedColumn.getName())){
 				res.add(new RelatedTableColumnInfo(constraint.getSourceColumnName(), constraint.getSourceTableName(), Relation.ForeignKey));
 				// TODO: add suport for multi column FKs 

@@ -8,7 +8,7 @@ import org.anon.data.AnonymisedColumnInfo;
 import org.apache.log4j.Logger;
 import org.springframework.jdbc.core.JdbcTemplate;
 
-public abstract class ConstraintManager <C extends Constraint>{
+public abstract class ConstraintManager <C extends ForeignKeyConstraint>{
 	protected Logger logger = Logger.getLogger(getClass());
 
 	protected JdbcTemplate jdbcTemplate;
@@ -18,11 +18,11 @@ public abstract class ConstraintManager <C extends Constraint>{
 	}
 
 	public List<C> deactivateConstraints(AnonymisedColumnInfo anonymisedColumnInfo) {
-		List<C> referentialConstraints = loadConstraints(anonymisedColumnInfo.getTable().getName(),
+		List<C> referentialConstraints = loadForeignKeys(anonymisedColumnInfo.getTable().getName(),
 																			anonymisedColumnInfo.getName(),
 																			anonymisedColumnInfo.getTable().getSchema());
 		
-		for(Constraint constraint:referentialConstraints){
+		for(ForeignKeyConstraint constraint:referentialConstraints){
 			String dropConstraint = constraint.createDeactivateSql();
 			logger.debug(dropConstraint);
 			jdbcTemplate.update(dropConstraint);
@@ -51,7 +51,7 @@ public abstract class ConstraintManager <C extends Constraint>{
 	}
 	
 
-	public List<C> loadConstraints(String tableName, String columnName, String schema){
+	public List<C> loadForeignKeys(String tableName, String columnName, String schema){
 		List<C> res= loadForeignKeysTo(tableName, columnName, schema);
 		res.addAll(loadForeignKeysFrom(tableName, columnName, schema));
 		return res;
