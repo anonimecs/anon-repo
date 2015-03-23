@@ -4,11 +4,12 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:p="http://primefaces.org/ui"
 	xmlns:h="http://java.sun.com/jsf/html">
-<f:view contentType="text/html">
 
 	<h:head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-		<title><ui:insert name="insert-headtitle">Anon Application</ui:insert></title>
+		<title>
+			<h:outputText value="Anon Application - Login"/>
+		</title>
 		<h:outputStylesheet library="css" name="basic.css" />
 	</h:head>
 
@@ -39,5 +40,5 @@
 	     </h:form>
 		 
 	</h:body>
-</f:view>
+
 </html>
