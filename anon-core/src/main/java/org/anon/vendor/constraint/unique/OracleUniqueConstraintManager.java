@@ -8,13 +8,13 @@ import javax.sql.DataSource;
 
 import org.springframework.jdbc.core.RowMapper;
 
-public class MySqlUniqueConstraintManager extends UniqueConstraintManager<UniqueConstraint> {
+public class OracleUniqueConstraintManager extends UniqueConstraintManager<UniqueConstraint> {
 	
 
-	private static final String CONSTRAINT_TYPE_UNIQUE = "UNIQUE";
-	private static final String CONSTRAINT_TYPE_PK = "PRIMARY KEY";
+	private static final String CONSTRAINT_TYPE_UNIQUE = "U";
+	private static final String CONSTRAINT_TYPE_PK = "P";
 
-	public MySqlUniqueConstraintManager(DataSource dataSource) {
+	public OracleUniqueConstraintManager(DataSource dataSource) {
 		super(dataSource);
 	}
 
@@ -34,11 +34,10 @@ public class MySqlUniqueConstraintManager extends UniqueConstraintManager<Unique
 	}
 	
 	public List<UniqueConstraint> loadTableConstraints(final String tableName, String schemaName, String constraintType, RowMapper<UniqueConstraint> mapper) {
-		String sql_select = "select GROUP_CONCAT(cu.COLUMN_NAME)  as COLUMN_NAMES, tc.CONSTRAINT_NAME from "+
-							" information_schema.table_constraints tc "+
-							" join information_schema.key_column_usage cu on tc.CONSTRAINT_SCHEMA = cu.CONSTRAINT_SCHEMA and tc.CONSTRAINT_CATALOG = cu.CONSTRAINT_CATALOG  "+
-							" and tc.CONSTRAINT_NAME = cu.CONSTRAINT_NAME and tc.TABLE_SCHEMA = cu.TABLE_SCHEMA and tc.TABLE_NAME = cu.TABLE_NAME "+
-							" where  tc.CONSTRAINT_TYPE = ? and tc.CONSTRAINT_SCHEMA =  ? and tc.TABLE_NAME=? group by tc.CONSTRAINT_NAME";
+		String sql_select = "select listagg(cols.COLUMN_NAME, ',') WITHIN GROUP (ORDER BY cols.COLUMN_NAME) as COLUMN_NAMES, cons.CONSTRAINT_NAME "+
+							" from ALL_CONSTRAINTS cons  "+
+							" join ALL_CONS_COLUMNS cols on cons.OWNER = cols.OWNER and cons.CONSTRAINT_NAME = cols.CONSTRAINT_NAME "+
+							" where cons.CONSTRAINT_TYPE = ? and cons.OWNER = ? and cons.TABLE_NAME = ? group by cons.CONSTRAINT_NAME";
 		
 		List<UniqueConstraint> allTableUniqeConstraints = jdbcTemplate.query(sql_select, new Object [] {constraintType, schemaName, tableName}, mapper);
 		
@@ -55,9 +54,9 @@ public class MySqlUniqueConstraintManager extends UniqueConstraintManager<Unique
 		}
 
 		@Override
-		public MySqlUniqueConstraint mapRow(ResultSet rs, int rowNum) throws SQLException {
+		public OracleUniqueConstraint mapRow(ResultSet rs, int rowNum) throws SQLException {
 			try {
-				MySqlUniqueConstraint constraint = new MySqlUniqueConstraint(rs, tableName);
+				OracleUniqueConstraint constraint = new OracleUniqueConstraint(rs, tableName);
 				return constraint;
 			} catch (Exception e) {
 				logger.error("deactivateConstraints failed", e);
@@ -74,9 +73,9 @@ public class MySqlUniqueConstraintManager extends UniqueConstraintManager<Unique
 		}
 
 		@Override
-		public MySqlPrimaryKeyConstraint mapRow(ResultSet rs, int rowNum) throws SQLException {
+		public OraclePrimaryKeyConstraint mapRow(ResultSet rs, int rowNum) throws SQLException {
 			try {
-				MySqlPrimaryKeyConstraint constraint = new MySqlPrimaryKeyConstraint(rs, tableName);
+				OraclePrimaryKeyConstraint constraint = new OraclePrimaryKeyConstraint(rs, tableName);
 				return constraint;
 			} catch (Exception e) {
 				logger.error("deactivateConstraints failed", e);
