@@ -4,10 +4,25 @@ COL2 varchar(50) not null,
 constraint someUniqueConst unique(COL1, COL2)
 );
 
-insert into TMP_TABLE_A values ('AAA', 'AAA');
-insert into TMP_TABLE_A values ('BBB', 'BBB');
-insert into TMP_TABLE_A values ('CCC', 'CCC');
-
 create table TMP_TABLE_B(
-COL1_REF varchar(50) not null unique
+COL1 varchar(50) not null unique
 );
+
+create table TMP_TABLE_C(
+COL1 varchar(50) not null
+);
+
+create table TMP_TABLE_D(
+COL1 varchar(50) not null,
+COL2 varchar(50) not null,
+PRIMARY KEY(COL1, COL2)
+);
+
+create table TMP_TABLE_E(
+COL1 varchar(50) not null primary key
+);
+
+create table TMP_TABLE_F(
+COL1 varchar(50)
+);
+

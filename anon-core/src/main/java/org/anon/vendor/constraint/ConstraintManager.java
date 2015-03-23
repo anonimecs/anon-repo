@@ -4,7 +4,6 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
-import org.anon.data.AnonymisedColumnInfo;
 import org.apache.log4j.Logger;
 import org.springframework.jdbc.core.JdbcTemplate;
 
@@ -17,10 +16,8 @@ public abstract class ConstraintManager <C extends Constraint>{
 		this.jdbcTemplate = new JdbcTemplate(dataSource);
 	}
 
-	public List<C> deactivateConstraints(AnonymisedColumnInfo anonymisedColumnInfo) {
-		List<C> constraints = loadConstraints(anonymisedColumnInfo.getTable().getName(),
-																			anonymisedColumnInfo.getName(),
-																			anonymisedColumnInfo.getTable().getSchema());
+	public List<C> deactivateConstraints(String tableName, String columnName, String schemaName) {
+		List<C> constraints = loadConstraints(tableName, columnName,schemaName);
 		
 		for(C constraint:constraints){
 			String dropConstraint = constraint.createDeactivateSql();
@@ -32,7 +29,7 @@ public abstract class ConstraintManager <C extends Constraint>{
 		return constraints;
 	}
 
-	public void activateConstraints(AnonymisedColumnInfo anonymisedColumnInfo, List<C> constraints) {
+	public void activateConstraints(List<C> constraints) {
 		
 		for(C constraint:constraints){
 			if(!constraint.isActive()){

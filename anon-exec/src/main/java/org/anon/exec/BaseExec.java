@@ -91,7 +91,7 @@ public abstract class BaseExec {
 				methodExecution.startedCol(col);
 				addMessage(methodExecution, col, new ExecutionMessage("Deacivating constraints", null));
 				ForeignKeyConstraintManager constraintManager = getConstraintManager(dataSource);
-				List<? extends ForeignKeyConstraint> deactivatedContstraints = constraintManager.deactivateConstraints(col);
+				List<? extends ForeignKeyConstraint> deactivatedContstraints = constraintManager.deactivateConstraints(col.getTable().getName(), col.getName(), col.getTable().getSchema());
 				addMessage(methodExecution, col, new ExecutionMessage("Deacivated constraints", deactivatedContstraints.size()));
 
 				ExecutionMessage runResult;
@@ -101,7 +101,7 @@ public abstract class BaseExec {
 				}
 				finally{
 					addMessage(methodExecution, col, new ExecutionMessage("Reacivating constraints", deactivatedContstraints.size()));
-					constraintManager.activateConstraints(col, deactivatedContstraints);
+					constraintManager.activateConstraints(deactivatedContstraints);
 					showConstaintProblems(col, methodExecution, deactivatedContstraints);
 				}
 				methodExecution.finishedCol(col,runResult);
