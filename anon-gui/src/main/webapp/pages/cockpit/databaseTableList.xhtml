@@ -45,7 +45,8 @@
 						
 						<p:column headerText="Table" filterBy="#{databaseTableInfo.name}" filterMatchMode="contains" sortBy="#{databaseTableInfo.name}" width="200">
 		        			<h:outputText value="#{databaseTableInfo.name}" />
-							<p:tooltip for="@(.myTable tr[role=row][data-ri=#{rowIndex}])" rendered="#{not empty databaseTableInfo.getActiveAnonCandidateList()}">
+							<p:tooltip for="@(.myTable tr[role=row][data-ri=#{rowIndex}])" rendered="#{not empty databaseTableInfo.getActiveAnonCandidateList()}"
+								trackMouse="true">
 								<p:dataList value="#{databaseTableInfo.getAnonCandidateList()}" var="anonCandidate">
 									<f:facet name="header">
                     					<h:outputText value="Anonymisation Suggestions"/>
