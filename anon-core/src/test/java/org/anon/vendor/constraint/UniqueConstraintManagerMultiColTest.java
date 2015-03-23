@@ -14,6 +14,7 @@ import org.anon.vendor.DatabaseSpecifics;
 import org.anon.vendor.constraint.unique.MySqlUniqueConstraintManager;
 import org.anon.vendor.constraint.unique.UniqueConstraint;
 import org.anon.vendor.constraint.unique.UniqueConstraintManager;
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -46,7 +47,12 @@ public class UniqueConstraintManagerMultiColTest extends BaseParametrisedDbTest{
 
 	    DataSource dataSource = getDataSource();
 	    constraintManager = constraintManagerClass.getConstructor(DataSource.class).newInstance(new Object[] {dataSource});
+	    
+		dropMultiColumnTables();
+		createMultiColumnTables();
+
 	}
+	
 
 	@Override
 	protected DataSource getDataSource() {
@@ -59,7 +65,8 @@ public class UniqueConstraintManagerMultiColTest extends BaseParametrisedDbTest{
 	    new TestTableCreatorSupport().runScript(new JdbcTemplate(dataSource), "/MULTI_COL_UNIQUE_TABLES.sql", databaseSpecifics.getUseSchemaSql(schema));
 	}
 	
-	private void dropMultiColumnTables() throws IOException{
+	@After
+	public void dropMultiColumnTables() throws IOException{
 	    DataSource dataSource = getDataSource();
 	    new TestTableDropSupport().runScript(new JdbcTemplate(dataSource), "/MULTI_COL_UNIQUE_TABLES_DROP.sql", databaseSpecifics.getUseSchemaSql(schema));
 	}
@@ -76,35 +83,56 @@ public class UniqueConstraintManagerMultiColTest extends BaseParametrisedDbTest{
 	}
 	
 	@Test
-	public void testMultiColumn() throws IOException {
-		try{
-			dropMultiColumnTables();
-			createMultiColumnTables();
-			
-			List<? extends UniqueConstraint> constraints = constraintManager.loadConstraints("TMP_TABLE_A", "COL1", schema);
+	public void testMultiColumnUnique() throws IOException {
+			List<? extends UniqueConstraint> constraints = constraintManager.loadUniques("TMP_TABLE_A", "COL1", schema);
 			Assert.assertEquals("loaded 1 constraint", 1,  constraints.size());
 			Assert.assertEquals("has 2 cols", 2, constraints.get(0).getColumNames().size());
-		}
-		finally{
-			dropMultiColumnTables();
-		}
+			List<UniqueConstraint> deactivated = constraintManager.deactivateConstraints("TMP_TABLE_A", "COL1", schema);
+			constraintManager.activateConstraints(deactivated);
 		
 	}
 
 	@Test
-	public void test() throws IOException {
-		try{
-			dropMultiColumnTables();
-			createMultiColumnTables();
-			
-			List<? extends UniqueConstraint> constraints = constraintManager.loadConstraints("TMP_TABLE_B", "COL1_REF", schema);
+	public void testUnique() throws IOException {
+			List<? extends UniqueConstraint> constraints = constraintManager.loadUniques("TMP_TABLE_B", "COL1", schema);
 			Assert.assertEquals("loaded 1 constraint", 1,  constraints.size());
 			Assert.assertEquals("has 1 cols", false, constraints.get(0).isMultiCol());
-		}
-		finally{
-			dropMultiColumnTables();
-		}
+			List<UniqueConstraint> deactivated = constraintManager.deactivateConstraints("TMP_TABLE_B", "COL1", schema);
+			constraintManager.activateConstraints(deactivated);
+	}
+
+	@Test
+	public void testNoUnique() throws IOException {
+			
+			List<? extends UniqueConstraint> constraints = constraintManager.loadUniques("TMP_TABLE_C", "COL1", schema);
+			Assert.assertEquals("loaded 0 constraint", 0,  constraints.size());
+	}
+
+	
+	@Test
+	public void testMultiColumnPk() throws IOException {
+			List<? extends UniqueConstraint> constraints = constraintManager.loadPrimaryKeys("TMP_TABLE_D", "COL1", schema);
+			Assert.assertEquals("loaded 1 constraint", 1,  constraints.size());
+			Assert.assertEquals("has 2 cols", 2, constraints.get(0).getColumNames().size());
+			List<UniqueConstraint> deactivated = constraintManager.deactivateConstraints("TMP_TABLE_D", "COL1", schema);
+			constraintManager.activateConstraints(deactivated);
 		
+	}
+
+	@Test
+	public void testPk() throws IOException {
+			List<? extends UniqueConstraint> constraints = constraintManager.loadPrimaryKeys("TMP_TABLE_E", "COL1", schema);
+			Assert.assertEquals("loaded 1 constraint", 1,  constraints.size());
+			Assert.assertEquals("has 1 cols", false, constraints.get(0).isMultiCol());
+			List<UniqueConstraint> deactivated = constraintManager.deactivateConstraints("TMP_TABLE_E", "COL1", schema);
+			constraintManager.activateConstraints(deactivated);
+	}
+
+	@Test
+	public void testNoPk() throws IOException {
+			
+			List<? extends UniqueConstraint> constraints = constraintManager.loadPrimaryKeys("TMP_TABLE_F", "COL1", schema);
+			Assert.assertEquals("loaded 0 constraint", 0,  constraints.size());
 	}
 
 	
