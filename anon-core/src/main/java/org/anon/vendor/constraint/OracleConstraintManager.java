@@ -8,7 +8,7 @@ import javax.sql.DataSource;
 
 import org.springframework.jdbc.core.RowMapper;
 
-public class OracleConstraintManager extends ConstraintManager<OracleForeignKeyConstraint> {
+public class OracleConstraintManager extends ForeignKeyConstraintManager<OracleForeignKeyConstraint> {
 	
 	public OracleConstraintManager(DataSource dataSource) {
 		super(dataSource);

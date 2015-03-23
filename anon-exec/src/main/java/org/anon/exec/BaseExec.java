@@ -15,7 +15,7 @@ import org.anon.license.LicenseManager;
 import org.anon.logic.AnonymisationMethod;
 import org.anon.service.DbConnectionFactory;
 import org.anon.vendor.constraint.ForeignKeyConstraint;
-import org.anon.vendor.constraint.ConstraintManager;
+import org.anon.vendor.constraint.ForeignKeyConstraintManager;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -90,7 +90,7 @@ public abstract class BaseExec {
 				assertFreeEditionRunCount();
 				methodExecution.startedCol(col);
 				addMessage(methodExecution, col, new ExecutionMessage("Deacivating constraints", null));
-				ConstraintManager constraintManager = getConstraintManager(dataSource);
+				ForeignKeyConstraintManager constraintManager = getConstraintManager(dataSource);
 				List<? extends ForeignKeyConstraint> deactivatedContstraints = constraintManager.deactivateConstraints(col);
 				addMessage(methodExecution, col, new ExecutionMessage("Deacivated constraints", deactivatedContstraints.size()));
 
@@ -155,7 +155,7 @@ public abstract class BaseExec {
 	}
 
 	
-	protected abstract ConstraintManager getConstraintManager(DataSource dataSource);
+	protected abstract ForeignKeyConstraintManager getConstraintManager(DataSource dataSource);
 	
 	public String getUserName() {
 		return userName;

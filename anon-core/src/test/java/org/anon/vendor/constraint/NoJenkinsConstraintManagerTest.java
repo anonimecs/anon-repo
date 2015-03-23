@@ -21,15 +21,15 @@ import org.springframework.test.context.ContextConfiguration;
 public class NoJenkinsConstraintManagerTest extends BaseParametrisedDbTest{
 
 	
-	private ConstraintManager constraintManager;
-	private Class<ConstraintManager> constraintManagerClass;
+	private ForeignKeyConstraintManager constraintManager;
+	private Class<ForeignKeyConstraintManager> constraintManagerClass;
 	private String tableName;
 	private String columnName;
 	private String schema;
 	private int incomingConstraints;
 	private int outgoingConstraints;
 	
-	public NoJenkinsConstraintManagerTest(Class<ConstraintManager> constraintManagerClass, String tableName, String columnName, String schema, 
+	public NoJenkinsConstraintManagerTest(Class<ForeignKeyConstraintManager> constraintManagerClass, String tableName, String columnName, String schema, 
 			int incomingConstraints, int outgoingConstraints) {
 		super();
 		this.constraintManagerClass = constraintManagerClass;

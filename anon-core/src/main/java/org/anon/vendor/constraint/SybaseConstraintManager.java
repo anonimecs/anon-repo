@@ -10,7 +10,7 @@ import javax.sql.DataSource;
 
 import org.springframework.jdbc.core.RowMapper;
 
-public class SybaseConstraintManager extends ConstraintManager<SybaseForeignKeyConstraint> {
+public class SybaseConstraintManager extends ForeignKeyConstraintManager<SybaseForeignKeyConstraint> {
 	public SybaseConstraintManager(DataSource dataSource) {
 		super(dataSource);
 	}
