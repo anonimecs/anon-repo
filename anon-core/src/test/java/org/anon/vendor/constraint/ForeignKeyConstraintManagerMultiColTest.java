@@ -17,6 +17,7 @@ import org.anon.vendor.constraint.referential.MySqlForeignKeyConstraintManager;
 import org.anon.vendor.constraint.referential.OracleForeignKeyConstraintManager;
 import org.anon.vendor.constraint.referential.SqlServerForeignKeyConstraintManager;
 import org.anon.vendor.constraint.referential.SybaseForeignKeyConstraintManager;
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -49,6 +50,9 @@ public class ForeignKeyConstraintManagerMultiColTest extends BaseParametrisedDbT
 
 	    DataSource dataSource = getDataSource();
 	    constraintManager = constraintManagerClass.getConstructor(DataSource.class).newInstance(new Object[] {dataSource});
+	    
+		dropMultiColumnTables();
+		createMultiColumnTables();
 	}
 
 	@Override
@@ -62,7 +66,9 @@ public class ForeignKeyConstraintManagerMultiColTest extends BaseParametrisedDbT
 	    new TestTableCreatorSupport().runScript(new JdbcTemplate(dataSource), "/MULTI_COL_FK_TABLES.sql", databaseSpecifics.getUseSchemaSql(schema));
 	}
 	
-	private void dropMultiColumnTables() throws IOException{
+	
+	@After
+	public void dropMultiColumnTables() throws IOException{
 	    DataSource dataSource = getDataSource();
 	    new TestTableDropSupport().runScript(new JdbcTemplate(dataSource), "/MULTI_COL_FK_TABLES_DROP.sql", databaseSpecifics.getUseSchemaSql(schema));
 	}
@@ -77,26 +83,45 @@ public class ForeignKeyConstraintManagerMultiColTest extends BaseParametrisedDbT
 		
 		return res;
 	}
+
+	@Test
+	public void testFkTo() throws IOException {
+		List<? extends ForeignKeyConstraint> fks = constraintManager.loadForeignKeysTo("TMP_TABLE_C", "COL1", schema);
+		Assert.assertEquals("number of loadForeignKeysTo", 1,  fks.size());
+		List<Constraint> deactivated = constraintManager.deactivateConstraints("TMP_TABLE_C", "COL1", schema);
+		constraintManager.activateConstraints(deactivated);
+		List<? extends ForeignKeyConstraint> fks2 = constraintManager.loadForeignKeysTo("TMP_TABLE_C", "COL1", schema);
+		Assert.assertEquals("number of loadForeignKeysTo after drop and recreate", 1,  fks2.size());
+	}
+	
+	@Test
+	public void testFkFrom() throws IOException {
+		List<? extends ForeignKeyConstraint> fks = constraintManager.loadForeignKeysFrom("TMP_TABLE_D", "COL1_REF", schema);
+		Assert.assertEquals("number of loadForeignKeysFrom", 1,  fks.size());
+		List<Constraint> deactivated = constraintManager.deactivateConstraints("TMP_TABLE_D", "COL1_REF", schema);
+		constraintManager.activateConstraints(deactivated);
+		List<? extends ForeignKeyConstraint> fks2 = constraintManager.loadForeignKeysFrom("TMP_TABLE_D", "COL1_REF", schema);
+		Assert.assertEquals("number of loadForeignKeysFrom after drop and recreate", 1,  fks2.size());
+	}
+	@Test
+	public void testNoFk() throws IOException {
+		List<? extends ForeignKeyConstraint> fks = constraintManager.loadForeignKeysFrom("TMP_TABLE_E", "COL1", schema);
+		Assert.assertEquals("number of loadForeignKeysFrom", 0,  fks.size());
+		fks = constraintManager.loadForeignKeysTo("TMP_TABLE_E", "COL1", schema);
+		Assert.assertEquals("number of loadForeignKeysTo", 0,  fks.size());
+
+	}
 	
 	@Test
 	public void testMultVolumnLoadConstraints() throws IOException {
-		try{
-			dropMultiColumnTables();
-			createMultiColumnTables();
-			
-			List<? extends ForeignKeyConstraint> fks = constraintManager.loadForeignKeysTo("TMP_TABLE_A", "COL1", schema);
-			Assert.assertEquals("number of loadForeignKeysTo", 1,  fks.size());
-			fks = constraintManager.loadForeignKeysTo("TMP_TABLE_A", "COL2", schema);
-			Assert.assertEquals("number of loadForeignKeysTo", 1,  fks.size());
-			fks = constraintManager.loadForeignKeysFrom("TMP_TABLE_B", "COL1_REF", schema);
-			Assert.assertEquals("number of loadForeignKeysFrom", 1,  fks.size());
-			fks = constraintManager.loadForeignKeysFrom("TMP_TABLE_B", "COL2_REF", schema);
-			Assert.assertEquals("number of loadForeignKeysFrom", 1,  fks.size());
-		}
-		finally{
-			dropMultiColumnTables();
-		}
-		
+		List<? extends ForeignKeyConstraint> fks = constraintManager.loadForeignKeysTo("TMP_TABLE_A", "COL1", schema);
+		Assert.assertEquals("number of loadForeignKeysTo", 1,  fks.size());
+		fks = constraintManager.loadForeignKeysTo("TMP_TABLE_A", "COL2", schema);
+		Assert.assertEquals("number of loadForeignKeysTo", 1,  fks.size());
+		fks = constraintManager.loadForeignKeysFrom("TMP_TABLE_B", "COL1_REF", schema);
+		Assert.assertEquals("number of loadForeignKeysFrom", 1,  fks.size());
+		fks = constraintManager.loadForeignKeysFrom("TMP_TABLE_B", "COL2_REF", schema);
+		Assert.assertEquals("number of loadForeignKeysFrom", 1,  fks.size());
 	}
 
 
