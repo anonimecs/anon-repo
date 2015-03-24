@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
+import org.anon.vendor.constraint.referential.SybaseForeignKeyConstraint;
 import org.anon.vendor.constraint.unique.SybasePrimaryKeyConstraint;
 import org.anon.vendor.constraint.unique.SybaseUniqueConstraint;
 import org.apache.log4j.Logger;

@@ -11,6 +11,12 @@ import org.anon.exec.BaseParametrisedDbTest;
 import org.anon.exec.TestTableCreatorSupport;
 import org.anon.exec.TestTableDropSupport;
 import org.anon.vendor.DatabaseSpecifics;
+import org.anon.vendor.constraint.referential.ForeignKeyConstraint;
+import org.anon.vendor.constraint.referential.ForeignKeyConstraintManager;
+import org.anon.vendor.constraint.referential.MySqlForeignKeyConstraintManager;
+import org.anon.vendor.constraint.referential.OracleForeignKeyConstraintManager;
+import org.anon.vendor.constraint.referential.SqlServerForeignKeyConstraintManager;
+import org.anon.vendor.constraint.referential.SybaseForeignKeyConstraintManager;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -23,14 +29,14 @@ import org.springframework.test.context.ContextConfiguration;
 @SuppressWarnings({"rawtypes", "unchecked"})
 @RunWith(Parameterized.class)
 @ContextConfiguration("classpath:spring-test-datasources.xml")
-public class ConstraintManagerMultiColTest extends BaseParametrisedDbTest{
+public class ForeignKeyConstraintManagerMultiColTest extends BaseParametrisedDbTest{
 
 	private ForeignKeyConstraintManager constraintManager;
 	private Class<ForeignKeyConstraintManager> constraintManagerClass;
 	private String schema;
 	private DatabaseSpecifics databaseSpecifics;
 	
-	public ConstraintManagerMultiColTest(Class<ForeignKeyConstraintManager> constraintManagerClass,  String schema, DatabaseSpecifics databaseSpecifics) {
+	public ForeignKeyConstraintManagerMultiColTest(Class<ForeignKeyConstraintManager> constraintManagerClass,  String schema, DatabaseSpecifics databaseSpecifics) {
 		super();
 		this.constraintManagerClass = constraintManagerClass;
 		this.schema = schema;
@@ -64,10 +70,10 @@ public class ConstraintManagerMultiColTest extends BaseParametrisedDbTest{
 	@Parameters(name= "schema:{1}, {0}")
 	public static Collection<Object []> generateData() {
 		List<Object[]> res = new ArrayList<>();
-        if(isDbAvailable(DB.sybase)) res.add(new Object[]{ SybaseConstraintManager.class, getTestSchema(DB.sybase), DatabaseSpecifics.SybaseSpecific});
-        if(isDbAvailable(DB.mysql)) res.add(new Object[]{ MySqlConstraintManager.class , "employees", DatabaseSpecifics.MySqlSpecific});
-        if(isDbAvailable(DB.oracle)) res.add(new Object[]{ OracleConstraintManager.class , getTestSchema(DB.oracle), DatabaseSpecifics.OracleSpecific});
-        if(isDbAvailable(DB.sqlserver)) res.add(new Object[]{ SqlServerConstraintManager.class , "Northwind", DatabaseSpecifics.SqlServerSpecific});
+        if(isDbAvailable(DB.sybase)) res.add(new Object[]{ SybaseForeignKeyConstraintManager.class, getTestSchema(DB.sybase), DatabaseSpecifics.SybaseSpecific});
+        if(isDbAvailable(DB.mysql)) res.add(new Object[]{ MySqlForeignKeyConstraintManager.class , "employees", DatabaseSpecifics.MySqlSpecific});
+        if(isDbAvailable(DB.oracle)) res.add(new Object[]{ OracleForeignKeyConstraintManager.class , getTestSchema(DB.oracle), DatabaseSpecifics.OracleSpecific});
+        if(isDbAvailable(DB.sqlserver)) res.add(new Object[]{ SqlServerForeignKeyConstraintManager.class , "Northwind", DatabaseSpecifics.SqlServerSpecific});
 		
 		return res;
 	}

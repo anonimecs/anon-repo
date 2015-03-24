@@ -7,6 +7,12 @@ import java.util.List;
 import javax.sql.DataSource;
 
 import org.anon.exec.BaseParametrisedDbTest;
+import org.anon.vendor.constraint.referential.ForeignKeyConstraint;
+import org.anon.vendor.constraint.referential.ForeignKeyConstraintManager;
+import org.anon.vendor.constraint.referential.MySqlForeignKeyConstraintManager;
+import org.anon.vendor.constraint.referential.OracleForeignKeyConstraintManager;
+import org.anon.vendor.constraint.referential.SqlServerForeignKeyConstraintManager;
+import org.anon.vendor.constraint.referential.SybaseForeignKeyConstraintManager;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -57,14 +63,14 @@ public class NoJenkinsConstraintManagerTest extends BaseParametrisedDbTest{
 	@Parameters(name= "table:{1}, column:{2}, schema:{3}, {0}")
 	public static Collection<Object []> generateData() {
 		List<Object[]> res = new ArrayList<>();
-        if(isDbAvailable(DB.sybase)) res.add(new Object[]{ SybaseConstraintManager.class, "CPTY", "RBE_CodeCpty", "LIMEX_d", 7, 0});
-        if(isDbAvailable(DB.sybase)) res.add(new Object[]{ SybaseConstraintManager.class, "CPTY", "SSY_SourceSystem", "LIMEX_d", 0, 1});
-        if(isDbAvailable(DB.mysql)) res.add(new Object[]{ MySqlConstraintManager.class , "dept_emp", "dept_no", "employees", 0, 1});
-        if(isDbAvailable(DB.mysql)) res.add(new Object[]{ MySqlConstraintManager.class , "departments", "dept_no", "employees", 2, 0});
-        if(isDbAvailable(DB.oracle)) res.add(new Object[]{ OracleConstraintManager.class , "RIGHT", "ID", "ECAP", 1, 0});
-        if(isDbAvailable(DB.oracle)) res.add(new Object[]{ OracleConstraintManager.class , "ROLE_RIGHT", "ROLE_ID", "ECAP", 0, 1});
-        if(isDbAvailable(DB.sqlserver)) res.add(new Object[]{ SqlServerConstraintManager.class , "EmployeeTerritories", "EmployeeId", "Northwind", 0, 1});
-        if(isDbAvailable(DB.sqlserver)) res.add(new Object[]{ SqlServerConstraintManager.class , "Employees", "EmployeeId", "Northwind", 3, 0});
+        if(isDbAvailable(DB.sybase)) res.add(new Object[]{ SybaseForeignKeyConstraintManager.class, "CPTY", "RBE_CodeCpty", "LIMEX_d", 7, 0});
+        if(isDbAvailable(DB.sybase)) res.add(new Object[]{ SybaseForeignKeyConstraintManager.class, "CPTY", "SSY_SourceSystem", "LIMEX_d", 0, 1});
+        if(isDbAvailable(DB.mysql)) res.add(new Object[]{ MySqlForeignKeyConstraintManager.class , "dept_emp", "dept_no", "employees", 0, 1});
+        if(isDbAvailable(DB.mysql)) res.add(new Object[]{ MySqlForeignKeyConstraintManager.class , "departments", "dept_no", "employees", 2, 0});
+        if(isDbAvailable(DB.oracle)) res.add(new Object[]{ OracleForeignKeyConstraintManager.class , "RIGHT", "ID", "ECAP", 1, 0});
+        if(isDbAvailable(DB.oracle)) res.add(new Object[]{ OracleForeignKeyConstraintManager.class , "ROLE_RIGHT", "ROLE_ID", "ECAP", 0, 1});
+        if(isDbAvailable(DB.sqlserver)) res.add(new Object[]{ SqlServerForeignKeyConstraintManager.class , "EmployeeTerritories", "EmployeeId", "Northwind", 0, 1});
+        if(isDbAvailable(DB.sqlserver)) res.add(new Object[]{ SqlServerForeignKeyConstraintManager.class , "Employees", "EmployeeId", "Northwind", 3, 0});
 		
 		return res;
 	}

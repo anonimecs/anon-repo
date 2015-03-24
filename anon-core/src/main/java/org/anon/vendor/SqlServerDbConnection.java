@@ -13,8 +13,8 @@ import org.anon.data.DatabaseColumnInfo;
 import org.anon.data.DatabaseTableInfo;
 import org.anon.data.RelatedTableColumnInfo;
 import org.anon.data.RelatedTableColumnInfo.Relation;
-import org.anon.vendor.constraint.SqlServerConstraintManager;
-import org.anon.vendor.constraint.SqlServerForeignKeyConstraint;
+import org.anon.vendor.constraint.referential.SqlServerForeignKeyConstraintManager;
+import org.anon.vendor.constraint.referential.SqlServerForeignKeyConstraint;
 import org.springframework.jdbc.core.RowMapper;
 
 public class SqlServerDbConnection extends AbstractDbConnection {
@@ -95,7 +95,7 @@ public class SqlServerDbConnection extends AbstractDbConnection {
 	@Override
 	protected Collection<RelatedTableColumnInfo> findRelatedTablesByForeignKey(DatabaseTableInfo editedTable,
 			DatabaseColumnInfo editedColumn) {
-		SqlServerConstraintManager sqlServerConstraintManager = new SqlServerConstraintManager(getDataSource());
+		SqlServerForeignKeyConstraintManager sqlServerConstraintManager = new SqlServerForeignKeyConstraintManager(getDataSource());
 		List<SqlServerForeignKeyConstraint> fkList = sqlServerConstraintManager.loadConstraints(editedTable.getName(),editedColumn.getName(), editedTable.getSchema());
 		Collection<RelatedTableColumnInfo> res = new ArrayList<>();
 		for (SqlServerForeignKeyConstraint constraint: fkList) {

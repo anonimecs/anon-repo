@@ -1,4 +1,4 @@
-package org.anon.vendor.constraint;
+package org.anon.vendor.constraint.referential;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -8,14 +8,14 @@ import javax.sql.DataSource;
 
 import org.springframework.jdbc.core.RowMapper;
 
-public class OracleConstraintManager extends ForeignKeyConstraintManager<OracleForeignKeyConstraint> {
+public class OracleForeignKeyConstraintManager extends ForeignKeyConstraintManager<OracleForeignKeyConstraint> {
 	
-	public OracleConstraintManager(DataSource dataSource) {
+	public OracleForeignKeyConstraintManager(DataSource dataSource) {
 		super(dataSource);
 	}
 
 	@Override
-	protected List<OracleForeignKeyConstraint> loadForeignKeysFrom(String tableName, String columnName, String schema) {
+	public List<OracleForeignKeyConstraint> loadForeignKeysFrom(String tableName, String columnName, String schema) {
 		String SQL = "SELECT sourceColumn.table_name sourceTableName, sourceColumn.column_name sourceColumnName, sourceColumn.constraint_name constraintName,                              "+
 		" targetConstraint.table_name targetTableName, targetCoumn.COLUMN_NAME targetColumnName                                                                               "+
 		" FROM all_cons_columns sourceColumn                                                                                                                                  "+
@@ -28,7 +28,7 @@ public class OracleConstraintManager extends ForeignKeyConstraintManager<OracleF
 	}
 	
 	@Override
-	protected List<OracleForeignKeyConstraint> loadForeignKeysTo(String tableName, String columnName, String schema) {
+	public List<OracleForeignKeyConstraint> loadForeignKeysTo(String tableName, String columnName, String schema) {
 		String SQL = "SELECT sourceColumn.table_name sourceTableName, sourceColumn.column_name sourceColumnName, sourceColumn.constraint_name constraintName,                              "+
 		" targetConstraint.table_name targetTableName, targetCoumn.COLUMN_NAME targetColumnName                                                                               "+
 		" FROM all_cons_columns sourceColumn                                                                                                                                  "+

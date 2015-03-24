@@ -1,7 +1,8 @@
-package org.anon.vendor.constraint;
+package org.anon.vendor.constraint.referential;
 
 import java.util.Arrays;
 
+import org.anon.vendor.constraint.Constraint;
 import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 

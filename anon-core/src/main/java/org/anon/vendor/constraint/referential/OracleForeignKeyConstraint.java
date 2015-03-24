@@ -1,4 +1,4 @@
-package org.anon.vendor.constraint;
+package org.anon.vendor.constraint.referential;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

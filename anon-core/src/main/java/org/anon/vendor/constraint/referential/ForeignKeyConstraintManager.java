@@ -1,9 +1,10 @@
-package org.anon.vendor.constraint;
+package org.anon.vendor.constraint.referential;
 
 import java.util.List;
 
 import javax.sql.DataSource;
 
+import org.anon.vendor.constraint.ConstraintManager;
 import org.apache.log4j.Logger;
 
 public abstract class ForeignKeyConstraintManager <C extends ForeignKeyConstraint> extends ConstraintManager<C>{
@@ -21,8 +22,8 @@ public abstract class ForeignKeyConstraintManager <C extends ForeignKeyConstrain
 		res.addAll(loadForeignKeysFrom(tableName, columnName, schema));
 		return res;
 	}
-	abstract protected List<C> loadForeignKeysTo(String tableName, String columnName, String schema);
-	abstract protected List<C> loadForeignKeysFrom(String tableName, String columnName, String schema);
+	abstract public List<C> loadForeignKeysTo(String tableName, String columnName, String schema);
+	abstract public List<C> loadForeignKeysFrom(String tableName, String columnName, String schema);
 
 
 
