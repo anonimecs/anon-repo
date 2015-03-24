@@ -16,17 +16,11 @@ public class SybaseForeignKeyConstraint extends ForeignKeyConstraint {
 		type = rs.getString("type");
 		definition = rs.getString("definition");
 
-		if(isReferentialConstraint()){
-			constraintName = rs.getString("name");
-			sourceTableName = parseSourceTableName();
-			targetTableName = parseTargetTableName();
-		}
+		constraintName = rs.getString("name");
+		sourceTableName = parseSourceTableName();
+		targetTableName = parseTargetTableName();
 	}
 	
-	public boolean isReferentialConstraint(){
-		return "referential constraint".equalsIgnoreCase(type);
-	}
-
 	private String parseSourceTableName() {
 		return definition.split(" ", 2)[0].trim();
 	}

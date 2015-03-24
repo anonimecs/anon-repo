@@ -5,12 +5,9 @@ import java.util.List;
 import javax.sql.DataSource;
 
 import org.apache.log4j.Logger;
-import org.springframework.jdbc.core.JdbcTemplate;
 
 public abstract class ForeignKeyConstraintManager <C extends ForeignKeyConstraint> extends ConstraintManager<C>{
 	protected Logger logger = Logger.getLogger(getClass());
-
-	protected JdbcTemplate jdbcTemplate;
 	
 	public ForeignKeyConstraintManager(DataSource dataSource) {
 		super(dataSource);

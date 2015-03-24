@@ -4,6 +4,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Arrays;
 
+import org.anon.vendor.constraint.SybaseSpHelpconstraintUtil;
+
 public class SybasePrimaryKeyConstraint extends UniqueConstraint{
 
 	private String definition;
