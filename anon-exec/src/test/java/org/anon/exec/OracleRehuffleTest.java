@@ -71,7 +71,7 @@ public class OracleRehuffleTest extends OracleExecTestBase{
 	
 	private void addTable(String colName, String colType, String tableName, AnonymisationMethod anonymisationMethod, AnonConfig anonConfig) {
 		DatabaseTableInfo table = new DatabaseTableInfo();
-		DatabaseColumnInfo databaseColumnInfo = new DatabaseColumnInfo(colName, colType, DatabaseSpecifics.OracleSpecific);
+		DatabaseColumnInfo databaseColumnInfo = new DatabaseColumnInfo(colName, colType, true, DatabaseSpecifics.OracleSpecific);
 		table.addColumn(databaseColumnInfo);
 		
 		anonConfig.addTable(table);

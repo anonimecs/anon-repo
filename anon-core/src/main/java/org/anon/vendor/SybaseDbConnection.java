@@ -13,8 +13,8 @@ import org.anon.data.DatabaseColumnInfo;
 import org.anon.data.DatabaseTableInfo;
 import org.anon.data.RelatedTableColumnInfo;
 import org.anon.data.RelatedTableColumnInfo.Relation;
-import org.anon.vendor.constraint.referential.SybaseForeignKeyConstraintManager;
 import org.anon.vendor.constraint.referential.SybaseForeignKeyConstraint;
+import org.anon.vendor.constraint.referential.SybaseForeignKeyConstraintManager;
 import org.springframework.jdbc.core.RowMapper;
 
 public class SybaseDbConnection extends AbstractDbConnection {
@@ -29,7 +29,7 @@ public class SybaseDbConnection extends AbstractDbConnection {
 
 	@Override
 	public  List<DatabaseColumnInfo> getColumns(final DatabaseTableInfo  databaseTableInfo) {
-		String SQL = "select cols.name as columnname, types.name as columntype                              "+
+		String SQL = "select cols.name as columnname, types.name as columntype, (cols.status & 8)/8 as is_nullable                              "+
 					" from " + databaseTableInfo.getSchema() + "..syscolumns as cols, " + databaseTableInfo.getSchema() + "..sysobjects as objs, " + databaseTableInfo.getSchema() + "..systypes as types   "+
 					" where cols.id = objs.id                                                               "+
 					" and cols.usertype = types.usertype                                                    "+
@@ -42,7 +42,7 @@ public class SybaseDbConnection extends AbstractDbConnection {
 			@Override
 			public DatabaseColumnInfo mapRow(ResultSet rs, int rowNum)
 					throws SQLException {
-				DatabaseColumnInfo col = new DatabaseColumnInfo(rs.getString("columnname"), rs.getString("columntype"), databaseSpecifics);
+				DatabaseColumnInfo col = new DatabaseColumnInfo(rs.getString("columnname"), rs.getString("columntype"), rs.getBoolean("is_nullable") , databaseSpecifics);
 				col.setTable(databaseTableInfo);
 				return col;
 			}

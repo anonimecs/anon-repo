@@ -10,6 +10,7 @@ public class DatabaseColumnInfo extends DataObject {
 
 	private String name;
 	private String type;
+	private boolean nullable;
 	private DatabaseTableInfo table;
 
 
@@ -18,14 +19,15 @@ public class DatabaseColumnInfo extends DataObject {
 	
 	private AnonCandidate anonCandidate;
 	
-	public DatabaseColumnInfo(String name, String type, DatabaseSpecifics databaseSpecifics) {
+	public DatabaseColumnInfo(String name, String type, boolean isNullable, DatabaseSpecifics databaseSpecifics) {
 		super();
 		this.name = name;
 		this.type = type;
+		this.nullable = isNullable;
 		this.databaseSpecifics = databaseSpecifics;
 	}
 	public DatabaseColumnInfo(DatabaseColumnInfo editedColumn) {
-		this(editedColumn.name,editedColumn.type, editedColumn.databaseSpecifics);
+		this(editedColumn.name,editedColumn.type, editedColumn.nullable, editedColumn.databaseSpecifics);
 		setTable(editedColumn.getTable());
 		this.exampleValues = editedColumn.exampleValues;
 		
@@ -97,6 +99,12 @@ public class DatabaseColumnInfo extends DataObject {
 	@Override
 	public String toString() {
 		return getTable() == null ? "N/A." + getName() : getTable().getName() + "." + getName();
+	}
+	public boolean isNullable() {
+		return nullable;
+	}
+	public void setNullable(boolean isNullable) {
+		this.nullable = isNullable;
 	}
 	
 

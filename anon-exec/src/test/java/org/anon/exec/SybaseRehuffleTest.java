@@ -72,7 +72,7 @@ public class SybaseRehuffleTest extends SybaseExecTestBase{
 	
 	private void addTable(String colName, String colType, String tableName, AnonymisationMethod anonymisationMethod, AnonConfig anonConfig) {
 		DatabaseTableInfo table = new DatabaseTableInfo();
-		DatabaseColumnInfo databaseColumnInfo = new DatabaseColumnInfo(colName, colType, DatabaseSpecifics.SybaseSpecific);
+		DatabaseColumnInfo databaseColumnInfo = new DatabaseColumnInfo(colName, colType, true, DatabaseSpecifics.SybaseSpecific);
 		table.addColumn(databaseColumnInfo);
 		
 		anonConfig.addTable(table);

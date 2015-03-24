@@ -47,6 +47,8 @@ public class MySqlDbConnectionTest extends BaseDbTest{
 	@Before
 	public void createTable() throws IOException{
 		
+		dropTables();
+		
 		JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSourceMySql);
 		jdbcTemplate.execute("use "+schema);
 		new TestTableCreatorMySql().createTables(jdbcTemplate);
@@ -56,8 +58,8 @@ public class MySqlDbConnectionTest extends BaseDbTest{
 	public void dropTables() throws IOException{
 		JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSourceMySql);
 		jdbcTemplate.execute("use "+schema);
-		new TestTableCreatorMySql().dropTableB(jdbcTemplate);
-		new TestTableCreatorMySql().dropTableA(jdbcTemplate);
+		try{new TestTableCreatorMySql().dropTableB(jdbcTemplate);}catch(Exception ignore){}
+		try{new TestTableCreatorMySql().dropTableA(jdbcTemplate);}catch(Exception ignore){}
 	}
 	  
 	@Test

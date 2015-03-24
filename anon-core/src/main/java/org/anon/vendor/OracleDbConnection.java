@@ -42,13 +42,13 @@ public class OracleDbConnection extends AbstractDbConnection   {
 	@Override
 	public  List<DatabaseColumnInfo> getColumns(final DatabaseTableInfo  databaseTableInfo) {
 		
-		String SQL = "SELECT column_name, DATA_TYPE FROM all_tab_cols WHERE table_name = ? and OWNER = ?";
+		String SQL = "SELECT column_name, DATA_TYPE, NULLABLE FROM all_tab_cols WHERE table_name = ? and OWNER = ?";
 		return jdbcTemplate.query(SQL, new Object[]{databaseTableInfo.getName(), databaseTableInfo.getSchema()}, new RowMapper<DatabaseColumnInfo>(){
 
 			@Override
 			public DatabaseColumnInfo mapRow(ResultSet rs, int rowNum)
 					throws SQLException {
-				DatabaseColumnInfo col = new DatabaseColumnInfo(rs.getString("column_name"), rs.getString("DATA_TYPE"), databaseSpecifics);
+				DatabaseColumnInfo col = new DatabaseColumnInfo(rs.getString("column_name"), rs.getString("DATA_TYPE"), "Y".equalsIgnoreCase(rs.getString("NULLABLE")), databaseSpecifics);
 				return col;
 			}
 			
