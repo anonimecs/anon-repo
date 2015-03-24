@@ -1,5 +1,8 @@
 package org.anon.vendor.constraint;
 
+import org.apache.commons.lang.builder.ReflectionToStringBuilder;
+import org.apache.commons.lang.builder.ToStringStyle;
+
 public abstract class Constraint {
 
 	protected boolean active = true;
@@ -29,5 +32,9 @@ public abstract class Constraint {
 		return message;
 	}
 
+	@Override
+	public String toString() {
+		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+	}
 
 }
