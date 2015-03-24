@@ -13,8 +13,8 @@ import org.anon.data.DatabaseColumnInfo;
 import org.anon.data.DatabaseTableInfo;
 import org.anon.data.RelatedTableColumnInfo;
 import org.anon.data.RelatedTableColumnInfo.Relation;
-import org.anon.vendor.constraint.SybaseConstraintManager;
-import org.anon.vendor.constraint.SybaseForeignKeyConstraint;
+import org.anon.vendor.constraint.referential.SybaseForeignKeyConstraintManager;
+import org.anon.vendor.constraint.referential.SybaseForeignKeyConstraint;
 import org.springframework.jdbc.core.RowMapper;
 
 public class SybaseDbConnection extends AbstractDbConnection {
@@ -96,7 +96,7 @@ public class SybaseDbConnection extends AbstractDbConnection {
 	@Override
 	protected Collection<RelatedTableColumnInfo> findRelatedTablesByForeignKey(DatabaseTableInfo editedTable,
 			DatabaseColumnInfo editedColumn) {
-		SybaseConstraintManager sybaseConstraintManager = new SybaseConstraintManager(getDataSource());
+		SybaseForeignKeyConstraintManager sybaseConstraintManager = new SybaseForeignKeyConstraintManager(getDataSource());
 		List<SybaseForeignKeyConstraint> fkList = sybaseConstraintManager.loadConstraints(editedTable.getName(), editedColumn.getName(), editedTable.getSchema());
 		Collection<RelatedTableColumnInfo> res = new ArrayList<>();
 		for (SybaseForeignKeyConstraint sybaseConstraint: fkList) {

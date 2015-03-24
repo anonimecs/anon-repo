@@ -1,4 +1,4 @@
-package org.anon.vendor.constraint;
+package org.anon.vendor.constraint.referential;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -8,13 +8,13 @@ import javax.sql.DataSource;
 
 import org.springframework.jdbc.core.RowMapper;
 
-public class SqlServerConstraintManager extends ForeignKeyConstraintManager<SqlServerForeignKeyConstraint> {
-	public SqlServerConstraintManager(DataSource dataSource) {
+public class SqlServerForeignKeyConstraintManager extends ForeignKeyConstraintManager<SqlServerForeignKeyConstraint> {
+	public SqlServerForeignKeyConstraintManager(DataSource dataSource) {
 		super(dataSource);
 	}
 
 	@Override
-	protected List<SqlServerForeignKeyConstraint> loadForeignKeysFrom(String tableName, String columnName, String schema) {
+	public List<SqlServerForeignKeyConstraint> loadForeignKeysFrom(String tableName, String columnName, String schema) {
 		String SQL = " SELECT                                                             "+
 		" column1.CONSTRAINT_NAME AS FK_CONSTRAINT_NAME                                           "+
 		" ,column1.TABLE_NAME AS SOURCE_TABLE_NAME                                                "+
@@ -36,7 +36,7 @@ public class SqlServerConstraintManager extends ForeignKeyConstraintManager<SqlS
 	}
 	
 	@Override
-	protected List<SqlServerForeignKeyConstraint> loadForeignKeysTo(String tableName, String columnName, String schema) {
+	public List<SqlServerForeignKeyConstraint> loadForeignKeysTo(String tableName, String columnName, String schema) {
 		String SQL = " SELECT                                                             "+
 		" column1.CONSTRAINT_NAME AS FK_CONSTRAINT_NAME                                           "+
 		" ,column1.TABLE_NAME AS SOURCE_TABLE_NAME                                                "+

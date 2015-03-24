@@ -1,4 +1,4 @@
-package org.anon.vendor.constraint;
+package org.anon.vendor.constraint.referential;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -8,8 +8,8 @@ import javax.sql.DataSource;
 
 import org.springframework.jdbc.core.RowMapper;
 
-public class MySqlConstraintManager extends ForeignKeyConstraintManager<MySqlForeignKeyConstraint> {
-	public MySqlConstraintManager(DataSource dataSource) {
+public class MySqlForeignKeyConstraintManager extends ForeignKeyConstraintManager<MySqlForeignKeyConstraint> {
+	public MySqlForeignKeyConstraintManager(DataSource dataSource) {
 		super(dataSource);
 	}
 
@@ -35,7 +35,7 @@ public class MySqlConstraintManager extends ForeignKeyConstraintManager<MySqlFor
 	}
 	
 	@Override
-	protected List<MySqlForeignKeyConstraint> loadForeignKeysFrom(String tableName, String columnName, String schema) {
+	public List<MySqlForeignKeyConstraint> loadForeignKeysFrom(String tableName, String columnName, String schema) {
 		String sql_select = "select  TABLE_NAME, GROUP_CONCAT(COLUMN_NAME) as sourceColumns,CONSTRAINT_NAME, REFERENCED_TABLE_NAME, GROUP_CONCAT(REFERENCED_COLUMN_NAME) as targetColumns" +
 				" from INFORMATION_SCHEMA.KEY_COLUMN_USAGE " +
 				"  where  TABLE_NAME = ? and COLUMN_NAME = ? and REFERENCED_TABLE_NAME is not null and CONSTRAINT_SCHEMA = ? " +
@@ -45,7 +45,7 @@ public class MySqlConstraintManager extends ForeignKeyConstraintManager<MySqlFor
 	}
 	
 	@Override
-	protected List<MySqlForeignKeyConstraint> loadForeignKeysTo(String tableName, String columnName, String schema) {
+	public List<MySqlForeignKeyConstraint> loadForeignKeysTo(String tableName, String columnName, String schema) {
 		String sql_select = "select  TABLE_NAME, GROUP_CONCAT(COLUMN_NAME) as sourceColumns,CONSTRAINT_NAME, REFERENCED_TABLE_NAME, GROUP_CONCAT(REFERENCED_COLUMN_NAME) as targetColumns" +
 				" from INFORMATION_SCHEMA.KEY_COLUMN_USAGE " +
 				"  where  REFERENCED_TABLE_NAME = ? and REFERENCED_COLUMN_NAME = ? and CONSTRAINT_SCHEMA = ? " +

@@ -2,8 +2,8 @@ package org.anon.exec;
 
 import javax.sql.DataSource;
 
-import org.anon.vendor.constraint.ForeignKeyConstraintManager;
-import org.anon.vendor.constraint.MySqlConstraintManager;
+import org.anon.vendor.constraint.referential.ForeignKeyConstraintManager;
+import org.anon.vendor.constraint.referential.MySqlForeignKeyConstraintManager;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 public class MySqlExec extends BaseExec{
 	@Override
 	protected ForeignKeyConstraintManager getConstraintManager(DataSource dataSource) {
-		return new MySqlConstraintManager(dataSource);
+		return new MySqlForeignKeyConstraintManager(dataSource);
 	}
 
 }
