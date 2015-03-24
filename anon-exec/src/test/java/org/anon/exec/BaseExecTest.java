@@ -45,7 +45,7 @@ public abstract class BaseExecTest extends BaseDbTest{
 
 	protected AnonymisedColumnInfo getTestAnonimisedColumnInfo(String colName, String colType,String tableName, AnonymisationMethod anonymisationMethod, DatabaseSpecifics databaseSpecifics, AnonConfig anonConfig) {
 		DatabaseTableInfo table = new DatabaseTableInfo();
-		DatabaseColumnInfo databaseColumnInfo = new DatabaseColumnInfo(colName, colType, databaseSpecifics);
+		DatabaseColumnInfo databaseColumnInfo = new DatabaseColumnInfo(colName, colType, true, databaseSpecifics);
 		table.addColumn(databaseColumnInfo);
 		
 		anonConfig.addTable(table);

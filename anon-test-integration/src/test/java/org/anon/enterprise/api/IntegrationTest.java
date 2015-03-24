@@ -101,7 +101,7 @@ public class IntegrationTest extends AbstractJUnit4SpringContextTests{
 		DatabaseTableInfo editedTable= new DatabaseTableInfo();
 		editedTable.setName(tableName);
 		editedTable.setSchema(defaultSchema);
-		DatabaseColumnInfo editedColumn = new DatabaseColumnInfo(columnName, columnType, DatabaseSpecifics.MySqlSpecific);
+		DatabaseColumnInfo editedColumn = new DatabaseColumnInfo(columnName, columnType, true, DatabaseSpecifics.MySqlSpecific);
 		editedTable.addColumn(editedColumn);
 
 		AnonymisedColumnInfo anonymizedColumn = new AnonymisedColumnInfo(editedColumn);

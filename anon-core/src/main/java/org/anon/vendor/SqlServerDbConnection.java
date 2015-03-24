@@ -13,8 +13,8 @@ import org.anon.data.DatabaseColumnInfo;
 import org.anon.data.DatabaseTableInfo;
 import org.anon.data.RelatedTableColumnInfo;
 import org.anon.data.RelatedTableColumnInfo.Relation;
-import org.anon.vendor.constraint.referential.SqlServerForeignKeyConstraintManager;
 import org.anon.vendor.constraint.referential.SqlServerForeignKeyConstraint;
+import org.anon.vendor.constraint.referential.SqlServerForeignKeyConstraintManager;
 import org.springframework.jdbc.core.RowMapper;
 
 public class SqlServerDbConnection extends AbstractDbConnection {
@@ -29,7 +29,7 @@ public class SqlServerDbConnection extends AbstractDbConnection {
 
 	@Override
 	public  List<DatabaseColumnInfo> getColumns(final DatabaseTableInfo  databaseTableInfo) {
-		String SQL = " SELECT  c.name as columnname, t.Name as columntype " +
+		String SQL = " SELECT  c.name as columnname, t.Name as columntype, c.is_nullable as is_nullable" +
 				" FROM  " + databaseTableInfo.getSchema() + ".sys.columns c INNER JOIN  " + databaseTableInfo.getSchema() + ".sys.types t ON c.user_type_id = t.user_type_id " +
 				" WHERE c.object_id = OBJECT_ID('"+databaseTableInfo.getSchema() + ".dbo."+databaseTableInfo.getName()+"')";
 		
@@ -39,7 +39,7 @@ public class SqlServerDbConnection extends AbstractDbConnection {
 			@Override
 			public DatabaseColumnInfo mapRow(ResultSet rs, int rowNum)
 					throws SQLException {
-				DatabaseColumnInfo col = new DatabaseColumnInfo(rs.getString("columnname"), rs.getString("columntype"), databaseSpecifics);
+				DatabaseColumnInfo col = new DatabaseColumnInfo(rs.getString("columnname"), rs.getString("columntype"), rs.getBoolean("is_nullable") , databaseSpecifics);
 				col.setTable(databaseTableInfo);
 				return col;
 			}

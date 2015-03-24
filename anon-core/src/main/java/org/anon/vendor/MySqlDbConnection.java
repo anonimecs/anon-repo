@@ -42,13 +42,13 @@ public class MySqlDbConnection extends AbstractDbConnection   {
 	@Override
 	public  List<DatabaseColumnInfo> getColumns(final DatabaseTableInfo  databaseTableInfo) {
 		
-		String SQL = "SELECT column_name, DATA_TYPE FROM information_schema.columns WHERE table_name = ? and table_schema = ?";
+		String SQL = "SELECT column_name, DATA_TYPE, IS_NULLABLE FROM information_schema.columns WHERE table_name = ? and table_schema = ?";
 		return jdbcTemplate.query(SQL, new Object[]{databaseTableInfo.getName(), databaseTableInfo.getSchema()}, new RowMapper<DatabaseColumnInfo>(){
 
 			@Override
 			public DatabaseColumnInfo mapRow(ResultSet rs, int rowNum)
 					throws SQLException {
-				DatabaseColumnInfo col = new DatabaseColumnInfo(rs.getString("column_name"), rs.getString("DATA_TYPE"), databaseSpecifics);
+				DatabaseColumnInfo col = new DatabaseColumnInfo(rs.getString("column_name"), rs.getString("DATA_TYPE"), "YES".equalsIgnoreCase(rs.getString("IS_NULLABLE")),  databaseSpecifics);
 				return col;
 			}
 			

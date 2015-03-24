@@ -72,7 +72,7 @@ public class SqlServerRehuffleTest extends SqlServerExecTestBase{
 	
 	private void addTable(String colName, String colType, String tableName, AnonymisationMethod anonymisationMethod, AnonConfig anonConfig) {
 		DatabaseTableInfo table = new DatabaseTableInfo();
-		DatabaseColumnInfo databaseColumnInfo = new DatabaseColumnInfo(colName, colType, DatabaseSpecifics.SqlServerSpecific);
+		DatabaseColumnInfo databaseColumnInfo = new DatabaseColumnInfo(colName, colType,true,  DatabaseSpecifics.SqlServerSpecific);
 		table.addColumn(databaseColumnInfo);
 		
 		anonConfig.addTable(table);

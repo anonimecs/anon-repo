@@ -178,14 +178,17 @@ public class DatabaseLoaderServiceImpl implements DatabaseLoaderService{
 	}
 
 	private void addColumn(AnonymisationMethod anonymisationMethod, AnonymisedColumnData anonymisedColumnData) {
-		AnonymisedColumnInfo anonymisedColumnInfo = new AnonymisedColumnInfo(anonymisedColumnData.getColumnName(), anonymisedColumnData.getColumnType(), dbConnectionFactory.getConnection().getDatabaseSpecifics());
-		anonymisationMethod.addColumn(anonymisedColumnInfo);
 
 		DatabaseTableInfo table = lookupTable(anonymisedColumnData.getTableName());
 		if(table == null){
 			loadErrors.add("Failed to find anonymised column " + anonymisedColumnData.getTableName() + "." + anonymisedColumnData.getColumnName());
 			logger.error("failed to find table and column " + anonymisedColumnData, new Exception());
 		} else {
+			DatabaseColumnInfo databaseColumnInfo = table.findColumn(anonymisedColumnData.getColumnName());
+			
+			AnonymisedColumnInfo anonymisedColumnInfo = new AnonymisedColumnInfo(anonymisedColumnData.getColumnName(), anonymisedColumnData.getColumnType(), databaseColumnInfo.isNullable(), dbConnectionFactory.getConnection().getDatabaseSpecifics());
+			anonymisationMethod.addColumn(anonymisedColumnInfo);
+
 			anonymisedColumnInfo.setTable(table);
 			table.addAnonymisedColumn(anonymisedColumnInfo);
 		}
