@@ -97,7 +97,12 @@ public abstract class BaseExec {
 				addMessage(methodExecution, col, new ExecutionMessage("Deacivating constraints", null));
 				List<Constraint> deactivatedConstraints = constraintBundle.deactivate();
 				
-				addMessage(methodExecution, col, new ExecutionMessage("Deacivated constraints " + deactivatedConstraints, deactivatedConstraints.size()));
+				if(deactivatedConstraints.isEmpty()){
+					addMessage(methodExecution, col, new ExecutionMessage("No relevant constraints found", null));
+				}
+				else {
+					addMessage(methodExecution, col, new ExecutionMessage("Deacivated constraints " + deactivatedConstraints, deactivatedConstraints.size()));
+				}
 
 				ExecutionMessage runResult;
 				try{
@@ -105,9 +110,11 @@ public abstract class BaseExec {
 					runResult = anonymisationMethod.runOnColumn(col);
 				}
 				finally{
-					addMessage(methodExecution, col, new ExecutionMessage("Reacivating constraints", deactivatedConstraints.size()));
-					constraintBundle.activate();
-					showConstaintProblems(col, methodExecution, deactivatedConstraints);
+					if(!deactivatedConstraints.isEmpty()){
+						addMessage(methodExecution, col, new ExecutionMessage("Reacivating constraints", deactivatedConstraints.size()));
+						constraintBundle.activate();
+						showConstaintProblems(col, methodExecution, deactivatedConstraints);
+					}
 				}
 				methodExecution.finishedCol(col,runResult);
 					
