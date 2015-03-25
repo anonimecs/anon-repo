@@ -44,6 +44,7 @@
 					icon="ui-icon-transferthick-e-w" 
 					actionListener="#{databasePanelBacking.connectDb()}"
 					rendered="#{not databasePanelBacking.connected}"
+					disabled="#{empty databasePanelBacking.dbConfigs}"
 					update="@all" 
 					style="margin-left: 10px"/>
 

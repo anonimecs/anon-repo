@@ -26,7 +26,9 @@
 						<p:ajax event="change" update=":selectConnectionForm"/>
 				</p:selectOneMenu>	
 								
-				<p:commandButton id="connectBtn" icon="ui-icon-transferthick-e-w"  actionListener="#{databasePanelBacking.connectRedirect()}"
+				<p:commandButton id="connectBtn" icon="ui-icon-transferthick-e-w"  
+					disabled="#{empty databasePanelBacking.dbConfigs}"
+					actionListener="#{databasePanelBacking.connectRedirect()}"
 					value="Connect" update=":selectConnectionForm,:menuForm:menuBar" rendered="#{not databasePanelBacking.connected}"  />
 					            	
 				<p:commandButton id="disconnectBtn" icon="ui-icon-circle-close" actionListener="#{databasePanelBacking.disconnectDb()}" 
