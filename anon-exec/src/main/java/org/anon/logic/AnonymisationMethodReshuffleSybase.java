@@ -16,8 +16,8 @@ public class AnonymisationMethodReshuffleSybase extends AnonymisationMethodReshu
 		String createTmpShuffleRandom =
 				"CREATE TABLE " + SHUFFLE_RAN + " ( " +
 				"id INTEGER IDENTITY, " +
-				"shuffle_values VARCHAR(255)) ";
-//				"shuffle_values VARCHAR(255), CONSTRAINT shuffle_values UNIQUE (shuffle_values))";
+//				"shuffle_values VARCHAR(255)) ";
+				"shuffle_values VARCHAR(255), CONSTRAINT shuffle_values UNIQUE (shuffle_values))";
 		
 		execute(createTmpShuffleRandom);
 		
@@ -31,8 +31,8 @@ public class AnonymisationMethodReshuffleSybase extends AnonymisationMethodReshu
 		String createTmpShuffleOrg =
 				"CREATE TABLE " + SHUFFLE_ORG + " ( " +
 				"id INTEGER IDENTITY, " +
-				"original_values VARCHAR(255))";
-//				"original_values VARCHAR(255), CONSTRAINT original_values UNIQUE (original_values))";
+//				"original_values VARCHAR(255))";
+				"original_values VARCHAR(255), CONSTRAINT original_values UNIQUE (original_values))";
 		
 		execute(createTmpShuffleOrg);
 		
