@@ -14,7 +14,6 @@ import org.anon.exec.TestTableCreatorSupport;
 import org.anon.exec.TestTableDropSupport;
 import org.anon.vendor.DatabaseSpecifics;
 import org.junit.After;
-import org.junit.Assert;
 import org.junit.Assume;
 import org.junit.Before;
 import org.junit.Test;
@@ -100,8 +99,8 @@ public class NotNullConstraintManagerTest extends BaseParametrisedDbTest{
 		databaseTableInfo.setName("TMP_TABLE_A");
 		// need to deactivate first
 		testDeactivateNoPk();
-		boolean res= notNullConstraintManager.activateConstraints(databaseColumnInfo);
-		Assert.assertTrue(res);
+		notNullConstraintManager.activateConstraints(databaseColumnInfo);
+
 	}
 
 	@Test
@@ -116,8 +115,8 @@ public class NotNullConstraintManagerTest extends BaseParametrisedDbTest{
 		databaseTableInfo.setName("TMP_TABLE_B");
 		// need to deactivate first
 		testDeactivatePk();
-		boolean res= notNullConstraintManager.activateConstraints(databaseColumnInfo);
-		Assert.assertTrue(res);
+		notNullConstraintManager.activateConstraints(databaseColumnInfo);
+
 	}
 
 	@Test

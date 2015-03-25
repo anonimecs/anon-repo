@@ -23,9 +23,8 @@ public class SybaseRehuffleTest extends SybaseExecTestBase{
 		anonymisationMethod.setPassword("testpassword2");
 		anonConfig.addAnonMethod(anonymisationMethod);
 		
-		addTable("SSY_SourceSystem", "varchar", "TMP_TABLE_B", anonymisationMethod,anonConfig);
-		addTable("SSY_SourceSystem", "varchar", "TMP_TABLE_A", anonymisationMethod,anonConfig);
-//		addTable("SSY_SourceSystem", "varchar", "TMP_POSITION", anonymisationMethod,anonConfig);
+		addTable("SSY_SourceSystem", "varchar", false, "TMP_TABLE_B", anonymisationMethod,anonConfig);
+		addTable("SSY_SourceSystem", "varchar", false, "TMP_TABLE_A", anonymisationMethod,anonConfig);
 		
 
 		SybaseExec sybaseExec = createSybaseExec();
@@ -54,7 +53,7 @@ public class SybaseRehuffleTest extends SybaseExecTestBase{
 		anonymisationMethod.setPassword("testpassword2");
 		anonConfig.addAnonMethod(anonymisationMethod);
 		
-		addTable("SSY_TopLink", "varchar", "TMP_TABLE_A", anonymisationMethod,anonConfig);
+		addTable("SSY_TopLink", "varchar", false, "TMP_TABLE_A", anonymisationMethod,anonConfig);
 		
 		SybaseExec sybaseExec = createSybaseExec();
 		sybaseExec.setExecConfig(anonConfig);
@@ -70,9 +69,9 @@ public class SybaseRehuffleTest extends SybaseExecTestBase{
 
 
 	
-	private void addTable(String colName, String colType, String tableName, AnonymisationMethod anonymisationMethod, AnonConfig anonConfig) {
+	private void addTable(String colName, String colType, boolean isNullable, String tableName, AnonymisationMethod anonymisationMethod, AnonConfig anonConfig) {
 		DatabaseTableInfo table = new DatabaseTableInfo();
-		DatabaseColumnInfo databaseColumnInfo = new DatabaseColumnInfo(colName, colType, true, DatabaseSpecifics.SybaseSpecific);
+		DatabaseColumnInfo databaseColumnInfo = new DatabaseColumnInfo(colName, colType, isNullable, DatabaseSpecifics.SybaseSpecific);
 		table.addColumn(databaseColumnInfo);
 		
 		anonConfig.addTable(table);

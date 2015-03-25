@@ -17,7 +17,7 @@ public class MySqlExecTest extends MySqlExecTestBase{
 		MySqlExec mysqlExec = createExec();
 		mysqlExec.setExecConfig(getTestAnonConfig("COMSIID", "VARCHAR2", "TMP_TABLE_B", new AnonymisationMethodDestoryMySql()));
 		mysqlExec.runAll();
-		Assert.assertEquals("x", loadFromDbObject("select distinct COMSIID from TMP_TABLE_B", String.class));
+		Assert.assertEquals("xxxxxxx", loadFromDbObject("select distinct COMSIID from TMP_TABLE_B", String.class));
 	}
 
 	@Test

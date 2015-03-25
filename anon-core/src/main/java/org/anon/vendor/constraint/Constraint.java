@@ -3,18 +3,10 @@ package org.anon.vendor.constraint;
 import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 
-public abstract class Constraint {
+public class Constraint {
 
 	protected boolean active = true;
 	protected String message = null;
-	
-	protected String constraintName;
-	protected String tableName;
-
-	
-	abstract public String createActivateSql();
-	abstract public String createDeactivateSql();
-
 	
 	public void setActive(boolean active) {
 		this.active = active;

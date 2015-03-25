@@ -26,12 +26,22 @@ public abstract class SybaseExecTestBase extends BaseExecTest {
 	@Value("${sybase.test.schema}")
 	private String schema;
 	
+	@Value("${sybase.available}")
+	private String available;
+	
 	
 	@Override
 	protected String getSchema() {
 		return schema;
 	}
 
+	@Override
+	protected boolean assumeDbAvailable() {
+		return Boolean.valueOf(available);
+		
+	}
+
+	
 	
 	public SybaseExecTestBase() {
 		super();

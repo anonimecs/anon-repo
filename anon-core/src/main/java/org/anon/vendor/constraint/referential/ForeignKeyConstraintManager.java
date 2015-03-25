@@ -4,10 +4,10 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
-import org.anon.vendor.constraint.ConstraintManager;
+import org.anon.vendor.constraint.NamedConstraintManager;
 import org.apache.log4j.Logger;
 
-public abstract class ForeignKeyConstraintManager <C extends ForeignKeyConstraint> extends ConstraintManager<C>{
+public abstract class ForeignKeyConstraintManager <C extends ForeignKeyConstraint> extends NamedConstraintManager<C>{
 	protected Logger logger = Logger.getLogger(getClass());
 	
 	public ForeignKeyConstraintManager(DataSource dataSource) {

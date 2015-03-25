@@ -41,7 +41,7 @@ public class OracleForeignKeyConstraintManager extends ForeignKeyConstraintManag
 	}
 
 	protected List<OracleForeignKeyConstraint> doLoad(String tableName, String columnName, String schema, String sql_select) {
-		List<OracleForeignKeyConstraint> constraints = jdbcTemplate.query(sql_select, new Object [] {tableName, columnName, schema}, 
+		List<OracleForeignKeyConstraint> constraints = jdbcTemplate.query(sql_select, new Object [] {tableName.toUpperCase(), columnName.toUpperCase(), schema}, 
 		new RowMapper<OracleForeignKeyConstraint>(){
 			@Override
 			public OracleForeignKeyConstraint mapRow(ResultSet rs, int rowNum) throws SQLException {

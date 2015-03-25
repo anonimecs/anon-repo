@@ -5,9 +5,9 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
-import org.anon.vendor.constraint.ConstraintManager;
+import org.anon.vendor.constraint.NamedConstraintManager;
 
-public abstract class UniqueConstraintManager <C extends UniqueConstraint> extends ConstraintManager<C>{
+public abstract class UniqueConstraintManager <C extends UniqueConstraint> extends NamedConstraintManager<C>{
 	
 	public UniqueConstraintManager(DataSource dataSource) {
 		super(dataSource);

@@ -6,6 +6,8 @@ import org.anon.data.AnonConfig;
 import org.anon.data.Database;
 import org.anon.exec.audit.ExecAuditor;
 import org.anon.exec.mock.LicenseManagerMock;
+import org.junit.Assume;
+import org.junit.Before;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 
@@ -21,10 +23,17 @@ public abstract class SqlServerExecTestBase extends BaseExecTest {
 	@Autowired
 	ExecAuditor execAuditor;
 	
+	
+	@Value("${sqlserver.available}")
+	private String available;
+
+	
 	@Override
 	DataSource getDataSource() {
 		return dataSourceSqlServer;
 	}
+	
+
 	
 	TestTableCreatorSqlServer testTableCreator = new TestTableCreatorSqlServer();
 
@@ -36,6 +45,13 @@ public abstract class SqlServerExecTestBase extends BaseExecTest {
 	protected String getSchema() {
 		return schema;
 	}
+
+	@Override
+	protected boolean assumeDbAvailable() {
+		return Boolean.valueOf(available);
+		
+	}
+
 
 	
 	public SqlServerExecTestBase() {
