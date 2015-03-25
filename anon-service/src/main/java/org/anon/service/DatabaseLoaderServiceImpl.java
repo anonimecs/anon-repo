@@ -229,6 +229,7 @@ public class DatabaseLoaderServiceImpl implements DatabaseLoaderService{
 			Class<AnonymisationMethod> clazz = (Class<AnonymisationMethod>) Class.forName(anonymisationMethodData.getAnonMethodClass());
 			AnonymisationMethod anonymisationMethod = clazz.newInstance();
 			anonymisationMethod.setId(anonymisationMethodData.getId());
+			anonymisationMethod.setPassword(anonymisationMethodData.getPassword());
 			return anonymisationMethod;
 		} catch (Exception e) {
 			throw new AnonymisationMethodCreateException(anonymisationMethodData, e);

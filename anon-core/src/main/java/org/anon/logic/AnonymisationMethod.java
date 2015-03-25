@@ -82,7 +82,10 @@ public abstract class AnonymisationMethod implements Serializable{
 		calcHashMod();
 	}
 	
-	
+	public String getPassword() {
+		return password;
+	}
+
 	@Override
 	public String toString() {
 		return type + " Columns: " + applyedToColumns;

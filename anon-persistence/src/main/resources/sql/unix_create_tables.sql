@@ -49,6 +49,7 @@ CREATE TABLE DatabaseConfig (
 create table AnonymisationMethodData (
     ID INT NOT NULL GENERATED ALWAYS AS IDENTITY,
     DATABASECONFIG_ID INT not null,
+    PASSWORD VARCHAR(255),
     anonymizationType VARCHAR(30) NOT NULL,
     anonMethodClass VARCHAR(255) NOT NULL,
     DTYPE VARCHAR(255),

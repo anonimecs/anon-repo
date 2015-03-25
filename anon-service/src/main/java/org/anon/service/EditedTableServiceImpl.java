@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.anon.data.AnonConfig;
 import org.anon.data.AnonymisedColumnInfo;
+import org.anon.data.AnonymizationType;
 import org.anon.data.DatabaseColumnInfo;
 import org.anon.data.DatabaseTableInfo;
 import org.anon.data.RelatedTableColumnInfo;
@@ -59,6 +60,10 @@ public class EditedTableServiceImpl implements EditedTableService{
 		anonymisationMethodData.setDatabaseConfigId(dbConnectionFactory.getDatabaseConfig().getId());
 		anonymisationMethodData.setAnonymizationType(anonymisationMethod.getType());
 		anonymisationMethodData.setAnonMethodClass(anonymisationMethod.getClass().getName());
+		
+		if(anonymisationMethod.getType().equals(AnonymizationType.ENCRYPT)) {
+			anonymisationMethodData.setPassword(anonymisationMethod.getPassword());
+		}
 		
 		for(AnonymisedColumnInfo column:anonymisationMethod.getApplyedToColumns()){
 			AnonymisedColumnData anonymisedColumnData = new AnonymisedColumnData();

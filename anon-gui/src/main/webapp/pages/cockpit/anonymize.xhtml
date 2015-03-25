@@ -30,6 +30,10 @@
 			</h:form>
 
 			<p:outputPanel id="buttons">
+			
+				<p:commandButton value="Configure Encryption" 
+					oncomplete="PF('configureEncryptionPopup').show();" rendered="#{editedTableBacking.anonymisationMethod.type == 'ENCRYPT'}" update=":configureEncryptionPopupId"/>	
+			
 				<p:commandButton value="Configure Mappings" action="#{configureMappingsPopupBacking.onConfigureMappingsClicked()}"
 					oncomplete="PF('configureMappingsPopup').show();" rendered="#{editedTableBacking.anonymisationMethod.type == 'MAP'}" update=":configureMappingsPopupId"/>
 
@@ -176,6 +180,30 @@
 		</style>
 
 		
+		<p:dialog id="configureEncryptionPopupId" header="Configure Encryption" widgetVar="configureEncryptionPopup" modal="true" width="400">
+		<h:form id="configureEncryptionPopupForm" rendered="#{editedTableBacking.anonymisationMethod.type == 'ENCRYPT'}">
+			<h:panelGrid id="passwordGrid" columns="2">
+				
+				<h:outputLabel for="pwd1" value="Password: *" />
+        		<p:password id="pwd1" value="#{configureEncryptionPopupBacking.password}" match="pwd2" label="Password" size="30"/>
+        		
+        		<h:outputLabel for="pwd2" value="Reytpe: *" />
+        		<p:password id="pwd2" value="#{configureEncryptionPopupBacking.password}" label="Retype" size="30"/>
+        		
+        		<p:commandButton value="Generate Password" process="@this" action="#{configureEncryptionPopupBacking.generateRandomPassword()}" update=":configureEncryptionPopupForm"/>
+				<h:outputText value="#{configureEncryptionPopupBacking.generatedPassword}" />
+				
+			</h:panelGrid>
+			
+			<p:spacer height="10px"/>
+			
+			<h:panelGrid columns="2" cellpadding="5">
+				<p:commandButton value="Submit" actionListener="#{configureEncryptionPopupBacking.onSubmitClicked()}" oncomplete="PF('configureEncryptionPopup').hide();" />
+				<p:commandButton value="Close" process="@none" oncomplete="PF('configureEncryptionPopup').hide();"/>
+			</h:panelGrid>
+			
+		</h:form>
+		</p:dialog>
 	
 	
 		<p:dialog id="configureMappingsPopupId" header="Configure Mappings" widgetVar="configureMappingsPopup" modal="true" width="700" onHide="#{configureMappingsPopupBacking.onClose()}">

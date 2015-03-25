@@ -15,6 +15,18 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 import org.anon.data.AnonymizationType;
+import org.hibernate.annotations.Parameter;
+import org.hibernate.annotations.Type;
+import org.hibernate.annotations.TypeDef;
+import org.jasypt.hibernate4.type.EncryptedStringType;
+
+@TypeDef(
+		name="encryptedString",
+		typeClass=EncryptedStringType.class,
+		parameters= {
+			@Parameter(name="encryptorRegisteredName", value="strongHibernateStringEncryptor")
+		}
+) 
 
 @Entity
 public class AnonymisationMethodData extends PersistentObject{
@@ -25,6 +37,10 @@ public class AnonymisationMethodData extends PersistentObject{
 	
 	@Column
 	protected AnonymizationType anonymizationType;
+	
+	@Type(type="encryptedString")
+	@Column
+	private String password;
 	
 	@Column 
 	protected String anonMethodClass; 
@@ -91,4 +107,13 @@ public class AnonymisationMethodData extends PersistentObject{
 	public void setDatabaseConfig(DatabaseConfig databaseConfig) {
 		this.databaseConfig = databaseConfig;
 	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+	
 }
