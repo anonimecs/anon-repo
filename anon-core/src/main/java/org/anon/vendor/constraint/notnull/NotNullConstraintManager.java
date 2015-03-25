@@ -1,42 +1,72 @@
 package org.anon.vendor.constraint.notnull;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
 import javax.sql.DataSource;
 
 import org.anon.data.DatabaseColumnInfo;
-import org.apache.log4j.Logger;
-import org.springframework.jdbc.core.JdbcTemplate;
+import org.anon.vendor.constraint.ConstraintManager;
 
-public class NotNullConstraintManager{
-	protected Logger logger = Logger.getLogger(getClass());
-	
-	protected JdbcTemplate jdbcTemplate;
+public class NotNullConstraintManager extends ConstraintManager<NotNullConstraint>{
 
 	public NotNullConstraintManager(DataSource dataSource) {
-		this.jdbcTemplate = new JdbcTemplate(dataSource);
+		super(dataSource);
 	}
 
-	public boolean deactivateConstraint(DatabaseColumnInfo databaseColumnInfo) {
+	@Override
+	public List<NotNullConstraint> deactivateConstraints(DatabaseColumnInfo databaseColumnInfo) {
+		NotNullConstraint notNullConstraint = deactivateConstraint(databaseColumnInfo);
+		if(notNullConstraint != null){
+			return Arrays.asList(notNullConstraint);
+		}
+		else {
+			return Collections.EMPTY_LIST;
+		}
+	}
+
+	public NotNullConstraint deactivateConstraint(DatabaseColumnInfo databaseColumnInfo) {
 		if(databaseColumnInfo.isNullable()){
-			return false;
+			return null;
 		}
 		
-		String dropConstraint = getNotNullConstraint(databaseColumnInfo).createDeactivateSql(databaseColumnInfo);
+		NotNullConstraint notNullConstraint = getNotNullConstraint(databaseColumnInfo);
+		String dropConstraint = notNullConstraint.createDeactivateSql(databaseColumnInfo);
 		
 		logger.debug(dropConstraint);
-		jdbcTemplate.update(dropConstraint);
-		return true;
+		try{
+			jdbcTemplate.update(dropConstraint);
+			notNullConstraint.setActive(false);
+		}catch(Exception e){
+			handleConstraintDeactivationException(notNullConstraint, dropConstraint, e);
+		}
+		return notNullConstraint;
 	}
 
-	public boolean activateConstraints(DatabaseColumnInfo databaseColumnInfo) {
+	@Override
+	public void activateConstraints(DatabaseColumnInfo databaseColumnInfo,List<NotNullConstraint> deactivatedConstraints) {
+		if(deactivatedConstraints.size() != 1){
+			throw new RuntimeException("There must be exactly one constraint");
+		}
+		NotNullConstraint notNullConstraint = deactivatedConstraints.get(0);
+		try{
+			activateConstraints(databaseColumnInfo);
+			notNullConstraint.setActive(true);
+		} catch (Exception e){
+			handleConstraintActivationException(notNullConstraint, "not null constraint", e);
+		}
+	}
+
+	public void activateConstraints(DatabaseColumnInfo databaseColumnInfo) {
 		if(databaseColumnInfo.isNullable()){
-			return false;
+			return;
 		}
 		
 		String activateConstraint = getNotNullConstraint(databaseColumnInfo).createActivateSql(databaseColumnInfo);
 		
 		logger.debug(activateConstraint);
 		jdbcTemplate.update(activateConstraint);
-		return true;
 	
 	}
 

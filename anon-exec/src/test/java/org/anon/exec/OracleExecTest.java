@@ -20,7 +20,7 @@ public class OracleExecTest extends OracleExecTestBase{
 		oracleExec.setExecConfig(getTestAnonConfig("COMSIID", "VARCHAR2", "TMP_TABLE_B", new AnonymisationMethodDestoryOracle()));
 		oracleExec.runAll();
 		
-		Assert.assertEquals("x", loadFromDbObject("select distinct COMSIID from TMP_TABLE_B", String.class));
+		Assert.assertEquals("xxxxxxx", loadFromDbObject("select distinct COMSIID from TMP_TABLE_B", String.class));
 		
 	}
 

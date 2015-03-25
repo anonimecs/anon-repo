@@ -51,7 +51,7 @@ public class SybaseSpHelpconstraintUtil {
 		return definition.split("\\(")[1].split("\\)")[0].trim().split("\\s*,\\s*");
 	}
 	
-	public static <C extends Constraint> Constraint mapRow(final String tableName, ResultSet rs, Class<C> requestedConstraintClass) throws SQLException {
+	public static <C extends NamedConstraint> NamedConstraint mapRow(final String tableName, ResultSet rs, Class<C> requestedConstraintClass) throws SQLException {
 		if(requestedConstraintClass.equals(SybaseUniqueConstraint.class) && isUnique(rs) ){
 			return new SybaseUniqueConstraint(rs, tableName);
 		}
@@ -67,10 +67,10 @@ public class SybaseSpHelpconstraintUtil {
 		}
 	}
 	
-	public static void removeNulls(List<Constraint> allConstraints) {
-		Iterator<Constraint> iterator = allConstraints.iterator();
+	public static void removeNulls(List<NamedConstraint> allConstraints) {
+		Iterator<NamedConstraint> iterator = allConstraints.iterator();
 		while(iterator.hasNext()){
-			Constraint constraint = iterator.next();
+			NamedConstraint constraint = iterator.next();
 			if(constraint == null){
 				iterator.remove();
 			}
@@ -78,13 +78,13 @@ public class SybaseSpHelpconstraintUtil {
 	}
 
 	@SuppressWarnings("unchecked")
-	public static <C extends Constraint> List spHelpconstraint(final String tableName, String schema, final Class<C> requestedConstraintClass, JdbcTemplate jdbcTemplate) {
+	public static <C extends NamedConstraint> List spHelpconstraint(final String tableName, String schema, final Class<C> requestedConstraintClass, JdbcTemplate jdbcTemplate) {
 		jdbcTemplate.execute("use " + schema);
 		String sp_helpconstraint = "sp_helpconstraint '" + tableName + "', 'detail'";
 		try {
-			List<Constraint> allConstraints = jdbcTemplate.query(sp_helpconstraint, new RowMapper<Constraint>(){
+			List<NamedConstraint> allConstraints = jdbcTemplate.query(sp_helpconstraint, new RowMapper<NamedConstraint>(){
 				@Override
-				public Constraint mapRow(ResultSet rs, int rowNum) throws SQLException {
+				public NamedConstraint mapRow(ResultSet rs, int rowNum) throws SQLException {
 					return SybaseSpHelpconstraintUtil.mapRow(tableName, rs, requestedConstraintClass);
 				}
 
@@ -95,8 +95,13 @@ public class SybaseSpHelpconstraintUtil {
 			return allConstraints;
 		} catch (Exception e) {
 			// sybase sp_helpconstraint fails for tables with no constraints
-			logger.error("Probably unconstrained table. sp_helpconstraints failes with " + sp_helpconstraint, e);
-			return (List<Constraint>)Collections.EMPTY_LIST;
+			if(e.getCause() != null && e.getCause() instanceof SQLException && 18024 == ((SQLException)e.getCause()).getErrorCode()){
+				logger.debug("Probably unconstrained table. sp_helpconstraints failes with " + sp_helpconstraint);
+			}
+			else {
+				logger.error("sp_helpconstraints failes with " + sp_helpconstraint, e);
+			}
+			return (List<NamedConstraint>)Collections.EMPTY_LIST;
 		}
 	}
 

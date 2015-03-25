@@ -2,10 +2,10 @@ package org.anon.vendor.constraint.unique;
 
 import java.util.List;
 
-import org.anon.vendor.constraint.Constraint;
+import org.anon.vendor.constraint.NamedConstraint;
 import org.apache.commons.lang.StringUtils;
 
-public abstract class UniqueConstraint extends Constraint {
+public abstract class UniqueConstraint extends NamedConstraint {
 
 	protected List<String> columnNames;
 	
@@ -33,4 +33,8 @@ public abstract class UniqueConstraint extends Constraint {
 		return columnNames.contains(columnName);
 	}
 	
+	@Override
+	public String toString() {
+		return "Unique " + getColumNamesAsCommaSeparatedList();
+	}
 }

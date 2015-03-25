@@ -11,7 +11,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 
 public class SqlServerExecTest extends SqlServerExecTestBase{
 
-	
 
 
 	@Test

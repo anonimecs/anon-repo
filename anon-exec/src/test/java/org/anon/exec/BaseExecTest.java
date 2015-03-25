@@ -10,6 +10,7 @@ import org.anon.logic.AnonymisationMethod;
 import org.anon.vendor.DatabaseSpecifics;
 import org.junit.After;
 import org.junit.Assert;
+import org.junit.Assume;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -59,8 +60,19 @@ public abstract class BaseExecTest extends BaseDbTest{
 	}
 
 
+	abstract protected boolean assumeDbAvailable();
+
+	@Before
+	public void beforeTest(){
+		Assume.assumeTrue(assumeDbAvailable());
+	}
+
+	
 	@Before
 	public void createTable() throws IOException{
+		if(!assumeDbAvailable()){
+			return;
+		}
 		dropTables();
 		getTestTableCreator().createTables(getJdbcTemplate());
 	}
@@ -69,6 +81,9 @@ public abstract class BaseExecTest extends BaseDbTest{
 	
 	@After
 	public void dropTables() {
+		if(!assumeDbAvailable()){
+			return;
+		}
 		try{
 			getTestTableCreator().dropTableB(getJdbcTemplate());
 		}

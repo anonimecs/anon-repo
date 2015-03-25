@@ -2,13 +2,13 @@ package org.anon.vendor.constraint.referential;
 
 import java.util.Arrays;
 
-import org.anon.vendor.constraint.Constraint;
+import org.anon.vendor.constraint.NamedConstraint;
 import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 
 
 
-public abstract class ForeignKeyConstraint extends Constraint{
+public abstract class ForeignKeyConstraint extends NamedConstraint{
 
 	protected String sourceTableName;
 	protected String targetTableName;

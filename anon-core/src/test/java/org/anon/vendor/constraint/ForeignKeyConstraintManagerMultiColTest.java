@@ -88,7 +88,7 @@ public class ForeignKeyConstraintManagerMultiColTest extends BaseParametrisedDbT
 	public void testFkTo() throws IOException {
 		List<? extends ForeignKeyConstraint> fks = constraintManager.loadForeignKeysTo("TMP_TABLE_C", "COL1", schema);
 		Assert.assertEquals("number of loadForeignKeysTo", 1,  fks.size());
-		List<Constraint> deactivated = constraintManager.deactivateConstraints("TMP_TABLE_C", "COL1", schema);
+		List<NamedConstraint> deactivated = constraintManager.deactivateConstraints("TMP_TABLE_C", "COL1", schema);
 		constraintManager.activateConstraints(deactivated);
 		List<? extends ForeignKeyConstraint> fks2 = constraintManager.loadForeignKeysTo("TMP_TABLE_C", "COL1", schema);
 		Assert.assertEquals("number of loadForeignKeysTo after drop and recreate", 1,  fks2.size());
@@ -98,7 +98,7 @@ public class ForeignKeyConstraintManagerMultiColTest extends BaseParametrisedDbT
 	public void testFkFrom() throws IOException {
 		List<? extends ForeignKeyConstraint> fks = constraintManager.loadForeignKeysFrom("TMP_TABLE_D", "COL1_REF", schema);
 		Assert.assertEquals("number of loadForeignKeysFrom", 1,  fks.size());
-		List<Constraint> deactivated = constraintManager.deactivateConstraints("TMP_TABLE_D", "COL1_REF", schema);
+		List<NamedConstraint> deactivated = constraintManager.deactivateConstraints("TMP_TABLE_D", "COL1_REF", schema);
 		constraintManager.activateConstraints(deactivated);
 		List<? extends ForeignKeyConstraint> fks2 = constraintManager.loadForeignKeysFrom("TMP_TABLE_D", "COL1_REF", schema);
 		Assert.assertEquals("number of loadForeignKeysFrom after drop and recreate", 1,  fks2.size());
@@ -113,7 +113,7 @@ public class ForeignKeyConstraintManagerMultiColTest extends BaseParametrisedDbT
 	}
 	
 	@Test
-	public void testMultVolumnLoadConstraints() throws IOException {
+	public void testMultColumnLoadConstraints() throws IOException {
 		List<? extends ForeignKeyConstraint> fks = constraintManager.loadForeignKeysTo("TMP_TABLE_A", "COL1", schema);
 		Assert.assertEquals("number of loadForeignKeysTo", 1,  fks.size());
 		fks = constraintManager.loadForeignKeysTo("TMP_TABLE_A", "COL2", schema);

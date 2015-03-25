@@ -14,12 +14,15 @@ import org.anon.license.LicenseException;
 import org.anon.license.LicenseManager;
 import org.anon.logic.AnonymisationMethod;
 import org.anon.service.DbConnectionFactory;
-import org.anon.vendor.constraint.referential.ForeignKeyConstraint;
-import org.anon.vendor.constraint.referential.ForeignKeyConstraintManager;
+import org.anon.vendor.constraint.Constraint;
+import org.anon.vendor.constraint.ConstraintBundle;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 
+/**
+ * Subclasses are always prototypes, and are not multi threaded
+ */
 public abstract class BaseExec {
 	
 	protected Logger logger = Logger.getLogger(getClass());
@@ -89,10 +92,12 @@ public abstract class BaseExec {
 			for (AnonymisedColumnInfo col : anonymisationMethod.getApplyedToColumns()) {
 				assertFreeEditionRunCount();
 				methodExecution.startedCol(col);
+				
+				ConstraintBundle constraintBundle = createConstraintBundle( col, anonymisationMethod);
 				addMessage(methodExecution, col, new ExecutionMessage("Deacivating constraints", null));
-				ForeignKeyConstraintManager constraintManager = getConstraintManager(dataSource);
-				List<? extends ForeignKeyConstraint> deactivatedContstraints = constraintManager.deactivateConstraints(col.getTable().getName(), col.getName(), col.getTable().getSchema());
-				addMessage(methodExecution, col, new ExecutionMessage("Deacivated constraints", deactivatedContstraints.size()));
+				List<Constraint> deactivatedConstraints = constraintBundle.deactivate();
+				
+				addMessage(methodExecution, col, new ExecutionMessage("Deacivated constraints " + deactivatedConstraints, deactivatedConstraints.size()));
 
 				ExecutionMessage runResult;
 				try{
@@ -100,9 +105,9 @@ public abstract class BaseExec {
 					runResult = anonymisationMethod.runOnColumn(col);
 				}
 				finally{
-					addMessage(methodExecution, col, new ExecutionMessage("Reacivating constraints", deactivatedContstraints.size()));
-					constraintManager.activateConstraints(deactivatedContstraints);
-					showConstaintProblems(col, methodExecution, deactivatedContstraints);
+					addMessage(methodExecution, col, new ExecutionMessage("Reacivating constraints", deactivatedConstraints.size()));
+					constraintBundle.activate();
+					showConstaintProblems(col, methodExecution, deactivatedConstraints);
 				}
 				methodExecution.finishedCol(col,runResult);
 					
@@ -120,6 +125,10 @@ public abstract class BaseExec {
 		}
 	}
 	
+	public abstract ConstraintBundle createConstraintBundle(AnonymisedColumnInfo col, AnonymisationMethod anonymisationMethod);
+
+//	protected abstract ForeignKeyConstraintManager getConstraintManager(DataSource dataSource);
+
 	private String getExecSchema(AnonymisationMethod anonymisationMethod) {
 		String schema = null;
 		for(AnonymisedColumnInfo col : anonymisationMethod.getApplyedToColumns()) {		
@@ -134,13 +143,14 @@ public abstract class BaseExec {
 	}	
 	
 	private void addMessage(MethodExecution methodExecution, AnonymisedColumnInfo col, ExecutionMessage executionMessage) {
+		logger.debug("Action on " + col + " : " + executionMessage);
 		methodExecution.addMessage(col, executionMessage);
 		guiNotifier.refreshExecGui(executionMessage.toString());
 		
 	}
 	
-	private void showConstaintProblems(AnonymisedColumnInfo col, MethodExecution methodExecution,List<? extends ForeignKeyConstraint> deactivatedContstraints) {
-		for (ForeignKeyConstraint constraint : deactivatedContstraints) {
+	private void showConstaintProblems(AnonymisedColumnInfo col, MethodExecution methodExecution,List<Constraint> deactivatedContstraints) {
+		for (Constraint constraint : deactivatedContstraints) {
 			if(! constraint.isActive()){
 				methodExecution.addMessage(col, new ExecutionMessage(constraint.getMessage(), null));
 			}
@@ -154,8 +164,6 @@ public abstract class BaseExec {
 		tablesAnonimised++;
 	}
 
-	
-	protected abstract ForeignKeyConstraintManager getConstraintManager(DataSource dataSource);
 	
 	public String getUserName() {
 		return userName;

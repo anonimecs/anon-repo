@@ -25,6 +25,16 @@ public abstract class MySqlExecTestBase extends BaseExecTest {
 	@Value("${mysql.test.schema}")
 	private String schema;
 	
+	@Value("${mysql.available}")
+	private String available;
+	
+	
+	@Override
+	protected boolean assumeDbAvailable() {
+		return Boolean.valueOf(available);
+		
+	}
+
 	
 	@Override
 	protected String getSchema() {

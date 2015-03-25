@@ -31,10 +31,19 @@ public abstract class OracleExecTestBase extends BaseExecTest {
 	@Value("${oracle.test.schema}")
 	private String schema;
 	
+	@Value("${oracle.available}")
+	private String available;
+	
 	
 	@Override
 	protected String getSchema() {
 		return schema;
+	}
+	
+	@Override
+	protected boolean assumeDbAvailable() {
+		return Boolean.valueOf(available);
+		
 	}
 
 	
