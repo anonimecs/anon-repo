@@ -76,7 +76,7 @@ public abstract class AnonymisationMethod implements Serializable{
 	
 	public void setPassword(String password) {
 		if(password == null){
-			throw new RuntimeException("empty password");
+			return;
 		}
 		this.password = password;
 		calcHashMod();
