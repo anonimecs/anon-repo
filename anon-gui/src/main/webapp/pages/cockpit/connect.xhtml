@@ -42,6 +42,10 @@
 				<h:outputText id="databaseUrl" value="#{databasePanelBacking.databaseConfig.databaseConnection.url}" />
 				<h:outputText/>
 				
+				<p:outputLabel for="schema" value="Schema"/>
+				<h:outputText id="schema" value="#{databasePanelBacking.databaseConfig.defaultSchema}" />
+				<h:outputText/>
+				
 				<p:outputLabel for="databaseType" value="Type" />
 				<h:outputText id="databaseType" value="#{databasePanelBacking.databaseConfig.databaseConnection.vendor}" />
 				<h:outputText/>
