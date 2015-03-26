@@ -6,8 +6,10 @@ import org.anon.data.AnonConfig;
 import org.anon.data.Database;
 import org.anon.exec.audit.ExecAuditor;
 import org.anon.exec.mock.LicenseManagerMock;
+import org.anon.vendor.constraint.ConstraintBundleFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.test.util.ReflectionTestUtils;
 
 public abstract class MySqlExecTestBase extends BaseExecTest {
 	
@@ -59,7 +61,8 @@ public abstract class MySqlExecTestBase extends BaseExecTest {
 		mysqlExec.setUserName("junit");
 		mysqlExec.setExecAuditor(execAuditor);
 		mysqlExec.setGuiNotifier(new NullGuiNotifier());
-		
+		ReflectionTestUtils.setField(mysqlExec, "constraintBundleFactory", new ConstraintBundleFactory());
+
 		mysqlExec.setDbConnectionFactory(new DummyConnectionFactory(dataSourceMySql, Database.MYSQL));
 		return mysqlExec;
 	}

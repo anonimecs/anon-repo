@@ -10,8 +10,10 @@ import org.anon.exec.TwoTestTablesCreator;
 import org.anon.logic.AnonymisationMethod;
 import org.anon.logic.AnonymisationMethodMapping;
 import org.anon.vendor.DatabaseSpecifics;
+import org.anon.vendor.constraint.ConstraintBundleFactory;
 import org.junit.Assert;
 import org.junit.Test;
+import org.springframework.test.util.ReflectionTestUtils;
 
 public class AnonymisationMethodMappingTest extends TwoTablesAllDbTest{
 
@@ -49,6 +51,7 @@ public class AnonymisationMethodMappingTest extends TwoTablesAllDbTest{
 		
 		BaseExec baseExec = createBaseExec();
 		baseExec.setExecConfig(anonConfig);
+		ReflectionTestUtils.setField(baseExec, "constraintBundleFactory", new ConstraintBundleFactory());
 		baseExec.runAll();
 	}
 	

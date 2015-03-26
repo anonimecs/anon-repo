@@ -14,8 +14,10 @@ import org.anon.license.LicenseException;
 import org.anon.license.LicenseManager;
 import org.anon.logic.AnonymisationMethod;
 import org.anon.service.DbConnectionFactory;
+import org.anon.vendor.DatabaseSpecifics;
+import org.anon.vendor.constraint.ColumnConstraintBundle;
 import org.anon.vendor.constraint.Constraint;
-import org.anon.vendor.constraint.ConstraintBundle;
+import org.anon.vendor.constraint.ConstraintBundleFactory;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -44,6 +46,9 @@ public abstract class BaseExec {
 	
 	@Autowired
 	protected DbConnectionFactory dbConnectionFactory;
+	
+	@Autowired
+	ConstraintBundleFactory constraintBundleFactory;
 	
 	private String userName;
 	
@@ -93,7 +98,7 @@ public abstract class BaseExec {
 				assertFreeEditionRunCount();
 				methodExecution.startedCol(col);
 				
-				ConstraintBundle constraintBundle = createConstraintBundle( col, anonymisationMethod);
+				ColumnConstraintBundle constraintBundle = constraintBundleFactory.createConstraintBundle(getDatabaseSpecifics() , col, anonymisationMethod, dataSource);
 				addMessage(methodExecution, col, new ExecutionMessage("Deacivating constraints", null));
 				List<Constraint> deactivatedConstraints = constraintBundle.deactivate();
 				
@@ -132,9 +137,7 @@ public abstract class BaseExec {
 		}
 	}
 	
-	public abstract ConstraintBundle createConstraintBundle(AnonymisedColumnInfo col, AnonymisationMethod anonymisationMethod);
-
-//	protected abstract ForeignKeyConstraintManager getConstraintManager(DataSource dataSource);
+	protected abstract DatabaseSpecifics getDatabaseSpecifics();
 
 	private String getExecSchema(AnonymisationMethod anonymisationMethod) {
 		String schema = null;

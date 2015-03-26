@@ -25,6 +25,7 @@ import org.anon.exec.TestTableDropSupport;
 import org.anon.exec.TwoTestTablesCreator;
 import org.anon.exec.audit.ExecAuditor;
 import org.anon.exec.mock.LicenseManagerMock;
+import org.anon.vendor.constraint.ConstraintBundleFactory;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -34,6 +35,7 @@ import org.junit.runners.Parameterized.Parameters;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.util.ReflectionTestUtils;
 
 @RunWith(Parameterized.class)
 @ContextConfiguration({"classpath:spring-test-datasources.xml", "classpath:BaseExecTest.xml"})
@@ -117,6 +119,8 @@ public abstract class TwoTablesAllDbTest extends BaseParametrisedDbTest{
 		baseExec.setExecAuditor(execAuditor);
 		baseExec.setGuiNotifier(new NullGuiNotifier());
 		baseExec.setDbConnectionFactory(new DummyConnectionFactory(dataSource, database));
+		ReflectionTestUtils.setField(baseExec, "constraintBundleFactory", new ConstraintBundleFactory());
+
 		return baseExec;
 	}
 

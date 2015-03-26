@@ -6,8 +6,10 @@ import org.anon.data.AnonConfig;
 import org.anon.data.Database;
 import org.anon.exec.audit.ExecAuditor;
 import org.anon.exec.mock.LicenseManagerMock;
+import org.anon.vendor.constraint.ConstraintBundleFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.test.util.ReflectionTestUtils;
 
 
 public abstract class OracleExecTestBase extends BaseExecTest {
@@ -58,7 +60,8 @@ public abstract class OracleExecTestBase extends BaseExecTest {
 		oracleExec.setLicenseManager(new LicenseManagerMock());
 		oracleExec.setExecAuditor(execAuditor);
 		oracleExec.setGuiNotifier(new NullGuiNotifier());
-		
+		ReflectionTestUtils.setField(oracleExec, "constraintBundleFactory", new ConstraintBundleFactory());
+
 		oracleExec.setDbConnectionFactory(new DummyConnectionFactory(dataSourceOracle, Database.ORACLE));
 		return oracleExec;
 	}

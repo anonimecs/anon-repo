@@ -5,18 +5,20 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
-import org.anon.data.AnonymisedColumnInfo;
+import org.anon.data.DatabaseColumnInfo;
 import org.anon.logic.AnonymisationMethod;
 import org.anon.vendor.constraint.notnull.NotNullConstraint;
 import org.anon.vendor.constraint.notnull.NotNullConstraintManager;
+import org.anon.vendor.constraint.referential.ForeignKeyConstraint;
 import org.anon.vendor.constraint.referential.ForeignKeyConstraintManager;
+import org.anon.vendor.constraint.unique.UniqueConstraint;
 import org.anon.vendor.constraint.unique.UniqueConstraintManager;
 
 @SuppressWarnings({"unchecked","rawtypes"})
-public class ConstraintBundle {
+public class ColumnConstraintBundle {
 
 	private DataSource dataSource;
-	private AnonymisedColumnInfo col;
+	private DatabaseColumnInfo col;
 	private AnonymisationMethod anonymisationMethod;
 	
 	private NotNullConstraintManager notNullConstraintManager;
@@ -29,7 +31,7 @@ public class ConstraintBundle {
 	
 	DeactivationStrategy deactivationStrategy = new DefaultDeactivationStrategy();
 	
-	public ConstraintBundle(DataSource dataSource, AnonymisedColumnInfo col,AnonymisationMethod anonymisationMethod) {
+	public ColumnConstraintBundle(DataSource dataSource, DatabaseColumnInfo col,AnonymisationMethod anonymisationMethod) {
 		super();
 		this.dataSource = dataSource;
 		this.col = col;
@@ -69,6 +71,40 @@ public class ConstraintBundle {
 		}
 	}
 
+	public NotNullConstraint getNotNullConstraint(){
+		return getNotNullConstraintManager().getNotNullConstraint(col);
+	}
+	
+	public UniqueConstraint getPrimaryKey(){
+		List<UniqueConstraint> primaryKeys = getUniqueConstraintManager().loadPrimaryKeys(col.getTable().getName(), col.getName(), col.getTable().getSchema());
+		if(primaryKeys.isEmpty()){
+			return null;
+		}
+		else {
+			return primaryKeys.get(0);
+		}
+	}
+	
+	public List<UniqueConstraint> getUniqueConstraints(){
+		return getUniqueConstraintManager().loadUniques(col.getTable().getName(), col.getName(), col.getTable().getSchema());
+	}
+	
+	/**
+	 * Outgoing FKs
+	 */
+	public List<ForeignKeyConstraint> getForeignKeyConstraintsFrom(){
+		return getForeignKeyConstraintManager().loadForeignKeysFrom(col.getTable().getName(), col.getName(), col.getTable().getSchema());
+	}
+	
+	/**
+	 * Incoming FKs
+	 */
+	public List<ForeignKeyConstraint> getForeignKeyConstraintsTo(){
+		return getForeignKeyConstraintManager().loadForeignKeysTo(col.getTable().getName(), col.getName(), col.getTable().getSchema());
+	}
+	
+
+	
 	public NotNullConstraintManager getNotNullConstraintManager() {
 		return notNullConstraintManager;
 	}
