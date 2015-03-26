@@ -47,9 +47,14 @@
 				        		<p:column headerText="Status Info">
 				        			<h:outputText id="statusInfo" value="#{execConfig.getMethodExecution(anonMethod).getLastMessage(anonColumnInfo)}" styleClass="tooltipBehind"/>
 			        				<p:tooltip for="statusInfo">
-			        					<p:dataList value="#{execConfig.getMethodExecution(anonMethod).getColumnExecution(anonColumnInfo).getMessages()}" var="executionMessage">
-			        						<h:outputText value="#{executionMessage}"/>
-			        					</p:dataList>
+			        					<p:dataTable value="#{execConfig.getMethodExecution(anonMethod).getColumnExecution(anonColumnInfo).getMessages()}" var="executionMessage" style="width:605px;">
+			        						<p:column width="100">
+			        							<h:outputText value="#{executionMessage.getCreateDate()}" converter="weekTimestampConverter"/>
+			        						</p:column>
+			        						<p:column width="500">
+			        							<h:outputText value="#{executionMessage}"/>
+			        						</p:column>
+			        					</p:dataTable>
 			        				</p:tooltip>
 				        		</p:column>
 				        	</p:dataTable>
