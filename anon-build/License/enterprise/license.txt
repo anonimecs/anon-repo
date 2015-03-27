@@ -1,0 +1,6 @@
+edition=enterprise
+email=abax.soraszem@gmail.com
+company=Commerzbank CRC Demo
+valid-date=2015-05-01
+maxDbConnections=10
+maxTablesAnonimised=10000
