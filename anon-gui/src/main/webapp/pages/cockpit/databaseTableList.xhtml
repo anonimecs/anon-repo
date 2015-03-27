@@ -75,13 +75,23 @@
 					
 					<p:dataTable id="candidateList" 
 						value="#{anonCandidatesParser.getAnonCandidatesList()}" var="anonCandidate"
-						scrollable="true" scrollHeight="600">
+						scrollable="true" scrollHeight="600" styleClass="candidateListTable"  rowIndexVar="rowIndex">
 						
-						<p:column headerText="Anonymisation Suggestions" >
+						<p:column headerText="Anonymisation Suggestions"  filterBy="#{anonCandidate.getMessage()}" filterMatchMode="contains">
 							<h:outputText value="#{anonCandidate.getMessage()}"/>
 						</p:column>
 						<p:column width="20" >
 							<h:outputText value="#{anonCandidate.ocurrances}"/>
+							<p:tooltip for="@(.candidateListTable tr[role=row][data-ri=#{rowIndex}])" trackMouse="true">
+								<p:dataTable value="#{anonCandidate.getColumns()}" var="databaseColumnInfo" style="width:350px">
+									<p:column headerText="Table" >
+										<h:outputText value="#{databaseColumnInfo.table.name}"/>
+									</p:column>
+									<p:column headerText="Column" >
+										<h:outputText value="#{databaseColumnInfo.name}"/>
+									</p:column>
+								</p:dataTable>
+							</p:tooltip>  
 						</p:column>
 						<p:column  width="40">
 							<p:commandLink action="#{anonCandidate.setActive(false)}" value="Hide" update="@([id$=databaseTableListForm]), candidateList" rendered="#{anonCandidate.active}"/>
@@ -95,5 +105,6 @@
 		</p:tabView>
 				
 	</ui:define>
+
 				
 </ui:composition>

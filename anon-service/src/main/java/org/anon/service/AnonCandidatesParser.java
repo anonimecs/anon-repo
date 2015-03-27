@@ -34,12 +34,16 @@ public class AnonCandidatesParser {
 				String colName = databaseColumnInfo.getName().toLowerCase();
 				if(colName.contains("mail") 
 						|| colName.contains("user") 
+						|| colName.contains("phone") 
+						|| colName.contains("address") 
+						|| colName.contains("personal") 
 						|| colName.matches(".*last.*name.*") 
 						|| colName.matches(".*first.*name.*") 
 						|| colName.matches(".*family.*name.*") 
 					){
 					AnonCandidate anonCandidate = getCandidate("Column " + databaseColumnInfo.getName() + " may contain data to anonymise");
 					databaseColumnInfo.setAnonCandidate(anonCandidate);
+					anonCandidate.addColumn(databaseColumnInfo);
 					databaseTableInfo.addAnonCandidate(anonCandidate);
 				}
 			}
@@ -49,7 +53,7 @@ public class AnonCandidatesParser {
 		if(databaseTableInfo.getAnonCandidateList().isEmpty()){
 			String tableName = databaseTableInfo.getName().toLowerCase();
 			if(tableName.contains("user")){
-				databaseTableInfo.addAnonCandidate(getCandidate("Table may contain user data to anonymise"));
+				databaseTableInfo.addAnonCandidate(getCandidate("Table may contain personal data to anonymise"));
 			}
 			if(tableName.contains("mail")){
 				databaseTableInfo.addAnonCandidate(getCandidate("Table may contain user emails to anonymise"));
@@ -64,7 +68,6 @@ public class AnonCandidatesParser {
 			anonCandidate = new AnonCandidate(message);
 			anonCandidates.put(message, anonCandidate);
 		}
-		anonCandidate.incOcurrances();
 		return anonCandidate;
 	}
 

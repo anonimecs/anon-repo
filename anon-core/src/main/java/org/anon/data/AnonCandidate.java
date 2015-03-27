@@ -1,13 +1,26 @@
 package org.anon.data;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class AnonCandidate {
 	private String message;
-	private int ocurrances = 0;
 	private boolean active = true;
+	private List<DatabaseColumnInfo> columns = new ArrayList<>();
 
+	public AnonCandidate() {}
+	
 	public AnonCandidate(String message) {
 		super();
 		this.message = message;
+	}
+	
+	public List<DatabaseColumnInfo> getColumns() {
+		return columns;
+	}
+	
+	public void addColumn(DatabaseColumnInfo col){
+		columns.add(col);
 	}
 	
 	public String getMessage() {
@@ -38,15 +51,9 @@ public class AnonCandidate {
 		return message.equals(other.message);
 	}
 	
-	public void incOcurrances(){
-		ocurrances++;
-	}
 	
 	public int getOcurrances() {
-		return ocurrances;
+		return columns.size();
 	}
 	
-	public void setOcurrances(int ocurrances) {
-		this.ocurrances = ocurrances;
-	}
 }
