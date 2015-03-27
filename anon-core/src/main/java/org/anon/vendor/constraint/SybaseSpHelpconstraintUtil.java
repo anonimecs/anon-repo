@@ -18,19 +18,29 @@ public class SybaseSpHelpconstraintUtil {
 
 	public static boolean isUnique(ResultSet rs) throws SQLException {
 		
-		return "unique constraint".equalsIgnoreCase(rs.getString("type"))
+		return "unique constraint".equalsIgnoreCase(getType(rs))
 				&&
 				rs.getString("definition").toLowerCase().startsWith("unique");
 	}
 
+	protected static String getType(ResultSet rs) throws SQLException {
+		try{
+			return rs.getString("type");
+		}
+		// column type must not exist if we only have PK on the table
+		catch(Exception ignore){
+			return "unique constraint";
+		}
+	}
+
 	public static boolean isPrimaryKey(ResultSet rs) throws SQLException {
-		return "unique constraint".equalsIgnoreCase(rs.getString("type"))
+		return "unique constraint".equalsIgnoreCase(getType(rs))
 				&&
 				rs.getString("definition").toLowerCase().startsWith("primary key");
 	}
 
 	public static boolean isForeignKey(ResultSet rs) throws SQLException {
-		return "referential constraint".equalsIgnoreCase(rs.getString("type"));
+		return "referential constraint".equalsIgnoreCase(getType(rs));
 	}
 
 	/**
