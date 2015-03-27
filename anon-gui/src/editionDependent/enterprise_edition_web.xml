@@ -37,7 +37,7 @@
 	</context-param>
 	<context-param>
 		<param-name>primefaces.THEME</param-name>
-		<param-value>anon</param-value>
+		<param-value>sunny</param-value>
 	</context-param>
 	
     <listener>
