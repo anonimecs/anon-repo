@@ -29,6 +29,12 @@ public class EntitiesDaoImpl implements EntitiesDao {
 		anonymisationMethodData.setId(id);
 	}
 
+	@Override
+	public void save(AnonymisedColumnData anonymisedColumnData){
+		Long id = (Long)sessionFactory.getCurrentSession().save(anonymisedColumnData);
+		anonymisedColumnData.setId(id);
+	}
+
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<AnonymisationMethodData> loadAllAnonMethods(DatabaseConfig databaseConfig) {
@@ -42,9 +48,9 @@ public class EntitiesDaoImpl implements EntitiesDao {
 	}
 	
 	@Override
-	public int removeAnonymizedColumnData(String tableName, String columnName, String schemaName) {
-		String hql = "delete from AnonymisedColumnData where COLUMNNAME= :COLUMNNAME and TABLENAME = :TABLENAME and SCHEMANAME = :SCHEMANAME" ;
-		return sessionFactory.getCurrentSession().createQuery(hql).setString("TABLENAME", tableName).setString("COLUMNNAME", columnName).setString("SCHEMANAME", schemaName).executeUpdate();
+	public int removeAnonymizedColumnData(Long id) {
+		String hql = "delete from AnonymisedColumnData where ID= :ID";
+		return sessionFactory.getCurrentSession().createQuery(hql).setLong("ID", id).executeUpdate();
 		
 	}
 
@@ -66,6 +72,12 @@ public class EntitiesDaoImpl implements EntitiesDao {
 				.setString("SCHEMANAME", anonymisedColumnInfo.getTable().getSchema())
 				.setLong("METHOD_ID", anonymisedColumnInfo.getAnonymisationMethod().getId())
 				.uniqueResult();
+	}
+
+	@Override
+	public boolean isEmptyAnonymisationMethod(Long id) {
+		String hql = "from AnonymisedColumnData col where col.anonymisationMethodData.id= :ID";
+		return 0 == sessionFactory.getCurrentSession().createQuery(hql).setLong("ID", id).list().size();
 	}
 	
 	

@@ -23,12 +23,6 @@ public class EntitiesDaoMock implements EntitiesDao {
 	}
 
 	@Override
-	public int removeAnonymizedColumnData(String tableName, String columnName, String schemaName) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
 	public int removeAnonymisationMethodData(Long id) {
 		// TODO Auto-generated method stub
 		return 0;
@@ -44,6 +38,24 @@ public class EntitiesDaoMock implements EntitiesDao {
 	public AnonymisedColumnData loadAnonymisedColumnData(AnonymisedColumnInfo anonymisedColumnInfo) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public int removeAnonymizedColumnData(Long id) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public void save(AnonymisedColumnData anonymisedColumnData) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public boolean isEmptyAnonymisationMethod(Long id) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 }

@@ -67,6 +67,9 @@ public class EditedTableServiceImpl implements EditedTableService{
 			anonymisationMethodData.setPassword(anonymisationMethod.getPassword());
 		}
 		
+		entitiesDao.save(anonymisationMethodData);
+		anonymisationMethod.setId(anonymisationMethodData.getId());
+
 		for(AnonymisedColumnInfo column:anonymisationMethod.getApplyedToColumns()){
 			AnonymisedColumnData anonymisedColumnData = new AnonymisedColumnData();
 			anonymisedColumnData.setColumnName(column.getName());
@@ -74,11 +77,12 @@ public class EditedTableServiceImpl implements EditedTableService{
 			anonymisedColumnData.setTableName(column.getTable().getName());
 			anonymisedColumnData.setSchemaName(column.getTable().getSchema());
 			anonymisationMethodData.addColumn(anonymisedColumnData);	
+			
+			entitiesDao.save(anonymisedColumnData);
+			column.setId(anonymisedColumnData.getId());
 		}
 		
 		
-		entitiesDao.save(anonymisationMethodData);
-		anonymisationMethod.setId(anonymisationMethodData.getId());
 	}
 	
 	private AnonymisationMethodMappingData createAnonymisationMethodMappingData(AnonymisationMethodMapping anonymisationMethodMapping){
@@ -117,7 +121,7 @@ public class EditedTableServiceImpl implements EditedTableService{
 				selectedAnonymizedColumn.getTable().removeAnonymisedColumn(selectedAnonymizedColumn);
 				anonymisationMethod.removeColumn(selectedAnonymizedColumn);
 			}});
-		entitiesDao.removeAnonymizedColumnData(selectedAnonymizedColumn.getTable().getName(), selectedAnonymizedColumn.getName(), selectedAnonymizedColumn.getTable().getSchema());
+		entitiesDao.removeAnonymizedColumnData(selectedAnonymizedColumn.getId());
 		
 		// remove the related selected
 		List<AnonymisedColumnInfo> toRemoveList = new LinkedList<>(); 
@@ -133,11 +137,11 @@ public class EditedTableServiceImpl implements EditedTableService{
 					relatedCol.getTable().removeAnonymisedColumn(relatedCol);
 					anonymisationMethod.removeColumn(relatedCol);
 				}});
-			entitiesDao.removeAnonymizedColumnData(relatedCol.getTable().getName(), relatedCol.getName(), relatedCol.getTable().getName());
+			entitiesDao.removeAnonymizedColumnData(relatedCol.getId());
 		}
 		
 		// remove the method if empty
-		if(anonymisationMethod.getApplyedToColumns().isEmpty()){
+		if(entitiesDao.isEmptyAnonymisationMethod(anonymisationMethod.getId())){
 			workParts.add(new Runnable() {
 				@Override
 				public void run() {

@@ -6,6 +6,8 @@ import org.anon.vendor.DatabaseSpecifics;
 public class AnonymisedColumnInfo extends DatabaseColumnInfo{
 
 	private AnonymisationMethod anonymisationMethod;
+	protected Long id;
+
 	
 	public AnonymisedColumnInfo(DatabaseColumnInfo editedColumn) {
 		super(editedColumn);
@@ -21,6 +23,14 @@ public class AnonymisedColumnInfo extends DatabaseColumnInfo{
 
 	public void setAnonymisationMethod(AnonymisationMethod anonymisationMethod) {
 		this.anonymisationMethod = anonymisationMethod;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 

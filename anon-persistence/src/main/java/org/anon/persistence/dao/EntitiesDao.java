@@ -11,14 +11,18 @@ public interface EntitiesDao {
 
 	void save(AnonymisationMethodData anonymisationMethodData);
 
+	void save(AnonymisedColumnData anonymisedColumnData);
+
 	List<AnonymisationMethodData> loadAllAnonMethods(DatabaseConfig databaseConfig);
 
-	int removeAnonymizedColumnData(String tableName, String columnName, String schemaName);
+	int removeAnonymizedColumnData(Long id);
 
 	int removeAnonymisationMethodData(Long id);
 
 	AnonymisationMethodData loadAnonymisationMethodData(Long id);
 
 	AnonymisedColumnData loadAnonymisedColumnData(AnonymisedColumnInfo anonymisedColumnInfo);
+
+	boolean isEmptyAnonymisationMethod(Long id);
 
 }

@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.anon.persistence.data.AnonymisationMethodData;
 import org.anon.persistence.data.AnonymisedColumnData;
+import org.junit.Assert;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
@@ -37,12 +38,15 @@ public class AnonMethodDataTest extends DbEntitiesTest {
 			AnonymisedColumnData col = data.getApplyedToColumns().get(0);
 			System.out.println(col.getColumnName());
 			
+			Assert.assertFalse(entitiesDao.isEmptyAnonymisationMethod(col.getAnonymisationMethodData().getId()));
+			
 		}
 		
 		@Test
 		public void test3RemoveAnonymizedColumnData(){
-			assertEquals(1, entitiesDao.removeAnonymizedColumnData("TestTableName", "TESTCOLNAME", "TestSchema"));
-			
+			entitiesDao.removeAnonymizedColumnData(anonymisedColumnData.getId());
+			Assert.assertEquals(0, loadFromDb("select 1 from AnonymisedColumnData where COLUMNNAME='"+anonymisedColumnData.getColumnName()+"' and TABLENAME = '"+anonymisedColumnData.getTableName()+"' and SCHEMANAME = '"+anonymisedColumnData.getSchemaName()+"'").size());
+			Assert.assertTrue(entitiesDao.isEmptyAnonymisationMethod(anonymisedColumnData.getAnonymisationMethodData().getId()));
 		}
 		
 		@Test
