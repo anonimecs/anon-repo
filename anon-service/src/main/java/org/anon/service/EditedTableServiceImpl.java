@@ -1,5 +1,6 @@
 package org.anon.service;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -20,6 +21,7 @@ import org.anon.persistence.data.MappingDefaultData;
 import org.anon.persistence.data.MappingRuleData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service(value="editedTableService")
 public class EditedTableServiceImpl implements EditedTableService{
@@ -98,15 +100,23 @@ public class EditedTableServiceImpl implements EditedTableService{
 		return anonymisationMethodMappingData;
 	}
 
+	@Transactional
 	public void removeAnonymisation(DatabaseTableInfo selectedEditedTable,
-			AnonymisedColumnInfo selectedAnonymizedColumn,
+			final AnonymisedColumnInfo selectedAnonymizedColumn,
 			List<RelatedTableColumnInfo> relatedTableColumnsToRemove) {
 		
-		AnonymisationMethod anonymisationMethod = selectedAnonymizedColumn.getAnonymisationMethod();
+		final AnonymisationMethod anonymisationMethod = selectedAnonymizedColumn.getAnonymisationMethod();
 	
+		// first run all the DB work, and if successful, do the VO changes
+		List<Runnable> workParts = new ArrayList<>();
+		
 		// remove the selection
-		selectedAnonymizedColumn.getTable().removeAnonymisedColumn(selectedAnonymizedColumn);
-		anonymisationMethod.removeColumn(selectedAnonymizedColumn);
+		workParts.add(new Runnable() {
+			@Override
+			public void run() {
+				selectedAnonymizedColumn.getTable().removeAnonymisedColumn(selectedAnonymizedColumn);
+				anonymisationMethod.removeColumn(selectedAnonymizedColumn);
+			}});
 		entitiesDao.removeAnonymizedColumnData(selectedAnonymizedColumn.getTable().getName(), selectedAnonymizedColumn.getName(), selectedAnonymizedColumn.getTable().getSchema());
 		
 		// remove the related selected
@@ -116,16 +126,29 @@ public class EditedTableServiceImpl implements EditedTableService{
 				toRemoveList.add(relatedCol);
 			}
 		}
-		for(AnonymisedColumnInfo relatedCol:toRemoveList){
-			relatedCol.getTable().removeAnonymisedColumn(relatedCol);
-			anonymisationMethod.removeColumn(relatedCol);
+		for(final AnonymisedColumnInfo relatedCol:toRemoveList){
+			workParts.add(new Runnable() {
+				@Override
+				public void run() {
+					relatedCol.getTable().removeAnonymisedColumn(relatedCol);
+					anonymisationMethod.removeColumn(relatedCol);
+				}});
 			entitiesDao.removeAnonymizedColumnData(relatedCol.getTable().getName(), relatedCol.getName(), relatedCol.getTable().getName());
 		}
 		
 		// remove the method if empty
 		if(anonymisationMethod.getApplyedToColumns().isEmpty()){
-			anonConfig.removeAnonMethod(anonymisationMethod);
+			workParts.add(new Runnable() {
+				@Override
+				public void run() {
+					anonConfig.removeAnonMethod(anonymisationMethod);
+				}});
 			entitiesDao.removeAnonymisationMethodData(anonymisationMethod.getId());
+		}
+		
+		// at this point all DB was fine, run the retained java changes
+		for(Runnable workPart:workParts){
+			workPart.run();
 		}
 		
 		// reset method to null
@@ -164,6 +187,7 @@ public class EditedTableServiceImpl implements EditedTableService{
 		}
 		return false;
 	}
+
 
 	
 	

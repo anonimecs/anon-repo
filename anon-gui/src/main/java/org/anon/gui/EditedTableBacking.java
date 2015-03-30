@@ -54,32 +54,39 @@ public class EditedTableBacking extends BackingBase {
 	
 	public void onSaveColumnSettings(){
 		logDebug("onSaveColumnSettings" + editedColumn);
-		// no anoymisation selected
-		if(configContext.getAnonymisationMethod().getType() == AnonymizationType.NONE){
-			if(getAnonymizedColumn().getAnonymisationMethod() == null){
-				// nothing to do here
-				showInfoInGui("No change to save");
+		try {
+			// no anoymisation selected
+			if(configContext.getAnonymisationMethod().getType() == AnonymizationType.NONE){
+				if(getAnonymizedColumn().getAnonymisationMethod() == null){
+					// nothing to do here
+					showInfoInGui("No change to save");
+				}
+				else {
+					// remove existing method
+					editedTableService.removeAnonymisation(editedTable, getAnonymizedColumn(), selectedRelatedTableColumnsToRemove);
+					showInfoInGui("Anonymisation REMOVED for " + getAnonymizedColumn() + " and selected related tables");
+				}
 			}
+			// anonymisation was selected
 			else {
-				// remove existing method
-				editedTableService.removeAnonymisation(editedTable, getAnonymizedColumn(), selectedRelatedTableColumnsToRemove);
-				showInfoInGui("Anonymisation REMOVED for " + getAnonymizedColumn() + " and selected related tables");
-			}
-		}
-		// anonymisation was selected
-		else {
-			// new anonymisation
-			if(getAnonymizedColumn().getAnonymisationMethod() == null){
-				editedTableService.addAnonymisation(editedTable, getAnonymizedColumn(), selectedRelatedTableColumns, configContext.getAnonymisationMethod());
-				showInfoInGui("Anonymisation ADDED for " + getAnonymizedColumn() + " and selected related tables");
-			}
-			// change anonymisation
-			else {
-				editedTableService.changeAnonymisation(editedTable, getAnonymizedColumn(), selectedRelatedTableColumns, configContext.getAnonymisationMethod());
-				showInfoInGui("Anonymisation CHANGED for " + getAnonymizedColumn() + " and selected related tables");
+				// new anonymisation
+				if(getAnonymizedColumn().getAnonymisationMethod() == null){
+					editedTableService.addAnonymisation(editedTable, getAnonymizedColumn(), selectedRelatedTableColumns, configContext.getAnonymisationMethod());
+					showInfoInGui("Anonymisation ADDED for " + getAnonymizedColumn() + " and selected related tables");
+				}
+				// change anonymisation
+				else {
+					editedTableService.changeAnonymisation(editedTable, getAnonymizedColumn(), selectedRelatedTableColumns, configContext.getAnonymisationMethod());
+					showInfoInGui("Anonymisation CHANGED for " + getAnonymizedColumn() + " and selected related tables");
+					
+				}
 				
 			}
-			
+		} catch(Exception e){
+			logError("onSaveColumnSettings failed", e);
+			showErrorInGui("No changes were saved due to an error.");
+			showExceptionInGui(e);
+			redirectPageTo(NavigationCaseEnum.COLUMNS);
 		}
 	}
 
