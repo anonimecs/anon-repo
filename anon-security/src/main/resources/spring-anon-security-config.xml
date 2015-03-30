@@ -9,13 +9,15 @@
 	<sec:http auto-config="true">
 		<sec:intercept-url pattern="/app/**" access="ROLE_ADMIN"/>
 
-		<sec:form-login login-page="/login/" default-target-url="/app/connect/" always-use-default-target="true"/>
+		<sec:form-login login-page="/login/" 
+			default-target-url="/app/connect/" 
+			always-use-default-target="true"/>
 		<sec:logout  logout-success-url="/"
 			logout-url="/perform_logout"/>
 
 	</sec:http>
 							
-	<sec:authentication-manager>
+	<sec:authentication-manager alias="authenticationManager">
 		<sec:authentication-provider user-service-ref="jdbcUserService">
 			<sec:password-encoder ref="passwordEncoder" />
 		</sec:authentication-provider>
