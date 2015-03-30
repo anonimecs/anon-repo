@@ -2,6 +2,9 @@ package org.anon.enterprise.api;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
+
+import javax.sql.DataSource;
 
 import org.anon.data.AnonymisedColumnInfo;
 import org.anon.data.DatabaseColumnInfo;
@@ -22,6 +25,8 @@ import org.junit.Test;
 import org.junit.runners.MethodSorters;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.jdbc.core.ColumnMapRowMapper;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.AbstractJUnit4SpringContextTests;
 
@@ -41,6 +46,9 @@ public class IntegrationTest extends AbstractJUnit4SpringContextTests{
 	
 	@Autowired
 	AnonServer anonServer;
+	
+	@Autowired
+	DataSource derbyDataSource;
 	
 	@Value("${mysql.test.url.partial}") String url;
 	@Value("${mysql.test.user}") String login;
@@ -116,8 +124,6 @@ public class IntegrationTest extends AbstractJUnit4SpringContextTests{
 		editedTableService.addAnonymisation(editedTable,anonymizedColumn,Collections.EMPTY_LIST, anonymisationMethod);
 	}
 	
-
-	
 	@Test
 	public void test4_DeleteNotExecutedDatabaseConfigration()  throws ServiceException{
 			databaseConfigService.deleteDatabaseConfig(savedDatabaseConfig.getConfigurationName());
@@ -140,6 +146,11 @@ public class IntegrationTest extends AbstractJUnit4SpringContextTests{
 			e.printStackTrace();
 		}
 	}
+	
+    protected List<Map<String, Object>> loadFromAnonDb(String sqlQuery) {
+        return new JdbcTemplate(derbyDataSource).query(sqlQuery, new ColumnMapRowMapper());
+    }
+
 
 
 }
