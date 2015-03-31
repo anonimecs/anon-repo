@@ -70,7 +70,10 @@ public class UniqueConstraintManagerMultiColTest extends BaseParametrisedDbTest{
 	@After
 	public void dropMultiColumnTables() throws IOException{
 	    DataSource dataSource = getDataSource();
-	    new TestTableDropSupport().runScript(new JdbcTemplate(dataSource), "/MULTI_COL_UNIQUE_TABLES_DROP.sql", databaseSpecifics.getUseSchemaSql(schema));
+	    JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+	    try{jdbcTemplate.execute(databaseSpecifics.getUseSchemaSql(schema));} catch (Exception ignore){}
+	    
+		new TestTableDropSupport().runScript(jdbcTemplate, "/MULTI_COL_UNIQUE_TABLES_DROP.sql", databaseSpecifics.getUseSchemaSql(schema));
 	}
 
 	@Parameters(name= "schema:{1}, {0}")
