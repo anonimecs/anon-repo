@@ -15,7 +15,6 @@ import org.anon.vendor.constraint.unique.SybaseUniqueConstraintManager;
 import org.springframework.stereotype.Service;
 
 @Service
-
 public class ConstraintBundleFactory {
 	
 	

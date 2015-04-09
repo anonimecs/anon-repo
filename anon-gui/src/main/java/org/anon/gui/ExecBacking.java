@@ -16,8 +16,10 @@ import org.anon.persistence.dao.AuditDao;
 import org.anon.persistence.dao.EntitiesDao;
 import org.anon.persistence.data.AnonymisedColumnData;
 import org.anon.persistence.data.audit.ExecutionColumnData;
+import org.anon.service.ConstraintBundleService;
 import org.anon.service.DatabaseLoaderService;
 import org.anon.service.DbConnectionFactory;
+import org.anon.vendor.constraint.ColumnConstraintBundle;
 import org.primefaces.push.EventBus;
 import org.primefaces.push.EventBusFactory;
 
@@ -48,6 +50,9 @@ public class ExecBacking extends BackingBase{
 	
 	@ManagedProperty(value="#{databaseLoaderService}")
 	protected DatabaseLoaderService databaseLoaderService;
+	
+	@ManagedProperty(value="#{constraintBundleService}")
+	protected ConstraintBundleService constraintBundleService;
 
 	
 	public void onRunSingle(final AnonymisationMethod anonymisationMethod){
@@ -129,6 +134,42 @@ public class ExecBacking extends BackingBase{
 		EventBus eventBus = EventBusFactory.getDefault().eventBus();
 		eventBus.publish("/execEvent", "event");
 	}
+	
+	public boolean isConstraintPK(AnonymisedColumnInfo column) {
+		ColumnConstraintBundle bundle = constraintBundleService.loadColumnConstraintBundle(column);
+		
+		if(bundle.getPrimaryKey() != null) {			
+			return true;
+		}	
+		return false;
+	}
+	
+	public boolean isConstraintFK(AnonymisedColumnInfo column) {
+		ColumnConstraintBundle bundle = constraintBundleService.loadColumnConstraintBundle(column);
+		
+		if(bundle.getForeignKeyConstraintsFrom() != null || bundle.getForeignKeyConstraintsTo() != null) {
+			return true;
+		}
+		return false;
+	}
+	
+	public boolean isConstraintNull(AnonymisedColumnInfo column) {
+		ColumnConstraintBundle bundle = constraintBundleService.loadColumnConstraintBundle(column);
+		
+		if(bundle.getNotNullConstraint() != null) {
+			return true;
+		}
+		return false;
+	}
+	
+	public boolean isConstraintUnique(AnonymisedColumnInfo column) {
+		ColumnConstraintBundle bundle = constraintBundleService.loadColumnConstraintBundle(column);
+		
+		if(bundle.getUniqueConstraints() != null) {
+			return true;
+		}
+		return false;
+	}
 
 	public DbConnectionFactory getDbConnectionFactory() {
 		return dbConnectionFactory;
@@ -162,6 +203,11 @@ public class ExecBacking extends BackingBase{
 		this.databaseLoaderService = databaseLoaderService;
 	}
 	
+	public void setConstraintBundleService(
+			ConstraintBundleService constraintBundleService) {
+		this.constraintBundleService = constraintBundleService;
+	}
+
 	public EntitiesDao getEntitiesDao() {
 		return entitiesDao;
 	}

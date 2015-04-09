@@ -36,12 +36,12 @@
 				        		<p:column headerText="of Table" width="180">
 				        			<h:outputText value="#{anonColumnInfo.table.name}"/>
 				        		</p:column>
-				        		<p:column headerText="Rows" width="100" style="text-align: right">
+				        		<p:column headerText="Rows" width="50" style="text-align: right">
 				        			<h:outputText value="#{anonColumnInfo.table.rowCount}" >
 				        				<f:convertNumber pattern="###,###"/>
 				        			</h:outputText>
 				        		</p:column>
-				        		<p:column headerText="Runtime Estimate">
+				        		<p:column headerText="Runtime Estimate" width="90">
 				        			<h:outputText value="#{execBacking.getEstimatedRuntimeSec(anonColumnInfo)}" converter="secondsAsRuntimeConverter" />
 				        		</p:column>
 				        		<p:column headerText="Status Info">
@@ -56,6 +56,12 @@
 			        						</p:column>
 			        					</p:dataTable>
 			        				</p:tooltip>
+				        		</p:column>
+				        		<p:column headerText="Constraints">
+				        			<h:outputText id="constraintInfoPK" value="PK" rendered="#{execBacking.isConstraintPK(anonColumnInfo)}"/>
+				        			<h:outputText id="constraintInfoUnique" value="UNIQUE" rendered="#{execBacking.isConstraintUnique(anonColumnInfo)}"/>
+				        			<h:outputText id="constraintInfoFK" value="FK" rendered="#{execBacking.isConstraintFK(anonColumnInfo)}"/>
+				        			<h:outputText id="constraintInfoNull" value="NULL" rendered="#{execBacking.isConstraintNull(anonColumnInfo)}"/>
 				        		</p:column>
 				        	</p:dataTable>
 				

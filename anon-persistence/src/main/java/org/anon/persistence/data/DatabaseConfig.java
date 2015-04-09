@@ -96,5 +96,9 @@ public class DatabaseConfig extends PersistentObject{
 	public void setSecurityUser(SecurityUser securityUser) {
 		this.securityUser = securityUser;
 	}
+	
+	public String toString() {
+		return id + " / " + databaseConnection.getUrl() + " / " + databaseConnection.getLogin() + " / " + databaseConnection.getGuiName();
+	}
 
 }
