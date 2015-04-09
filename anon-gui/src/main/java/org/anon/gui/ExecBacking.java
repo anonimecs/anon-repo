@@ -19,7 +19,6 @@ import org.anon.persistence.data.audit.ExecutionColumnData;
 import org.anon.service.ConstraintBundleService;
 import org.anon.service.DatabaseLoaderService;
 import org.anon.service.DbConnectionFactory;
-import org.anon.vendor.constraint.ColumnConstraintBundle;
 import org.primefaces.push.EventBus;
 import org.primefaces.push.EventBusFactory;
 
@@ -135,40 +134,20 @@ public class ExecBacking extends BackingBase{
 		eventBus.publish("/execEvent", "event");
 	}
 	
-	public boolean isConstraintPK(AnonymisedColumnInfo column) {
-		ColumnConstraintBundle bundle = constraintBundleService.loadColumnConstraintBundle(column);
-		
-		if(bundle.getPrimaryKey() != null) {			
-			return true;
-		}	
-		return false;
+	public boolean isConstraintPK(AnonymisedColumnInfo column) {	
+		return constraintBundleService.isColumnPK(column);
 	}
 	
 	public boolean isConstraintFK(AnonymisedColumnInfo column) {
-		ColumnConstraintBundle bundle = constraintBundleService.loadColumnConstraintBundle(column);
-		
-		if(bundle.getForeignKeyConstraintsFrom() != null || bundle.getForeignKeyConstraintsTo() != null) {
-			return true;
-		}
-		return false;
+		return constraintBundleService.isColumnFK(column);
 	}
 	
 	public boolean isConstraintNull(AnonymisedColumnInfo column) {
-		ColumnConstraintBundle bundle = constraintBundleService.loadColumnConstraintBundle(column);
-		
-		if(bundle.getNotNullConstraint() != null) {
-			return true;
-		}
-		return false;
+		return constraintBundleService.isColumnNullConstraint(column);
 	}
 	
 	public boolean isConstraintUnique(AnonymisedColumnInfo column) {
-		ColumnConstraintBundle bundle = constraintBundleService.loadColumnConstraintBundle(column);
-		
-		if(bundle.getUniqueConstraints() != null) {
-			return true;
-		}
-		return false;
+		return constraintBundleService.isColumnUnique(column);
 	}
 
 	public DbConnectionFactory getDbConnectionFactory() {

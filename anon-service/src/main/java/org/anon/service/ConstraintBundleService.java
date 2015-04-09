@@ -1,18 +1,18 @@
 package org.anon.service;
 
-import javax.sql.DataSource;
-
 import org.anon.data.AnonymisedColumnInfo;
-import org.anon.logic.AnonymisationMethod;
-import org.anon.vendor.DatabaseSpecifics;
 import org.anon.vendor.constraint.ColumnConstraintBundle;
 
 public interface ConstraintBundleService {
+	
+	public boolean isColumnPK(AnonymisedColumnInfo column);
+	
+	public boolean isColumnFK(AnonymisedColumnInfo column);
+	
+	public boolean isColumnUnique(AnonymisedColumnInfo column);
+	
+	public boolean isColumnNullConstraint(AnonymisedColumnInfo column);
 
 	public ColumnConstraintBundle loadColumnConstraintBundle(AnonymisedColumnInfo column);
-	
-	public ColumnConstraintBundle loadColumnConstraintBundle(DatabaseSpecifics databaseSpecifics, 
-																AnonymisedColumnInfo column,
-																AnonymisationMethod anonymisationMethod,
-																DataSource dataSource);
+
 }
