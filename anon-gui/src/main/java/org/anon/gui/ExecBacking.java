@@ -134,20 +134,33 @@ public class ExecBacking extends BackingBase{
 		eventBus.publish("/execEvent", "event");
 	}
 	
-	public boolean isConstraintPK(AnonymisedColumnInfo column) {	
-		return constraintBundleService.isColumnPK(column);
-	}
-	
-	public boolean isConstraintFK(AnonymisedColumnInfo column) {
-		return constraintBundleService.isColumnFK(column);
-	}
-	
-	public boolean isConstraintNull(AnonymisedColumnInfo column) {
-		return constraintBundleService.isColumnNullConstraint(column);
-	}
-	
-	public boolean isConstraintUnique(AnonymisedColumnInfo column) {
-		return constraintBundleService.isColumnUnique(column);
+	public String loadConstraints(AnonymisedColumnInfo column) {
+		
+		StringBuffer buffer = new StringBuffer();
+		
+		if(constraintBundleService.isColumnPK(column)) {
+			buffer.append("PK");
+		}
+		if(constraintBundleService.isColumnFK(column)) {
+			if(buffer.length() > 0) {
+				buffer.append(" / ");
+			}
+			buffer.append("FK");
+		}
+		if(constraintBundleService.isColumnNullConstraint(column)) {
+			if(buffer.length() > 0) {
+				buffer.append(" / ");
+			}
+			buffer.append("Null");
+		}
+		if(constraintBundleService.isColumnUnique(column)) {
+			if(buffer.length() > 0) {
+				buffer.append(" / ");
+			}
+			buffer.append("Unique");
+		}
+		
+		return buffer.toString();
 	}
 
 	public DbConnectionFactory getDbConnectionFactory() {

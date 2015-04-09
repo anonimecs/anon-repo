@@ -5,6 +5,8 @@ import org.anon.vendor.constraint.ColumnConstraintBundle;
 
 public interface ConstraintBundleService {
 	
+	public void init();
+	
 	public boolean isColumnPK(AnonymisedColumnInfo column);
 	
 	public boolean isColumnFK(AnonymisedColumnInfo column);

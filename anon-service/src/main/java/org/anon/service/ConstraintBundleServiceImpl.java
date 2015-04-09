@@ -18,7 +18,7 @@ import org.springframework.stereotype.Service;
 public class ConstraintBundleServiceImpl implements ConstraintBundleService {
 
 	@Autowired
-	protected ConstraintBundleFactory constraintBundleFactory;
+	private ConstraintBundleFactory constraintBundleFactory;
 	
 	@Autowired
 	private	DbConnectionFactory dbConnectionFactory;
@@ -114,9 +114,5 @@ public class ConstraintBundleServiceImpl implements ConstraintBundleService {
 		}
 		nullConstraintMap.put(column.getId(), result);
 		return result;
-	}
-	
-	public void setConstraintBundleFactory(ConstraintBundleFactory constraintBundleFactory) {
-		this.constraintBundleFactory = constraintBundleFactory;
-	}
+	} 
 }

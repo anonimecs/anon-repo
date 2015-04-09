@@ -58,10 +58,7 @@
 			        				</p:tooltip>
 				        		</p:column>
 				        		<p:column headerText="Constraints">
-				        			<h:outputText id="constraintInfoPK" value="PK" rendered="#{execBacking.isConstraintPK(anonColumnInfo)}"/>
-				        			<h:outputText id="constraintInfoUnique" value="UNIQUE" rendered="#{execBacking.isConstraintUnique(anonColumnInfo)}"/>
-				        			<h:outputText id="constraintInfoFK" value="FK" rendered="#{execBacking.isConstraintFK(anonColumnInfo)}"/>
-				        			<h:outputText id="constraintInfoNull" value="NULL" rendered="#{execBacking.isConstraintNull(anonColumnInfo)}"/>
+				        			<h:outputText id="constraintInfo" value="#{execBacking.loadConstraints(anonColumnInfo)}"/>
 				        		</p:column>
 				        	</p:dataTable>
 				

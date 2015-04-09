@@ -42,6 +42,9 @@ public class DatabaseLoaderServiceImpl implements DatabaseLoaderService{
 	
 	@Autowired
 	protected EntitiesDao entitiesDao;
+	
+	@Autowired
+	protected ConstraintBundleService constraintBundleService;
 
 	@Autowired
 	private	DbConnectionFactory dbConnectionFactory;
@@ -83,6 +86,7 @@ public class DatabaseLoaderServiceImpl implements DatabaseLoaderService{
 		dbConnectionFactory.clearConnection();
 		anonConfig.init();
 		execConfig.init();
+		constraintBundleService.init();
 		
 	}
 
