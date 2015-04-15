@@ -8,10 +8,9 @@ CREATE PROCEDURE an_meth_enc_proc(
 BEGIN
 	
   DECLARE dynsql VARCHAR(2000);
-  SET @dynsql = CONCAT('update ', tblName, ' set ', colName, ' = an_meth_enc_func(', colName, ', ', shift,')');
+  SET @dynsql = CONCAT("update ", tblName, " set ", colName," = an_meth_enc_func( ", colName, ",", shift, ")");
   
   PREPARE query from @dynsql;
   EXECUTE query;
   DEALLOCATE PREPARE query;
 END;
-

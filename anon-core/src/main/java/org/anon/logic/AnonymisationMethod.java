@@ -3,6 +3,7 @@ package org.anon.logic;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Serializable;
+import java.text.MessageFormat;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.LinkedList;
@@ -30,6 +31,8 @@ public abstract class AnonymisationMethod implements Serializable{
 	protected List<AnonymisedColumnInfo> applyedToColumns = new LinkedList<>();
 	
 	protected transient DataSource dataSource;
+	protected transient String schema;	
+	
 	protected List<String> setupSqls = new LinkedList<>();
 	protected List<String> cleanupSqls = new LinkedList<>();
 
@@ -94,7 +97,11 @@ public abstract class AnonymisationMethod implements Serializable{
 	public void setDataSource(DataSource dataSource) {
 		this.dataSource = dataSource;
 	}
-	
+
+	public void setSchema(String schema) {
+		this.schema = schema;
+	}
+
 	public AnonymizationType getType() {
 		return type;
 	}
@@ -115,6 +122,8 @@ public abstract class AnonymisationMethod implements Serializable{
 
 
 	public Object anonymise(Object exampleValue, AnonymisedColumnInfo anonymizedColumn) {
+		this.schema = anonymizedColumn.getTable().getSchema();			
+				
 		if(anonymizedColumn.isJavaTypeString()){
 			return anonymiseString((String)exampleValue);
 		
@@ -177,10 +186,7 @@ public abstract class AnonymisationMethod implements Serializable{
 		if (!removed){
 			throw new RuntimeException("not removed, as not found " + selectedAnonymizedColumn);
 		}
-		
 	}
-
-
 
 
 	public ExecutionMessage runOnColumn(AnonymisedColumnInfo col){
@@ -189,14 +195,13 @@ public abstract class AnonymisationMethod implements Serializable{
 	
 	public void setupInDb(){
 		for(String setupSql:setupSqls){
-			execute(setupSql);
+			execute(MessageFormat.format(setupSql, schema));
 		}
 	}
 	public void cleanupInDb(){
 		for(String cleanupSql:cleanupSqls){
-			execute(cleanupSql);
+			execute(MessageFormat.format(cleanupSql, schema));
 		}
-
 	}
 
 	protected 	void execute(String sql) {
@@ -209,11 +214,22 @@ public abstract class AnonymisationMethod implements Serializable{
 		return new JdbcTemplate(dataSource).update(sql, args); 
 	}
 
+	protected void addSetupSqlStatements(String ... statements) {
+		for(String st : statements) {
+			setupSqls.add(st);
+		}
+	}
 
 	protected void addSetupSqlFiles(String ... filesInResoucesFolder){
 		for(String fileNameInResourcesFolder:filesInResoucesFolder){
 			String setupSql = getFileContent(fileNameInResourcesFolder);
 			setupSqls.add(setupSql);
+		}
+	}
+	
+	protected void addCleanupSqlStatements(String ... statements) {
+		for(String st : statements) {
+			cleanupSqls.add(st);
 		}
 	}
 

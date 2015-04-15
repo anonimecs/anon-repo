@@ -86,13 +86,14 @@ public abstract class BaseExec {
 		AbstractDbConnection connection = 
 				dbConnectionFactory.getConnectionForSchema(getExecSchema(anonymisationMethod));
 		
-		logger.debug("Database " + connection.getProperties());
+		logger.debug("Database " + connection.getDefaultSchema());
 		this.setDataSource(connection.getDataSource());
 		
 		anonymisationMethod.setDataSource(dataSource);
 		MethodExecution methodExecution = execConfig.getMethodExecution(anonymisationMethod);
 		try{
 			methodExecution.started();
+			anonymisationMethod.setSchema(connection.getDefaultSchema());
 			anonymisationMethod.setupInDb();
 			for (AnonymisedColumnInfo col : anonymisationMethod.getApplyedToColumns()) {
 				assertFreeEditionRunCount();

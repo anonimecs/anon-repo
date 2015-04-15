@@ -1,5 +1,7 @@
 package org.anon.logic;
 
+import java.text.MessageFormat;
+
 import org.anon.data.AnonymisedColumnInfo;
 import org.anon.data.AnonymizationType;
 import org.anon.data.ExecutionMessage;
@@ -10,7 +12,9 @@ public class AnonymisationMethodEncryptMySql extends AnonymisationMethodEncrypt 
 	public AnonymisationMethodEncryptMySql() {
 		super(AnonymizationType.ENCRYPT);
 		
+		addSetupSqlStatements("USE {0};");
 		addSetupSqlFiles("mysql/MethodEncrypt_createFunc.sql", "mysql/MethodEncrypt_createProc.sql");
+		addCleanupSqlStatements("USE {0};");
 		addCleanupSqlFiles("mysql/MethodEncrypt_dropProc.sql", "mysql/MethodEncrypt_dropFunc.sql");
 	}
 	
@@ -27,12 +31,13 @@ public class AnonymisationMethodEncryptMySql extends AnonymisationMethodEncrypt 
 	
 	@Override
 	protected String getAnonimiseStringSql() {
+		execute(MessageFormat.format("USE {0}", schema));
 		return "select an_meth_enc_func(?, ?)";
 	}
-
 	
 	@Override
 	public ExecutionMessage runOnColumn(AnonymisedColumnInfo col) {
+		execute(MessageFormat.format("USE {0}", schema));
 		if(col.isJavaTypeString()) {
 			int rowCount = update("call an_meth_enc_proc (?, ?, ?)", col.getName() , col.getTable().getName(), hashmodint);
 			return new ExecutionMessage("Updated Strings", rowCount);
@@ -43,7 +48,7 @@ public class AnonymisationMethodEncryptMySql extends AnonymisationMethodEncrypt 
 			return new ExecutionMessage("Updated Numbers", rowCount);
 		}
 		else {
-			throw new RuntimeException("Unimlemented");
+			throw new RuntimeException("Unimplemented");
 		}
 		
 	}
