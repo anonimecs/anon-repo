@@ -16,6 +16,7 @@
                 <exclude>**/webapps/host-manager/**</exclude>
                 <exclude>**/webapps/manager/**</exclude>
                 <exclude>**/webapps/ROOT/**</exclude>
+                <exclude>**/conf/server.xml</exclude>
             </excludes>
 		</fileSet>
 		<fileSet>
@@ -36,21 +37,26 @@
 				<include>anon/**</include>
 			</includes>
 		</fileSet>
+		<fileSet>
+			<directory>${project.basedir}/scripts</directory>
+			<outputDirectory>/</outputDirectory>
+			<includes>
+				<include>startEnterprise.bat</include>
+				<include>stopEnterprise.bat</include>
+			</includes>
+		</fileSet>
 	</fileSets>
 	
 	<files>
 		<file>
 			<source>../anon-gui/target/anon-gui-${project.version}-enterprise.war</source>
-			<outputDirectory>/anonimecs/app/webapps</outputDirectory>
+			<outputDirectory>/anonimecs/app</outputDirectory>
 			<destName>anonimecsEnterprise.war</destName>
 		</file>
 		<file>
-			<source>${project.basedir}/scripts/startEnterprise.bat</source>
-			<outputDirectory>/anonimecs</outputDirectory>
-		</file>
-		<file>
-			<source>${project.basedir}/scripts/stopEnterprise.bat</source>
-			<outputDirectory>/anonimecs</outputDirectory>
+			<source>${project.basedir}/config/enterprise_server.xml</source>
+			<outputDirectory>/anonimecs/app/conf</outputDirectory>
+			<destName>server.xml</destName>
 		</file>
 	</files>
 	

@@ -9,7 +9,7 @@ set "CATALINA_HOME=%CURRENT_DIR%\app"
 set "APP_EXECUTABLE=%CATALINA_HOME%\bin\catalina.bat"
 set "CATALINA_OPTS=-Xms1024M -Xmx2048M -Dspring.profiles.active=enterprise_edition -Dderby.dir=%CURRENT_DIR%"
 
-start %DERBY_EXECUTABLE%
+start /min %DERBY_EXECUTABLE%
 
 echo "waiting to start the db"
 timeout /T 3  > nul
