@@ -46,6 +46,8 @@
 				<include>startEnterprise.sh</include>
 				<include>stopEnterprise.sh</include>
 			</includes>
+			<lineEnding>unix</lineEnding>
+			<fileMode>0755</fileMode>
 		</fileSet>
 	</fileSets>
 	

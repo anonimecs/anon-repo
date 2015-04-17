@@ -29,6 +29,8 @@
 				<include>startFree.sh</include>
 				<include>stopFree.sh</include>
 			</includes>
+			<lineEnding>unix</lineEnding>
+			<fileMode>0755</fileMode>
 		</fileSet>
 	</fileSets>
 	
