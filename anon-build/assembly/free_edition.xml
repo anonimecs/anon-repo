@@ -1,0 +1,49 @@
+<assembly
+	xmlns="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2 http://maven.apache.org/xsd/assembly-1.1.2.xsd">
+	<id>free</id>
+	<formats>
+		<format>zip</format>
+	</formats>
+	
+	<fileSets>
+		<fileSet>
+			<directory>${project.build.directory}/apache-tomcat-${tomcat.version}</directory>
+			<outputDirectory>/app</outputDirectory>
+			<excludes>
+                <exclude>**/webapps/docs/**</exclude>
+                <exclude>**/webapps/examples/**</exclude>
+                <exclude>**/webapps/host-manager/**</exclude>
+                <exclude>**/webapps/manager/**</exclude>
+                <exclude>**/webapps/ROOT/**</exclude>
+                <exclude>**/conf/server.xml</exclude>
+            </excludes>
+		</fileSet>
+		<fileSet>
+			<directory>${project.basedir}/scripts</directory>
+			<outputDirectory>/</outputDirectory>
+			<includes>
+				<include>startFree.bat</include>
+				<include>stopFree.bat</include>
+			</includes>
+		</fileSet>
+	</fileSets>
+	
+	<files>
+		<file>
+			<source>../anon-gui/target/anon-gui-${project.version}-free.war</source>
+			<outputDirectory>/anonimecs/app</outputDirectory>
+			<destName>anonimecsFree.war</destName>
+		</file>
+		<file>
+			<source>${project.basedir}/config/enterprise_server.xml</source>
+			<outputDirectory>/anonimecs/app/conf</outputDirectory>
+			<destName>server.xml</destName>
+		</file>
+		<file>
+			<source>${project.basedir}/License/AnonimecsEndUserLicenseAgreement.pdf</source>
+			<outputDirectory>/anonimecs</outputDirectory>
+		</file>
+	</files>
+</assembly>

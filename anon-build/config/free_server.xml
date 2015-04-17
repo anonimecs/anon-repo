@@ -51,7 +51,7 @@
       <Host name="localhost"  appBase="webapps"
             unpackWARs="true" autoDeploy="true">
 			
-			<Context path="/anon" docBase="anonimecsFree" debug="0"
+			<Context path="/anon" docBase="../anonimecsFree" debug="0"
                        reloadable="true" crossContext="true" />
 
         <Valve className="org.apache.catalina.valves.AccessLogValve" directory="logs"
