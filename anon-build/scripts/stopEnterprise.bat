@@ -11,9 +11,9 @@ set "APP_EXECUTABLE=%CATALINA_HOME%\bin\catalina.bat"
 call "%APP_EXECUTABLE%" stop
 echo "waiting to stop the app"
 timeout /T 5  > nul
-echo "application stoped"
+echo "application stopped"
 
 call %DERBY_EXECUTABLE%
 echo "waiting to stop the db"
 timeout /T 3  > nul
-echo "database stoped"
+echo "database stopped"

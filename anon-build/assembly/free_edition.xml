@@ -26,6 +26,8 @@
 			<includes>
 				<include>startFree.bat</include>
 				<include>stopFree.bat</include>
+				<include>startFree.sh</include>
+				<include>stopFree.sh</include>
 			</includes>
 		</fileSet>
 	</fileSets>
@@ -37,7 +39,7 @@
 			<destName>anonimecsFree.war</destName>
 		</file>
 		<file>
-			<source>${project.basedir}/config/enterprise_server.xml</source>
+			<source>${project.basedir}/config/free_server.xml</source>
 			<outputDirectory>/anonimecs/app/conf</outputDirectory>
 			<destName>server.xml</destName>
 		</file>

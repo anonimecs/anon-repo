@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 #test the java version
 mkfifo mypipe
@@ -8,21 +8,25 @@ rm mypipe
 
 echo "logs are in anonimecs.log"
 
-SCRIPTDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-cd $SCRIPTDIR
+CURRENT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+cd $CURRENT_DIR
 
-export DERBY_HOME=$SCRIPTDIR/db/db-derby-10.4.2.0-bin
+export DERBY_HOME=$CURRENT_DIR/db
+export DERBY_EXECUTABLE=%DERBY_INSTALL%/bin/startNetworkServer
+export DERBY_OPTS=-Dderby.system.home=%CURRENT_DIR%/db/data"
 export CLASSPATH=$DERBY_HOME/lib/derbytools.jar:$DERBY_HOME/lib/derbynet.jar:.
+export CATALINA_HOME=%CURRENT_DIR%/app
+export APP_EXECUTABLE=%CATALINA_HOME%/bin/startup.sh
+export CATALINA_OPTS=-Xms1024M -Xmx2048M -Dspring.profiles.active=enterprise_edition -Dderby.dir=%CURRENT_DIR%
 
-nohup $DERBY_HOME/bin/startNetworkServer > anonimecs.log 2>&1 &
+nohup $DERBY_EXECUTABLE > anonimecs.log 2>&1 &
 echo "waiting to start the db"
-sleep 5
+sleep 3
 echo "database started"
 
-
-nohup java -Dspring.profiles.active=enterprise_edition -Dderby.dir=$SCRIPTDIR -jar anonimecsEnterprise.war > anonimecs.log 2>&1 &
+$APP_EXECUTABLE > anonimecs.log 2>&1 &
 echo "waiting to start the application"
 sleep 25
 echo "application started"
 
-echo "go to http://`hostname`:8080/anon/pages/connection/connectionAdd.jsf"
+echo "go to http://`hostname`:8080/anon"

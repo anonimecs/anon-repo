@@ -43,6 +43,8 @@
 			<includes>
 				<include>startEnterprise.bat</include>
 				<include>stopEnterprise.bat</include>
+				<include>startEnterprise.sh</include>
+				<include>stopEnterprise.sh</include>
 			</includes>
 		</fileSet>
 	</fileSets>
