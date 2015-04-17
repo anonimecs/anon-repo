@@ -6,8 +6,7 @@ import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.sql.DataSource;
 
-import org.anon.data.AnonymisedColumnInfo;
-import org.anon.logic.AnonymisationMethod;
+import org.anon.data.DatabaseColumnInfo;
 import org.anon.vendor.DatabaseSpecifics;
 import org.anon.vendor.constraint.ColumnConstraintBundle;
 import org.anon.vendor.constraint.ConstraintBundleFactory;
@@ -23,35 +22,34 @@ public class ConstraintBundleServiceImpl implements ConstraintBundleService {
 	@Autowired
 	private	DbConnectionFactory dbConnectionFactory;
 	
-	private Map<Long, Boolean> pkConstraintMap;
-	private Map<Long, Boolean> fkConstraintMap;
-	private Map<Long, Boolean> uniqueConstraintMap;
-	private Map<Long, Boolean> nullConstraintMap;
+	private Map<DatabaseColumnInfo, Boolean> pkConstraintMap;
+	private Map<DatabaseColumnInfo, Boolean> fkConstraintMap;
+	private Map<DatabaseColumnInfo, Boolean> uniqueConstraintMap;
+	private Map<DatabaseColumnInfo, Boolean> nullConstraintMap;
 	
 	@PostConstruct
 	public void init() {
-		pkConstraintMap = new HashMap<Long, Boolean>();
-		fkConstraintMap = new HashMap<Long, Boolean>();
-		uniqueConstraintMap = new HashMap<Long, Boolean>();
-		nullConstraintMap = new HashMap<Long, Boolean>();
+		pkConstraintMap = new HashMap<DatabaseColumnInfo, Boolean>();
+		fkConstraintMap = new HashMap<DatabaseColumnInfo, Boolean>();
+		uniqueConstraintMap = new HashMap<DatabaseColumnInfo, Boolean>();
+		nullConstraintMap = new HashMap<DatabaseColumnInfo, Boolean>();
 		
 	}
 	
 	@Override
-	public ColumnConstraintBundle loadColumnConstraintBundle(AnonymisedColumnInfo column) {
+	public ColumnConstraintBundle loadColumnConstraintBundle(DatabaseColumnInfo column) {
 		
-		AnonymisationMethod anonymisationMethod = column.getAnonymisationMethod();
 		DataSource dataSource = dbConnectionFactory.getConnection().getDataSource();
 		DatabaseSpecifics databaseSpecifics = column.getDatabaseSpecifics();
 		
-		return constraintBundleFactory.createConstraintBundle(databaseSpecifics, column, anonymisationMethod, dataSource);
+		return constraintBundleFactory.createConstraintBundle(databaseSpecifics, column, dataSource);
 	}
 	
 	@Override
-	public boolean isColumnPK(AnonymisedColumnInfo column) {
+	public boolean isColumnPK(DatabaseColumnInfo column) {
 		
-		if(pkConstraintMap.containsKey(column.getId())) {
-			return pkConstraintMap.get(column.getId());
+		if(pkConstraintMap.containsKey(column)) {
+			return pkConstraintMap.get(column);
 		}
 		
 		ColumnConstraintBundle bundle = loadColumnConstraintBundle(column);
@@ -60,15 +58,15 @@ public class ConstraintBundleServiceImpl implements ConstraintBundleService {
 		if(bundle.getPrimaryKey() != null) {
 			result = true;
 		}
-		pkConstraintMap.put(column.getId(), result);
+		pkConstraintMap.put(column, result);
 		return result;
 	}
 
 	@Override
-	public boolean isColumnFK(AnonymisedColumnInfo column) {
+	public boolean isColumnFK(DatabaseColumnInfo column) {
 		
-		if(fkConstraintMap.containsKey(column.getId())) {
-			return fkConstraintMap.get(column.getId());
+		if(fkConstraintMap.containsKey(column)) {
+			return fkConstraintMap.get(column);
 		}
 		
 		ColumnConstraintBundle bundle = loadColumnConstraintBundle(column);
@@ -78,15 +76,15 @@ public class ConstraintBundleServiceImpl implements ConstraintBundleService {
 				|| !bundle.getForeignKeyConstraintsTo().isEmpty()) {
 			result = true;
 		}
-		fkConstraintMap.put(column.getId(), result);
+		fkConstraintMap.put(column, result);
 		return result;
 	}
 
 	@Override
-	public boolean isColumnUnique(AnonymisedColumnInfo column) {
+	public boolean isColumnUnique(DatabaseColumnInfo column) {
 		
-		if(uniqueConstraintMap.containsKey(column.getId())) {
-			return uniqueConstraintMap.get(column.getId());
+		if(uniqueConstraintMap.containsKey(column)) {
+			return uniqueConstraintMap.get(column);
 		}
 		
 		ColumnConstraintBundle bundle = loadColumnConstraintBundle(column);
@@ -95,15 +93,15 @@ public class ConstraintBundleServiceImpl implements ConstraintBundleService {
 		if(!bundle.getUniqueConstraints().isEmpty()) {
 			result = true;
 		}
-		uniqueConstraintMap.put(column.getId(), result);
+		uniqueConstraintMap.put(column, result);
 		return result;
 	}
 
 	@Override
-	public boolean isColumnNullConstraint(AnonymisedColumnInfo column) {
+	public boolean isColumnNullConstraint(DatabaseColumnInfo column) {
 		
-		if(nullConstraintMap.containsKey(column.getId())) {
-			return nullConstraintMap.get(column.getId());
+		if(nullConstraintMap.containsKey(column)) {
+			return nullConstraintMap.get(column);
 		}
 		
 		ColumnConstraintBundle bundle = loadColumnConstraintBundle(column);
@@ -112,7 +110,7 @@ public class ConstraintBundleServiceImpl implements ConstraintBundleService {
 		if(bundle.getNotNullConstraint() != null) {
 			result = true;
 		}
-		nullConstraintMap.put(column.getId(), result);
+		nullConstraintMap.put(column, result);
 		return result;
 	} 
 }

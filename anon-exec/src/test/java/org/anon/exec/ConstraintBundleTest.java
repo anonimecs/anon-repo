@@ -27,9 +27,9 @@ public class ConstraintBundleTest extends MySqlExecTestBase{
 		AnonymisedColumnInfo roleIdCol =  getTestAnonimisedColumnInfo("ROLE_ID", "NUMERIC", "TMP_TABLE_B", anonymisationMethod, DatabaseSpecifics.MySqlSpecific, anonConfig);
 
 		ConstraintBundleFactory constraintBundleFactory = new ConstraintBundleFactory();
-		ColumnConstraintBundle comsiIdColConstraintBundle = constraintBundleFactory.createConstraintBundle(DatabaseSpecifics.MySqlSpecific, comsiIdCol, anonymisationMethod, getDataSource());
+		ColumnConstraintBundle comsiIdColConstraintBundle = constraintBundleFactory.createConstraintBundle(DatabaseSpecifics.MySqlSpecific, comsiIdCol, getDataSource());
 
-		ColumnConstraintBundle roleIdColConstraintBundle = constraintBundleFactory.createConstraintBundle(DatabaseSpecifics.MySqlSpecific, roleIdCol, anonymisationMethod, getDataSource());
+		ColumnConstraintBundle roleIdColConstraintBundle = constraintBundleFactory.createConstraintBundle(DatabaseSpecifics.MySqlSpecific, roleIdCol, getDataSource());
 		
 		
 		// show in the GUI

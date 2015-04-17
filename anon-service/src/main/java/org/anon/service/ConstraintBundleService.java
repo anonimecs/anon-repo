@@ -1,20 +1,20 @@
 package org.anon.service;
 
-import org.anon.data.AnonymisedColumnInfo;
+import org.anon.data.DatabaseColumnInfo;
 import org.anon.vendor.constraint.ColumnConstraintBundle;
 
 public interface ConstraintBundleService {
 	
 	public void init();
 	
-	public boolean isColumnPK(AnonymisedColumnInfo column);
+	public boolean isColumnPK(DatabaseColumnInfo column);
 	
-	public boolean isColumnFK(AnonymisedColumnInfo column);
+	public boolean isColumnFK(DatabaseColumnInfo column);
 	
-	public boolean isColumnUnique(AnonymisedColumnInfo column);
+	public boolean isColumnUnique(DatabaseColumnInfo column);
 	
-	public boolean isColumnNullConstraint(AnonymisedColumnInfo column);
+	public boolean isColumnNullConstraint(DatabaseColumnInfo column);
 
-	public ColumnConstraintBundle loadColumnConstraintBundle(AnonymisedColumnInfo column);
+	public ColumnConstraintBundle loadColumnConstraintBundle(DatabaseColumnInfo column);
 
 }

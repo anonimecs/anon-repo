@@ -99,7 +99,7 @@ public abstract class BaseExec {
 				assertFreeEditionRunCount();
 				methodExecution.startedCol(col);
 				
-				ColumnConstraintBundle constraintBundle = constraintBundleFactory.createConstraintBundle(getDatabaseSpecifics() , col, anonymisationMethod, dataSource);
+				ColumnConstraintBundle constraintBundle = constraintBundleFactory.createConstraintBundle(getDatabaseSpecifics() , col, dataSource);
 				addMessage(methodExecution, col, new ExecutionMessage("Deacivating constraints", null));
 				List<Constraint> deactivatedConstraints = constraintBundle.deactivate();
 				

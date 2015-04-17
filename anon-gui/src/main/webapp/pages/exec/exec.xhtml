@@ -36,6 +36,11 @@
 				        		<p:column headerText="of Table" width="180">
 				        			<h:outputText value="#{anonColumnInfo.table.name}"/>
 				        		</p:column>
+				        		<p:column headerText="Constraints" width="100">
+				        			<ui:include src="/components/constraintList.xhtml">
+										<ui:param name="databaseColumnInfo" value="#{anonColumnInfo}" />
+									</ui:include>
+				        		</p:column>
 				        		<p:column headerText="Rows" width="50" style="text-align: right">
 				        			<h:outputText value="#{anonColumnInfo.table.rowCount}" >
 				        				<f:convertNumber pattern="###,###"/>
@@ -56,9 +61,6 @@
 			        						</p:column>
 			        					</p:dataTable>
 			        				</p:tooltip>
-				        		</p:column>
-				        		<p:column headerText="Constraints">
-				        			<h:outputText id="constraintInfo" value="#{execBacking.loadConstraints(anonColumnInfo)}"/>
 				        		</p:column>
 				        	</p:dataTable>
 				

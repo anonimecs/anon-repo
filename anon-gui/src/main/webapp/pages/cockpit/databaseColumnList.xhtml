@@ -13,7 +13,7 @@
 		<ui:include src="/components/breadCrumb.xhtml">
 			<ui:param name="step" value="2" />
 		</ui:include>
-		
+
 		<h:form id="editedTableColumnsForm" rendered="#{not empty editedTableBacking.editedTable}">
 			<p:panel header="Anonymize table #{editedTableBacking.editedTable.name} RowCount: #{editedTableBacking.editedTable.rowCount}" >
 		
@@ -28,6 +28,11 @@
 					</p:column>
 					<p:column headerText="Type" width="100">
 						<h:outputText value="#{databaseColumnInfo.type}"/>
+					</p:column>
+					<p:column headerText="Constraints" width="100">
+						<ui:include src="/components/constraintList.xhtml">
+							<ui:param name="databaseColumnInfo" value="#{databaseColumnInfo}" />
+						</ui:include>
 					</p:column>
 					<p:column headerText="Example Values">
 						<h:outputText value="#{editedTableBacking.concatExamples(databaseColumnInfo.exampleValues)}"/>
