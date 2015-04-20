@@ -1,0 +1,29 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+	
+	<p:panelGrid styleClass="noBorderGrid">
+		<p:row>
+			<p:column >
+				<h:outputText id="constraintInfo1" styleClass="ui-icon ui-icon-key" title="Primary Key" rendered="#{constraintBundleService.isColumnPK(databaseColumnInfo)}"/>
+				<p:spacer id="constraintInfo1Empty" width="1" rendered="#{not constraintBundleService.isColumnPK(databaseColumnInfo)}"/>
+			</p:column>
+			<p:column >
+				<h:outputText id="constraintInfo2" styleClass="ui-icon ui-icon-suitcase" title="Not Null" rendered="#{constraintBundleService.isColumnNullConstraint(databaseColumnInfo)}"/>
+				<p:spacer id="constraintInfo2Empty" width="1" rendered="#{not constraintBundleService.isColumnNullConstraint(databaseColumnInfo)}"/>
+			</p:column>
+			<p:column >
+				<h:outputText id="constraintInfo4" styleClass="ui-icon ui-icon-transferthick-e-w" title="Referential Constraints" rendered="#{constraintBundleService.isColumnFK(databaseColumnInfo)}"/>
+				<p:spacer id="constraintInfo4Empty" width="1" rendered="#{not constraintBundleService.isColumnFK(databaseColumnInfo)}"/>
+			</p:column>
+			<p:column  >
+				<h:outputText id="constraintInfo3" styleClass="ui-icon ui-icon-link" title="Unique" rendered="#{constraintBundleService.isColumnUnique(databaseColumnInfo)}"/>
+				<p:spacer id="constraintInfo3Empty" width="1" rendered="#{not constraintBundleService.isColumnUnique(databaseColumnInfo)}"/>
+			</p:column>
+		</p:row>
+	</p:panelGrid>
+
+</ui:composition>
+

@@ -2,6 +2,12 @@ body {
     
 }
 
+.noBorderGrid tr, .noBorderGrid td {
+    border: none !important;
+    border-style: none;
+    background-color: inherit;
+}
+
 .loginPanel {
 	margin: 0 auto;
 	width: 360px;

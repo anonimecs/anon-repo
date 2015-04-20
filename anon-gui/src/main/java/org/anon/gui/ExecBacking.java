@@ -16,7 +16,6 @@ import org.anon.persistence.dao.AuditDao;
 import org.anon.persistence.dao.EntitiesDao;
 import org.anon.persistence.data.AnonymisedColumnData;
 import org.anon.persistence.data.audit.ExecutionColumnData;
-import org.anon.service.ConstraintBundleService;
 import org.anon.service.DatabaseLoaderService;
 import org.anon.service.DbConnectionFactory;
 import org.primefaces.push.EventBus;
@@ -49,9 +48,6 @@ public class ExecBacking extends BackingBase{
 	
 	@ManagedProperty(value="#{databaseLoaderService}")
 	protected DatabaseLoaderService databaseLoaderService;
-	
-	@ManagedProperty(value="#{constraintBundleService}")
-	protected ConstraintBundleService constraintBundleService;
 
 	
 	public void onRunSingle(final AnonymisationMethod anonymisationMethod){
@@ -133,35 +129,7 @@ public class ExecBacking extends BackingBase{
 		EventBus eventBus = EventBusFactory.getDefault().eventBus();
 		eventBus.publish("/execEvent", "event");
 	}
-	
-	public String loadConstraints(AnonymisedColumnInfo column) {
-		
-		StringBuffer buffer = new StringBuffer();
-		
-		if(constraintBundleService.isColumnPK(column)) {
-			buffer.append("PK");
-		}
-		if(constraintBundleService.isColumnFK(column)) {
-			if(buffer.length() > 0) {
-				buffer.append(" / ");
-			}
-			buffer.append("FK");
-		}
-		if(constraintBundleService.isColumnNullConstraint(column)) {
-			if(buffer.length() > 0) {
-				buffer.append(" / ");
-			}
-			buffer.append("Null");
-		}
-		if(constraintBundleService.isColumnUnique(column)) {
-			if(buffer.length() > 0) {
-				buffer.append(" / ");
-			}
-			buffer.append("Unique");
-		}
-		
-		return buffer.toString();
-	}
+
 
 	public DbConnectionFactory getDbConnectionFactory() {
 		return dbConnectionFactory;
@@ -193,11 +161,6 @@ public class ExecBacking extends BackingBase{
 
 	public void setDatabaseLoaderService(DatabaseLoaderService databaseLoaderService) {
 		this.databaseLoaderService = databaseLoaderService;
-	}
-	
-	public void setConstraintBundleService(
-			ConstraintBundleService constraintBundleService) {
-		this.constraintBundleService = constraintBundleService;
 	}
 
 	public EntitiesDao getEntitiesDao() {

@@ -6,7 +6,6 @@ import java.util.List;
 import javax.sql.DataSource;
 
 import org.anon.data.DatabaseColumnInfo;
-import org.anon.logic.AnonymisationMethod;
 import org.anon.vendor.constraint.notnull.NotNullConstraint;
 import org.anon.vendor.constraint.notnull.NotNullConstraintManager;
 import org.anon.vendor.constraint.referential.ForeignKeyConstraint;
@@ -17,9 +16,7 @@ import org.anon.vendor.constraint.unique.UniqueConstraintManager;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class ColumnConstraintBundle {
 
-	private DataSource dataSource;
 	private DatabaseColumnInfo col;
-	private AnonymisationMethod anonymisationMethod;
 	
 	private NotNullConstraintManager notNullConstraintManager;
 	private UniqueConstraintManager uniqueConstraintManager;
@@ -31,11 +28,9 @@ public class ColumnConstraintBundle {
 	
 	DeactivationStrategy deactivationStrategy = new DefaultDeactivationStrategy();
 	
-	public ColumnConstraintBundle(DataSource dataSource, DatabaseColumnInfo col,AnonymisationMethod anonymisationMethod) {
+	public ColumnConstraintBundle(DataSource dataSource, DatabaseColumnInfo col) {
 		super();
-		this.dataSource = dataSource;
 		this.col = col;
-		this.anonymisationMethod = anonymisationMethod;
 		
 		notNullConstraintManager = new NotNullConstraintManager(dataSource);
 	}
@@ -72,7 +67,7 @@ public class ColumnConstraintBundle {
 	}
 
 	public NotNullConstraint getNotNullConstraint(){
-		return getNotNullConstraintManager().getNotNullConstraint(col);
+		return notNullConstraintManager.getNotNullConstraint(col);
 	}
 	
 	public UniqueConstraint getPrimaryKey(){
@@ -105,9 +100,6 @@ public class ColumnConstraintBundle {
 	
 
 	
-	public NotNullConstraintManager getNotNullConstraintManager() {
-		return notNullConstraintManager;
-	}
 
 	public void setNotNullConstraintManager(NotNullConstraintManager notNullConstraintManager) {
 		this.notNullConstraintManager = notNullConstraintManager;
