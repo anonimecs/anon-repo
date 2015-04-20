@@ -194,13 +194,27 @@ public abstract class AnonymisationMethod implements Serializable{
 	}
 	
 	public void setupInDb(){
-		for(String setupSql:setupSqls){
-			execute(MessageFormat.format(setupSql, schema));
+		if(schema != null && !schema.isEmpty()) {
+			for(String setupSql:setupSqls){
+				execute(MessageFormat.format(setupSql, schema));
+			}
+		}
+		else {
+			for(String setupSql:setupSqls){
+				execute(setupSql);
+			}	
 		}
 	}
 	public void cleanupInDb(){
-		for(String cleanupSql:cleanupSqls){
-			execute(MessageFormat.format(cleanupSql, schema));
+		if(schema != null && !schema.isEmpty()) {
+			for(String cleanupSql:cleanupSqls){
+				execute(MessageFormat.format(cleanupSql, schema));
+			}
+		}
+		else {
+			for(String cleanupSql:cleanupSqls){
+				execute(cleanupSql);
+			}
 		}
 	}
 
