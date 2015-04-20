@@ -23,9 +23,7 @@ public class AnonymisationMethodEncryptSybase extends AnonymisationMethodEncrypt
 	@Override
 	protected <T> T anonymiseNum(Number exampleValue, Class<T> clazz) {
 		try{
-
-			
-			return new JdbcTemplate(dataSource).queryForObject("select "+exampleValue+" + round((rand("+hashmodint+") * "+exampleValue+")/10, 0)",clazz);
+			return new JdbcTemplate(dataSource).queryForObject("select " + getNumberEncryptionStatement(exampleValue.toString()),clazz);
 		}
 		catch(RuntimeException e){
 			logger.error("anonymiseNum failed", e);
@@ -48,7 +46,8 @@ public class AnonymisationMethodEncryptSybase extends AnonymisationMethodEncrypt
 
 		}
 		else if(col.isJavaTypeDouble() || col.isJavaTypeLong()){
-			int rowCount = update("update "+ col.getTable().getName()+ " set " + col.getName() + " = " +col.getName()+ "+ round((rand("+hashmodint+") * "+col.getName()+")/10, 0)");
+			int rowCount = update("update "+ col.getTable().getName()+ " set " + col.getName() + 
+					" = " + getNumberEncryptionStatement(col.getName()));
 			return new ExecutionMessage("Updated Numbers", rowCount);
 		}
 		else {
@@ -56,7 +55,17 @@ public class AnonymisationMethodEncryptSybase extends AnonymisationMethodEncrypt
 		}
 		
 	}
-
 	
-	
+	private String getNumberEncryptionStatement(String value) {
+		StringBuffer statement = new StringBuffer();
+		statement.append("round(rand(round(")
+			.append(value)
+			.append(",0)) * ")
+			.append(value)
+			.append(" * 2 + ")
+			.append(hashmodint)
+			.append(", 0)");
+		
+		return statement.toString();
+	}
 }
