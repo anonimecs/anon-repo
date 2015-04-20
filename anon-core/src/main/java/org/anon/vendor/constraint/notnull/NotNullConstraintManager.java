@@ -72,15 +72,19 @@ public class NotNullConstraintManager extends ConstraintManager<NotNullConstrain
 
 
 	public NotNullConstraint getNotNullConstraint(DatabaseColumnInfo databaseColumnInfo ){
+		if(databaseColumnInfo.isNullable()){
+			return null;
+		}
+		
 		switch (databaseColumnInfo.getDatabaseSpecifics()) {
-		case MySqlSpecific:
-			return new MySqlNotNullConstraint(jdbcTemplate);
-		case SybaseSpecific:
-			return new SybaseNotNullConstraint();
-		case OracleSpecific:
-			return new OracleNotNullConstraint();
-		case SqlServerSpecific:
-			return new SqlServerNotNullConstraint();
+			case MySqlSpecific:
+				return new MySqlNotNullConstraint(jdbcTemplate);
+			case SybaseSpecific:
+				return new SybaseNotNullConstraint();
+			case OracleSpecific:
+				return new OracleNotNullConstraint();
+			case SqlServerSpecific:
+				return new SqlServerNotNullConstraint();
 
 		default:
 			throw new RuntimeException("Unsupported " + databaseColumnInfo);
