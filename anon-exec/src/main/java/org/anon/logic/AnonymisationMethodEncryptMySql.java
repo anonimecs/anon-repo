@@ -19,6 +19,20 @@ public class AnonymisationMethodEncryptMySql extends AnonymisationMethodEncrypt 
 	}
 	
 	@Override
+	public void setupInDb(){
+		for(String setupSql:setupSqls){
+			execute(MessageFormat.format(setupSql, schema));
+		}
+	}
+	
+	@Override
+	public void cleanupInDb(){
+		for(String cleanupSql:cleanupSqls){
+			execute(MessageFormat.format(cleanupSql, schema));
+		}
+	}
+	
+	@Override
 	protected <T> T anonymiseNum(Number exampleValue, Class<T> clazz) {
 		try{	
 			return new JdbcTemplate(dataSource).queryForObject("select "+exampleValue+" + round(rand("+hashmodint+") * "+exampleValue+")/10",clazz);
