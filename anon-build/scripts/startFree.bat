@@ -3,7 +3,7 @@
 set "CURRENT_DIR=%cd%"
 set "CATALINA_HOME=%CURRENT_DIR%\app"
 set "APP_EXECUTABLE=%CATALINA_HOME%\bin\catalina.bat"
-set "CATALINA_OPTS=-Xms1024M -Xmx2048M -Dspring.profiles.active=free_edition"
+set "CATALINA_OPTS=-Xms256M -Xmx1024M -Dspring.profiles.active=free_edition"
 
 call "%APP_EXECUTABLE%" start
 

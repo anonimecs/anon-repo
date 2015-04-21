@@ -13,7 +13,7 @@ cd $CURRENT_DIR
 
 export CATALINA_HOME=%CURRENT_DIR%/app
 export APP_EXECUTABLE=%CATALINA_HOME%/bin/startup.sh
-export CATALINA_OPTS=-Xms1024M -Xmx2048M -Dspring.profiles.active=free_edition -Dderby.dir=%CURRENT_DIR%
+export CATALINA_OPTS=-Xms256M -Xmx1024M -Dspring.profiles.active=free_edition -Dderby.dir=%CURRENT_DIR%
 
 $APP_EXECUTABLE > anonimecs.log 2>&1 &
 echo "waiting to start the application"

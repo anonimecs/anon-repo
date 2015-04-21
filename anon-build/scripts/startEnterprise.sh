@@ -17,7 +17,7 @@ export DERBY_OPTS=-Dderby.system.home=%CURRENT_DIR%/db/data"
 export CLASSPATH=$DERBY_HOME/lib/derbytools.jar:$DERBY_HOME/lib/derbynet.jar:.
 export CATALINA_HOME=%CURRENT_DIR%/app
 export APP_EXECUTABLE=%CATALINA_HOME%/bin/startup.sh
-export CATALINA_OPTS=-Xms1024M -Xmx2048M -Dspring.profiles.active=enterprise_edition -Dderby.dir=%CURRENT_DIR%
+export CATALINA_OPTS=-Xms256M -Xmx2048M -Dspring.profiles.active=enterprise_edition -Dderby.dir=%CURRENT_DIR%
 
 nohup $DERBY_EXECUTABLE > anonimecs.log 2>&1 &
 echo "waiting to start the db"

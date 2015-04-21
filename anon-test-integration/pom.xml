@@ -29,7 +29,7 @@
 								<configuration>
 									<tasks>
 										<echo message="unpack zip" />
-										<unzip src="../anon-build/target/distributions/anonimecs-enterprise-win.zip" dest="c:/Temp/anonimecs" />
+										<unzip src="../anon-build/target/distributions/anonimecs-enterprise.zip" dest="c:/Temp/anonimecs" />
 									</tasks>
 								</configuration>
 								<goals>
@@ -58,7 +58,7 @@
 								<configuration>
 									<tasks>
 										<echo message="unpack zip" />
-										<unzip src="../anon-build/target/distributions/anonimecs-free-win.zip" dest="c:/Temp/anonimecs" />
+										<unzip src="../anon-build/target/distributions/anonimecs-free.zip" dest="c:/Temp/anonimecs" />
 									</tasks>
 								</configuration>
 								<goals>
