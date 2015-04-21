@@ -34,7 +34,7 @@ public class ConstraintBundleTest extends MySqlExecTestBase{
 		
 		// show in the GUI
 		NotNullConstraint notNullConstraint = comsiIdColConstraintBundle.getNotNullConstraint();
-		Assert.assertNotNull(notNullConstraint);
+		Assert.assertNull(notNullConstraint);
 		
 		UniqueConstraint primaryKey = comsiIdColConstraintBundle.getPrimaryKey();
 		Assert.assertNull(primaryKey);
