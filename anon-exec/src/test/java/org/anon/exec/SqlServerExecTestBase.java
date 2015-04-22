@@ -6,10 +6,12 @@ import org.anon.data.AnonConfig;
 import org.anon.data.Database;
 import org.anon.exec.audit.ExecAuditor;
 import org.anon.exec.mock.LicenseManagerMock;
+import org.anon.vendor.constraint.ConstraintBundleFactory;
 import org.junit.Assume;
 import org.junit.Before;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.test.util.ReflectionTestUtils;
 
 public abstract class SqlServerExecTestBase extends BaseExecTest {
 
@@ -66,6 +68,7 @@ public abstract class SqlServerExecTestBase extends BaseExecTest {
 		sqlServerExec.setExecAuditor(execAuditor);
 		sqlServerExec.setGuiNotifier(new NullGuiNotifier());
 		sqlServerExec.setDbConnectionFactory(new DummyConnectionFactory(dataSourceSqlServer, Database.SYBASE));
+		ReflectionTestUtils.setField(sqlServerExec, "constraintBundleFactory", new ConstraintBundleFactory());
 		return sqlServerExec;
 	}
 	public TestTableCreatorSqlServer getTestTableCreator() {

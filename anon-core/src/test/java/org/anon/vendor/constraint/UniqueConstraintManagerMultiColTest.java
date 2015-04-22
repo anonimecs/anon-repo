@@ -13,6 +13,7 @@ import org.anon.exec.TestTableDropSupport;
 import org.anon.vendor.DatabaseSpecifics;
 import org.anon.vendor.constraint.unique.MySqlUniqueConstraintManager;
 import org.anon.vendor.constraint.unique.OracleUniqueConstraintManager;
+import org.anon.vendor.constraint.unique.SqlServerUniqueConstraintManager;
 import org.anon.vendor.constraint.unique.SybaseUniqueConstraintManager;
 import org.anon.vendor.constraint.unique.UniqueConstraint;
 import org.anon.vendor.constraint.unique.UniqueConstraintManager;
@@ -82,7 +83,7 @@ public class UniqueConstraintManagerMultiColTest extends BaseParametrisedDbTest{
         if(isDbAvailable(DB.sybase)) res.add(new Object[]{ SybaseUniqueConstraintManager.class, getTestSchema(DB.sybase), DatabaseSpecifics.SybaseSpecific});
         if(isDbAvailable(DB.mysql)) res.add(new Object[]{ MySqlUniqueConstraintManager.class , getTestSchema(DB.mysql), DatabaseSpecifics.MySqlSpecific});
         if(isDbAvailable(DB.oracle)) res.add(new Object[]{ OracleUniqueConstraintManager.class , getTestSchema(DB.oracle), DatabaseSpecifics.OracleSpecific});
-//        if(isDbAvailable(DB.sqlserver)) res.add(new Object[]{ SqlServerUniqueConstraintManager.class ,  getTestSchema(DB.sqlserver), DatabaseSpecifics.SqlServerSpecific});
+        if(isDbAvailable(DB.sqlserver)) res.add(new Object[]{ SqlServerUniqueConstraintManager.class ,  getTestSchema(DB.sqlserver), DatabaseSpecifics.SqlServerSpecific});
 		
 		return res;
 	}

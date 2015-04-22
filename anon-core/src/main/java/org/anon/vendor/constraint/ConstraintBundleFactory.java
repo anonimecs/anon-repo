@@ -10,6 +10,7 @@ import org.anon.vendor.constraint.referential.SqlServerForeignKeyConstraintManag
 import org.anon.vendor.constraint.referential.SybaseForeignKeyConstraintManager;
 import org.anon.vendor.constraint.unique.MySqlUniqueConstraintManager;
 import org.anon.vendor.constraint.unique.OracleUniqueConstraintManager;
+import org.anon.vendor.constraint.unique.SqlServerUniqueConstraintManager;
 import org.anon.vendor.constraint.unique.SybaseUniqueConstraintManager;
 import org.springframework.stereotype.Service;
 
@@ -45,8 +46,7 @@ public class ConstraintBundleFactory {
 		}
 		else if(databaseSpecifics == DatabaseSpecifics.SqlServerSpecific) {
 			ColumnConstraintBundle constraintBundle = new ColumnConstraintBundle(dataSource, col);
-			if (true)throw new RuntimeException("Unimpelmented");
-			//constraintBundle.setUniqueConstraintManager( new SqlServerUniqueConstraintManager(dataSource));
+			constraintBundle.setUniqueConstraintManager( new SqlServerUniqueConstraintManager(dataSource));
 			constraintBundle.setForeignKeyConstraintManager(new SqlServerForeignKeyConstraintManager(dataSource));
 			
 			
