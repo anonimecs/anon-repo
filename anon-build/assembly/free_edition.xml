@@ -12,7 +12,7 @@
 			<directory>${project.build.directory}/apache-tomcat-${tomcat.version}</directory>
 			<outputDirectory>/app</outputDirectory>
 			<excludes>
-				<exclude>**/bin/docs/*.sh</exclude>
+				<exclude>**/bin/*.sh</exclude>
                 <exclude>**/webapps/docs/**</exclude>
                 <exclude>**/webapps/examples/**</exclude>
                 <exclude>**/webapps/host-manager/**</exclude>
@@ -41,6 +41,7 @@
 			</includes>
 			<lineEnding>unix</lineEnding>
 			<fileMode>0755</fileMode>
+			<filtered>true</filtered>
 		</fileSet>
 	</fileSets>
 	

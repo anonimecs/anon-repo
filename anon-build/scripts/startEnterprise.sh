@@ -79,3 +79,8 @@ export CATALINA_EXEC=$CATALINA_HOME/bin/startup.sh
 export CATALINA_OPTS="-Xms256M -Xmx2048M -Dspring.profiles.active=enterprise_edition -Dderby.dir=$INSTALL_DIR"
                                                                                                                                                             
 nohup $CATALINA_EXEC
+
+echo Anonimecs FREE edition was started.
+echo The tomcat logs are in app/logs/catalina.out
+echo You can access the application at http://`hostname`:8080/anon
+
