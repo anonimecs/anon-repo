@@ -11,17 +11,62 @@
 	</parent>
 	
 	<profiles>
+<!-- 	    <profile> -->
+<!-- 	        <id>free</id> -->
+<!-- 	        <properties> -->
+<!-- 	            <assembly-descriptor1>assembly/free_edition.xml</assembly-descriptor1> -->
+<!-- 	        </properties> -->
+<!-- 	    </profile> -->
+<!-- 		<profile> -->
+<!-- 	        <id>enterprise</id> -->
+<!-- 	        <properties> -->
+<!-- 	            <assembly-descriptor1>assembly/enterprise_edition.xml</assembly-descriptor1> -->
+<!-- 	        </properties> -->
+<!-- 	    </profile> -->
 	    <profile>
-	        <id>free</id>
-	        <properties>
-	            <assembly-descriptor1>assembly/free_edition.xml</assembly-descriptor1>
-	        </properties>
-	    </profile>
-		<profile>
-	        <id>enterprise</id>
-	        <properties>
-	            <assembly-descriptor1>assembly/enterprise_edition.xml</assembly-descriptor1>
-	        </properties>
+	    	<id>release</id>
+	    	<build>
+	    		<plugins>
+			    	<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-assembly-plugin</artifactId>
+						<version>2.5.1</version>
+		
+						<executions>
+							<execution>
+								<id>free</id> 
+								<phase>package</phase>
+								<goals>
+									<goal>single</goal>
+								</goals>
+								<configuration>
+									<outputDirectory>target/distributions</outputDirectory>
+									<finalName>anonimecs</finalName>
+									<descriptors>
+										<descriptor>assembly/free_edition.xml</descriptor>
+									</descriptors>
+								</configuration>
+							</execution>
+							<execution>
+								<id>enterprise</id> 
+								<phase>package</phase>
+								<goals>
+									<goal>single</goal>
+								</goals>
+								<configuration>
+									<outputDirectory>target/distributions</outputDirectory>
+									<finalName>anonimecs</finalName>
+									<descriptors>
+										<descriptor>assembly/enterprise_edition.xml</descriptor>
+									</descriptors>
+								</configuration>
+							</execution>
+						</executions>
+		
+			</plugin>		
+	    		
+	    		</plugins>
+	    	</build>
 	    </profile>
 	</profiles>
 	
@@ -72,29 +117,7 @@
 					</execution>
 				</executions>
 			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-assembly-plugin</artifactId>
-				<version>2.5.1</version>
-
-				<configuration>
-					<outputDirectory>target/distributions</outputDirectory>
-					<finalName>anonimecs</finalName>
-					<descriptors>
-						<descriptor>${assembly-descriptor1}</descriptor>
-					</descriptors>
-				</configuration>
-				<executions>
-					<execution>
-						<id>make-assembly</id> <!-- this is used for inheritance merges -->
-						<phase>package</phase> <!-- bind to the packaging phase -->
-						<goals>
-							<goal>single</goal>
-						</goals>
-					</execution>
-				</executions>
-
-			</plugin>		
+			
 		</plugins>
 	</build>
 </project> 

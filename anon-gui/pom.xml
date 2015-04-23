@@ -13,7 +13,6 @@
 
 	<properties>
 		<webXmlPath>src/main/webapp/WEB-INF/web.xml</webXmlPath>
-		<edition>enterprise</edition>
 	</properties>
 
 	<profiles>
@@ -38,15 +37,39 @@
 						<filtering>true</filtering>
 					</resource>
 				</resources>
+				
+				<plugins>
+		
+					<plugin>
+						<artifactId>maven-war-plugin</artifactId>
+						<version>2.6</version>
+						<configuration>
+							<warName>${project.artifactId}-${project.version}-${edition}</warName>
+							<webXml>${webXmlPath}</webXml>
+						</configuration>
+						<executions>
+							<execution>
+								<id>default-war</id>
+								<phase>package</phase>
+								<goals>
+									<goal>war</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+		
+				</plugins>				
 			</build>	    
-			
 			<dependencies>
+				
 				<dependency>
 					<groupId>org.anon</groupId>
 					<artifactId>anon-free-only</artifactId>
 					<version>${project.version}</version>
 				</dependency>
-			</dependencies>			    
+			
+			</dependencies>
+				    
 	        
 	    </profile>
 		<profile>
@@ -70,9 +93,29 @@
 						<filtering>true</filtering>
 					</resource>
 				</resources>
+				
+				<plugins>
+		
+					<plugin>
+						<artifactId>maven-war-plugin</artifactId>
+						<version>2.6</version>
+						<configuration>
+							<warName>${project.artifactId}-${project.version}-${edition}</warName>
+							<webXml>${webXmlPath}</webXml>
+						</configuration>
+						<executions>
+							<execution>
+								<id>default-war</id>
+								<phase>package</phase>
+								<goals>
+									<goal>war</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+		
+				</plugins>				
 			</build>	       	        
-	        
-        	<!-- These dependencies will only be available in the enterprise build -->
 			<dependencies>
 				<dependency>
 					<groupId>org.anon</groupId>
@@ -84,34 +127,87 @@
 					<artifactId>anon-security</artifactId>
 					<version>${project.version}</version>
 				</dependency>
+			
 			</dependencies>
+	        
+
 	    </profile>
 	    
+	    
+	    <profile>
+	    	<id>release</id>
+	    	
+	    	<build>
+				
+				<plugins>
+		
+					<plugin>
+						<artifactId>maven-war-plugin</artifactId>
+						<version>2.6</version>
+						<executions>
+          					<execution>
+          						<id>free</id>
+								<phase>package</phase>
+								<goals>
+									<goal>war</goal>
+								</goals>
+								<configuration>
+									<warName>${project.artifactId}-${project.version}-free</warName>
+									<webXml>src/editionDependent/free_edition_web.xml</webXml>
+									<packagingExcludes>
+										WEB-INF/lib/anon-security-*.jar,
+										WEB-INF/lib/anon-enterprise-only-*.jar,
+										WEB-INF/lib/anon-api-*.jar,
+									</packagingExcludes>
+								</configuration>
+          					</execution>
+          					<execution>
+          						<id>enterprise</id>
+								<phase>package</phase>
+								<goals>
+									<goal>war</goal>
+								</goals>
+								<configuration>
+									<warName>${project.artifactId}-${project.version}-enterprise</warName>
+									<webXml>src/editionDependent/enterprise_edition_web.xml</webXml>
+									<packagingExcludes>WEB-INF/lib/anon-free-only-*.jar</packagingExcludes>
+								</configuration>
+          					</execution>
+          				</executions>
+          				
+          				<configuration>
+          					<failOnMissingWebXml>false</failOnMissingWebXml>
+          				</configuration>
+
+						
+					</plugin>
+		
+				</plugins>
+			</build>
+			
+			<dependencies>
+				<dependency>
+					<groupId>org.anon</groupId>
+					<artifactId>anon-enterprise-only</artifactId>
+					<version>${project.version}</version>
+				</dependency>
+				<dependency>
+					<groupId>org.anon</groupId>
+					<artifactId>anon-security</artifactId>
+					<version>${project.version}</version>
+				</dependency>
+				
+				<dependency>
+					<groupId>org.anon</groupId>
+					<artifactId>anon-free-only</artifactId>
+					<version>${project.version}</version>
+				</dependency>
+			
+			</dependencies>
+	    	
+	    </profile>
 	</profiles>
 
-	<build>
-		<plugins>
-
-			<plugin>
-				<artifactId>maven-war-plugin</artifactId>
-				<version>2.6</version>
-				<configuration>
-					<warName>${project.artifactId}-${project.version}-${edition}</warName>
-					<webXml>${webXmlPath}</webXml>
-				</configuration>
-				<executions>
-					<execution>
-						<id>default-war</id>
-						<phase>package</phase>
-						<goals>
-							<goal>war</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-
-		</plugins>
-	</build>
 
 
 	<repositories>
@@ -258,6 +354,7 @@
 			<artifactId>anon-gui-skin</artifactId>
 			<version>${project.version}</version>
 		</dependency>
+		
 		
 <!-- 		<dependency> -->
 <!-- 			<groupId>org.anon</groupId> -->
