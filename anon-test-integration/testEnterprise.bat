@@ -1,6 +1,6 @@
 call setenv.bat
 
-call mvn clean install -P enterprise
+call mvn clean install -P release
 
 cd anon-test-integration
 call mvn package -P enterprise
