@@ -61,7 +61,6 @@ nohup $_RUNJAVA $DERBY_OPTS -classpath $LOCALCLASSPATH org.apache.derby.drda.Net
 echo "Database stoped.";
 
 # STOP TOMCAT SERVER
-export $JAVA_HOME
 export CATALINA_HOME=$INSTALL_DIR/app
 export CATALINA_EXEC=$CATALINA_HOME/bin/shutdown.sh
                                                                                                                                                             

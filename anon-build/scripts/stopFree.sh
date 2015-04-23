@@ -50,7 +50,6 @@ echo "USING JAVA: $_RUNJAVA";
 LOGFILE=$INSTALL_DIR/anonimecs.log
 
 # STOP TOMCAT SERVER
-export $JAVA_HOME
 export CATALINA_HOME=$INSTALL_DIR/app
 export CATALINA_EXEC=$CATALINA_HOME/bin/shutdown.sh
                                                                                                                                                             

@@ -73,7 +73,6 @@ fi
 echo "Database started.";
 
 # START TOMCAT SERVER
-export $JAVA_HOME
 export CATALINA_HOME=$INSTALL_DIR/app
 export CATALINA_BASE=$CATALINA_HOME
 export CATALINA_EXEC=$CATALINA_HOME/bin/startup.sh
