@@ -19,6 +19,7 @@
                 <exclude>**/webapps/manager/**</exclude>
                 <exclude>**/webapps/ROOT/**</exclude>
                 <exclude>**/conf/server.xml</exclude>
+                <exclude>**/conf/catalina.properties</exclude>
             </excludes>
 		</fileSet>
 		<fileSet>
@@ -57,6 +58,14 @@
 		<file>
 			<source>${project.basedir}/License/AnonimecsEndUserLicenseAgreement.pdf</source>
 			<outputDirectory>/anonimecs</outputDirectory>
+		</file>
+		<file>
+			<source>${project.basedir}/License/free/anonlicense.txt</source>
+			<outputDirectory>/anonimecs/app</outputDirectory>
+		</file>
+		<file>
+			<source>${project.basedir}/config/catalina.properties</source>
+			<outputDirectory>/anonimecs/app/conf</outputDirectory>
 		</file>
 	</files>
 </assembly>
