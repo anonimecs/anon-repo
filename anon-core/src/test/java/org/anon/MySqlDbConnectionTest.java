@@ -13,6 +13,7 @@ import org.anon.exec.TestTableCreatorMySql;
 import org.anon.vendor.MySqlDbConnection;
 import org.junit.After;
 import org.junit.Assert;
+import org.junit.Assume;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,6 +47,8 @@ public class MySqlDbConnectionTest extends BaseDbTest{
 	
 	@Before
 	public void createTable() throws IOException{
+		Assume.assumeTrue(mysqlAvailable);
+		
 		
 		dropTables();
 		

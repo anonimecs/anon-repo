@@ -24,13 +24,12 @@ public class SqlServerDbConnectionTest extends BaseDbTest{
 	
 	@Value("${sqlserver.test.schema}")
 	protected String schema;
-	
-	@Value("${sqlserver.available}")
-	protected Boolean sqlserverAvailable;
+
 	
 	@Before
 	public void assumeDbAvailable(){
-		Assume.assumeTrue("database exists check", sqlserverAvailable);
+		Assume.assumeTrue(sqlserverAvailable);
+
 	}
 	
 	

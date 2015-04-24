@@ -8,6 +8,7 @@ import org.anon.exec.BaseDbTest;
 import org.anon.vendor.DatabaseSpecifics;
 import org.junit.After;
 import org.junit.Assert;
+import org.junit.Assume;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +30,8 @@ public class MySqlNotNullConstraintTest  extends BaseDbTest{
 	
 	@Before
 	public void beforeTest(){
+		Assume.assumeTrue(mysqlAvailable);
+		
 		jdbcTemplate = new JdbcTemplate(dataSourceMySql);
 		jdbcTemplate.update("create table TMP_TABLE(COL1 varchar(50) not null,primary key(COL1))");
 		mySqlNotNullConstraint = new MySqlNotNullConstraint(jdbcTemplate);

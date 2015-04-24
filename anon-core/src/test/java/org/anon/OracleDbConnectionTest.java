@@ -10,6 +10,8 @@ import org.anon.exec.BaseDbTest;
 import org.anon.vendor.DatabaseSpecifics;
 import org.anon.vendor.OracleDbConnection;
 import org.junit.Assert;
+import org.junit.Assume;
+import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -22,6 +24,12 @@ public class OracleDbConnectionTest extends BaseDbTest{
 	@Value("${oracle.test.schema}")
 	protected String schema;
 
+	@Before
+	public void assumeDbAvailable(){
+		Assume.assumeTrue(oracleAvailable);
+
+	}
+	
 	@Test
 	public void testGetColumns() {
 		OracleDbConnection oracleDbConnection = createConn();
