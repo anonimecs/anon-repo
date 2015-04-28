@@ -76,6 +76,9 @@ public class EditedTableServiceImpl implements EditedTableService{
 			anonymisedColumnData.setColumnType(column.getType());
 			anonymisedColumnData.setTableName(column.getTable().getName());
 			anonymisedColumnData.setSchemaName(column.getTable().getSchema());
+			anonymisedColumnData.setWhereCondition(column.getWhereCondition());
+			anonymisedColumnData.setGuiFieldApplicability(column.getGuiFieldApplicability());
+			anonymisedColumnData.setGuiFieldWhereCondition(column.getGuiFieldWhereCondition());
 			anonymisationMethodData.addColumn(anonymisedColumnData);	
 			
 			entitiesDao.save(anonymisedColumnData);

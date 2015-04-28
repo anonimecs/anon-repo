@@ -65,6 +65,9 @@ create table AnonymisedColumnData (
     TABLENAME VARCHAR(255) NOT NULL,
     SCHEMANAME VARCHAR(255) NOT NULL,
     COLUMNTYPE VARCHAR(255) NOT NULL,
+    WHERECONDITION VARCHAR(2000),
+    GUIFIELDWHERECONDITION VARCHAR(2000),
+    GUIFIELDAPPLICABILITY VARCHAR(20),
     AnonymisationMethodData_ID int,
   	CONSTRAINT primary_key_AnonymisedColumnData PRIMARY KEY (ID),
     CONSTRAINT fk_AnonymisedColumnData_AnonymisationMethodData FOREIGN KEY (AnonymisationMethodData_ID) REFERENCES AnonymisationMethodData (ID) ON DELETE CASCADE

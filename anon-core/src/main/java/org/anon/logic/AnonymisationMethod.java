@@ -3,7 +3,6 @@ package org.anon.logic;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Serializable;
-import java.text.MessageFormat;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.LinkedList;
@@ -237,6 +236,15 @@ public abstract class AnonymisationMethod implements Serializable{
 		for(String fileNameInResourcesFolder:filesInResoucesFolder){
 			String cleanupSql = getFileContent(fileNameInResourcesFolder);
 			cleanupSqls.add(cleanupSql);
+		}
+	}
+	
+	protected String createWhereClause(AnonymisedColumnInfo col) {
+		if(col.getWhereCondition() != null){
+			return " where " + col.getWhereCondition();
+		}
+		else {
+			return "";
 		}
 	}
 

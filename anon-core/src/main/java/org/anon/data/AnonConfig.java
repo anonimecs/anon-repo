@@ -75,13 +75,9 @@ public class AnonConfig {
 		
 	}
 	public DatabaseTableInfo findTable(String tableName) {
-		for(DatabaseTableInfo aDatabaseTableInfo:getTables()){
-			if(tableName.equals(aDatabaseTableInfo.getName())){
-				return aDatabaseTableInfo;
-			}
-		}
-		throw new RuntimeException("Table not found " + tableName);
+		return Lookups.findTable(tableName, getTables());
 	}
+	
 	public boolean emptyTables() {
 		return tables == null || tables.isEmpty();
 	}

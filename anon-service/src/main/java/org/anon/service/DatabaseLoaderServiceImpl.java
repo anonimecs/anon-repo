@@ -192,6 +192,9 @@ public class DatabaseLoaderServiceImpl implements DatabaseLoaderService{
 			
 			AnonymisedColumnInfo anonymisedColumnInfo = new AnonymisedColumnInfo(anonymisedColumnData.getColumnName(), anonymisedColumnData.getColumnType(), databaseColumnInfo.isNullable(), dbConnectionFactory.getConnection().getDatabaseSpecifics());
 			anonymisedColumnInfo.setId(anonymisedColumnData.getId());
+			anonymisedColumnInfo.setWhereCondition(anonymisedColumnData.getWhereCondition());
+			anonymisedColumnInfo.setGuiFieldWhereCondition(anonymisedColumnData.getGuiFieldWhereCondition());
+			anonymisedColumnInfo.setGuiFieldApplicability(anonymisedColumnData.getGuiFieldApplicability());
 			anonymisationMethod.addColumn(anonymisedColumnInfo);
 
 			anonymisedColumnInfo.setTable(table);

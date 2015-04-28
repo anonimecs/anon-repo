@@ -35,7 +35,6 @@ public class EditedTableBacking extends BackingBase {
 
 	private List<RelatedTableColumnInfo> relatedTableColumns;
 	private List<RelatedTableColumnInfo> filteredRelatedTableColumns;
-	private List<RelatedTableColumnInfo> selectedRelatedTableColumns;
 	private List<RelatedTableColumnInfo> selectedRelatedTableColumnsToRemove;
 	private List<AnonymisationMethod> supportedAnonymisationMethods;
 	
@@ -71,12 +70,12 @@ public class EditedTableBacking extends BackingBase {
 			else {
 				// new anonymisation
 				if(getAnonymizedColumn().getAnonymisationMethod() == null){
-					editedTableService.addAnonymisation(editedTable, getAnonymizedColumn(), selectedRelatedTableColumns, configContext.getAnonymisationMethod());
+					editedTableService.addAnonymisation(editedTable, getAnonymizedColumn(), configContext.getSelectedRelatedTableColumns(), configContext.getAnonymisationMethod());
 					showInfoInGui("Anonymisation ADDED for " + getAnonymizedColumn() + " and selected related tables");
 				}
 				// change anonymisation
 				else {
-					editedTableService.changeAnonymisation(editedTable, getAnonymizedColumn(), selectedRelatedTableColumns, configContext.getAnonymisationMethod());
+					editedTableService.changeAnonymisation(editedTable, getAnonymizedColumn(), configContext.getSelectedRelatedTableColumns(), configContext.getAnonymisationMethod());
 					showInfoInGui("Anonymisation CHANGED for " + getAnonymizedColumn() + " and selected related tables");
 					
 				}
@@ -96,6 +95,7 @@ public class EditedTableBacking extends BackingBase {
 		 databaseLoaderService.fillExampleValues(editedTable);
 		 editedColumn = null;
 		 configContext.setAnonymisationMethod(AnonymisationMethodNone.INSTANCE);	 
+		 configContext.setAnonymisedColumnInfo(null);
 		 
 		 redirectPageTo(NavigationCaseEnum.COLUMNS);
 	}
@@ -113,18 +113,22 @@ public class EditedTableBacking extends BackingBase {
 			//selectedAnonymizationType = AnonymizationType.NONE;
 			configContext.setAnonymisationMethod(AnonymisationMethodNone.INSTANCE);
 			supportedAnonymisationMethods = methodFactory.getSupportedMethods(getAnonymizedColumn(), databaseLoaderService.getDatabaseSpecifics());
-			selectedRelatedTableColumns = null;
+			configContext.setSelectedRelatedTableColumns(null);
 			selectedRelatedTableColumnsToRemove = null;
 			
 		}else {
 			// anonymised column clicked
 			//selectedAnonymizationType = getAnonymizedColumn().getAnonymisationMethod().getType();
-			configContext.setAnonymisationMethod(getAnonymizedColumn().getAnonymisationMethod());			
-			selectedRelatedTableColumns = convertToRelatedTableInfoSelection(getAnonymizedColumn().getAnonymisationMethod().getApplyedToColumns());
+			configContext.setAnonymisationMethod(getAnonymizedColumn().getAnonymisationMethod());		
+
+			List<RelatedTableColumnInfo> selectedRelatedTableColumns = convertToRelatedTableInfoSelection(getAnonymizedColumn().getAnonymisationMethod().getApplyedToColumns());
+			configContext.setSelectedRelatedTableColumns(selectedRelatedTableColumns);
 			selectedRelatedTableColumnsToRemove = new LinkedList<RelatedTableColumnInfo>(selectedRelatedTableColumns);
 			supportedAnonymisationMethods = methodFactory.getSupportedMethods(getAnonymizedColumn(), databaseLoaderService.getDatabaseSpecifics());
 			replaceInSupported();
 		}
+		
+		configContext.setAnonymisedColumnInfo(getAnonymizedColumn());
 		
 		redirectPageTo(NavigationCaseEnum.ANONYMIZE);
 	}
@@ -230,13 +234,13 @@ public class EditedTableBacking extends BackingBase {
 
 
 	public List<RelatedTableColumnInfo> getSelectedRelatedTableColumns() {
-		return selectedRelatedTableColumns;
+		return configContext.getSelectedRelatedTableColumns();
 	}
 
 
 	public void setSelectedRelatedTableColumns(
 			List<RelatedTableColumnInfo> selectedRelatedTableColumns) {
-		this.selectedRelatedTableColumns = selectedRelatedTableColumns;
+		configContext.setSelectedRelatedTableColumns(selectedRelatedTableColumns);
 	}
 
 

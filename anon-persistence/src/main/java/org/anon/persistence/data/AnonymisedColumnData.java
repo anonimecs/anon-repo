@@ -27,6 +27,15 @@ public class AnonymisedColumnData extends PersistentObject{
 	@Column
 	private String schemaName;
 	
+	@Column
+	private String whereCondition;
+	
+	@Column
+	private String guiFieldWhereCondition;
+	
+	@Column
+	private String guiFieldApplicability;
+	
 	@ManyToOne
 	@JoinColumn(name="AnonymisationMethodData_ID")
 	private AnonymisationMethodData anonymisationMethodData;
@@ -77,6 +86,30 @@ public class AnonymisedColumnData extends PersistentObject{
 
 	public void setSchemaName(String schemaName) {
 		this.schemaName = schemaName;
+	}
+
+	public String getWhereCondition() {
+		return whereCondition;
+	}
+
+	public void setWhereCondition(String whereClause) {
+		this.whereCondition = whereClause;
+	}
+
+	public String getGuiFieldWhereCondition() {
+		return guiFieldWhereCondition;
+	}
+
+	public void setGuiFieldWhereCondition(String guiFieldWhereCondition) {
+		this.guiFieldWhereCondition = guiFieldWhereCondition;
+	}
+
+	public String getGuiFieldApplicability() {
+		return guiFieldApplicability;
+	}
+
+	public void setGuiFieldApplicability(String guiFieldApplicability) {
+		this.guiFieldApplicability = guiFieldApplicability;
 	}
 
 	

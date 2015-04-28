@@ -79,12 +79,7 @@ public class DatabaseTableInfo extends DataObject{
 
 
 	public DatabaseColumnInfo findColumn(String searchedColumn) {
-		for(DatabaseColumnInfo databaseColumnInfo: columns){
-			if(databaseColumnInfo.getName().equals(searchedColumn)){
-				return databaseColumnInfo;
-			}
-		}
-		throw new RuntimeException("Column " + searchedColumn + " not found in table " + name);
+		return Lookups.findColumn(searchedColumn, columns);
 	}
 
 	public String getSchema() {

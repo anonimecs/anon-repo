@@ -1,8 +1,5 @@
 package org.anon.logic;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-
 import java.util.List;
 import java.util.Map;
 
@@ -19,9 +16,9 @@ import org.anon.vendor.DatabaseSpecifics;
 import org.junit.Assert;
 import org.junit.Test;
 
-public class AnonymisationMethodDestoryTest extends TwoTablesAllDbTest{
+public class AnonymisationMethodDestoryPartialTest extends TwoTablesAllDbTest{
 
-	public AnonymisationMethodDestoryTest(String schema, Database database, TwoTestTablesCreator testTablesCreator ) {
+	public AnonymisationMethodDestoryPartialTest(String schema, Database database, TwoTestTablesCreator testTablesCreator ) {
 		super(schema, database, testTablesCreator);
 	}
 
@@ -29,46 +26,39 @@ public class AnonymisationMethodDestoryTest extends TwoTablesAllDbTest{
 	MethodFactory methodFactory = new MethodFactory();
 	
 	@Test
-	public void testPreview() throws Exception {
-		AnonymisationMethodDestory anonymisationMethodDestory = (AnonymisationMethodDestory)methodFactory.createMethod(AnonymizationType.DESTROY, database.getDatabaseSpecifics());
-		assertEquals("xxxxx", anonymisationMethodDestory.anonymiseString("12345"));
-		assertNull(anonymisationMethodDestory.anonymiseString(null));
-	}
-
-	
-	@Test
-	public void testUniqueColumn() throws Exception {
+	public void testSimpleWhere() throws Exception {
 
 		AnonConfig anonConfig = new AnonConfig();
 		anonConfig.init();
 
 		AnonymisationMethodDestory anonymisationMethodDestory = (AnonymisationMethodDestory)methodFactory.createMethod(AnonymizationType.DESTROY, database.getDatabaseSpecifics());
 		AnonymisedColumnInfo column = getTestAnonimisedColumnInfo("COL1", "VARCHAR2", "TMP_TABLE_A3", anonymisationMethodDestory, database.getDatabaseSpecifics(), anonConfig);
+		column.setWhereCondition("COL1 = 'AAA'");
 		
 		anonymisationMethodDestory.addColumn(column);
 		
 		runConfig(anonConfig, anonymisationMethodDestory);
 		
 		List<Map<String, Object>> res = loadFromDb("select distinct COL1 from TMP_TABLE_A3");
-		Assert.assertEquals(1,  res.size());
-
+		Assert.assertEquals(3,  res.size());
 	}
 
 	@Test
-	public void testNotUniqueColumn() throws Exception {
+	public void testDualWhere() throws Exception {
 
 		AnonConfig anonConfig = new AnonConfig();
 		anonConfig.init();
 
 		AnonymisationMethodDestory anonymisationMethodDestory = (AnonymisationMethodDestory)methodFactory.createMethod(AnonymizationType.DESTROY, database.getDatabaseSpecifics());
 		AnonymisedColumnInfo column = getTestAnonimisedColumnInfo("COL2", "VARCHAR2", "TMP_TABLE_A3", anonymisationMethodDestory, database.getDatabaseSpecifics(), anonConfig);
+		column.setWhereCondition("COL2 = 'AAA' or COL2='BBB'");
 		
 		anonymisationMethodDestory.addColumn(column);
 		
 		runConfig(anonConfig, anonymisationMethodDestory);
 		
 		List<Map<String, Object>> res = loadFromDb("select distinct COL2 from TMP_TABLE_A3");
-		Assert.assertEquals(1,  res.size());
+		Assert.assertEquals(2,  res.size());
 
 	}
 
