@@ -13,6 +13,7 @@ import org.anon.service.where.WhereConditionBuilder;
 import org.anon.service.where.WhereConditionBuilder.Applicability;
 import org.anon.vendor.DatabaseSpecifics;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -26,6 +27,13 @@ public class AnonymisationMethodEncryptRowFilterTest extends TwoTablesAllDbTest{
 	
 	
 	MethodFactory methodFactory = new MethodFactory();
+	
+	@Before
+	public void deleteProcs() throws Exception {
+		try{updateDB("drop procedure an_meth_enc_func");}catch(Exception i){}
+		try{updateDB("drop function an_meth_enc_func");}catch(Exception i){}
+	}
+
 	
 	@Test 
 	public void testSimpleWhere() throws Exception {
@@ -60,7 +68,7 @@ public class AnonymisationMethodEncryptRowFilterTest extends TwoTablesAllDbTest{
 		anonymisationMethodEncrypt.addColumn(column);
 		
 		AnonymisedColumnInfo referencingColumn = getTestAnonimisedColumnInfo("COL1_REF", "VARCHAR2", "TMP_TABLE_B3", anonymisationMethodEncrypt, database.getDatabaseSpecifics(), anonConfig);
-		String whereCondition2 = whereConditionBuilder.buildForRelatedTable(Applicability.APPLY, "COL2 = 'AAA'", referencingColumn, column);
+		String whereCondition2 = whereConditionBuilder.buildForRelatedTable(Applicability.APPLY, "COL2='AAA' ", referencingColumn, column);
 		referencingColumn.setWhereCondition(whereCondition2);
 		anonymisationMethodEncrypt.addColumn(referencingColumn);
 		
@@ -74,8 +82,7 @@ public class AnonymisationMethodEncryptRowFilterTest extends TwoTablesAllDbTest{
 
 	}
 
-	@Test 
-	@Ignore
+	@Test
 	public void testDualWhere() throws Exception {
 
 		AnonConfig anonConfig = new AnonConfig();
