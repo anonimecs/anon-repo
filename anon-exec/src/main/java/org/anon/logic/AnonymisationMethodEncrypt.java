@@ -4,7 +4,9 @@ import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 
 import org.anon.data.AnonymisedColumnInfo;
 import org.anon.data.AnonymizationType;
@@ -16,7 +18,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 /**
  * adds hash(password) to each character or number or special char
  */
-public abstract class AnonymisationMethodEncrypt extends AnonymisationMethod {
+public abstract class AnonymisationMethodEncrypt extends AnonymisationMethod implements RowFilterSupport{
 
 	
 	
@@ -94,7 +96,14 @@ public abstract class AnonymisationMethodEncrypt extends AnonymisationMethod {
 		}
 	}
 
-
+	@Override
+	public List<AnonymisedColumnInfo> getApplyedToColumnsInExecutionOrder() {
+		List<AnonymisedColumnInfo> res = super.getApplyedToColumnsInExecutionOrder();
+		if(applyedToColumns.get(0).getWhereCondition() != null){
+			Collections.reverse(res);
+		}
+		return res;
+	}
 	
 
 

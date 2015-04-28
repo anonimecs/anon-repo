@@ -18,9 +18,9 @@ import org.anon.vendor.DatabaseSpecifics;
 import org.junit.Assert;
 import org.junit.Test;
 
-public class AnonymisationMethodDestoryPartialTest extends TwoTablesAllDbTest{
+public class AnonymisationMethodDestoryRowFilterTest extends TwoTablesAllDbTest{
 
-	public AnonymisationMethodDestoryPartialTest(String schema, Database database, TwoTestTablesCreator testTablesCreator ) {
+	public AnonymisationMethodDestoryRowFilterTest(String schema, Database database, TwoTestTablesCreator testTablesCreator ) {
 		super(schema, database, testTablesCreator);
 	}
 

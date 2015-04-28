@@ -38,7 +38,7 @@ public class AnonymisationMethodEncryptOracle extends AnonymisationMethodEncrypt
 	public ExecutionMessage runOnColumn(AnonymisedColumnInfo col) {
 		if(col.isJavaTypeString()){
 			
-			int rowCount = update("call an_meth_enc_proc (?, ?, ?)", col.getName() , col.getTable().getName(), hashmodint);
+			int rowCount = update("call an_meth_enc_proc (?, ?, ?, ?)", col.getName() , col.getTable().getName(), hashmodint, createWhereClause(col));
 			return new ExecutionMessage("Updated Strings", rowCount);
 
 		}

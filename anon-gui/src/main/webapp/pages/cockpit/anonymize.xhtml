@@ -30,6 +30,10 @@
 			</h:form>
 
 			<p:outputPanel id="buttons">
+				<p:commandButton id="saveColumnSettingsButton"
+					actionListener="#{editedTableBacking.onSaveColumnSettings()}"
+					value="Save Changes" update="anonymizeTabView,:menuForm:menuBar"
+					process="@this" icon="ui-icon-disk" />
 
 				<p:commandButton value="Configure Encryption" 
 					oncomplete="PF('configureEncryptionPopup').show();" rendered="#{editedTableBacking.anonymisationMethod.type == 'ENCRYPT'}" update=":configureEncryptionPopupId"/>	
@@ -37,16 +41,11 @@
 				<p:commandButton value="Configure Mappings" action="#{configureMappingsPopupBacking.onConfigureMappingsClicked()}"
 					oncomplete="PF('configureMappingsPopup').show();" rendered="#{editedTableBacking.anonymisationMethod.type == 'MAP'}" update=":configureMappingsPopupId"/>
 
-				<p:commandButton id="saveColumnSettingsButton"
-					actionListener="#{editedTableBacking.onSaveColumnSettings()}"
-					value="Save Changes" update="anonymizeTabView,:menuForm:menuBar"
-					process="@this" icon="ui-icon-disk" />
-
 				<p:commandButton value="No Row Filter Defined" title="Your anonymisation will change to all rows in the table. Click here to filter the applicable rows."
-					action="#{editedTableBacking.onRowFilterClicked}" rendered="#{editedTableBacking.anonymisationMethod.type == 'DESTROY' and configContext.anonymisedColumnInfo.whereCondition == null}" />	
+					action="#{editedTableBacking.onRowFilterClicked}" rendered="#{editedTableBacking.rowFilterSupport() and null == configContext.anonymisedColumnInfo.guiFieldApplicability}" />	
 		
 				<p:commandButton value="Show Row Filter" title="Your anonymisation will not apply to all rows. Click here to see the applicable rows."
-					action="#{editedTableBacking.onRowFilterClicked}" rendered="#{editedTableBacking.anonymisationMethod.type == 'DESTROY' and null != configContext.anonymisedColumnInfo.guiFieldApplicability}" />	
+					action="#{editedTableBacking.onRowFilterClicked}" rendered="#{editedTableBacking.rowFilterSupport() and null != configContext.anonymisedColumnInfo.guiFieldApplicability}" />	
 		
 			</p:outputPanel>
 

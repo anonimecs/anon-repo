@@ -177,8 +177,9 @@ public abstract class AnonymisationMethod implements Serializable{
 		return applyedToColumns;
 	}
 
-
-
+	public List<AnonymisedColumnInfo> getApplyedToColumnsInExecutionOrder() {
+		return getApplyedToColumns();
+	}
 
 	public void removeColumn(AnonymisedColumnInfo selectedAnonymizedColumn) {
 		boolean removed= applyedToColumns.remove(selectedAnonymizedColumn);

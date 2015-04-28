@@ -11,6 +11,9 @@ BEGIN
  DECLARE myindex DOUBLE DEFAULT 0;
  DECLARE shift DOUBLE DEFAULT shift_param;
  
+ IF inputStr is null THEN RETURN null;
+ END IF;
+ 
  IF shift > 11 THEN SET shift = MOD(shift, 9) + 2;
  END IF;
  

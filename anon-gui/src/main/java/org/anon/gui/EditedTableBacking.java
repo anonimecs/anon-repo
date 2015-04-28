@@ -18,6 +18,7 @@ import org.anon.logic.AnonymisationMethod;
 import org.anon.logic.AnonymisationMethodMapping;
 import org.anon.logic.AnonymisationMethodNone;
 import org.anon.logic.MethodFactory;
+import org.anon.logic.RowFilterSupport;
 import org.anon.logic.map.MappingDefault;
 import org.anon.service.DatabaseLoaderService;
 import org.anon.service.EditedTableService;
@@ -52,6 +53,10 @@ public class EditedTableBacking extends BackingBase {
 	
 	@ManagedProperty(value="#{rowFilterBacking}")
 	private RowFilterBacking rowFilterBacking;
+	
+	public boolean rowFilterSupport(){
+		return RowFilterSupport.class.isAssignableFrom(configContext.getAnonymisationMethod().getClass());
+	}
 	
 	public void onSaveColumnSettings(){
 		logDebug("onSaveColumnSettings" + editedColumn);

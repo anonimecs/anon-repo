@@ -43,7 +43,7 @@ public class AnonymisationMethodEncryptSqlServer extends AnonymisationMethodEncr
 	public ExecutionMessage runOnColumn(AnonymisedColumnInfo col) {
 		if(col.isJavaTypeString()){
 			
-			int rowCount = update("{call an_meth_enc_tbl (?, ?, ?)}", col.getName() , col.getTable().getName(), hashmodint);
+			int rowCount = update("{call an_meth_enc_tbl (?, ?, ?, ?)}", col.getName() , col.getTable().getName(), hashmodint, createWhereClause(col));
 			return new ExecutionMessage("Updated Strings", rowCount);
 
 		}

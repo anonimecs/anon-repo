@@ -95,7 +95,7 @@ public abstract class BaseExec {
 			methodExecution.started();
 			anonymisationMethod.setSchema(connection.getDefaultSchema());
 			anonymisationMethod.setupInDb();
-			for (AnonymisedColumnInfo col : anonymisationMethod.getApplyedToColumns()) {
+			for (AnonymisedColumnInfo col : anonymisationMethod.getApplyedToColumnsInExecutionOrder()) {
 				assertFreeEditionRunCount();
 				methodExecution.startedCol(col);
 				

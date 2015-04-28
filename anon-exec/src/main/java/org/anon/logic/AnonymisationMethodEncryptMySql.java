@@ -53,7 +53,7 @@ public class AnonymisationMethodEncryptMySql extends AnonymisationMethodEncrypt 
 	public ExecutionMessage runOnColumn(AnonymisedColumnInfo col) {
 		execute(MessageFormat.format("USE {0}", schema));
 		if(col.isJavaTypeString()) {
-			int rowCount = update("call an_meth_enc_proc (?, ?, ?)", col.getName() , col.getTable().getName(), hashmodint);
+			int rowCount = update("call an_meth_enc_proc (?, ?, ?, ?)", col.getName() , col.getTable().getName(), hashmodint, createWhereClause(col));
 			return new ExecutionMessage("Updated Strings", rowCount);
 
 		}

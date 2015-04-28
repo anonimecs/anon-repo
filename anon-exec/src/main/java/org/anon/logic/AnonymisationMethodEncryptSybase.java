@@ -41,7 +41,7 @@ public class AnonymisationMethodEncryptSybase extends AnonymisationMethodEncrypt
 	public ExecutionMessage runOnColumn(AnonymisedColumnInfo col) {
 		if(col.isJavaTypeString()){
 			
-			int rowCount = update("exec an_meth_enc_tbl (?, ?, ?)", col.getName() , col.getTable().getName(), hashmodint);
+			int rowCount = update("exec an_meth_enc_tbl (?, ?, ?, ?)", col.getName() , col.getTable().getName(), hashmodint, createWhereClause(col));
 			return new ExecutionMessage("Updated Strings", rowCount);
 
 		}

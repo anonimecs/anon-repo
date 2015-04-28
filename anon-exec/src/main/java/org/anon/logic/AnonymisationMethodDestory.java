@@ -1,12 +1,14 @@
 package org.anon.logic;
 
+import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 
 import org.anon.data.AnonymisedColumnInfo;
 import org.anon.data.AnonymizationType;
 
 
-public abstract class AnonymisationMethodDestory extends AnonymisationMethod {
+public abstract class AnonymisationMethodDestory extends AnonymisationMethod implements RowFilterSupport{
 	
 	public AnonymisationMethodDestory() {
 		super(AnonymizationType.DESTROY);
@@ -42,6 +44,15 @@ public abstract class AnonymisationMethodDestory extends AnonymisationMethod {
 	@Override
 	protected Object anonymiseDate(Date exampleValue) {
 		return new Date();
+	}
+	
+	@Override
+	public List<AnonymisedColumnInfo> getApplyedToColumnsInExecutionOrder() {
+		List<AnonymisedColumnInfo> res = super.getApplyedToColumnsInExecutionOrder();
+		if(applyedToColumns.get(0).getWhereCondition() != null){
+			Collections.reverse(res);
+		}
+		return res;
 	}
 }
 
