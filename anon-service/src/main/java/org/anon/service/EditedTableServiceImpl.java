@@ -9,6 +9,7 @@ import org.anon.data.AnonymisedColumnInfo;
 import org.anon.data.AnonymizationType;
 import org.anon.data.DatabaseColumnInfo;
 import org.anon.data.DatabaseTableInfo;
+import org.anon.data.Lookups;
 import org.anon.data.RelatedTableColumnInfo;
 import org.anon.logic.AnonymisationMethod;
 import org.anon.logic.AnonymisationMethodMapping;
@@ -19,6 +20,7 @@ import org.anon.persistence.data.AnonymisationMethodMappingData;
 import org.anon.persistence.data.AnonymisedColumnData;
 import org.anon.persistence.data.MappingDefaultData;
 import org.anon.persistence.data.MappingRuleData;
+import org.anon.service.where.WhereConditionBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,8 +36,62 @@ public class EditedTableServiceImpl implements EditedTableService{
 	
 	@Autowired
 	private	DbConnectionFactory dbConnectionFactory;
+	
+	@Autowired
+	private WhereConditionBuilder whereConditionBuilder;
+
+	@Override
+	@Transactional
+	public void saveRowFilter(AnonymisedColumnInfo col, String whereCondition, WhereConditionBuilder.Applicability applicability, List<RelatedTableColumnInfo> relatedTableColumnInfos, AnonymisationMethod anonymisationMethod) {
+		col.setGuiFieldWhereCondition(whereCondition);
+		col.setGuiFieldApplicability(applicability.name());
+		col.setWhereCondition(whereConditionBuilder.build(applicability, whereCondition));
+		saveRowFilter(col);
+
+		// handle related tables
+		if(relatedTableColumnInfos != null){
+			for(RelatedTableColumnInfo relatedTableColumnInfo : relatedTableColumnInfos){
+				
+				AnonymisedColumnInfo relatedCol = Lookups.findTableColumn(relatedTableColumnInfo.getColumnName(), relatedTableColumnInfo.getTableName(), anonymisationMethod.getApplyedToColumns());
+				relatedCol.setWhereCondition(whereConditionBuilder.buildForRelatedTable(applicability, whereCondition, relatedCol, col));
+				saveRowFilter(relatedCol);
+			}
+		}		
+		
+	}
+
+	
+	@Override
+	public void deleteRowFilter(AnonymisedColumnInfo col, List<RelatedTableColumnInfo> relatedTableColumnInfos, AnonymisationMethod anonymisationMethod) {
+		col.setGuiFieldWhereCondition(null);
+		col.setGuiFieldApplicability(null);
+		col.setWhereCondition(null);
+		saveRowFilter(col);
+
+		// handle related tables
+		if(relatedTableColumnInfos != null){
+			for(RelatedTableColumnInfo relatedTableColumnInfo : relatedTableColumnInfos){
+				
+				AnonymisedColumnInfo relatedCol = Lookups.findTableColumn(relatedTableColumnInfo.getColumnName(), relatedTableColumnInfo.getTableName(), anonymisationMethod.getApplyedToColumns());
+				relatedCol.setGuiFieldWhereCondition(null);
+				relatedCol.setGuiFieldApplicability(null);
+				relatedCol.setWhereCondition(null);
+				saveRowFilter(relatedCol);
+			}
+		}		
+		
+	}
 
 
+	private void saveRowFilter(AnonymisedColumnInfo anonymisedColumnInfo){
+		AnonymisedColumnData anonymisedColumnData = entitiesDao.loadAnonymisedColumnData(anonymisedColumnInfo);
+		anonymisedColumnData.setWhereCondition(anonymisedColumnInfo.getWhereCondition());
+		anonymisedColumnData.setGuiFieldApplicability(anonymisedColumnInfo.getGuiFieldApplicability());
+		anonymisedColumnData.setGuiFieldWhereCondition(anonymisedColumnInfo.getGuiFieldWhereCondition());
+		entitiesDao.save(anonymisedColumnData);
+	}
+	
+	@Override
 	public void addAnonymisation(DatabaseTableInfo editedTable,
 			AnonymisedColumnInfo anonymizedColumn,
 			List<RelatedTableColumnInfo> selectedRelatedTableColumns,
@@ -108,6 +164,7 @@ public class EditedTableServiceImpl implements EditedTableService{
 	}
 
 	@Transactional
+	@Override
 	public void removeAnonymisation(DatabaseTableInfo selectedEditedTable,
 			final AnonymisedColumnInfo selectedAnonymizedColumn,
 			List<RelatedTableColumnInfo> relatedTableColumnsToRemove) {
@@ -162,6 +219,7 @@ public class EditedTableServiceImpl implements EditedTableService{
 		selectedAnonymizedColumn.setAnonymisationMethod(null);
 	}
 
+	@Override
 	public void changeAnonymisation(DatabaseTableInfo selectedEditedTable,
 			AnonymisedColumnInfo selectedAnonymizedColumn,
 			List<RelatedTableColumnInfo> selectedRelatedTableColumns,

@@ -41,10 +41,21 @@
 										<ui:param name="databaseColumnInfo" value="#{anonColumnInfo}" />
 									</ui:include>
 				        		</p:column>
-				        		<p:column headerText="Rows" width="50" style="text-align: right">
-				        			<h:outputText value="#{anonColumnInfo.table.rowCount}" >
+				        		<p:column headerText="Rows" width="70" style="text-align: right">
+				        			<h:outputText value="#{anonColumnInfo.table.rowCount}"  rendered="#{null == anonColumnInfo.whereCondition}">
 				        				<f:convertNumber pattern="###,###"/>
 				        			</h:outputText>
+				        			<h:outputText id="rowFilterText" value="Row Filter" styleClass="tooltipBehind" rendered="#{null != anonColumnInfo.whereCondition}"/>
+			        				<p:tooltip for="rowFilterText">
+			        					<p:panelGrid columns="2">
+				        					<h:outputText value="Total rows:" />
+				        					<h:outputText value="#{anonColumnInfo.table.rowCount}"  >
+						        				<f:convertNumber pattern="###,###"/>
+						        			</h:outputText>
+						        			<h:outputText value="Apply where:" />
+				        					<h:outputText value="#{anonColumnInfo.whereCondition}" />
+				        				 </p:panelGrid>
+			        				</p:tooltip>
 				        		</p:column>
 				        		<p:column headerText="Runtime Estimate" width="90">
 				        			<h:outputText value="#{execBacking.getEstimatedRuntimeSec(anonColumnInfo)}" converter="secondsAsRuntimeConverter" />
@@ -52,7 +63,7 @@
 				        		<p:column headerText="Status Info">
 				        			<h:outputText id="statusInfo" value="#{execConfig.getMethodExecution(anonMethod).getLastMessage(anonColumnInfo)}" styleClass="tooltipBehind"/>
 			        				<p:tooltip for="statusInfo">
-			        					<p:dataTable value="#{execConfig.getMethodExecution(anonMethod).getColumnExecution(anonColumnInfo).getMessages()}" var="executionMessage" style="width:605px;">
+			        					<p:dataTable value="#{execConfig.getMethodExecution(anonMethod).getColumnExecution(anonColumnInfo).getMessages()}" var="executionMessage" style="width:645px;">
 			        						<p:column width="100">
 			        							<h:outputText value="#{executionMessage.getCreateDate()}" converter="weekTimestampConverter"/>
 			        						</p:column>

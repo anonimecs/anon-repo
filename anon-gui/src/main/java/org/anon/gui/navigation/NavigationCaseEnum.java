@@ -10,6 +10,7 @@ public enum NavigationCaseEnum {
 	TABLES				("/pages/cockpit/databaseTableList.jsf",	"/app/tables-list/"),
 	COLUMNS				("/pages/cockpit/databaseColumnList.jsf",	"/app/columns-list/"),
 	ANONYMIZE			("/pages/cockpit/anonymize.jsf",			"/app/method/"),
+	ROWFILTER			("/pages/cockpit/rowFilter.jsf",			"/app/row-filter/"),
 	EXECUTE				("/pages/exec/exec.jsf",					"/app/execute/"),
 	EXE_AUDIT			("/pages/exec/execAudit.jsf",				"/app/execaudit/"),
 	REPORT				("/pages/exec/report.jsf",					"/app/report/"),

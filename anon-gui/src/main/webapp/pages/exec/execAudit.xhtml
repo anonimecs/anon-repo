@@ -17,7 +17,7 @@
 			
 				<p:dataTable
 					id="execAuditListTable" value="#{execAuditBacking.execAuditListTableRows}" var="execAuditListTableRow" rowExpandMode="single"
-					rowKey="#{execAuditListTableRow.executionData.id}">
+					rowKey="#{execAuditListTableRow.executionData.id}" sortBy="#{execAuditListTableRow.executionData.startTime}" sortOrder="DESCENDING">
 					
 					<p:ajax event="rowToggle" update="executionDataPanel" listener="#{execAuditBacking.onAuditListTableRowSelect}"/>	
 					<p:column width="2%">

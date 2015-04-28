@@ -50,6 +50,8 @@ public class EditedTableBacking extends BackingBase {
 	@ManagedProperty(value="#{databaseLoaderService}")
 	private DatabaseLoaderService databaseLoaderService;
 	
+	@ManagedProperty(value="#{rowFilterBacking}")
+	private RowFilterBacking rowFilterBacking;
 	
 	public void onSaveColumnSettings(){
 		logDebug("onSaveColumnSettings" + editedColumn);
@@ -162,7 +164,11 @@ public class EditedTableBacking extends BackingBase {
 		return res;
 	}
 
-
+	public void onRowFilterClicked() {
+		logDebug("onRowFilterClicked");
+		rowFilterBacking.init();
+		redirectPageTo(NavigationCaseEnum.ROWFILTER);
+	}
 
 	public void onAnonymisatationTypeChanged(){
 		logDebug("anonymisatationTypeChanged" + configContext.getAnonymisationMethod());
@@ -324,6 +330,10 @@ public class EditedTableBacking extends BackingBase {
 
 	public void setConfigContext(ConfigContext configContext) {
 		this.configContext = configContext;
+	}
+	
+	public void setRowFilterBacking(RowFilterBacking rowFilterBacking) {
+		this.rowFilterBacking = rowFilterBacking;
 	}
 
 	

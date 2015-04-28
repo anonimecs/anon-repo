@@ -1,0 +1,61 @@
+<ui:composition 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+	template="/layout/layout.xhtml">
+
+
+	<ui:define name="insert-content">
+		
+		<ui:include src="/components/breadCrumb.xhtml">
+			<ui:param name="step" value="4" />
+		</ui:include>
+		
+		<h:form id="configureRowFilterForm" >
+			<h:panelGrid id="passwordGrid" columns="5">
+				
+				<p:outputLabel value="#{configContext.anonymisationMethod.type}"/>
+
+				<p:outputLabel value="#{configContext.anonymisedColumnInfo}"/>
+				
+				<p:selectOneMenu id="configureRowFilterFormSelect" value="#{rowFilterBacking.applicability}" >
+					<f:selectItem itemLabel="apply to" itemValue="APPLY"/>
+					<f:selectItem itemLabel="exclude" itemValue="EXCLUDE"/>
+	       		</p:selectOneMenu>
+        		
+        		<h:outputLabel value=" rows WHERE " />
+        		
+				<p:inputText value="#{rowFilterBacking.whereCondition}" />
+				
+			</h:panelGrid>
+			
+			<p:dataTable id="relatedTableColumns"  
+	        	value="#{configContext.selectedRelatedTableColumns}" var="relatedTableColumnInfo"
+	        	scrollable="true"
+	        	style="padding-top:20px;width:400px;"
+	        	rendered="#{not empty configContext.selectedRelatedTableColumns}">
+					        	
+				<f:facet name="header">Also filter the following related tables</f:facet>
+					        	
+				<p:column headerText="Table" filterBy="#{relatedTableColumnInfo.tableName}" filterMatchMode="contains" sortBy="#{relatedTableColumnInfo.tableName}">
+					<h:outputText value="#{relatedTableColumnInfo.tableName}"/>
+				</p:column>
+				<p:column headerText="Column" filterBy="#{relatedTableColumnInfo.columnName}" filterMatchMode="contains" sortBy="#{relatedTableColumnInfo.columnName}">
+					<h:outputText value="#{relatedTableColumnInfo.columnName}"/>
+				</p:column>
+			</p:dataTable>
+			
+			<p:spacer height="10px"/>
+			
+			<h:panelGrid columns="2" cellpadding="5">
+				<p:commandButton value="Save" actionListener="#{rowFilterBacking.onSaveRowFilter()}" />
+				<p:commandButton value="Delete Filter" actionListener="#{rowFilterBacking.onDeleteRowFilter()}" />
+			</h:panelGrid>
+			
+		</h:form>
+	
+	</ui:define>
+</ui:composition>

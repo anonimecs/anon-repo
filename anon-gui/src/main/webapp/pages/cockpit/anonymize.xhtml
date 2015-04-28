@@ -31,9 +31,6 @@
 
 			<p:outputPanel id="buttons">
 
-				<p:commandButton value="Row Filter" title="Your anonymisation will change to all rows in the table. Click here to filter the applicable rows."
-					oncomplete="PF('configureRowFilterPopup').show();" rendered="#{editedTableBacking.anonymisationMethod.type == 'DESTROY'}" update=":configureRowFilterPopupId"/>	
-			
 				<p:commandButton value="Configure Encryption" 
 					oncomplete="PF('configureEncryptionPopup').show();" rendered="#{editedTableBacking.anonymisationMethod.type == 'ENCRYPT'}" update=":configureEncryptionPopupId"/>	
 			
@@ -44,15 +41,18 @@
 					actionListener="#{editedTableBacking.onSaveColumnSettings()}"
 					value="Save Changes" update="anonymizeTabView,:menuForm:menuBar"
 					process="@this" icon="ui-icon-disk" />
+
+				<p:commandButton value="No Row Filter Defined" title="Your anonymisation will change to all rows in the table. Click here to filter the applicable rows."
+					action="#{editedTableBacking.onRowFilterClicked}" rendered="#{editedTableBacking.anonymisationMethod.type == 'DESTROY' and configContext.anonymisedColumnInfo.whereCondition == null}" />	
 		
+				<p:commandButton value="Show Row Filter" title="Your anonymisation will not apply to all rows. Click here to see the applicable rows."
+					action="#{editedTableBacking.onRowFilterClicked}" rendered="#{editedTableBacking.anonymisationMethod.type == 'DESTROY' and null != configContext.anonymisedColumnInfo.guiFieldApplicability}" />	
 		
 			</p:outputPanel>
 
 
 		</h:panelGrid>
 		
-		<h:outputText value="#{editedTableBacking.anonymisationMethod}" style="color:white;"/>
-
 		<p:tabView id="anonymizeTabView" >
 		
 			<p:tab id="anonymizeTab" title="Anonymize Column: #{editedTableBacking.editedColumn.name}" rendered="#{null ne editedTableBacking.editedColumn}"> 
@@ -162,6 +162,7 @@
 		
 		</p:tabView>
 		
+		<h:outputText value="DEBUG INFO: #{editedTableBacking.anonymisationMethod}" style="color:white;"/>
 		
 		
 	</ui:define>
@@ -206,31 +207,6 @@
 			</h:panelGrid>
 			
 		</h:form>
-		</p:dialog>
-	
-		<p:dialog id="configureRowFilterPopupId" header="Configure Rows Filter" widgetVar="configureRowFilterPopup" modal="true" width="400">
-			<h:form id="configureRowFilterPopupForm" rendered="#{editedTableBacking.anonymisationMethod.type == 'DESTROY'}">
-				<h:panelGrid id="passwordGrid" columns="3">
-					
-					<p:selectOneMenu id="configureRowFilterPopupFormSelect" value="#{configureRowFilterPopupBacking.applicability}" >
-						<f:selectItem itemLabel="Apply to" itemValue="APPLY"/>
-						<f:selectItem itemLabel="Exclude" itemValue="EXCLUDE"/>
-		       		</p:selectOneMenu>
-	        		
-	        		<h:outputLabel for="pwd2" value=" rows WHERE " />
-	        		
-					<p:inputText value="#{configureRowFilterPopupBacking.whereCondition}" />
-					
-				</h:panelGrid>
-				
-				<p:spacer height="10px"/>
-				
-				<h:panelGrid columns="2" cellpadding="5">
-					<p:commandButton value="Submit" actionListener="#{configureRowFilterPopupBacking.onSubmitClicked()}" oncomplete="PF('configureRowFilterPopup').hide();" />
-					<p:commandButton value="Cancel" process="@none" oncomplete="PF('configureRowFilterPopup').hide();"/>
-				</h:panelGrid>
-				
-			</h:form>
 		</p:dialog>
 	
 	
