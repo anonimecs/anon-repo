@@ -52,7 +52,9 @@
             unpackWARs="true" autoDeploy="true">
 			
 			<Context path="/anon" docBase="../anonimecsEnterprise" debug="0"
-                       reloadable="true" crossContext="true" />
+                       reloadable="true" crossContext="true" >
+				<Manager pathname="" />
+            </Context>
 
         <Valve className="org.apache.catalina.valves.AccessLogValve" directory="logs"
                prefix="localhost_access_log." suffix=".txt"
