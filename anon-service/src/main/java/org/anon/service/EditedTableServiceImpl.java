@@ -142,6 +142,8 @@ public class EditedTableServiceImpl implements EditedTableService{
 			for(RelatedTableColumnInfo relatedTableColumnInfo : relatedTableColumnInfos){
 				
 				AnonymisedColumnInfo relatedCol = Lookups.findTableColumn(relatedTableColumnInfo.getColumnName(), relatedTableColumnInfo.getTableName(), anonymisationMethod.getApplyedToColumns());
+				relatedCol.setGuiFieldWhereCondition("Condition was defined for " +col + " : "+ whereCondition);
+				relatedCol.setGuiFieldApplicability(applicability.name());
 				relatedCol.setWhereCondition(whereConditionBuilder.buildForRelatedTable(applicability, whereCondition, relatedCol, col));
 				saveRowFilter(relatedCol);
 			}

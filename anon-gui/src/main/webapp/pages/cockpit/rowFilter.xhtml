@@ -28,7 +28,7 @@
         		
         		<h:outputLabel value=" rows WHERE " />
         		
-				<p:inputText value="#{rowFilterBacking.whereCondition}" />
+				<p:inputText value="#{rowFilterBacking.whereCondition}" size="100"/>
 				
 				<p:outputLabel for="headColRowCount" value="Applicable Rows:" rendered="#{null != rowFilterBacking.rowFilterTestResult}"/>
 				<h:outputText id="headColRowCount" value="#{rowFilterBacking.rowFilterTestResult.headColumnresult.rowCount}" 
