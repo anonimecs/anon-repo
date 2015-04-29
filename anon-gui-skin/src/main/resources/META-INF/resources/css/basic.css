@@ -82,3 +82,8 @@ body {
 	cursor: pointer;
 	text-decoration: underline;
 }
+
+.errorMessage {
+	color: red;
+	font-weight: bold;
+}

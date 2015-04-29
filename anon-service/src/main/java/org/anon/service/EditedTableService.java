@@ -6,6 +6,7 @@ import org.anon.data.AnonymisedColumnInfo;
 import org.anon.data.DatabaseTableInfo;
 import org.anon.data.RelatedTableColumnInfo;
 import org.anon.logic.AnonymisationMethod;
+import org.anon.service.EditedTableServiceImpl.RowFilterTestResult;
 import org.anon.service.where.WhereConditionBuilder.Applicability;
 
 public interface EditedTableService {
@@ -29,6 +30,10 @@ public interface EditedTableService {
 
 	void deleteRowFilter(AnonymisedColumnInfo anonymisedColumnInfo,
 			List<RelatedTableColumnInfo> selectedRelatedTableColumns, AnonymisationMethod anonymisationMethod);
+
+	RowFilterTestResult testRowFilter(AnonymisedColumnInfo col, String whereCondition,
+			Applicability applicability, List<RelatedTableColumnInfo> relatedTableColumnInfos,
+			AnonymisationMethod anonymisationMethod);
 
 	
 	

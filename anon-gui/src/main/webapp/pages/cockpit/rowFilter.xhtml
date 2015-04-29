@@ -30,28 +30,46 @@
         		
 				<p:inputText value="#{rowFilterBacking.whereCondition}" />
 				
+				<p:outputLabel for="headColRowCount" value="Applicable Rows:" rendered="#{null != rowFilterBacking.rowFilterTestResult}"/>
+				<h:outputText id="headColRowCount" value="#{rowFilterBacking.rowFilterTestResult.headColumnresult.rowCount}" 
+					rendered="#{null != rowFilterBacking.rowFilterTestResult and rowFilterBacking.rowFilterTestResult.headColumnresult.exception == null}"/>
+
+				<p:outputLabel value="WHERE CLAUSE FAILS" title="#{rowFilterBacking.rowFilterTestResult.headColumnresult.exception}"
+					styleClass="errorMessage tooltipBehind" 
+					rendered="#{null != rowFilterBacking.rowFilterTestResult and rowFilterBacking.rowFilterTestResult.headColumnresult.exception != null}"/>
+				
 			</h:panelGrid>
 			
 			<p:dataTable id="relatedTableColumns"  
 	        	value="#{configContext.selectedRelatedTableColumns}" var="relatedTableColumnInfo"
 	        	scrollable="true"
-	        	style="padding-top:20px;width:400px;"
+	        	style="padding-top:20px;width:900px"
 	        	rendered="#{not empty configContext.selectedRelatedTableColumns}">
 					        	
-				<f:facet name="header">Also filter the following related tables</f:facet>
+				<f:facet name="header">Will also filter the following related tables</f:facet>
 					        	
-				<p:column headerText="Table" filterBy="#{relatedTableColumnInfo.tableName}" filterMatchMode="contains" sortBy="#{relatedTableColumnInfo.tableName}">
+				<p:column headerText="Table" filterBy="#{relatedTableColumnInfo.tableName}" filterMatchMode="contains" sortBy="#{relatedTableColumnInfo.tableName}" width="150">
 					<h:outputText value="#{relatedTableColumnInfo.tableName}"/>
 				</p:column>
-				<p:column headerText="Column" filterBy="#{relatedTableColumnInfo.columnName}" filterMatchMode="contains" sortBy="#{relatedTableColumnInfo.columnName}">
+				<p:column headerText="Column" filterBy="#{relatedTableColumnInfo.columnName}" filterMatchMode="contains" sortBy="#{relatedTableColumnInfo.columnName}" width="150">
 					<h:outputText value="#{relatedTableColumnInfo.columnName}"/>
 				</p:column>
+				<p:column headerText="Applicable Rows" rendered="#{null != rowFilterBacking.rowFilterTestResult}" width="150">
+					<h:outputText value="#{rowFilterBacking.rowFilterTestResult.getRelatedColumnresult(relatedTableColumnInfo).rowCount}" rendered="#{rowFilterBacking.rowFilterTestResult.getRelatedColumnresult(relatedTableColumnInfo).exception == null}"/>
+					<h:outputText value="WHERE CLAUSE FAILS" title="#{rowFilterBacking.rowFilterTestResult.getRelatedColumnresult(relatedTableColumnInfo).exception}"
+						styleClass="errorMessage tooltipBehind"  rendered="#{rowFilterBacking.rowFilterTestResult.getRelatedColumnresult(relatedTableColumnInfo).exception != null}"/>
+				</p:column>
+				<p:column headerText="Where Clause" rendered="#{null != rowFilterBacking.rowFilterTestResult}" width="350">
+					<h:outputText value="#{rowFilterBacking.rowFilterTestResult.getRelatedColumnresult(relatedTableColumnInfo).whereClause}"/>
+				</p:column>
+				
 			</p:dataTable>
 			
 			<p:spacer height="10px"/>
 			
-			<h:panelGrid columns="2" cellpadding="5">
-				<p:commandButton value="Save" actionListener="#{rowFilterBacking.onSaveRowFilter()}" />
+			<h:panelGrid id="buttons" columns="3" cellpadding="5">
+				<p:commandButton value="Test" actionListener="#{rowFilterBacking.onTestRowFilter()}" update="relatedTableColumns,passwordGrid,buttons"/>
+				<p:commandButton value="Save" actionListener="#{rowFilterBacking.onSaveRowFilter()}" rendered="#{null != rowFilterBacking.rowFilterTestResult}"/>
 				<p:commandButton value="Delete Filter" actionListener="#{rowFilterBacking.onDeleteRowFilter()}" />
 			</h:panelGrid>
 			

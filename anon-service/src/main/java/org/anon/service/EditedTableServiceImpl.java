@@ -1,8 +1,10 @@
 package org.anon.service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import org.anon.data.AnonConfig;
 import org.anon.data.AnonymisedColumnInfo;
@@ -22,6 +24,7 @@ import org.anon.persistence.data.MappingDefaultData;
 import org.anon.persistence.data.MappingRuleData;
 import org.anon.service.where.WhereConditionBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -40,6 +43,92 @@ public class EditedTableServiceImpl implements EditedTableService{
 	@Autowired
 	private WhereConditionBuilder whereConditionBuilder;
 
+	@Override
+	public RowFilterTestResult testRowFilter(AnonymisedColumnInfo col, String whereCondition, WhereConditionBuilder.Applicability applicability, List<RelatedTableColumnInfo> relatedTableColumnInfos, AnonymisationMethod anonymisationMethod) {
+		
+		RowFilterTestResult res = new RowFilterTestResult();
+		
+		ColResult headColumnResult = new ColResult();
+		res.setHeadColumnresult(headColumnResult);
+		headColumnResult.setWhereClause(whereConditionBuilder.build(applicability, whereCondition));
+		testWhereClause(headColumnResult,col);
+		
+		if(relatedTableColumnInfos != null){
+			for(RelatedTableColumnInfo relatedTableColumnInfo : relatedTableColumnInfos){
+				
+				ColResult relatedColumnResult = new ColResult();
+				res.addRelatedColumnresult(relatedColumnResult, relatedTableColumnInfo);
+				AnonymisedColumnInfo relatedCol = Lookups.findTableColumn(relatedTableColumnInfo.getColumnName(), relatedTableColumnInfo.getTableName(), anonymisationMethod.getApplyedToColumns());
+				relatedColumnResult.setWhereClause(whereConditionBuilder.buildForRelatedTable(applicability, whereCondition, relatedCol, col));
+				testWhereClause(relatedColumnResult, relatedCol);
+			}
+		}		
+		
+		return res;
+				
+	}
+	
+	private void testWhereClause(ColResult columnResult, AnonymisedColumnInfo col) {
+		String sql = "select count(*) from " + col.getTable().getName() + " where " + columnResult.getWhereClause();
+		try{
+			int rowCount = new JdbcTemplate(dbConnectionFactory.getConnectionForSchema(col.getTable().getSchema()).getDataSource()).queryForInt(sql);
+			columnResult.setRowCount(rowCount);
+		}
+		catch(Exception e){
+			columnResult.setException(e);
+		}
+		
+	}
+
+	public static class RowFilterTestResult{
+		private ColResult headColumnresult;
+		private Map<RelatedTableColumnInfo, ColResult> relatedTableResults = new HashMap<>();
+		
+		public void setHeadColumnresult(ColResult headColumnresult) {
+			this.headColumnresult = headColumnresult;
+		}
+		
+		public ColResult getHeadColumnresult() {
+			return headColumnresult;
+		}
+		
+		public void addRelatedColumnresult(ColResult columnresult, RelatedTableColumnInfo relatedTableColumnInfo) {
+			relatedTableResults.put(relatedTableColumnInfo, columnresult);
+		}
+		
+		public ColResult getRelatedColumnresult(RelatedTableColumnInfo relatedTableColumnInfo) {
+			return relatedTableResults.get(relatedTableColumnInfo);
+		}
+
+	}
+
+	public static class ColResult{
+		private String whereClause;
+		private Exception exception;
+		private int rowCount;
+		public String getWhereClause() {
+			return whereClause;
+		}
+		public void setWhereClause(String whereClause) {
+			this.whereClause = whereClause;
+		}
+		public Exception getException() {
+			return exception;
+		}
+		public void setException(Exception exception) {
+			this.exception = exception;
+		}
+		public int getRowCount() {
+			return rowCount;
+		}
+		public void setRowCount(int rowCount) {
+			this.rowCount = rowCount;
+		}
+		
+		
+		
+	}
+	
 	@Override
 	@Transactional
 	public void saveRowFilter(AnonymisedColumnInfo col, String whereCondition, WhereConditionBuilder.Applicability applicability, List<RelatedTableColumnInfo> relatedTableColumnInfos, AnonymisationMethod anonymisationMethod) {

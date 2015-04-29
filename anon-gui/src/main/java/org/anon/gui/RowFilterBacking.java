@@ -5,6 +5,7 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 
 import org.anon.service.EditedTableService;
+import org.anon.service.EditedTableServiceImpl.RowFilterTestResult;
 import org.anon.service.where.WhereConditionBuilder.Applicability;
 
 @ManagedBean
@@ -20,9 +21,11 @@ public class RowFilterBacking extends BackingBase {
 
 	private Applicability applicability;
 	private String whereCondition;
+	private RowFilterTestResult rowFilterTestResult;
 
 	public void init() {
 		whereCondition = "";
+		rowFilterTestResult = null; 
 		if(configContext.getAnonymisedColumnInfo().getGuiFieldWhereCondition() != null){
 			whereCondition = configContext.getAnonymisedColumnInfo().getGuiFieldWhereCondition();
 		}
@@ -30,7 +33,22 @@ public class RowFilterBacking extends BackingBase {
 		if(configContext.getAnonymisedColumnInfo().getGuiFieldApplicability() != null){
 			applicability = Applicability.valueOf(configContext.getAnonymisedColumnInfo().getGuiFieldApplicability());
 		}
+		
 	}
+	
+	public void onTestRowFilter() {
+		try{
+			rowFilterTestResult = editedTableService.testRowFilter(configContext.getAnonymisedColumnInfo(), whereCondition, applicability, configContext.getSelectedRelatedTableColumns(), configContext.getAnonymisationMethod());
+			
+		}
+		catch(Exception e){
+			logError("onTestRowFilter failed", e);
+			showErrorInGui("Failed to test the specified where clause.");
+			showExceptionInGui(e);
+			rowFilterTestResult = null; 
+		}
+	}
+
 	
 	public void onSaveRowFilter() {
 		try{
@@ -86,6 +104,10 @@ public class RowFilterBacking extends BackingBase {
 	
 	public void setEditedTableService(EditedTableService editedTableService) {
 		this.editedTableService = editedTableService;
+	}
+
+	public RowFilterTestResult getRowFilterTestResult() {
+		return rowFilterTestResult;
 	}
 
 }
