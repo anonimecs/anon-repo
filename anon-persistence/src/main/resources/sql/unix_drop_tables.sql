@@ -1,6 +1,8 @@
 CONNECT 'jdbc:derby://localhost:1527/anon;user=app;password=anon;';
 SET SCHEMA APP;
 
+drop table ReductionMethodReferencingTableData;
+drop table ReductionMethodData;
 drop table ExecutionMessageData; 
 drop table ExecutionColumnData;
 drop table EXECUTIONMETHODData;

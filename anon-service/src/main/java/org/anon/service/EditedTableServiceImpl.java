@@ -1,10 +1,8 @@
 package org.anon.service;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
 import org.anon.data.AnonConfig;
 import org.anon.data.AnonymisedColumnInfo;
@@ -80,54 +78,8 @@ public class EditedTableServiceImpl implements EditedTableService{
 		
 	}
 
-	public static class RowFilterTestResult{
-		private ColResult headColumnresult;
-		private Map<RelatedTableColumnInfo, ColResult> relatedTableResults = new HashMap<>();
-		
-		public void setHeadColumnresult(ColResult headColumnresult) {
-			this.headColumnresult = headColumnresult;
-		}
-		
-		public ColResult getHeadColumnresult() {
-			return headColumnresult;
-		}
-		
-		public void addRelatedColumnresult(ColResult columnresult, RelatedTableColumnInfo relatedTableColumnInfo) {
-			relatedTableResults.put(relatedTableColumnInfo, columnresult);
-		}
-		
-		public ColResult getRelatedColumnresult(RelatedTableColumnInfo relatedTableColumnInfo) {
-			return relatedTableResults.get(relatedTableColumnInfo);
-		}
 
-	}
 
-	public static class ColResult{
-		private String whereClause;
-		private Exception exception;
-		private int rowCount;
-		public String getWhereClause() {
-			return whereClause;
-		}
-		public void setWhereClause(String whereClause) {
-			this.whereClause = whereClause;
-		}
-		public Exception getException() {
-			return exception;
-		}
-		public void setException(Exception exception) {
-			this.exception = exception;
-		}
-		public int getRowCount() {
-			return rowCount;
-		}
-		public void setRowCount(int rowCount) {
-			this.rowCount = rowCount;
-		}
-		
-		
-		
-	}
 	
 	@Override
 	@Transactional

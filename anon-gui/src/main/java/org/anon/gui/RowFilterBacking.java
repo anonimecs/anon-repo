@@ -5,7 +5,7 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 
 import org.anon.service.EditedTableService;
-import org.anon.service.EditedTableServiceImpl.RowFilterTestResult;
+import org.anon.service.RowFilterTestResult;
 import org.anon.service.where.WhereConditionBuilder.Applicability;
 
 @ManagedBean
@@ -75,8 +75,8 @@ public class RowFilterBacking extends BackingBase {
 			whereCondition = "";
 		}
 		catch(Exception e){
-			logError("onSaveRowFilter failed", e);
-			showErrorInGui("No changes were saved due to an error.");
+			logError("onDeleteRowFilter failed", e);
+			showErrorInGui("Delete failed due to an error.");
 			showExceptionInGui(e);			
 		}
 	}

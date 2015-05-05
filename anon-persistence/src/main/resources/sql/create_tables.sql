@@ -149,6 +149,30 @@ create table ExecutionMessageData(
 )
 go
 
+create table ReductionMethodData (
+    ID INT NOT NULL GENERATED ALWAYS AS IDENTITY,
+    DATABASECONFIG_ID INT not null,
+    ReductionType VARCHAR(30) NOT NULL,
+    TABLENAME VARCHAR(255) NOT NULL,
+    SCHEMANAME VARCHAR(255) NOT NULL,
+    WHERECONDITION VARCHAR(2000),
+    CONSTRAINT primary_key_ReductionMethodData PRIMARY KEY (ID),
+    CONSTRAINT fk_ReductionMethodData_DatabaseConfig FOREIGN KEY (DATABASECONFIG_ID) REFERENCES DatabaseConfig (ID)
+)
+go
+
+create table ReductionMethodReferencingTableData (
+    ID INT NOT NULL GENERATED ALWAYS AS IDENTITY,
+    ReductionMethodData_ID INT not null,
+    ReductionType VARCHAR(30) NOT NULL,
+    TABLENAME VARCHAR(255) NOT NULL,
+    SCHEMANAME VARCHAR(255) NOT NULL,
+    WHERECONDITION VARCHAR(2000),
+  	CONSTRAINT primary_key_ReductionMethodReferencingTableData PRIMARY KEY (ID),
+    CONSTRAINT fk_ReductionMethodReferencingTableData_ReductionMethodData FOREIGN KEY (ReductionMethodData_ID) REFERENCES ReductionMethodData (ID)
+)
+go
+
 
 INSERT INTO APP.SECURITYUSER(USERNAME, PASSWORD, NAME, SURNAME, ENABLED, ENCRYPTED) 
 	VALUES('admin', '123456', 'BuiltIn', 'User', 'Y', 'N')

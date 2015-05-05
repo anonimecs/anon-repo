@@ -1,3 +1,7 @@
+drop table ReductionMethodReferencingTableData
+go
+drop table ReductionMethodData
+go
 drop table ExecutionMessageData
 go 
 drop table ExecutionColumnData

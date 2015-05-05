@@ -7,6 +7,7 @@ import org.anon.persistence.dao.EntitiesDao;
 import org.anon.persistence.data.AnonymisationMethodData;
 import org.anon.persistence.data.AnonymisedColumnData;
 import org.anon.persistence.data.DatabaseConfig;
+import org.anon.persistence.data.ReductionMethodData;
 
 public class EntitiesDaoMock implements EntitiesDao {
 
@@ -56,6 +57,24 @@ public class EntitiesDaoMock implements EntitiesDao {
 	public boolean isEmptyAnonymisationMethod(Long id) {
 		// TODO Auto-generated method stub
 		return false;
+	}
+
+	@Override
+	public void save(ReductionMethodData reductionMethodData) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public List<ReductionMethodData> loadAllReductionMethods(DatabaseConfig databaseConfig) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void removeReductionMethodData(ReductionMethodData reductionMethodData) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

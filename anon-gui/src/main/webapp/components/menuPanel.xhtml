@@ -11,7 +11,7 @@
 	<h:form id="menuPanelForm">
 		<p:menu id="menuPanel" style="width:200px" >
 		
-			<p:submenu label="Configurations">
+			<p:submenu label="Connection">
 				<p:menuitem value="Connect" url="/app/connect/"
 					icon="ui-icon-star" />
 				<p:menuitem value="Add" url="/app/connection-add/"
@@ -20,13 +20,11 @@
 					icon="ui-icon-arrowrefresh-1-w" />
 			</p:submenu>
 			
-			<p:submenu label="Database">
-				<p:menuitem value="Table list" url="/app/tables-list/" 
+			<p:submenu label="Configuration">
+				<p:menuitem value="Anonymize Data" url="/app/tables-list/" 
 					disabled="#{!databasePanelBacking.connected}" icon="ui-icon-zoomin" />
-				<p:menuitem value="Column list" url="/app/columns-list/" 
-					disabled="#{empty editedTableBacking.editedTable}" icon="ui-icon-zoomin" />
-				<p:menuitem value="Anonymize" url="/app/method/" 
-					disabled="#{null eq editedTableBacking.editedColumn}" icon="ui-icon-shuffle" />
+				<p:menuitem value="Reduce Data" url="/app/reduce-table-list/" 
+					disabled="#{!databasePanelBacking.connected}" icon="ui-icon-zoomin" />
 			</p:submenu>
 			
 			<p:submenu label="Run">

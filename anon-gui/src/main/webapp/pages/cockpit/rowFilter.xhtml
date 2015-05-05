@@ -15,7 +15,7 @@
 		</ui:include>
 		
 		<h:form id="configureRowFilterForm" >
-			<h:panelGrid id="passwordGrid" columns="5">
+			<h:panelGrid id="configGrid" columns="5">
 				
 				<p:outputLabel value="#{configContext.anonymisationMethod.type}"/>
 
@@ -68,7 +68,7 @@
 			<p:spacer height="10px"/>
 			
 			<h:panelGrid id="buttons" columns="3" cellpadding="5">
-				<p:commandButton value="Test" actionListener="#{rowFilterBacking.onTestRowFilter()}" update="relatedTableColumns,passwordGrid,buttons"/>
+				<p:commandButton value="Test" actionListener="#{rowFilterBacking.onTestRowFilter()}" update="relatedTableColumns,configGrid,buttons"/>
 				<p:commandButton value="Save" actionListener="#{rowFilterBacking.onSaveRowFilter()}" rendered="#{null != rowFilterBacking.rowFilterTestResult}"/>
 				<p:commandButton value="Delete Filter" actionListener="#{rowFilterBacking.onDeleteRowFilter()}" />
 			</h:panelGrid>

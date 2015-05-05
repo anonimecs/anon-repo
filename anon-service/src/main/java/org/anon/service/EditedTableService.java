@@ -6,7 +6,6 @@ import org.anon.data.AnonymisedColumnInfo;
 import org.anon.data.DatabaseTableInfo;
 import org.anon.data.RelatedTableColumnInfo;
 import org.anon.logic.AnonymisationMethod;
-import org.anon.service.EditedTableServiceImpl.RowFilterTestResult;
 import org.anon.service.where.WhereConditionBuilder.Applicability;
 
 public interface EditedTableService {

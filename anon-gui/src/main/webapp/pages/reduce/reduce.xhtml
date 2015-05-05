@@ -1,0 +1,57 @@
+<ui:composition 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+	template="/layout/layout.xhtml">
+
+
+	<ui:define name="insert-content">
+		
+		<ui:include src="/components/breadCrumbReduce.xhtml">
+			<ui:param name="step" value="2" />
+		</ui:include>
+		
+		<h:form id="configureForm" >
+			<h:panelGrid id="reductionMethodGrid" columns="2">
+				
+				<p:outputLabel value="Reduce rows in the table"/>
+
+				<p:outputLabel value="#{reduceBacking.editedTable.name}"/>
+				
+				<p:selectOneMenu id="formSelect" value="#{reduceBacking.reductionType}" >
+					<p:ajax event="change" update="reductionMethodGrid"
+					    listener="#{reduceBacking.onReductionTypeChanged()}" oncomplete=""/>
+					<f:selectItem itemLabel="truncate" itemValue="TRUNCATE"/>
+					<f:selectItem itemLabel="delete all" itemValue="DELETE_ALL"/>
+					<f:selectItem itemLabel="delete where" itemValue="DELETE_WHERE"/>
+	       		</p:selectOneMenu>
+        		
+        		<h:inputText value="#{reduceBacking.guiWhereCondition}" rendered="#{reduceBacking.reductionType == 'DELETE_WHERE'}"/>
+        		<h:outputLabel value="" rendered="#{reduceBacking.reductionType != 'DELETE_WHERE'}"/>
+				
+				<p:outputLabel for="totalRowCount" value="Total Rows:"/>
+				<h:outputText id="totalRowCount" value="#{reduceBacking.editedTable.rowCount}"/>
+
+				<p:outputLabel for="applRowCount" value="Applicable Rows:" />
+				<h:outputText id="applRowCount" value="#{reduceBacking.applicableRowCount}"/>
+
+<!-- 				<p:outputLabel value="WHERE CLAUSE FAILS" title="#{rowFilterBacking.rowFilterTestResult.headColumnresult.exception}" -->
+<!-- 					styleClass="errorMessage tooltipBehind"  -->
+<!-- 					rendered="#{null != rowFilterBacking.rowFilterTestResult and rowFilterBacking.rowFilterTestResult.headColumnresult.exception != null}"/> -->
+				
+			</h:panelGrid>
+		
+		
+			<h:panelGrid id="buttons" columns="3" cellpadding="5">
+				<p:commandButton value="Test" actionListener="#{reduceBacking.onTest()}" update="reductionMethodGrid,buttons"/>
+				<p:commandButton value="Save" actionListener="#{reduceBacking.onSave()}" rendered="#{null != reduceBacking.rowFilterTestResult}" update="buttons"/>
+				<p:commandButton value="Delete" actionListener="#{reduceBacking.onDelete()}" rendered="#{null != reduceBacking.reductionMethodData}" update="reductionMethodGrid,buttons"/>
+			</h:panelGrid>
+		
+		</h:form>
+	
+	</ui:define>
+</ui:composition>

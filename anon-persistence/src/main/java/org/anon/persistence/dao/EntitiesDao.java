@@ -6,6 +6,7 @@ import org.anon.data.AnonymisedColumnInfo;
 import org.anon.persistence.data.AnonymisationMethodData;
 import org.anon.persistence.data.AnonymisedColumnData;
 import org.anon.persistence.data.DatabaseConfig;
+import org.anon.persistence.data.ReductionMethodData;
 
 public interface EntitiesDao {
 
@@ -24,5 +25,11 @@ public interface EntitiesDao {
 	AnonymisedColumnData loadAnonymisedColumnData(AnonymisedColumnInfo anonymisedColumnInfo);
 
 	boolean isEmptyAnonymisationMethod(Long id);
+
+	void save(ReductionMethodData reductionMethodData);
+
+	List<ReductionMethodData> loadAllReductionMethods(DatabaseConfig databaseConfig);
+
+	void removeReductionMethodData(ReductionMethodData reductionMethodData);
 
 }

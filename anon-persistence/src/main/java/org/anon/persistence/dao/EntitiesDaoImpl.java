@@ -6,6 +6,7 @@ import org.anon.data.AnonymisedColumnInfo;
 import org.anon.persistence.data.AnonymisationMethodData;
 import org.anon.persistence.data.AnonymisedColumnData;
 import org.anon.persistence.data.DatabaseConfig;
+import org.anon.persistence.data.ReductionMethodData;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -79,6 +80,24 @@ public class EntitiesDaoImpl implements EntitiesDao {
 		String hql = "from AnonymisedColumnData col where col.anonymisationMethodData.id= :ID";
 		return 0 == sessionFactory.getCurrentSession().createQuery(hql).setLong("ID", id).list().size();
 	}
+
+	@Override
+	public void save(ReductionMethodData reductionMethodData) {
+		Long id = (Long)sessionFactory.getCurrentSession().save(reductionMethodData);
+		reductionMethodData.setId(id);
+		
+	}
 	
+	@Override
+	public List<ReductionMethodData> loadAllReductionMethods(DatabaseConfig databaseConfig) {
+		@SuppressWarnings("unchecked")
+		List<ReductionMethodData> res = sessionFactory.getCurrentSession().createCriteria(ReductionMethodData.class).add(Restrictions.eq("databaseConfigId", databaseConfig.getId())).list();
+		return res;
+	}
 	
+	@Override
+	public void removeReductionMethodData(ReductionMethodData reductionMethodData) {
+		sessionFactory.getCurrentSession().delete("ReductionMethodData", reductionMethodData);
+		
+	}
 }
