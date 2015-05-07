@@ -77,6 +77,7 @@ export CATALINA_BASE=$CATALINA_HOME
 export CATALINA_EXEC=$CATALINA_HOME/bin/startup.sh
 export CATALINA_OPTS="-Xms256M -Xmx2048M -Dspring.profiles.active=enterprise_edition -Dderby.dir=$INSTALL_DIR"
 
+echo "execute $CATALINA_EXEC $CATALINA_OPTS";
 nohup $CATALINA_EXEC
 
 echo Anonimecs ENTERPRISE edition was started.
