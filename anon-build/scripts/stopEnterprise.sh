@@ -56,7 +56,7 @@ LOCALCLASSPATH=$DERBY_LIB/derby.jar:$DERBY_LIB/derbynet.jar:$DERBY_LIB/derbytool
 
 echo "DERBY HOME: $DERBY_HOME";
 
-nohup $_RUNJAVA $DERBY_OPTS -classpath $LOCALCLASSPATH org.apache.derby.drda.NetworkServerControl stop -p $DB_PORT $@ >> "$LOGFILE" 2>&1&
+nohup $_RUNJAVA $DERBY_OPTS -classpath $LOCALCLASSPATH org.apache.derby.drda.NetworkServerControl shutdown -p $DB_PORT $@ >> "$LOGFILE" 2>&1&
 echo "Database stoped.";
 
 # STOP TOMCAT SERVER
