@@ -8,11 +8,11 @@ import javax.faces.bean.SessionScoped;
 
 import org.anon.data.DatabaseTableInfo;
 import org.anon.data.ReductionType;
-import org.anon.data.RelatedTableColumnInfo;
 import org.anon.gui.navigation.NavigationCaseEnum;
 import org.anon.persistence.data.ReductionMethodData;
-import org.anon.service.RowFilterTestResult;
 import org.anon.service.reduce.ReduceService;
+import org.anon.service.reduce.ReduceTestResult;
+import org.anon.service.reduce.RelatedTable;
 
 
 @ManagedBean
@@ -22,26 +22,26 @@ public class ReduceBacking extends BackingBase {
 	@ManagedProperty(value="#{reduceService}")
 	private ReduceService reduceService;
 	
-	private DatabaseTableInfo editedTable;
-	private ReductionMethodData reductionMethodData;
-	private ReductionType reductionType = ReductionType.TRUNCATE; 
-	private int applicableRowCount;
-	private String guiWhereCondition;
-
-	private List<RelatedTableColumnInfo> selectedRelatedTables;
-
-	private RowFilterTestResult rowFilterTestResult;
-
 	
+	private DatabaseTableInfo editedTable;
+	private ReductionType reductionType = ReductionType.TRUNCATE; 
+	private String guiWhereCondition;
+	private List<RelatedTable> relatedTables;
+
+	private ReduceTestResult reduceTestResult;
+
+	private ReductionMethodData reductionMethodData;
 	
 	
 	
 	public void onTableSelect(){
 		 logDebug("Line Selected" + editedTable);
 
-		 applicableRowCount = editedTable.getRowCount();
-		 rowFilterTestResult = null;
-		 // TODO
+		 reductionType = ReductionType.TRUNCATE;
+		 guiWhereCondition = null;
+		 reduceTestResult = null;
+
+		 relatedTables = reduceService.findRelatedTablesForReduce(editedTable);
 		 
 		 redirectPageTo(NavigationCaseEnum.REDUCE);
 	}
@@ -54,7 +54,7 @@ public class ReduceBacking extends BackingBase {
 	
 	public void onTest(){
 		try{
-			rowFilterTestResult = reduceService.test(editedTable, guiWhereCondition, reductionType, selectedRelatedTables);
+			reduceTestResult = reduceService.test(editedTable, guiWhereCondition, reductionType, relatedTables);
 			
 		}
 		catch(Exception e){
@@ -68,10 +68,10 @@ public class ReduceBacking extends BackingBase {
 	
 	public void onSave(){
 		try{
-			reductionMethodData = reduceService.save(editedTable, guiWhereCondition, reductionType, selectedRelatedTables);
+			reductionMethodData = reduceService.save(editedTable, guiWhereCondition, reductionType, relatedTables);
 			showInfoInGui("Reduction saved for " +editedTable.getName());
-			if(selectedRelatedTables != null){
-				showInfoInGui(selectedRelatedTables.size() + " related tables will also be reduced");
+			if(relatedTables != null){
+				showInfoInGui(relatedTables.size() + " related tables will also be reduced");
 			}
 		}
 		catch(Exception e){
@@ -114,9 +114,6 @@ public class ReduceBacking extends BackingBase {
 		this.reductionType = reductionType;
 	}
 
-	public int getApplicableRowCount() {
-		return applicableRowCount;
-	}
 
 	public String getGuiWhereCondition() {
 		return guiWhereCondition;
@@ -134,8 +131,12 @@ public class ReduceBacking extends BackingBase {
 		this.reduceService = reduceService;
 	}
 	
-	public RowFilterTestResult getRowFilterTestResult() {
-		return rowFilterTestResult;
+	public ReduceTestResult getReduceTestResult() {
+		return reduceTestResult;
 	}
 	
+	public List<RelatedTable> getRelatedTables() {
+		return relatedTables;
+	}
+		
 }

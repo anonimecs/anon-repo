@@ -46,7 +46,7 @@ public class EditedTableServiceImpl implements EditedTableService{
 		
 		RowFilterTestResult res = new RowFilterTestResult();
 		
-		ColResult headColumnResult = new ColResult();
+		TestResult headColumnResult = new TestResult();
 		res.setHeadColumnresult(headColumnResult);
 		headColumnResult.setWhereClause(whereConditionBuilder.build(applicability, whereCondition));
 		testWhereClause(headColumnResult,col);
@@ -54,7 +54,7 @@ public class EditedTableServiceImpl implements EditedTableService{
 		if(relatedTableColumnInfos != null){
 			for(RelatedTableColumnInfo relatedTableColumnInfo : relatedTableColumnInfos){
 				
-				ColResult relatedColumnResult = new ColResult();
+				TestResult relatedColumnResult = new TestResult();
 				res.addRelatedColumnresult(relatedColumnResult, relatedTableColumnInfo);
 				AnonymisedColumnInfo relatedCol = Lookups.findTableColumn(relatedTableColumnInfo.getColumnName(), relatedTableColumnInfo.getTableName(), anonymisationMethod.getApplyedToColumns());
 				relatedColumnResult.setWhereClause(whereConditionBuilder.buildForRelatedTable(applicability, whereCondition, relatedCol, col));
@@ -66,7 +66,7 @@ public class EditedTableServiceImpl implements EditedTableService{
 				
 	}
 	
-	private void testWhereClause(ColResult columnResult, AnonymisedColumnInfo col) {
+	private void testWhereClause(TestResult columnResult, AnonymisedColumnInfo col) {
 		String sql = "select count(*) from " + col.getTable().getName() + " where " + columnResult.getWhereClause();
 		try{
 			int rowCount = new JdbcTemplate(dbConnectionFactory.getConnectionForSchema(col.getTable().getSchema()).getDataSource()).queryForInt(sql);

@@ -93,7 +93,7 @@ public class SqlServerDbConnection extends AbstractDbConnection {
 	}
 	
 	@Override
-	protected Collection<RelatedTableColumnInfo> findRelatedTablesByForeignKey(DatabaseTableInfo editedTable,
+	public Collection<RelatedTableColumnInfo> findRelatedTablesByForeignKey(DatabaseTableInfo editedTable,
 			DatabaseColumnInfo editedColumn) {
 		SqlServerForeignKeyConstraintManager sqlServerConstraintManager = new SqlServerForeignKeyConstraintManager(getDataSource());
 		List<SqlServerForeignKeyConstraint> fkList = sqlServerConstraintManager.loadConstraints(editedTable.getName(),editedColumn.getName(), editedTable.getSchema());
@@ -108,7 +108,7 @@ public class SqlServerDbConnection extends AbstractDbConnection {
 	}
 	
 	@Override
-	protected Collection<RelatedTableColumnInfo> findRelatedTablesByName(DatabaseTableInfo editedTable,
+	public Collection<RelatedTableColumnInfo> findRelatedTablesByName(DatabaseTableInfo editedTable,
 			final DatabaseColumnInfo editedColumn) {
 		String schema = editedTable.getSchema(); 
 		String SQL = "SELECT  c.name as columnname, typ.Name as columntype ,  tab.name as tablename "+

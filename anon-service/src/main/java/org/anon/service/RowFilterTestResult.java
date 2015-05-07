@@ -6,22 +6,22 @@ import java.util.Map;
 import org.anon.data.RelatedTableColumnInfo;
 
 public class RowFilterTestResult{
-	private ColResult headColumnresult;
-	private Map<RelatedTableColumnInfo, ColResult> relatedTableResults = new HashMap<>();
+	private TestResult headColumnresult;
+	private Map<RelatedTableColumnInfo, TestResult> relatedTableResults = new HashMap<>();
 	
-	public void setHeadColumnresult(ColResult headColumnresult) {
+	public void setHeadColumnresult(TestResult headColumnresult) {
 		this.headColumnresult = headColumnresult;
 	}
 	
-	public ColResult getHeadColumnresult() {
+	public TestResult getHeadColumnresult() {
 		return headColumnresult;
 	}
 	
-	public void addRelatedColumnresult(ColResult columnresult, RelatedTableColumnInfo relatedTableColumnInfo) {
+	public void addRelatedColumnresult(TestResult columnresult, RelatedTableColumnInfo relatedTableColumnInfo) {
 		relatedTableResults.put(relatedTableColumnInfo, columnresult);
 	}
 	
-	public ColResult getRelatedColumnresult(RelatedTableColumnInfo relatedTableColumnInfo) {
+	public TestResult getRelatedColumnresult(RelatedTableColumnInfo relatedTableColumnInfo) {
 		return relatedTableResults.get(relatedTableColumnInfo);
 	}
 

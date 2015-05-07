@@ -51,6 +51,7 @@ public class DatabaseConfigBacking extends BackingBase {
 		if(!databaseConnections.isEmpty()){
 			selectedDatabaseConnection = databaseConnections.get(0);
 			testDatabaseConnection(selectedDatabaseConnection);
+			testSufficientPermissions();
 		}
 	}
 

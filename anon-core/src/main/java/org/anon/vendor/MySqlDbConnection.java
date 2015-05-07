@@ -84,7 +84,7 @@ public class MySqlDbConnection extends AbstractDbConnection   {
 	}
 
 	@Override
-	protected Collection<RelatedTableColumnInfo> findRelatedTablesByName(DatabaseTableInfo editedTable, final DatabaseColumnInfo editedColumn) {
+	public Collection<RelatedTableColumnInfo> findRelatedTablesByName(DatabaseTableInfo editedTable, final DatabaseColumnInfo editedColumn) {
 		String SQL =   " select t.table_name as table_name"+
 				" from INFORMATION_SCHEMA.TABLES t "+ 
 				" join INFORMATION_SCHEMA.COLUMNS c on c.TABLE_NAME = t.TABLE_NAME and c.TABLE_SCHEMA = t.TABLE_SCHEMA "+
@@ -102,7 +102,7 @@ public class MySqlDbConnection extends AbstractDbConnection   {
 	}
 	
 	@Override
-	protected Collection<RelatedTableColumnInfo> findRelatedTablesByForeignKey(DatabaseTableInfo editedTable,
+	public Collection<RelatedTableColumnInfo> findRelatedTablesByForeignKey(DatabaseTableInfo editedTable,
 			DatabaseColumnInfo editedColumn) {
 		String SQL = " select  TABLE_NAME as src_table, COLUMN_NAME as src_column,CONSTRAINT_NAME     "
 				+ " from INFORMATION_SCHEMA.KEY_COLUMN_USAGE                                          "

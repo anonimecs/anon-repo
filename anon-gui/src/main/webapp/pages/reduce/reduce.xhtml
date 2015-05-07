@@ -36,19 +36,57 @@
 				<h:outputText id="totalRowCount" value="#{reduceBacking.editedTable.rowCount}"/>
 
 				<p:outputLabel for="applRowCount" value="Applicable Rows:" />
-				<h:outputText id="applRowCount" value="#{reduceBacking.applicableRowCount}"/>
+				<h:outputText id="applRowCount" value="#{reduceBacking.reduceTestResult.headResult.rowCount}" 
+					rendered="#{null != reduceBacking.reduceTestResult and reduceBacking.reduceTestResult.headResult.exception == null}"/>
 
-<!-- 				<p:outputLabel value="WHERE CLAUSE FAILS" title="#{rowFilterBacking.rowFilterTestResult.headColumnresult.exception}" -->
-<!-- 					styleClass="errorMessage tooltipBehind"  -->
-<!-- 					rendered="#{null != rowFilterBacking.rowFilterTestResult and rowFilterBacking.rowFilterTestResult.headColumnresult.exception != null}"/> -->
+				<p:outputLabel value="WHERE CLAUSE FAILS" title="#{reduceBacking.reduceTestResult.headResult.exception}"
+					styleClass="errorMessage tooltipBehind" 
+					rendered="#{null != reduceBacking.reduceTestResult and reduceBacking.reduceTestResult.headResult.exception != null}"/>
 				
 			</h:panelGrid>
+			
+			<p:dataTable id="relatedTables"  
+	        	value="#{reduceBacking.relatedTables}" var="relatedTable"
+	        	scrollable="true"
+	        	style="padding-top:20px;width:1024px"
+	        	rendered="#{not empty reduceBacking.relatedTables}">
+					        	
+				<f:facet name="header">The following related tables must also be reduced</f:facet>
+					        	
+				<p:column id="relatedTablesSelectColumn" headerText="Reduction type" width="200">
+					<p:panelGrid columns="1" styleClass="noBorderGrid">
+						<p:selectOneMenu id="formSelectRelated" value="#{relatedTable.reductionType}" >
+							<p:ajax event="change" update="relatedTables"/>
+							<f:selectItem itemLabel="drop referential integrity" itemValue="DEREFERENCE"/>
+							<f:selectItem itemLabel="truncate" itemValue="TRUNCATE"/>
+							<f:selectItem itemLabel="delete all" itemValue="DELETE_ALL"/>
+							<f:selectItem itemLabel="delete where" itemValue="DELETE_WHERE"/>
+			       		</p:selectOneMenu>
+			       		<h:inputText value="#{relatedTable.guiWhereCondition}" rendered="#{relatedTable.reductionType == 'DELETE_WHERE'}"/>
+			       	</p:panelGrid>
+				</p:column>
+				<p:column headerText="Applicable Rows" rendered="#{null != reduceBacking.reduceTestResult}" width="100">
+					<h:outputText value="#{reduceBacking.reduceTestResult.getRelatedResult(relatedTable).rowCount}" rendered="#{reduceBacking.reduceTestResult.getRelatedResult(relatedTable).exception == null}"/>
+					<h:outputText value="WHERE CLAUSE FAILS" title="#{reduceBacking.reduceTestResult.getRelatedResult(relatedTable).exception}"
+						styleClass="errorMessage tooltipBehind"  rendered="#{reduceBacking.reduceTestResult.getRelatedResult(relatedTable).exception != null}"/>
+				</p:column>
+				<p:column headerText="Table" filterBy="#{relatedTable.relatedTableName}" filterMatchMode="contains" sortBy="#{relatedTable.relatedTableName}" width="150">
+					<h:outputText value="#{relatedTable.relatedTableName}"/>
+				</p:column>
+<!-- 				<p:column headerText="Columns(s)" width="150"> -->
+<!-- 					<h:outputText value="#{relatedTable.getRelatedTableColumnsAsString()}"/> -->
+<!-- 				</p:column> -->
+				<p:column width="150">
+					<h:outputText value="Relation details" title="#{relatedTable.foreignKeyConstraint}" styleClass="tooltipBehind"/>
+				</p:column>
+				
+			</p:dataTable>
 		
 		
 			<h:panelGrid id="buttons" columns="3" cellpadding="5">
-				<p:commandButton value="Test" actionListener="#{reduceBacking.onTest()}" update="reductionMethodGrid,buttons"/>
-				<p:commandButton value="Save" actionListener="#{reduceBacking.onSave()}" rendered="#{null != reduceBacking.rowFilterTestResult}" update="buttons"/>
-				<p:commandButton value="Delete" actionListener="#{reduceBacking.onDelete()}" rendered="#{null != reduceBacking.reductionMethodData}" update="reductionMethodGrid,buttons"/>
+				<p:commandButton value="Test" actionListener="#{reduceBacking.onTest()}" update="configureForm"/>
+				<p:commandButton value="Save" actionListener="#{reduceBacking.onSave()}" rendered="#{null != reduceBacking.reduceTestResult}" update="buttons"/>
+				<p:commandButton value="Delete" actionListener="#{reduceBacking.onDelete()}" rendered="#{null != reduceBacking.reductionMethodData}" update="configureForm"/>
 			</h:panelGrid>
 		
 		</h:form>

@@ -1,6 +1,6 @@
 package org.anon.service;
 
-public class ColResult{
+public class TestResult{
 	private String whereClause;
 	private Exception exception;
 	private int rowCount;

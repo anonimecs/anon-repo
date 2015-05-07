@@ -109,9 +109,9 @@ public abstract class AbstractDbConnection {
 		return new ArrayList<>(res);
 	}
 
-	protected abstract Collection<RelatedTableColumnInfo> findRelatedTablesByForeignKey(DatabaseTableInfo editedTable,DatabaseColumnInfo editedColumn);
+	public abstract Collection<RelatedTableColumnInfo> findRelatedTablesByForeignKey(DatabaseTableInfo editedTable,DatabaseColumnInfo editedColumn);
 
-	protected abstract Collection<RelatedTableColumnInfo> findRelatedTablesByName(DatabaseTableInfo editedTable, DatabaseColumnInfo editedColumn);
+	public abstract Collection<RelatedTableColumnInfo> findRelatedTablesByName(DatabaseTableInfo editedTable, DatabaseColumnInfo editedColumn);
 
 
 

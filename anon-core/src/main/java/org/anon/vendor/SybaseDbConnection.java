@@ -94,7 +94,7 @@ public class SybaseDbConnection extends AbstractDbConnection {
 	}
 	
 	@Override
-	protected Collection<RelatedTableColumnInfo> findRelatedTablesByForeignKey(DatabaseTableInfo editedTable,
+	public Collection<RelatedTableColumnInfo> findRelatedTablesByForeignKey(DatabaseTableInfo editedTable,
 			DatabaseColumnInfo editedColumn) {
 		SybaseForeignKeyConstraintManager sybaseConstraintManager = new SybaseForeignKeyConstraintManager(getDataSource());
 		List<SybaseForeignKeyConstraint> fkList = sybaseConstraintManager.loadConstraints(editedTable.getName(), editedColumn.getName(), editedTable.getSchema());
@@ -109,7 +109,7 @@ public class SybaseDbConnection extends AbstractDbConnection {
 	}
 	
 	@Override
-	protected Collection<RelatedTableColumnInfo> findRelatedTablesByName(DatabaseTableInfo editedTable,
+	public Collection<RelatedTableColumnInfo> findRelatedTablesByName(DatabaseTableInfo editedTable,
 			final DatabaseColumnInfo editedColumn) {
 		String schema = editedTable.getSchema(); 
 		String SQL = "select objs.name as tablename, typs.name columntype " +

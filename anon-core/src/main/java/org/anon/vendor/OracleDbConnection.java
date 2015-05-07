@@ -84,7 +84,7 @@ public class OracleDbConnection extends AbstractDbConnection   {
 	}
 	
 	@Override
-	protected Collection<RelatedTableColumnInfo> findRelatedTablesByForeignKey(DatabaseTableInfo editedTable,
+	public Collection<RelatedTableColumnInfo> findRelatedTablesByForeignKey(DatabaseTableInfo editedTable,
 			DatabaseColumnInfo editedColumn) {
 		String SQL = 
 				" select src_cc.owner as src_owner, src_cc.table_name as src_table, src_cc.column_name as src_column,                " +
@@ -109,7 +109,7 @@ public class OracleDbConnection extends AbstractDbConnection   {
 	}
 	
 	@Override
-	protected Collection<RelatedTableColumnInfo> findRelatedTablesByName(DatabaseTableInfo editedTable,
+	public Collection<RelatedTableColumnInfo> findRelatedTablesByName(DatabaseTableInfo editedTable,
 			final DatabaseColumnInfo editedColumn) {
 		String SQL = "select table_name from all_tab_columns where column_name=? and TABLE_NAME != ? and DATA_TYPE = ? and OWNER = ?";
 		return jdbcTemplate.query(SQL, new Object[]{editedColumn.getName(), editedTable.getName(), editedColumn.getType(), editedTable.getSchema()}, new RowMapper<RelatedTableColumnInfo>(){

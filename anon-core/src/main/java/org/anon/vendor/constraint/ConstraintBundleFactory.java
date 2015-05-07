@@ -4,6 +4,7 @@ import javax.sql.DataSource;
 
 import org.anon.data.DatabaseColumnInfo;
 import org.anon.vendor.DatabaseSpecifics;
+import org.anon.vendor.constraint.referential.ForeignKeyConstraintManager;
 import org.anon.vendor.constraint.referential.MySqlForeignKeyConstraintManager;
 import org.anon.vendor.constraint.referential.OracleForeignKeyConstraintManager;
 import org.anon.vendor.constraint.referential.SqlServerForeignKeyConstraintManager;
@@ -52,6 +53,24 @@ public class ConstraintBundleFactory {
 			
 			return constraintBundle;
 		}
+
+		throw new RuntimeException("Unspecified db " + databaseSpecifics);
+	}
+	
+	public ForeignKeyConstraintManager createForeignKeyConstraintManager(DatabaseSpecifics databaseSpecifics, DataSource dataSource){
+		
+		if(databaseSpecifics == DatabaseSpecifics.SybaseSpecific){
+			return new SybaseForeignKeyConstraintManager(dataSource);
+		}
+		else if(databaseSpecifics == DatabaseSpecifics.OracleSpecific){
+			return new OracleForeignKeyConstraintManager(dataSource);
+		} 
+		else if(databaseSpecifics == DatabaseSpecifics.MySqlSpecific) {
+			return new MySqlForeignKeyConstraintManager(dataSource);
+		}
+		else if(databaseSpecifics == DatabaseSpecifics.SqlServerSpecific) {
+			return new SqlServerForeignKeyConstraintManager(dataSource);
+		}		
 
 		throw new RuntimeException("Unspecified db " + databaseSpecifics);
 	}
