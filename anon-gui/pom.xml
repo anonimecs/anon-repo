@@ -145,6 +145,18 @@
 						<artifactId>maven-war-plugin</artifactId>
 						<version>2.6</version>
 						<executions>
+							<execution>
+          						<id>enterprise</id>
+								<phase>package</phase>
+								<goals>
+									<goal>war</goal>
+								</goals>
+								<configuration>
+									<warName>${project.artifactId}-${project.version}-enterprise</warName>
+									<webXml>src/editionDependent/enterprise_edition_web.xml</webXml>
+									<packagingExcludes>WEB-INF/lib/anon-free-only-*.jar</packagingExcludes>
+								</configuration>
+          					</execution>
           					<execution>
           						<id>free</id>
 								<phase>package</phase>
@@ -159,18 +171,6 @@
 										WEB-INF/lib/anon-enterprise-only-*.jar,
 										WEB-INF/lib/anon-api-*.jar,
 									</packagingExcludes>
-								</configuration>
-          					</execution>
-          					<execution>
-          						<id>enterprise</id>
-								<phase>package</phase>
-								<goals>
-									<goal>war</goal>
-								</goals>
-								<configuration>
-									<warName>${project.artifactId}-${project.version}-enterprise</warName>
-									<webXml>src/editionDependent/enterprise_edition_web.xml</webXml>
-									<packagingExcludes>WEB-INF/lib/anon-free-only-*.jar</packagingExcludes>
 								</configuration>
           					</execution>
           				</executions>
