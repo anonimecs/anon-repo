@@ -3,6 +3,7 @@ package org.anon.persistence.dao;
 import java.util.List;
 
 import org.anon.data.AnonymisedColumnInfo;
+import org.anon.data.ReductionMethod;
 import org.anon.persistence.data.AnonymisationMethodData;
 import org.anon.persistence.data.AnonymisedColumnData;
 import org.anon.persistence.data.DatabaseConfig;
@@ -30,6 +31,6 @@ public interface EntitiesDao {
 
 	List<ReductionMethodData> loadAllReductionMethods(DatabaseConfig databaseConfig);
 
-	void removeReductionMethodData(ReductionMethodData reductionMethodData);
+	void removeReductionMethodData(ReductionMethod reductionMethodData);
 
 }

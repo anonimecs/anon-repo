@@ -36,9 +36,10 @@
 					selectionMode="single" selection="#{reduceBacking.editedTable}" rowKey="#{databaseTableInfo.name}"
 					filteredValue="#{connectBacking.filteredTables}"
 					scrollable="true" scrollHeight="600"
+					rowStyleClass="#{not empty reduceTableListBacking.getReductionMethod(databaseTableInfo) ? 'anonymisedColumn' : null}"
 					styleClass="myTable" rowIndexVar="rowIndex">
 				
-				<p:ajax event="rowSelect" listener="#{reduceBacking.onTableSelect}" />
+				<p:ajax event="rowSelect" listener="#{reduceBacking.onTableSelect(reduceTableListBacking.getReductionMethod(reduceBacking.editedTable))}" />
 				
 				<p:column headerText="Table" filterBy="#{databaseTableInfo.name}" filterMatchMode="contains" sortBy="#{databaseTableInfo.name}" width="200">
         			<h:outputText value="#{databaseTableInfo.name}" />

@@ -7,10 +7,10 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 
 import org.anon.data.DatabaseTableInfo;
+import org.anon.data.ReductionMethod;
 import org.anon.data.ReductionType;
 import org.anon.gui.BackingBase;
 import org.anon.gui.navigation.NavigationCaseEnum;
-import org.anon.persistence.data.ReductionMethodData;
 import org.anon.service.reduce.ReduceService;
 import org.anon.service.reduce.ReduceTestResult;
 import org.anon.service.reduce.RelatedTable;
@@ -22,7 +22,7 @@ public class ReduceBacking extends BackingBase {
 	
 	@ManagedProperty(value="#{reduceService}")
 	private ReduceService reduceService;
-	
+
 	
 	private DatabaseTableInfo editedTable;
 	private ReductionType reductionType = ReductionType.TRUNCATE; 
@@ -31,20 +31,34 @@ public class ReduceBacking extends BackingBase {
 
 	private ReduceTestResult reduceTestResult;
 
-	private ReductionMethodData reductionMethodData;
+	private ReductionMethod reductionMethodData;
 	
 	
 	
-	public void onTableSelect(){
+	public void onTableSelect(ReductionMethod aReductionMethod){
 		 logDebug("Line Selected" + editedTable);
 
-		 reductionType = ReductionType.TRUNCATE;
-		 guiWhereCondition = null;
-		 reduceTestResult = null;
-
-		 relatedTables = reduceService.findRelatedTablesForReduce(editedTable);
+		 init(aReductionMethod);
 		 
 		 redirectPageTo(NavigationCaseEnum.REDUCE);
+	}
+
+	protected void init(ReductionMethod aReductionMethod) {
+		reductionMethodData = aReductionMethod;
+
+		 // no reduction exists
+		 if(reductionMethodData == null){
+			 reductionType = ReductionType.TRUNCATE;
+			 guiWhereCondition = null;
+			 relatedTables = reduceService.findRelatedTablesForReduce(editedTable);
+		 }
+		 else{
+			 reductionType = reductionMethodData.getReductionType();
+			 guiWhereCondition = reductionMethodData.getWhereCondition();
+			 relatedTables = reduceService.extractRelatedTablesForReduce(editedTable,reductionMethodData);
+		 }
+
+		 reduceTestResult = null;
 	}
 	
 	public void onReductionTypeChanged(){
@@ -87,8 +101,9 @@ public class ReduceBacking extends BackingBase {
 		try{
 			reduceService.delete(reductionMethodData);
 			showInfoInGui("Reduction rule deleted for " +editedTable.getName());
-			reductionMethodData = null;
-			guiWhereCondition = "";
+
+			init(null);
+			
 		}
 		catch(Exception e){
 			logError("onDelete failed", e);
@@ -124,7 +139,7 @@ public class ReduceBacking extends BackingBase {
 		this.guiWhereCondition = guiWhereCondition;
 	}
 
-	public ReductionMethodData getReductionMethodData() {
+	public ReductionMethod getReductionMethodData() {
 		return reductionMethodData;
 	}
 	
@@ -139,5 +154,6 @@ public class ReduceBacking extends BackingBase {
 	public List<RelatedTable> getRelatedTables() {
 		return relatedTables;
 	}
+
 		
 }

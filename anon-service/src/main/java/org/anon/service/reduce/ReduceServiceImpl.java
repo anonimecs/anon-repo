@@ -5,6 +5,8 @@ import java.util.List;
 
 import org.anon.data.DatabaseColumnInfo;
 import org.anon.data.DatabaseTableInfo;
+import org.anon.data.ReductionMethod;
+import org.anon.data.ReductionMethodReferencingTable;
 import org.anon.data.ReductionType;
 import org.anon.persistence.dao.EntitiesDao;
 import org.anon.persistence.data.ReductionMethodData;
@@ -29,6 +31,15 @@ public class ReduceServiceImpl implements ReduceService {
 	@Autowired ConstraintBundleFactory constraintBundleFactory;
 	@Autowired DatabaseLoaderService databaseLoaderService;
 	@Autowired WhereConditionBuilder whereConditionBuilder;
+
+	
+	@Override
+	public List<ReductionMethodData> loadPersistedReductions() {
+		List<ReductionMethodData> reductionMethodDatas = entitiesDao.loadAllReductionMethods(dbConnectionFactory.getDatabaseConfig());
+		return reductionMethodDatas;
+
+
+	}
 
 	
 	@Override
@@ -76,7 +87,7 @@ public class ReduceServiceImpl implements ReduceService {
 
 
 	@Override
-	public ReductionMethodData save(DatabaseTableInfo editedTable, String guiWhereCondition, ReductionType reductionType, List<RelatedTable> relatedTables) {
+	public ReductionMethod save(DatabaseTableInfo editedTable, String guiWhereCondition, ReductionType reductionType, List<RelatedTable> relatedTables) {
 		
 		ReductionMethodData reductionMethodData = new ReductionMethodData();
 		reductionMethodData.setDatabaseConfigId(dbConnectionFactory.getDatabaseConfig().getId());
@@ -104,7 +115,7 @@ public class ReduceServiceImpl implements ReduceService {
 	}
 	
 	@Override
-	public void delete(ReductionMethodData reductionMethodData) {
+	public void delete(ReductionMethod reductionMethodData) {
 		entitiesDao.removeReductionMethodData(reductionMethodData);
 		
 	}
@@ -131,6 +142,21 @@ public class ReduceServiceImpl implements ReduceService {
 			
 		}
 		return res;
+	}
+
+	@Override
+	public List<RelatedTable> extractRelatedTablesForReduce(DatabaseTableInfo editedTable,
+			ReductionMethod reductionMethodData) {
+		List<RelatedTable> res = new ArrayList<>();
+		for(ReductionMethodReferencingTable reductionMethodReferencingTable:reductionMethodData.getReferencingTableDatas()){
+			RelatedTable relatedTable = new RelatedTable(null, reductionMethodReferencingTable.getTableName(), null);
+			relatedTable.setGuiWhereCondition(reductionMethodReferencingTable.getWhereCondition());
+			relatedTable.setReductionType(reductionMethodReferencingTable.getReductionType());
+			res.add(relatedTable);
+		}
+		 
+		return res;
+
 	}
 
 

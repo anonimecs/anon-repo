@@ -36,7 +36,7 @@ public class DatabaseLoaderServiceImpl implements DatabaseLoaderService{
 	
 	@Autowired
 	protected AnonConfig anonConfig;
-	
+		
 	@Autowired
 	protected AnonConfig execConfig;
 	
@@ -123,6 +123,8 @@ public class DatabaseLoaderServiceImpl implements DatabaseLoaderService{
 		return anonConfig.getTables();
 	}
 
+
+	
 	protected void loadPersistedAnonymisations(String selectedSchema) {
 		List<AnonymisationMethodData> anonymisationMethodDatas = entitiesDao.loadAllAnonMethods(dbConnectionFactory.getDatabaseConfig());
 		
@@ -222,15 +224,6 @@ public class DatabaseLoaderServiceImpl implements DatabaseLoaderService{
 		return null;
 	}
 	
-	private DatabaseTableInfo lookupTableBySchema(String tableName, String schema) {
-		for(DatabaseTableInfo databaseTableInfo : dbConnectionFactory.getConnection().getTableList(schema)){
-			if(databaseTableInfo.getName().equals(tableName)){
-				return databaseTableInfo;
-			}
-		}
-		return null;
-	}
-
 	private AnonymisationMethod instantiate(AnonymisationMethodData anonymisationMethodData) {
 		try {
 			@SuppressWarnings("unchecked")

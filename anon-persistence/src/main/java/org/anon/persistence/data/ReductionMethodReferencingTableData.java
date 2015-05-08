@@ -8,10 +8,11 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import org.anon.data.ReductionMethodReferencingTable;
 import org.anon.data.ReductionType;
 
 @Entity
-public class ReductionMethodReferencingTableData extends PersistentObject{
+public class ReductionMethodReferencingTableData extends PersistentObject implements ReductionMethodReferencingTable{
 	
 	@Id
 	@GeneratedValue( strategy = GenerationType.AUTO)
@@ -33,6 +34,7 @@ public class ReductionMethodReferencingTableData extends PersistentObject{
 	@Column(name="WHERECONDITION")
 	private String whereCondition;
 
+	@Override
 	public Long getId() {
 		return id;
 	}
@@ -41,6 +43,7 @@ public class ReductionMethodReferencingTableData extends PersistentObject{
 		this.id = id;
 	}
 
+	@Override
 	public ReductionMethodData getReductionMethodData() {
 		return reductionMethodData;
 	}
@@ -49,6 +52,7 @@ public class ReductionMethodReferencingTableData extends PersistentObject{
 		this.reductionMethodData = reductionMethodData;
 	}
 
+	@Override
 	public ReductionType getReductionType() {
 		return reductionType;
 	}
@@ -57,6 +61,7 @@ public class ReductionMethodReferencingTableData extends PersistentObject{
 		this.reductionType = reductionType;
 	}
 
+	@Override
 	public String getTableName() {
 		return tableName;
 	}
@@ -65,6 +70,7 @@ public class ReductionMethodReferencingTableData extends PersistentObject{
 		this.tableName = tableName;
 	}
 
+	@Override
 	public String getSchemaName() {
 		return schemaName;
 	}
@@ -73,6 +79,7 @@ public class ReductionMethodReferencingTableData extends PersistentObject{
 		this.schemaName = schemaName;
 	}
 
+	@Override
 	public String getWhereCondition() {
 		return whereCondition;
 	}

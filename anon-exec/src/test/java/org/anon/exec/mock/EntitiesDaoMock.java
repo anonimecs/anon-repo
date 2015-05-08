@@ -3,6 +3,7 @@ package org.anon.exec.mock;
 import java.util.List;
 
 import org.anon.data.AnonymisedColumnInfo;
+import org.anon.data.ReductionMethod;
 import org.anon.persistence.dao.EntitiesDao;
 import org.anon.persistence.data.AnonymisationMethodData;
 import org.anon.persistence.data.AnonymisedColumnData;
@@ -72,7 +73,7 @@ public class EntitiesDaoMock implements EntitiesDao {
 	}
 
 	@Override
-	public void removeReductionMethodData(ReductionMethodData reductionMethodData) {
+	public void removeReductionMethodData(ReductionMethod reductionMethodData) {
 		// TODO Auto-generated method stub
 		
 	}

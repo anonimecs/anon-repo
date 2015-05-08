@@ -3,6 +3,7 @@ package org.anon.persistence.dao;
 import java.util.List;
 
 import org.anon.data.AnonymisedColumnInfo;
+import org.anon.data.ReductionMethod;
 import org.anon.persistence.data.AnonymisationMethodData;
 import org.anon.persistence.data.AnonymisedColumnData;
 import org.anon.persistence.data.DatabaseConfig;
@@ -96,7 +97,7 @@ public class EntitiesDaoImpl implements EntitiesDao {
 	}
 	
 	@Override
-	public void removeReductionMethodData(ReductionMethodData reductionMethodData) {
+	public void removeReductionMethodData(ReductionMethod reductionMethodData) {
 		sessionFactory.getCurrentSession().delete("ReductionMethodData", reductionMethodData);
 		
 	}
