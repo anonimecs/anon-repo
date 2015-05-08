@@ -32,27 +32,27 @@
 			</h:panelGrid>
 		
 			<h:panelGrid columns="5" style="float: right;">	
-				<h:outputText value="Connected to #{databasePanelBacking.databaseConfig.configurationName} (#{databasePanelBacking.databaseConfig.databaseConnection.guiName})" styleClass="headline" rendered="#{databasePanelBacking.connected}"/>
+				<h:outputText value="Connected to #{connectBacking.databaseConfig.configurationName} (#{connectBacking.databaseConfig.databaseConnection.guiName})" styleClass="headline" rendered="#{connectBacking.connected}"/>
 
-				<p:selectOneMenu id="connection" value="#{databasePanelBacking.selectedConnectionId}" rendered="#{not databasePanelBacking.connected}">
-					<f:selectItems value="#{databasePanelBacking.dbConfigs}" 
+				<p:selectOneMenu id="connection" value="#{connectBacking.selectedConnectionId}" rendered="#{not connectBacking.connected}">
+					<f:selectItems value="#{connectBacking.dbConfigs}" 
 						var="db" itemValue="#{db.id}" itemLabel="#{db.configurationName}"/>
 				</p:selectOneMenu>	
 
 				<p:commandButton id="connectHeadBtn" 
 					value="Connect" 
 					icon="ui-icon-transferthick-e-w" 
-					actionListener="#{databasePanelBacking.connectDb()}"
-					rendered="#{not databasePanelBacking.connected}"
-					disabled="#{empty databasePanelBacking.dbConfigs}"
+					actionListener="#{connectBacking.connectDb()}"
+					rendered="#{not connectBacking.connected}"
+					disabled="#{empty connectBacking.dbConfigs}"
 					update="@all" 
 					style="margin-left: 10px"/>
 
 				<p:commandButton id="disconnectHeadBtn" 
 					value="Disconnect" 
 					icon="ui-icon-circle-close" 
-					actionListener="#{databasePanelBacking.disconnectRedirect()}"
-					rendered="#{databasePanelBacking.connected}" 
+					actionListener="#{connectBacking.disconnectRedirect()}"
+					rendered="#{connectBacking.connected}" 
 					style="margin-left: 10px"/>
 					
 				<p:button id="logout" value="Logout" icon="ui-icon-locked" rendered="#{infoBacking.isEnterprise()}" href="/perform_logout" style="margin-left: 10px"/>

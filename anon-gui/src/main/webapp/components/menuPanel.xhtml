@@ -22,14 +22,14 @@
 			
 			<p:submenu label="Configuration">
 				<p:menuitem value="Anonymize Data" url="/app/tables-list/" 
-					disabled="#{!databasePanelBacking.connected}" icon="ui-icon-zoomin" />
+					disabled="#{!connectBacking.connected}" icon="ui-icon-zoomin" />
 				<p:menuitem value="Reduce Data" url="/app/reduce-table-list/" 
-					disabled="#{!databasePanelBacking.connected}" icon="ui-icon-zoomin" />
+					disabled="#{!connectBacking.connected}" icon="ui-icon-zoomin" />
 			</p:submenu>
 			
 			<p:submenu label="Run">
 				<p:menuitem value="Execute" action="#{execBacking.onClickExecute}"
-					icon="ui-icon-triangle-1-e" disabled="#{!databasePanelBacking.connected}"/>
+					icon="ui-icon-triangle-1-e" disabled="#{!connectBacking.connected}"/>
 				<p:menuitem value="Audit Logs" url="/app/execaudit/"
 					icon="ui-icon-folder-collapsed" />		
 				<p:menuitem value="Reports" action="#{reportBacking.onClickReport}"

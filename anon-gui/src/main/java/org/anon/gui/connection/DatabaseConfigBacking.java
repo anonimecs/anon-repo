@@ -25,8 +25,8 @@ public class DatabaseConfigBacking extends BackingBase {
 	@ManagedProperty(value = "#{databaseConfigServiceImpl}")
 	private DatabaseConfigService configService;
 	
-	@ManagedProperty(value = "#{databasePanelBacking}")
-	private DatabasePanelBacking databasePanelBacking;
+	@ManagedProperty(value = "#{connectBacking}")
+	private ConnectBacking connectBacking;
 	
 	@ManagedProperty(value = "#{dbConnectionFactory}")
 	private	DbConnectionFactory dbConnectionFactory;
@@ -116,7 +116,7 @@ public class DatabaseConfigBacking extends BackingBase {
 				showExceptionInGui(e);
 			}
 	
-			databasePanelBacking.init();
+			connectBacking.init();
 	//		databaseConfig = new DatabaseConfig();
 		}
 
@@ -149,7 +149,7 @@ public class DatabaseConfigBacking extends BackingBase {
 			
 		}
 		
-		databasePanelBacking.init();
+		connectBacking.init();
 	}
 	
 	public boolean testDatabaseConnection(DatabaseConnection databaseConnectionToTest) {
@@ -252,8 +252,8 @@ public class DatabaseConfigBacking extends BackingBase {
 		this.databaseLoaderService = databaseLoaderService;
 	}
 
-	public void setDatabasePanelBacking(DatabasePanelBacking databasePanelBacking) {
-		this.databasePanelBacking = databasePanelBacking;
+	public void setConnectBacking(ConnectBacking connectBacking) {
+		this.connectBacking = connectBacking;
 	}
 
 	public void setDbConnectionFactory(DbConnectionFactory dbConnectionFactory) {

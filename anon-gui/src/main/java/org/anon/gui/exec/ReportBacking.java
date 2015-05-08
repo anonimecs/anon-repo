@@ -11,7 +11,7 @@ import javax.faces.bean.SessionScoped;
 import org.anon.data.AnonConfig;
 import org.anon.data.AnonymisedColumnInfo;
 import org.anon.gui.BackingBase;
-import org.anon.gui.connection.DatabasePanelBacking;
+import org.anon.gui.connection.ConnectBacking;
 import org.anon.gui.navigation.NavigationCaseEnum;
 import org.anon.logic.AnonymisationMethod;
 import org.anon.persistence.data.DatabaseConfig;
@@ -37,8 +37,8 @@ public class ReportBacking extends BackingBase {
 	@ManagedProperty(value="#{anonConfig}")
 	private AnonConfig anonConfig;
 	
-	@ManagedProperty(value="#{databasePanelBacking}")
-	private DatabasePanelBacking databasePanelBacking;
+	@ManagedProperty(value="#{connectBacking}")
+	private ConnectBacking connectBacking;
 	
 	@ManagedProperty(value="#{databaseLoaderService}")
 	private DatabaseLoaderService databaseLoaderService;
@@ -102,7 +102,7 @@ public class ReportBacking extends BackingBase {
 	}
 	
 	public void onClickReport() {
-		databasePanelBacking.disconnectDb();
+		connectBacking.disconnectDb();
 		init();
 		redirectPageTo(NavigationCaseEnum.REPORT);
 	}
@@ -158,9 +158,9 @@ public class ReportBacking extends BackingBase {
 	public void setDatabaseLoaderService(DatabaseLoaderService databaseLoaderService) {
 		this.databaseLoaderService = databaseLoaderService;
 	}
-
-	public void setDatabasePanelBacking(DatabasePanelBacking databasePanelBacking) {
-		this.databasePanelBacking = databasePanelBacking;
+	
+	public void setConnectBacking(ConnectBacking connectBacking) {
+		this.connectBacking = connectBacking;
 	}
 
 	public void setAnonConfig(AnonConfig anonConfig) {

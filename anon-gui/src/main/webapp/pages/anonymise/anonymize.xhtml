@@ -18,10 +18,10 @@
 			
 			<h:outputLabel for="anonymizationMethodSelect">Method</h:outputLabel>
 			<h:form>        
-				<p:selectOneMenu id="anonymizationMethodSelect" value="#{editedTableBacking.anonymisationMethod}" converter="methodConverter" var="a">
+				<p:selectOneMenu id="anonymizationMethodSelect" value="#{anonymiseBacking.anonymisationMethod}" converter="methodConverter" var="a">
 					<p:ajax event="change" update=":anonymizeTabView,:buttons"
-					    listener="#{editedTableBacking.onAnonymisatationTypeChanged()}" oncomplete=""/>
-					<f:selectItems value="#{editedTableBacking.supportedAnonymisationMethods}" var="anonMethod" 
+					    listener="#{anonymiseBacking.onAnonymisatationTypeChanged()}" oncomplete=""/>
+					<f:selectItems value="#{anonymiseBacking.supportedAnonymisationMethods}" var="anonMethod" 
 						itemLabel="#{anonMethod.type}" itemValue="#{anonMethod}" />
 					<p:column>
 	               		<h:outputText value="#{a.type}" />
@@ -31,21 +31,21 @@
 
 			<p:outputPanel id="buttons">
 				<p:commandButton id="saveColumnSettingsButton"
-					actionListener="#{editedTableBacking.onSaveColumnSettings()}"
+					actionListener="#{anonymiseBacking.onSaveColumnSettings()}"
 					value="Save Changes" update="anonymizeTabView,:menuForm:menuBar"
 					process="@this" icon="ui-icon-disk" />
 
 				<p:commandButton value="Configure Encryption" 
-					oncomplete="PF('configureEncryptionPopup').show();" rendered="#{editedTableBacking.anonymisationMethod.type == 'ENCRYPT'}" update=":configureEncryptionPopupId"/>	
+					oncomplete="PF('configureEncryptionPopup').show();" rendered="#{anonymiseBacking.anonymisationMethod.type == 'ENCRYPT'}" update=":configureEncryptionPopupId"/>	
 			
 				<p:commandButton value="Configure Mappings" action="#{configureMappingsPopupBacking.onConfigureMappingsClicked()}"
-					oncomplete="PF('configureMappingsPopup').show();" rendered="#{editedTableBacking.anonymisationMethod.type == 'MAP'}" update=":configureMappingsPopupId"/>
+					oncomplete="PF('configureMappingsPopup').show();" rendered="#{anonymiseBacking.anonymisationMethod.type == 'MAP'}" update=":configureMappingsPopupId"/>
 
 				<p:commandButton value="No Row Filter Defined" title="Your anonymisation will change to all rows in the table. Click here to filter the applicable rows."
-					action="#{editedTableBacking.onRowFilterClicked}" rendered="#{editedTableBacking.rowFilterSupport() and null == configContext.anonymisedColumnInfo.guiFieldApplicability}" />	
+					action="#{anonymiseBacking.onRowFilterClicked}" rendered="#{anonymiseBacking.rowFilterSupport() and null == configContext.anonymisedColumnInfo.guiFieldApplicability}" />	
 		
 				<p:commandButton value="Show Row Filter" title="Your anonymisation will not apply to all rows. Click here to see the applicable rows."
-					action="#{editedTableBacking.onRowFilterClicked}" rendered="#{editedTableBacking.rowFilterSupport() and null != configContext.anonymisedColumnInfo.guiFieldApplicability}" />	
+					action="#{anonymiseBacking.onRowFilterClicked}" rendered="#{anonymiseBacking.rowFilterSupport() and null != configContext.anonymisedColumnInfo.guiFieldApplicability}" />	
 		
 			</p:outputPanel>
 
@@ -54,7 +54,7 @@
 		
 		<p:tabView id="anonymizeTabView" >
 		
-			<p:tab id="anonymizeTab" title="Anonymize Column: #{editedTableBacking.editedColumn.name}" rendered="#{null ne editedTableBacking.editedColumn}"> 
+			<p:tab id="anonymizeTab" title="Anonymize Column: #{anonymiseBacking.editedColumn.name}" rendered="#{null ne anonymiseBacking.editedColumn}"> 
 			
 				<style>
 					.fifty-percent {
@@ -64,17 +64,17 @@
 			
 				<h:panelGrid columns="2" style="width:100%;" columnClasses="fifty-percent">
 	        
-					<p:dataTable  value="#{editedTableBacking.editedColumn.exampleValues}" var="exampleValue"
+					<p:dataTable  value="#{anonymiseBacking.editedColumn.exampleValues}" var="exampleValue"
 						scrollable="true" scrollHeight="300">
 						<p:column headerText="Original Values">
 							<h:outputText value="#{exampleValue}"/>
 						</p:column>
 					</p:dataTable>
 						        
-					<p:dataTable id="anonymizedValues" value="#{editedTableBacking.editedColumn.exampleValues}" var="exampleValue"
+					<p:dataTable id="anonymizedValues" value="#{anonymiseBacking.editedColumn.exampleValues}" var="exampleValue"
 						scrollable="true" scrollHeight="300">
 						<p:column headerText="Anonymized Values">
-							<h:outputText value="#{editedTableBacking.anonymiseValue(exampleValue)}"/>
+							<h:outputText value="#{anonymiseBacking.anonymiseValue(exampleValue)}"/>
 						</p:column>
 					</p:dataTable>
 						        
@@ -82,9 +82,9 @@
 															
 			</p:tab>
 		
-			<p:tab title="Related to #{editedTableBacking.editedColumn.name}">
+			<p:tab title="Related to #{anonymiseBacking.editedColumn.name}">
 				<!-- unselect related -->
-				<h:panelGroup rendered="#{editedTableBacking.anonymisationMethod.type eq 'NONE' and not empty editedTableBacking.selectedRelatedTableColumns}">
+				<h:panelGroup rendered="#{anonymiseBacking.anonymisationMethod.type eq 'NONE' and not empty anonymiseBacking.selectedRelatedTableColumns}">
 					
 					<h:form>
 						<style>
@@ -94,8 +94,8 @@
 						</style>
 							    	
 						<p:dataTable id="relatedTableColumnsToRemove"  
-							value="#{editedTableBacking.selectedRelatedTableColumns}" var="relatedTableColumnInfo"
-							selection="#{editedTableBacking.selectedRelatedTableColumnsToRemove}" rowKey="#{relatedTableColumnInfo.key}"
+							value="#{anonymiseBacking.selectedRelatedTableColumns}" var="relatedTableColumnInfo"
+							selection="#{anonymiseBacking.selectedRelatedTableColumnsToRemove}" rowKey="#{relatedTableColumnInfo.key}"
 							scrollable="true" scrollHeight="300"
 							style="padding-top:20px;">
 							        	
@@ -124,15 +124,15 @@
 				</h:panelGroup>
 
 				<!-- select related -->
-				<h:panelGroup rendered="#{editedTableBacking.anonymisationMethod.type ne 'NONE'}">				
+				<h:panelGroup rendered="#{anonymiseBacking.anonymisationMethod.type ne 'NONE'}">				
 				   	<h:form>
 				   	
 				        <p:dataTable id="relatedTableColumns"  
-				        	value="#{editedTableBacking.relatedTableColumns}" var="relatedTableColumnInfo"
-				        	selection="#{editedTableBacking.selectedRelatedTableColumns}" rowKey="#{relatedTableColumnInfo.key}"
+				        	value="#{anonymiseBacking.relatedTableColumns}" var="relatedTableColumnInfo"
+				        	selection="#{anonymiseBacking.selectedRelatedTableColumns}" rowKey="#{relatedTableColumnInfo.key}"
 				        	scrollable="true" scrollHeight="600"
 				        	style="padding-top:20px;"
-							filteredValue="#{editedTableBacking.filteredRelatedTableColumns}">
+							filteredValue="#{anonymiseBacking.filteredRelatedTableColumns}">
 							
 							<p:ajax event="rowSelectCheckbox"/>
 							<p:ajax event="rowUnselectCheckbox"/>
@@ -161,7 +161,7 @@
 		
 		</p:tabView>
 		
-		<h:outputText value="DEBUG INFO: #{editedTableBacking.anonymisationMethod}" style="color:white;"/>
+		<h:outputText value="DEBUG INFO: #{anonymiseBacking.anonymisationMethod}" style="color:white;"/>
 		
 		
 	</ui:define>
@@ -184,7 +184,7 @@
 
 		
 		<p:dialog id="configureEncryptionPopupId" header="Configure Encryption" widgetVar="configureEncryptionPopup" modal="true" width="400">
-		<h:form id="configureEncryptionPopupForm" rendered="#{editedTableBacking.anonymisationMethod.type == 'ENCRYPT'}">
+		<h:form id="configureEncryptionPopupForm" rendered="#{anonymiseBacking.anonymisationMethod.type == 'ENCRYPT'}">
 			<h:panelGrid id="passwordGrid" columns="2">
 				
 				<h:outputLabel for="pwd1" value="Password: *" />
@@ -215,7 +215,7 @@
 			    to define a default unconditional mapping, and in addition, you can specify a list of optional conditional mappings.
 			    The conditions will be than applied top down to arrive at a mapped value for your anonymised column.
 		    </p:outputLabel>
-		    <h:form id="configureMappingsPopupForm" rendered="#{editedTableBacking.anonymisationMethod.type == 'MAP'}">
+		    <h:form id="configureMappingsPopupForm" rendered="#{anonymiseBacking.anonymisationMethod.type == 'MAP'}">
 			    <p:outputLabel value="Mapping default:"/>
 			    <p:inputText value="#{configureMappingsPopupBacking.anonymisationMethodMapping.mappingDefault.defaultValue}"/>
 			    

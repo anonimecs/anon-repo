@@ -8,7 +8,7 @@ import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
 
 import org.anon.data.AnonymizationType;
-import org.anon.gui.anonymise.EditedTableBacking;
+import org.anon.gui.anonymise.AnonymiseBacking;
 import org.anon.logic.AnonymisationMethod;
 
 @FacesConverter("methodConverter")
@@ -30,10 +30,10 @@ public class MethodConverter implements Converter {
     }
  
     private List<AnonymisationMethod> getSupportedAnonymisationMethods(FacesContext fc) {
-    	EditedTableBacking editedTableBacking = (EditedTableBacking) fc.getApplication().
-    			evaluateExpressionGet(fc, "#{editedTableBacking}", EditedTableBacking.class);
+    	AnonymiseBacking anonymiseBacking = (AnonymiseBacking) fc.getApplication().
+    			evaluateExpressionGet(fc, "#{anonymiseBacking}", AnonymiseBacking.class);
     	
-		return editedTableBacking.getSupportedAnonymisationMethods();
+		return anonymiseBacking.getSupportedAnonymisationMethods();
 	}
 
 	public String getAsString(FacesContext fc, UIComponent uic, Object object) {

@@ -10,7 +10,7 @@ import javax.faces.bean.SessionScoped;
 import org.anon.data.AnonymisedColumnInfo;
 import org.anon.data.DatabaseTableInfo;
 import org.anon.gui.BackingBase;
-import org.anon.gui.anonymise.EditedTableBacking;
+import org.anon.gui.anonymise.AnonymiseBacking;
 import org.anon.gui.navigation.NavigationCaseEnum;
 import org.anon.persistence.data.DatabaseConfig;
 import org.anon.service.DatabaseConfigService;
@@ -18,14 +18,14 @@ import org.anon.service.DatabaseLoaderService;
 
 @ManagedBean
 @SessionScoped
-public class DatabasePanelBacking extends BackingBase{
+public class ConnectBacking extends BackingBase{
 
 	
 	@ManagedProperty(value = "#{databaseConfigServiceImpl}")
 	private DatabaseConfigService dbConfigService;
 	
-	@ManagedProperty(value = "#{editedTableBacking}")
-	private EditedTableBacking editedTableBacking;
+	@ManagedProperty(value = "#{anonymiseBacking}")
+	private AnonymiseBacking anonymiseBacking;
 
 	@ManagedProperty(value="#{databaseLoaderService}")
 	private DatabaseLoaderService databaseLoaderService;
@@ -77,8 +77,8 @@ public class DatabasePanelBacking extends BackingBase{
 		tableCount = 0;
 		tableList = null;
 		connected = false;
-		editedTableBacking.setEditedTable(null);
-		editedTableBacking.setEditedColumn(null);
+		anonymiseBacking.setEditedTable(null);
+		anonymiseBacking.setEditedColumn(null);
 	}
 	
 	public void connectRedirect() {
@@ -95,7 +95,7 @@ public class DatabasePanelBacking extends BackingBase{
 		logDebug("selected schema " + selectedSchema);
 		databaseLoaderService.schemaChanged();
 		loadDatabaseTableList();
-		editedTableBacking.setEditedTable(null);
+		anonymiseBacking.setEditedTable(null);
 	}
 
 	public void loadDatabaseTableList() {
@@ -153,12 +153,12 @@ public class DatabasePanelBacking extends BackingBase{
 		this.dbConfigService = dbConfigService;
 	}
 
-	public void setEditedTableBacking(EditedTableBacking editedTableBacking) {
-		this.editedTableBacking = editedTableBacking;
+	public void setAnonymiseBacking(AnonymiseBacking anonymiseBacking) {
+		this.anonymiseBacking = anonymiseBacking;
 	}
 	
-	public EditedTableBacking getEditedTableBacking() {
-		return editedTableBacking;
+	public AnonymiseBacking getAnonymiseBacking() {
+		return anonymiseBacking;
 	}
 
 	public List<DatabaseTableInfo> getFilteredTables() {

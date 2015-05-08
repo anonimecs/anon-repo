@@ -31,7 +31,7 @@ import org.primefaces.event.SelectEvent;
 
 @ManagedBean
 @SessionScoped
-public class EditedTableBacking extends BackingBase {
+public class AnonymiseBacking extends BackingBase {
 	
 	private DatabaseTableInfo editedTable; 
 	private DatabaseColumnInfo editedColumn;

@@ -14,15 +14,15 @@
 			<ui:param name="step" value="2" />
 		</ui:include>
 
-		<h:form id="editedTableColumnsForm" rendered="#{not empty editedTableBacking.editedTable}">
-			<p:panel header="Anonymize table #{editedTableBacking.editedTable.name} RowCount: #{editedTableBacking.editedTable.rowCount}" >
+		<h:form id="editedTableColumnsForm" rendered="#{not empty anonymiseBacking.editedTable}">
+			<p:panel header="Anonymize table #{anonymiseBacking.editedTable.name} RowCount: #{anonymiseBacking.editedTable.rowCount}" >
 		
-				<p:dataTable id="editedTableColumns" value="#{editedTableBacking.editedTable.columns}" var="databaseColumnInfo"
-					selectionMode="single" selection="#{editedTableBacking.editedColumn}" rowKey="#{databaseColumnInfo.name}"
+				<p:dataTable id="editedTableColumns" value="#{anonymiseBacking.editedTable.columns}" var="databaseColumnInfo"
+					selectionMode="single" selection="#{anonymiseBacking.editedColumn}" rowKey="#{databaseColumnInfo.name}"
 					scrollable="true" scrollHeight="600"
 					rowStyleClass="#{databaseColumnInfo.getClass().getSimpleName() == 'AnonymisedColumnInfo' ? 'anonymisedColumn' : null!=databaseColumnInfo.getAnonCandidate() and databaseColumnInfo.getAnonCandidate().active ? 'anonCandidate' : null}">
 					
-					<p:ajax event="rowSelect" listener="#{editedTableBacking.onColumnSelect}"/>
+					<p:ajax event="rowSelect" listener="#{anonymiseBacking.onColumnSelect}"/>
 					<p:column headerText="Column" width="180">
 						<h:outputText value="#{databaseColumnInfo.name}"/>
 					</p:column>
@@ -35,7 +35,7 @@
 						</ui:include>
 					</p:column>
 					<p:column headerText="Example Values">
-						<h:outputText value="#{editedTableBacking.concatExamples(databaseColumnInfo.exampleValues)}"/>
+						<h:outputText value="#{anonymiseBacking.concatExamples(databaseColumnInfo.exampleValues)}"/>
 					</p:column>									
 				</p:dataTable>
 				

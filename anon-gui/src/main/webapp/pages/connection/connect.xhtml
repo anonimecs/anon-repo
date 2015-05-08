@@ -20,38 +20,38 @@
 	
 				<p:outputLabel for="connection" value="Connect to Configuration" style="display: block; width:200px;"/>
 								
-				<p:selectOneMenu id="connection" value="#{databasePanelBacking.selectedConnectionId}" disabled="#{databasePanelBacking.connected}">
-					<f:selectItems value="#{databasePanelBacking.dbConfigs}" 
+				<p:selectOneMenu id="connection" value="#{connectBacking.selectedConnectionId}" disabled="#{connectBacking.connected}">
+					<f:selectItems value="#{connectBacking.dbConfigs}" 
 						var="db" itemValue="#{db.id}" itemLabel="#{db.configurationName}"/>
 						<p:ajax event="change" update=":selectConnectionForm"/>
 				</p:selectOneMenu>	
 								
 				<p:commandButton id="connectBtn" icon="ui-icon-transferthick-e-w"  
-					disabled="#{empty databasePanelBacking.dbConfigs}"
-					actionListener="#{databasePanelBacking.connectRedirect()}"
-					value="Connect" update=":selectConnectionForm,:menuForm:menuBar" rendered="#{not databasePanelBacking.connected}"  />
+					disabled="#{empty connectBacking.dbConfigs}"
+					actionListener="#{connectBacking.connectRedirect()}"
+					value="Connect" update=":selectConnectionForm,:menuForm:menuBar" rendered="#{not connectBacking.connected}"  />
 					            	
-				<p:commandButton id="disconnectBtn" icon="ui-icon-circle-close" actionListener="#{databasePanelBacking.disconnectDb()}" 
-					value="Disconnect" update=":selectConnectionForm, :menuForm:menuBar, :menuPanelForm:menuPanel" rendered="#{databasePanelBacking.connected}"  />
+				<p:commandButton id="disconnectBtn" icon="ui-icon-circle-close" actionListener="#{connectBacking.disconnectDb()}" 
+					value="Disconnect" update=":selectConnectionForm, :menuForm:menuBar, :menuPanelForm:menuPanel" rendered="#{connectBacking.connected}"  />
 					        
 				<p:outputLabel for="connectionName" value="Database Connection"/>
-				<h:outputText id="connectionName" value="#{databasePanelBacking.databaseConfig.databaseConnection.guiName}" />
+				<h:outputText id="connectionName" value="#{connectBacking.databaseConfig.databaseConnection.guiName}" />
 				<h:outputText/>
 				
 				<p:outputLabel for="databaseUrl" value="URL"/>
-				<h:outputText id="databaseUrl" value="#{databasePanelBacking.databaseConfig.databaseConnection.url}" />
+				<h:outputText id="databaseUrl" value="#{connectBacking.databaseConfig.databaseConnection.url}" />
 				<h:outputText/>
 				
 				<p:outputLabel for="schema" value="Schema"/>
-				<h:outputText id="schema" value="#{databasePanelBacking.databaseConfig.defaultSchema}" />
+				<h:outputText id="schema" value="#{connectBacking.databaseConfig.defaultSchema}" />
 				<h:outputText/>
 				
 				<p:outputLabel for="databaseType" value="Type" />
-				<h:outputText id="databaseType" value="#{databasePanelBacking.databaseConfig.databaseConnection.vendor}" />
+				<h:outputText id="databaseType" value="#{connectBacking.databaseConfig.databaseConnection.vendor}" />
 				<h:outputText/>
 					            
 				<p:outputLabel for="databaseUser" value="Login"/>
-				<h:outputText id="databaseUser" value="#{databasePanelBacking.databaseConfig.databaseConnection.login}" />
+				<h:outputText id="databaseUser" value="#{connectBacking.databaseConfig.databaseConnection.login}" />
 				<h:outputText/>
 			            	
 			</h:panelGrid>
