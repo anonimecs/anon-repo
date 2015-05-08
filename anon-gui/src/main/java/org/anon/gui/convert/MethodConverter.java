@@ -8,7 +8,7 @@ import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
 
 import org.anon.data.AnonymizationType;
-import org.anon.gui.EditedTableBacking;
+import org.anon.gui.anonymise.EditedTableBacking;
 import org.anon.logic.AnonymisationMethod;
 
 @FacesConverter("methodConverter")

@@ -1,4 +1,4 @@
-package org.anon.gui;
+package org.anon.gui.anonymise;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -13,6 +13,8 @@ import org.anon.data.AnonymizationType;
 import org.anon.data.DatabaseColumnInfo;
 import org.anon.data.DatabaseTableInfo;
 import org.anon.data.RelatedTableColumnInfo;
+import org.anon.gui.BackingBase;
+import org.anon.gui.ConfigContext;
 import org.anon.gui.navigation.NavigationCaseEnum;
 import org.anon.logic.AnonymisationMethod;
 import org.anon.logic.AnonymisationMethodMapping;

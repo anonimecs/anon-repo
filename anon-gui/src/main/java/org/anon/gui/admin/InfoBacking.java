@@ -1,5 +1,6 @@
-package org.anon.gui;
+package org.anon.gui.admin;
 
+import org.anon.gui.BackingBase;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Scope;

@@ -1,4 +1,4 @@
-package org.anon.gui;
+package org.anon.gui.connection;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,6 +9,7 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 
 import org.anon.data.Database;
+import org.anon.gui.BackingBase;
 import org.anon.persistence.data.DatabaseConfig;
 import org.anon.persistence.data.DatabaseConnection;
 import org.anon.service.DatabaseConfigService;

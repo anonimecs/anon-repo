@@ -1,9 +1,11 @@
-package org.anon.gui;
+package org.anon.gui.anonymise;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 
+import org.anon.gui.BackingBase;
+import org.anon.gui.ConfigContext;
 import org.anon.service.EditedTableService;
 import org.anon.service.RowFilterTestResult;
 import org.anon.service.where.WhereConditionBuilder.Applicability;

@@ -7,7 +7,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
 
-import org.anon.gui.DatabaseConfigBacking;
+import org.anon.gui.connection.DatabaseConfigBacking;
 import org.anon.persistence.data.DatabaseConnection;
 
 @FacesConverter("databaseConnectionConverter")

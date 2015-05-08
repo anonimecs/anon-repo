@@ -1,4 +1,4 @@
-package org.anon.gui;
+package org.anon.gui.reduce;
 
 import java.util.List;
 
@@ -8,6 +8,7 @@ import javax.faces.bean.SessionScoped;
 
 import org.anon.data.DatabaseTableInfo;
 import org.anon.data.ReductionType;
+import org.anon.gui.BackingBase;
 import org.anon.gui.navigation.NavigationCaseEnum;
 import org.anon.persistence.data.ReductionMethodData;
 import org.anon.service.reduce.ReduceService;

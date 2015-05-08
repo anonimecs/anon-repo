@@ -1,4 +1,4 @@
-package org.anon.gui;
+package org.anon.gui.connection;
 
 import java.util.List;
 
@@ -9,6 +9,8 @@ import javax.faces.bean.SessionScoped;
 
 import org.anon.data.AnonymisedColumnInfo;
 import org.anon.data.DatabaseTableInfo;
+import org.anon.gui.BackingBase;
+import org.anon.gui.anonymise.EditedTableBacking;
 import org.anon.gui.navigation.NavigationCaseEnum;
 import org.anon.persistence.data.DatabaseConfig;
 import org.anon.service.DatabaseConfigService;

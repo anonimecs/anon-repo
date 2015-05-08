@@ -5,16 +5,16 @@ public enum NavigationCaseEnum {
 	HOME				("/",										"/app/"),
 	LOGIN				("/pages/security/login.jsf",				"/login/"),
 	
-	CONNECT				("/pages/cockpit/connect.jsf",				"/app/connect/"),
+	CONNECT				("/pages/connection/connect.jsf",			"/app/connect/"),
 	ADD_CONNECTION		("/pages/connection/connectionAdd.jsf",		"/app/connection-add/"),
 	LIST_CONNECTION		("/pages/connection/connectionList.jsf",	"/app/connection-list/"),
 	
-	TABLES				("/pages/cockpit/databaseTableList.jsf",	"/app/tables-list/"),
-	COLUMNS				("/pages/cockpit/databaseColumnList.jsf",	"/app/columns-list/"),
-	ANONYMIZE			("/pages/cockpit/anonymize.jsf",			"/app/method/"),
-	ROWFILTER			("/pages/cockpit/rowFilter.jsf",			"/app/row-filter/"),
+	TABLES				("/pages/anonymise/databaseTableList.jsf",	"/app/tables-list/"),
+	COLUMNS				("/pages/anonymise/databaseColumnList.jsf",	"/app/columns-list/"),
+	ANONYMIZE			("/pages/anonymise/anonymize.jsf",			"/app/method/"),
+	ROWFILTER			("/pages/anonymise/rowFilter.jsf",			"/app/row-filter/"),
 	
-	REDUCE_TABLES		("/pages/reduce/databaseTableList.jsf",		"/app/reduce-table-list/"),
+	REDUCE_TABLES		("/pages/reduce/reduceTableList.jsf",		"/app/reduce-table-list/"),
 	REDUCE				("/pages/reduce/reduce.jsf",				"/app/reduce/"),
 
 	

@@ -1,4 +1,4 @@
-package org.anon.gui;
+package org.anon.gui.exec;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -10,6 +10,8 @@ import javax.faces.bean.SessionScoped;
 
 import org.anon.data.AnonConfig;
 import org.anon.data.AnonymisedColumnInfo;
+import org.anon.gui.BackingBase;
+import org.anon.gui.connection.DatabasePanelBacking;
 import org.anon.gui.navigation.NavigationCaseEnum;
 import org.anon.logic.AnonymisationMethod;
 import org.anon.persistence.data.DatabaseConfig;

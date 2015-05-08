@@ -1,4 +1,4 @@
-package org.anon.gui;
+package org.anon.gui.anonymise;
 
 import java.math.BigInteger;
 import java.security.SecureRandom;
@@ -8,6 +8,8 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 
+import org.anon.gui.BackingBase;
+import org.anon.gui.ConfigContext;
 import org.anon.logic.AnonymisationMethodEncrypt;
 
 @ManagedBean

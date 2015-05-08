@@ -1,4 +1,4 @@
-package org.anon.gui.pdf;
+package org.anon.gui.exec.pdf;
 
 import java.io.File;
 import java.io.IOException;
@@ -11,8 +11,8 @@ import javax.faces.bean.RequestScoped;
 import javax.faces.context.FacesContext;
 import javax.servlet.ServletContext;
 
-import org.anon.gui.InfoBacking;
-import org.anon.gui.ReportBacking;
+import org.anon.gui.admin.InfoBacking;
+import org.anon.gui.exec.ReportBacking;
 
 import com.lowagie.text.Document;
 import com.lowagie.text.DocumentException;
