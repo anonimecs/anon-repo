@@ -10,11 +10,19 @@ public class DatabaseTableInfo extends DataObject{
 
 	private String name;
 	private String schema;
+	public DatabaseTableInfo(String name, String schema) {
+		super();
+		this.name = name;
+		this.schema = schema;
+	}
+
 	private List<DatabaseColumnInfo> columns = new LinkedList<DatabaseColumnInfo>();
 	private int rowCount;
 
 	private List<AnonCandidate> anonCandidateList = new ArrayList<>();
 
+	public DatabaseTableInfo() {}
+	
 	public String getName() {
 		return name;
 	}

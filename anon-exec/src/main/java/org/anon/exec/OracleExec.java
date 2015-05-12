@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Scope(value = "prototype")
-public class OracleExec extends BaseExec{
+public class OracleExec extends AnonExec{
 
 	@Override
 	protected DatabaseSpecifics getDatabaseSpecifics() {

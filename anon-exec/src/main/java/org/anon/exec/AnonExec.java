@@ -2,60 +2,34 @@ package org.anon.exec;
 
 import java.util.List;
 
-import javax.sql.DataSource;
-
 import org.anon.AbstractDbConnection;
 import org.anon.data.AnonConfig;
 import org.anon.data.AnonymisedColumnInfo;
 import org.anon.data.ExecutionMessage;
 import org.anon.data.MethodExecution;
 import org.anon.exec.audit.ExecAuditor;
-import org.anon.license.LicenseException;
 import org.anon.license.LicenseManager;
 import org.anon.logic.AnonymisationMethod;
 import org.anon.service.DbConnectionFactory;
-import org.anon.vendor.DatabaseSpecifics;
 import org.anon.vendor.constraint.ColumnConstraintBundle;
 import org.anon.vendor.constraint.Constraint;
-import org.anon.vendor.constraint.ConstraintBundleFactory;
-import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 
-/**
- * Subclasses are always prototypes, and are not multi threaded
- */
-public abstract class BaseExec {
+public abstract class AnonExec extends AbstractExec{
 	
-	protected Logger logger = Logger.getLogger(getClass());
-	
-	protected DataSource dataSource;
 	
 	@Autowired
 	@Qualifier("execConfig")
 	protected AnonConfig execConfig;
-
-	@Autowired
-	protected LicenseManager licenseManager;
-	
-	@Autowired
-	protected ExecAuditor execAuditor;
 	
 	@Autowired
 	protected GuiNotifier guiNotifier;
 	
-	@Autowired
-	protected DbConnectionFactory dbConnectionFactory;
 	
-	@Autowired
-	ConstraintBundleFactory constraintBundleFactory;
-	
-	private String userName;
-	
-	int tablesAnonimised;
-	
+	@Override
 	public void runAll() {
-		tablesAnonimised = 0; 
+		tablesProcessed = 0; 
 		
 		try {
 			execAuditor.insertExecution("Run All", userName,dbConnectionFactory.getDatabaseConfig());
@@ -138,7 +112,6 @@ public abstract class BaseExec {
 		}
 	}
 	
-	protected abstract DatabaseSpecifics getDatabaseSpecifics();
 
 	private String getExecSchema(AnonymisationMethod anonymisationMethod) {
 		String schema = null;
@@ -168,29 +141,13 @@ public abstract class BaseExec {
 		}
 	}
 
-	private void assertFreeEditionRunCount() {
-		if(licenseManager.reachedMaxTablesAnonimised(tablesAnonimised)){
-			throw new LicenseException("Reached maximal number of tables " + licenseManager.getMaxTablesAnonimised());
-		}
-		tablesAnonimised++;
-	}
 
 	
-	public String getUserName() {
-		return userName;
-	}
-
-	public void setUserName(String userName) {
-		this.userName = userName;
-	}
 
 	public void setExecConfig(AnonConfig execConfig) {
 		this.execConfig = execConfig;
 	}
 
-	public void setDataSource(DataSource dataSource) {
-		this.dataSource = dataSource;
-	}
 
 	public void setLicenseManager(LicenseManager licenseManager) {
 		this.licenseManager = licenseManager;

@@ -22,7 +22,7 @@ public class SqlServerExecTestMultiColFK extends SqlServerExecTestBase {
 	ExecAuditor execAuditor;
 	
 	@Override
-	DataSource getDataSource() {
+	protected DataSource getDataSource() {
 		return dataSourceSqlServer;
 	}
 	

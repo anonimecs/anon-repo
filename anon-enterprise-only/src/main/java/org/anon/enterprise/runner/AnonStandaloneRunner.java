@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.anon.AbstractDbConnection;
 import org.anon.data.AnonConfig;
-import org.anon.exec.BaseExec;
+import org.anon.exec.AnonExec;
 import org.anon.exec.ExecFactory;
 import org.anon.persistence.data.DatabaseConfig;
 import org.anon.service.DatabaseConfigService;
@@ -84,9 +84,9 @@ public class AnonStandaloneRunner extends Runner{
 
 		databaseLoaderService.loadExecConfig();
 		
-		BaseExec baseExec = execFactory.createExec(connection.getDatabaseSpecifics(), "AnonStandaloneRunner");
-		baseExec.setDataSource(connection.getDataSource());
-		baseExec.runAll();
+		AnonExec anonExec = execFactory.createExec(connection.getDatabaseSpecifics(), "AnonStandaloneRunner");
+		anonExec.setDataSource(connection.getDataSource());
+		anonExec.runAll();
 		logger.warn("Anonimisation finished for " + databaseConfigGuiName);
 	}
 

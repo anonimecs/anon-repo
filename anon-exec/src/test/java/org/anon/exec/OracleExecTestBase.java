@@ -24,7 +24,7 @@ public abstract class OracleExecTestBase extends BaseExecTest {
 	ExecAuditor execAuditor;
 	
 	@Override
-	DataSource getDataSource() {
+	protected DataSource getDataSource() {
 		return dataSourceOracle;
 	}
 	

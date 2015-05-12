@@ -22,7 +22,7 @@ public class SybaseExecTestMultiColFKTest extends SybaseExecTestBase {
 	ExecAuditor execAuditor;
 	
 	@Override
-	DataSource getDataSource() {
+	protected DataSource getDataSource() {
 		return dataSourceSybase;
 	}
 	

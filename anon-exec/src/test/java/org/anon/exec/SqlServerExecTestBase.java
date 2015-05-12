@@ -7,8 +7,6 @@ import org.anon.data.Database;
 import org.anon.exec.audit.ExecAuditor;
 import org.anon.exec.mock.LicenseManagerMock;
 import org.anon.vendor.constraint.ConstraintBundleFactory;
-import org.junit.Assume;
-import org.junit.Before;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.test.util.ReflectionTestUtils;
@@ -31,7 +29,7 @@ public abstract class SqlServerExecTestBase extends BaseExecTest {
 
 	
 	@Override
-	DataSource getDataSource() {
+	protected DataSource getDataSource() {
 		return dataSourceSqlServer;
 	}
 	

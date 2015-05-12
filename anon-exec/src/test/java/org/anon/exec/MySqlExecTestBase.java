@@ -45,7 +45,7 @@ public abstract class MySqlExecTestBase extends BaseExecTest {
 
 	
 	@Override
-	DataSource getDataSource() {
+	protected DataSource getDataSource() {
 		return dataSourceMySql;
 	}
 

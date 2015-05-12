@@ -19,7 +19,7 @@ public abstract class SybaseExecTestBase extends BaseExecTest {
 	protected ExecAuditor execAuditor;
 	
 	@Override
-	DataSource getDataSource() {
+	protected DataSource getDataSource() {
 		return dataSourceSybase;
 	}
 	

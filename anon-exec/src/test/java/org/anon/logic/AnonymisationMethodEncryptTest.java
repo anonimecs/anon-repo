@@ -11,7 +11,7 @@ import org.anon.data.AnonymizationType;
 import org.anon.data.Database;
 import org.anon.data.DatabaseColumnInfo;
 import org.anon.data.DatabaseTableInfo;
-import org.anon.exec.BaseExec;
+import org.anon.exec.AnonExec;
 import org.anon.exec.TwoTestTablesCreator;
 import org.anon.logic.map.TwoTablesAllDbTest;
 import org.anon.vendor.DatabaseSpecifics;
@@ -79,9 +79,9 @@ public class AnonymisationMethodEncryptTest extends TwoTablesAllDbTest{
 		
 		anonymisationMethod.setDataSource(getDataSource());
 		
-		BaseExec baseExec = createBaseExec();
-		baseExec.setExecConfig(anonConfig);
-		baseExec.runAll();
+		AnonExec anonExec = createBaseExec();
+		anonExec.setExecConfig(anonConfig);
+		anonExec.runAll();
 	}
 	
 

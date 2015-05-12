@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Scope(value = "prototype")
-public class MySqlExec extends BaseExec{
+public class MySqlExec extends AnonExec{
 
 	@Override
 	protected DatabaseSpecifics getDatabaseSpecifics() {

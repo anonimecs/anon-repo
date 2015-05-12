@@ -22,7 +22,7 @@ public class OracleExecTestMultiColFKTest extends OracleExecTestBase {
 	ExecAuditor execAuditor;
 	
 	@Override
-	DataSource getDataSource() {
+	protected DataSource getDataSource() {
 		return dataSourceOracle;
 	}
 	

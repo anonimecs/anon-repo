@@ -7,7 +7,7 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 
 import org.anon.data.AnonymisedColumnInfo;
-import org.anon.exec.BaseExec;
+import org.anon.exec.AnonExec;
 import org.anon.exec.ExecFactory;
 import org.anon.exec.GuiNotifier;
 import org.anon.gui.BackingBase;
@@ -55,14 +55,14 @@ public class ExecBacking extends BackingBase{
 	public void onRunSingle(final AnonymisationMethod anonymisationMethod){
 		try{
 			logDebug("Running single " + anonymisationMethod);
-			final BaseExec baseExec = execFactory.createExec(dbConnectionFactory.getDatabaseSpecifics(), infoBacking.getUserName());
+			final AnonExec anonExec = execFactory.createExec(dbConnectionFactory.getDatabaseSpecifics(), infoBacking.getUserName());
 
 			execBackingExecutor.execute(new Runnable() {
 				
 				@Override
 				public void run() {
 					try {
-						baseExec.run(anonymisationMethod);
+						anonExec.run(anonymisationMethod);
 					} catch (Exception e) {
 						logError(e.getMessage(), e);
 					} finally {
@@ -86,14 +86,14 @@ public class ExecBacking extends BackingBase{
 	public void onRun(){
 		try{
 			logDebug("Anonymising all methods" );
-			final BaseExec baseExec = execFactory.createExec(dbConnectionFactory.getDatabaseSpecifics(), infoBacking.getUserName());
+			final AnonExec anonExec = execFactory.createExec(dbConnectionFactory.getDatabaseSpecifics(), infoBacking.getUserName());
 	
 			execBackingExecutor.execute(new Runnable() {
 				
 				@Override
 				public void run() {
 					try {
-						baseExec.runAll();
+						anonExec.runAll();
 					} catch (Exception e) {
 						logError(e.getMessage(), e);
 					} finally {

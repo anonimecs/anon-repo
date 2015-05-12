@@ -8,8 +8,6 @@
 	<context:annotation-config/>
 	<context:component-scan base-package="org.anon.exec"/>	
 	
-	<bean class="org.anon.data.AnonConfig"/>
-
 	<bean class="org.anon.vendor.constraint.ConstraintBundleFactory"/>
 	
 	<bean id="licenseManager" class="org.anon.exec.mock.LicenseManagerMock"/>
@@ -23,4 +21,5 @@
 	<bean id="guiNotifier" class="org.anon.exec.NullGuiNotifier"/>
 
 	<bean class="org.anon.service.DbConnectionFactoryImpl"/>
+	
 </beans>

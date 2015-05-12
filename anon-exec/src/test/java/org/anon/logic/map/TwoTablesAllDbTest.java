@@ -8,7 +8,7 @@ import java.util.List;
 import javax.sql.DataSource;
 
 import org.anon.data.Database;
-import org.anon.exec.BaseExec;
+import org.anon.exec.AnonExec;
 import org.anon.exec.BaseParametrisedDbTest;
 import org.anon.exec.DummyConnectionFactory;
 import org.anon.exec.MySqlExec;
@@ -101,27 +101,27 @@ public abstract class TwoTablesAllDbTest extends BaseParametrisedDbTest{
 	}
 
 	
-	protected BaseExec createBaseExec() {
-		BaseExec baseExec = null;
+	protected AnonExec createBaseExec() {
+		AnonExec anonExec = null;
 		if(database == Database.SYBASE){
-			baseExec = new SybaseExec();
+			anonExec = new SybaseExec();
 		} else if(database == Database.ORACLE){
-			baseExec = new OracleExec();
+			anonExec = new OracleExec();
 		} else if(database == Database.MYSQL){
-			baseExec = new MySqlExec();
+			anonExec = new MySqlExec();
 		} else if(database == Database.SQLSERVER){
-			baseExec = new SqlServerExec();
+			anonExec = new SqlServerExec();
 		}
 		DataSource dataSource = getDataSource();
-		baseExec.setDataSource(dataSource);
-		baseExec.setUserName("junit");
-		baseExec.setLicenseManager(new LicenseManagerMock());
-		baseExec.setExecAuditor(execAuditor);
-		baseExec.setGuiNotifier(new NullGuiNotifier());
-		baseExec.setDbConnectionFactory(new DummyConnectionFactory(dataSource, database));
-		ReflectionTestUtils.setField(baseExec, "constraintBundleFactory", new ConstraintBundleFactory());
+		anonExec.setDataSource(dataSource);
+		anonExec.setUserName("junit");
+		anonExec.setLicenseManager(new LicenseManagerMock());
+		anonExec.setExecAuditor(execAuditor);
+		anonExec.setGuiNotifier(new NullGuiNotifier());
+		anonExec.setDbConnectionFactory(new DummyConnectionFactory(dataSource, database));
+		ReflectionTestUtils.setField(anonExec, "constraintBundleFactory", new ConstraintBundleFactory());
 
-		return baseExec;
+		return anonExec;
 	}
 
 

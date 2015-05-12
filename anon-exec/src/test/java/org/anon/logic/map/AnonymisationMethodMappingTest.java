@@ -5,7 +5,7 @@ import org.anon.data.AnonymisedColumnInfo;
 import org.anon.data.Database;
 import org.anon.data.DatabaseColumnInfo;
 import org.anon.data.DatabaseTableInfo;
-import org.anon.exec.BaseExec;
+import org.anon.exec.AnonExec;
 import org.anon.exec.TwoTestTablesCreator;
 import org.anon.logic.AnonymisationMethod;
 import org.anon.logic.AnonymisationMethodMapping;
@@ -49,10 +49,10 @@ public class AnonymisationMethodMappingTest extends TwoTablesAllDbTest{
 		
 		anonymisationMethod.setDataSource(getDataSource());
 		
-		BaseExec baseExec = createBaseExec();
-		baseExec.setExecConfig(anonConfig);
-		ReflectionTestUtils.setField(baseExec, "constraintBundleFactory", new ConstraintBundleFactory());
-		baseExec.runAll();
+		AnonExec anonExec = createBaseExec();
+		anonExec.setExecConfig(anonConfig);
+		ReflectionTestUtils.setField(anonExec, "constraintBundleFactory", new ConstraintBundleFactory());
+		anonExec.runAll();
 	}
 	
 	@Test

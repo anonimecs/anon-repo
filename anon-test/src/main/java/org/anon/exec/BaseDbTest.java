@@ -45,7 +45,7 @@ public abstract class BaseDbTest extends AbstractJUnit4SpringContextTests implem
     }
     
     
-    DataSource getDataSource(){
+    protected DataSource getDataSource(){
     	throw new RuntimeException("This method must be overloaded to deliver the datasource");
     }
 }
