@@ -17,12 +17,23 @@ public class LicenseManagerMock implements LicenseManager {
 	public boolean reachedMaxTablesAnonimised(int tablesAnonimised) {
 		return false;
 	}
+	
+	@Override
+	public boolean reachedMaxTablesReduced(int tablesReduced) {
+		return false;
+	}
 
 	@Override
 	public int getMaxTablesAnonimised() {
 		return 100;
 	}
 
+	@Override
+	public int getMaxTablesReduced() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+	
 	@Override
 	public boolean isFreeEdition() {
 		return true;

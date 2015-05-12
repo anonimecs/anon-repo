@@ -1,0 +1,59 @@
+<ui:composition 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+	template="/layout/layout.xhtml">
+
+
+	<ui:define name="insert-content">
+
+		<h:form id="execForm">
+		
+			<p:panel id="executionPanel" header="Run your reductions">	
+			
+				<h:panelGrid columns="3" style="padding-top:15px;">
+					<p:commandButton id="execAllBtn" value="Run All" action="#{reductionExecBacking.onRunAll()}" disabled=" #{reductionExecBacking.tableCount == 0}"/>
+					<h:outputLabel for="execAllBtn" value="#{reductionExecBacking.allReductionMethods.size()} reductions of #{reductionExecBacking.tableCount} tables"/>
+					
+					<p:lightBox iframe="true" id="anonimexHomeLightBox1" rendered="#{licenseManager.reachedMaxTablesReduced(reductionExecBacking.tableCount)}" > 
+					    <h:outputLink value="http://www.anonimecs.com/products.html" title="Anonimecs" >
+					        <h:outputText value="Free edition is limited to reduce #{reductionExecBacking.tableCount} tables. Consider upgrading your license."/>
+					    </h:outputLink>
+					</p:lightBox>
+				</h:panelGrid>
+				
+				<p:accordionPanel id="reducePanel" value="#{reductionExecBacking.allReductionMethods}" var="reductionMethod" multiple="true" activeIndex="0,1,2,3,4,5,6,7,8,9,10">
+					<p:tab title="Reduction Type: #{reductionMethod.reductionType}" >
+						<h:panelGrid columns="2" style="width:300px" >
+						
+							<h:outputLabel value="Table" for="tableName"/>
+							<h:outputText id="tableName" value="#{reductionMethod.schemaName}.#{reductionMethod.tableName}"/>
+							<h:outputLabel value="ReductionType" for="reductionType"/>
+							<h:outputText id="reductionType" value="#{reductionMethod.reductionType}"/>
+							<h:outputLabel value="Where Condition" for="whereCondition" rendered="#{'DELETE_WHERE' == reductionMethod.reductionType}"/>
+							<h:outputText id="whereCondition" value="#{reductionMethod.whereCondition}"  rendered="#{'DELETE_WHERE' == reductionMethod.reductionType}"/>
+				
+			            </h:panelGrid>
+
+						<p:dataTable value="#{reductionMethod.referencingTableDatas}" var="referencingTableData" rendered="#{not empty reductionMethod.referencingTableDatas}" >
+  			        		<p:column headerText="Related Table" width="180">
+			        			<h:outputText value="#{referencingTableData.schemaName}.#{referencingTableData.tableName}"/>
+			        		</p:column>
+			        	</p:dataTable>
+			            
+					</p:tab>
+				</p:accordionPanel>
+
+            
+            </p:panel>
+
+		</h:form>
+
+
+	
+	</ui:define>
+
+</ui:composition>

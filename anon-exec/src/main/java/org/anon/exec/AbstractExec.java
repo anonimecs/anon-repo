@@ -50,9 +50,16 @@ public abstract class AbstractExec {
 	}
 
 	
-	protected void assertFreeEditionRunCount() {
+	protected void assertFreeEditionAnonTables() {
 		if(licenseManager.reachedMaxTablesAnonimised(tablesProcessed)){
 			throw new LicenseException("Reached maximal number of tables " + licenseManager.getMaxTablesAnonimised());
+		}
+		tablesProcessed++;
+	}
+
+	protected void assertFreeEditionReduceTables() {
+		if(licenseManager.reachedMaxTablesAnonimised(tablesProcessed)){
+			throw new LicenseException("Reached maximal number of tables " + licenseManager.getMaxTablesReduced());
 		}
 		tablesProcessed++;
 	}

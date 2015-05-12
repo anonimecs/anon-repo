@@ -70,7 +70,7 @@ public abstract class AnonExec extends AbstractExec{
 			anonymisationMethod.setSchema(connection.getDefaultSchema());
 			anonymisationMethod.setupInDb();
 			for (AnonymisedColumnInfo col : anonymisationMethod.getApplyedToColumnsInExecutionOrder()) {
-				assertFreeEditionRunCount();
+				assertFreeEditionAnonTables();
 				methodExecution.startedCol(col);
 				
 				ColumnConstraintBundle constraintBundle = constraintBundleFactory.createConstraintBundle(getDatabaseSpecifics() , col, dataSource);

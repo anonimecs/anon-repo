@@ -44,10 +44,20 @@ public class Lincese3JLicenseManager implements LicenseManager {
 	public boolean reachedMaxTablesAnonimised(int tables) {
 		return tables >= getMaxTablesAnonimised();
 	}
+	
+	@Override
+	public boolean reachedMaxTablesReduced(int tablesReduced) {
+		return tablesReduced >= getMaxTablesReduced();
+	}
 
 	@Override
 	public int getMaxTablesAnonimised() {
 		return getInt("maxTablesAnonimised");
+	}
+
+	@Override
+	public int getMaxTablesReduced() {
+		return getInt("maxTablesReduced");
 	}
 
 	@Override

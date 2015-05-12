@@ -10,6 +10,8 @@ public interface LicenseManager {
 	
 	boolean reachedMaxTablesAnonimised(int tablesAnonimised);
 
+	boolean reachedMaxTablesReduced(int tablesReduced);
+
 	int getMaxTablesAnonimised();
 	
 	boolean isFreeEdition();
@@ -17,5 +19,7 @@ public interface LicenseManager {
 	boolean isEnterpriseEdition();
 	
 	String getCompanyName();
+
+	int getMaxTablesReduced();
 
 }

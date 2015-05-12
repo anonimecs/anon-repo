@@ -18,6 +18,7 @@ public enum NavigationCaseEnum {
 	REDUCE				("/pages/reduce/reduce.jsf",				"/app/reduce/"),
 
 	
+	EXECUTE_REDUCTION	("/pages/exec/reductionExec.jsf",			"/app/reductionexec/"),
 	EXECUTE				("/pages/exec/exec.jsf",					"/app/execute/"),
 	EXE_AUDIT			("/pages/exec/execAudit.jsf",				"/app/execaudit/"),
 	REPORT				("/pages/exec/report.jsf",					"/app/report/"),

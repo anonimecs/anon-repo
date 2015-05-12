@@ -62,7 +62,7 @@ public abstract class ReductionExec extends AbstractExec{
 			
 			// run the reduction on all referencing tables
 			for (ReductionMethodReferencingTable referencingTable: reductionMethod.getReferencingTableDatas()) {
-				assertFreeEditionRunCount();
+				assertFreeEditionReduceTables();
 				
 				deactivatedConstraints = foreignKeyConstraintManager.deactivateConstraints(referencingTable.getTableName(), getColumns(referencingTable.getTableName(), referencingTable.getSchemaName()), referencingTable.getSchemaName());
 				

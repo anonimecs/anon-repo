@@ -28,7 +28,9 @@
 			</p:submenu>
 			
 			<p:submenu label="Run">
-				<p:menuitem value="Execute" action="#{execBacking.onClickExecute}"
+				<p:menuitem value="Anonymization" action="#{execBacking.onClickExecute}"
+					icon="ui-icon-triangle-1-e" disabled="#{!connectBacking.connected}"/>
+				<p:menuitem value="Reduction" url="/app/reductionexec/"
 					icon="ui-icon-triangle-1-e" disabled="#{!connectBacking.connected}"/>
 				<p:menuitem value="Audit Logs" url="/app/execaudit/"
 					icon="ui-icon-folder-collapsed" />		
