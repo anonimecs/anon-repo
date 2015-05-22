@@ -58,7 +58,7 @@ public abstract class ReductionExec extends AbstractExec{
 			List<Constraint> deactivatedConstraints = foreignKeyConstraintManager.deactivateConstraints(reductionMethod.getTableName(), getColumns(reductionMethod.getTableName(), reductionMethod.getSchemaName()), reductionMethod.getSchemaName());
 			allDeactivatedConstraints.addAll(deactivatedConstraints);
 			
-			executeReduction(reductionMethod);
+			int rowCount = executeReduction(reductionMethod);
 			
 			// run the reduction on all referencing tables
 			for (ReductionMethodReferencingTable referencingTable: reductionMethod.getReferencingTableDatas()) {
@@ -83,28 +83,25 @@ public abstract class ReductionExec extends AbstractExec{
 		}
 	}
 
-	protected void executeReduction(ReductionMethodDefinition reductionMethod) {
+	protected int executeReduction(ReductionMethodDefinition reductionMethod) {
 		
 		switch (reductionMethod.getReductionType()) {
 		case TRUNCATE:
 			String sql = createTruncateSql(reductionMethod);
-			execute(sql);
-			break;
+			return update(sql);
 
 		case DELETE_ALL:
 			sql = createDeleteAllSql(reductionMethod);
-			execute(sql);
-			break;
+			return update(sql);
 
 		case DELETE_WHERE:
 			sql = createDeleteSql(reductionMethod);
-			execute(sql);
-			break;
+			return update(sql);
 
 		case DEREFERENCE:
 			// it is sufficient to remove the Referencial Integrity when dereferencing was chosen
 			// this was already been done before
-			break;
+			return 0;
 			
 		default:
 			throw new RuntimeException("Usupported or unimplemented " + reductionMethod);

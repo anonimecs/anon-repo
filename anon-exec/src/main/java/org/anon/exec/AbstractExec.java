@@ -33,6 +33,8 @@ public abstract class AbstractExec {
 	@Autowired
 	protected DbConnectionFactory dbConnectionFactory;
 
+	@Autowired
+	protected GuiNotifier guiNotifier;
 
 	
 	protected DataSource dataSource;

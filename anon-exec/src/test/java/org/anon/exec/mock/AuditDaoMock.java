@@ -7,6 +7,8 @@ import org.anon.persistence.data.AnonymisedColumnData;
 import org.anon.persistence.data.audit.ExecutionColumnData;
 import org.anon.persistence.data.audit.ExecutionData;
 import org.anon.persistence.data.audit.ExecutionMethodData;
+import org.anon.persistence.data.audit.ReductionExecutionData;
+import org.anon.persistence.data.audit.RefTableReductionExecutionData;
 
 public class AuditDaoMock implements AuditDao {
 
@@ -56,6 +58,18 @@ public class AuditDaoMock implements AuditDao {
 	public ExecutionColumnData getLastExecutionColumnData(AnonymisedColumnData anonymisedColumnData) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public void save(ReductionExecutionData reductionExecutionData) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void save(RefTableReductionExecutionData data) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

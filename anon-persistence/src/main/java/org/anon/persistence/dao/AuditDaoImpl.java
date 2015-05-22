@@ -6,6 +6,8 @@ import org.anon.persistence.data.AnonymisedColumnData;
 import org.anon.persistence.data.audit.ExecutionColumnData;
 import org.anon.persistence.data.audit.ExecutionData;
 import org.anon.persistence.data.audit.ExecutionMethodData;
+import org.anon.persistence.data.audit.ReductionExecutionData;
+import org.anon.persistence.data.audit.RefTableReductionExecutionData;
 import org.hibernate.Hibernate;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -90,6 +92,24 @@ public class AuditDaoImpl implements AuditDao {
 		} catch (Exception e) {
 			return null;
 		}
+	}
+
+
+
+	@Override
+	public void save(ReductionExecutionData reductionExecutionData) {
+		Long id = (Long)sessionFactory.getCurrentSession().save(reductionExecutionData);
+		reductionExecutionData.setId(id);
+		
+	}
+
+
+
+	@Override
+	public void save(RefTableReductionExecutionData refTableReductionExecutionData) {
+		Long id = (Long)sessionFactory.getCurrentSession().save(refTableReductionExecutionData);
+		refTableReductionExecutionData.setId(id);
+		
 	}
 
 }

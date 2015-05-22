@@ -173,6 +173,29 @@ create table ReductionMethodReferencingTableData (
 )
 go
 
+create table ReductionExecutionData(
+    ID INT NOT NULL GENERATED ALWAYS AS IDENTITY primary key,
+    EXECUTION_ID INT NOT NULL,
+    REDUCTION_ID INT NOT NULL,
+    RUNTIMESEC int not null,
+    RESULTTEXT VARCHAR(1000),
+    status varchar(20) not null,
+    CONSTRAINT fk_ReductionExecution_Execution FOREIGN KEY (EXECUTION_ID) REFERENCES ExecutionData (ID),
+    CONSTRAINT fk_ReductionExecution_Method FOREIGN KEY (REDUCTION_ID) REFERENCES ReductionMethodData (ID)
+)
+go
+
+create table RefTableReductionExecutionData(
+    ID INT NOT NULL GENERATED ALWAYS AS IDENTITY primary key,
+    REDUCTION_ID INT NOT NULL,
+    REF_TABLE_ID INT NOT NULL,
+    RUNTIMESEC int not null,
+    RESULTTEXT VARCHAR(1000),
+    status varchar(20) not null,
+    CONSTRAINT fk_ReductionExecutionData FOREIGN KEY (REDUCTION_ID) REFERENCES ReductionExecutionData (ID),
+    CONSTRAINT fk_ReductionMethodReferencingTableData FOREIGN KEY (REF_TABLE_ID) REFERENCES ReductionMethodReferencingTableData (ID)
+)
+go
 
 INSERT INTO APP.SECURITYUSER(USERNAME, PASSWORD, NAME, SURNAME, ENABLED, ENCRYPTED) 
 	VALUES('admin', '123456', 'BuiltIn', 'User', 'Y', 'N')

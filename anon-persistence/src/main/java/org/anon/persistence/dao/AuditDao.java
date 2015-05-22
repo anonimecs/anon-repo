@@ -6,6 +6,8 @@ import org.anon.persistence.data.AnonymisedColumnData;
 import org.anon.persistence.data.audit.ExecutionColumnData;
 import org.anon.persistence.data.audit.ExecutionData;
 import org.anon.persistence.data.audit.ExecutionMethodData;
+import org.anon.persistence.data.audit.ReductionExecutionData;
+import org.anon.persistence.data.audit.RefTableReductionExecutionData;
 
 public interface AuditDao {
 
@@ -24,5 +26,9 @@ public interface AuditDao {
 	List<ExecutionColumnData> loadExecutionColumnDatas(ExecutionMethodData executionMethodData);
 
 	ExecutionColumnData getLastExecutionColumnData(AnonymisedColumnData anonymisedColumnData);
+
+	void save(ReductionExecutionData reductionExecutionData);
+
+	void save(RefTableReductionExecutionData data);
 
 }

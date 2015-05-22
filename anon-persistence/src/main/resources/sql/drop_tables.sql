@@ -1,3 +1,7 @@
+drop table RefTableReductionExecutionData
+go
+drop table ReductionExecutionData
+go
 drop table ReductionMethodReferencingTableData
 go
 drop table ReductionMethodData

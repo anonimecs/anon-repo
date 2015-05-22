@@ -8,16 +8,17 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 
 import org.anon.data.ReductionMethod;
-import org.anon.gui.BackingBase;
+import org.anon.exec.reduction.ReductionExec;
 import org.anon.service.reduce.ReduceService;
 
 @ManagedBean
 @ViewScoped
-public class ReductionExecBacking extends BackingBase{
+public class ReductionExecBacking extends AbstractExecBacking{
 	
 	@ManagedProperty(value="#{reduceService}")
 	private ReduceService reduceService;
 
+	
 	private List<? extends ReductionMethod> allReductionMethods;
 	private int tableCount;
 	
@@ -41,9 +42,22 @@ public class ReductionExecBacking extends BackingBase{
 	}
 	
 	public void onRunAll() {
-		// TODO Auto-generated method stub
+		try{
+			logDebug("running all reductions" );
+			final ReductionExec reductionExec = execFactory.createReductionExec(dbConnectionFactory.getDatabaseSpecifics(), infoBacking.getUserName());
+			reductionExec.setReductionMethods(allReductionMethods);
+			reductionExec.setDataSource(dbConnectionFactory.getConnection().getDataSource());
+	
+			runAllBackground(reductionExec);
+		} catch (Exception e) {
+			logError(e.getMessage(), e);
+			showErrorInGui("Run failed: " + e.getMessage());
+		} finally {
+			guiNotifier.refreshExecGui(null);
+		}
 
 	}
+
 	
 	public void setReduceService(ReduceService reduceService) {
 		this.reduceService = reduceService;
@@ -56,4 +70,5 @@ public class ReductionExecBacking extends BackingBase{
 	public int getTableCount() {
 		return tableCount;
 	}
+	
 }

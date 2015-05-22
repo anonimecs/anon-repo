@@ -23,8 +23,6 @@ public abstract class AnonExec extends AbstractExec{
 	@Qualifier("execConfig")
 	protected AnonConfig execConfig;
 	
-	@Autowired
-	protected GuiNotifier guiNotifier;
 	
 	
 	@Override
