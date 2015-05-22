@@ -13,5 +13,10 @@ public class ConsoleNotifier implements GuiNotifier {
 		}
 
 	}
+	
+	@Override
+	public void refreshReductionExecGui() {
+		logger.info("Reduction event.");
+	}
 
 }

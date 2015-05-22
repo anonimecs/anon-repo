@@ -9,7 +9,7 @@ import org.apache.log4j.Logger;
 
 public class MethodExecution {
 	protected Logger logger = Logger.getLogger(getClass());
-	public enum Status {NOT_RUN, RUNNING, ANONYMISED, FAILED}
+	public enum Status {NOT_RUN, RUNNING, ANONYMISED, FAILED, REDUCED}
 	
 	private AnonymisationMethod anonymisationMethod;
 	private Status status = Status.NOT_RUN;

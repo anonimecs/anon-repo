@@ -10,4 +10,9 @@ public class NullGuiNotifier implements GuiNotifier {
 	public void refreshExecGui(String message) {
 	}
 
+	@Override
+	public void refreshReductionExecGui() {
+		
+	}
+
 }

@@ -9,15 +9,21 @@ import org.anon.data.ColumnExecution;
 import org.anon.data.ExecutionMessage;
 import org.anon.data.MethodExecution;
 import org.anon.data.MethodExecution.Status;
+import org.anon.data.ReductionMethod;
+import org.anon.data.ReductionMethodReferencingTable;
 import org.anon.persistence.dao.AuditDao;
 import org.anon.persistence.dao.EntitiesDao;
 import org.anon.persistence.data.AnonymisationMethodData;
 import org.anon.persistence.data.AnonymisedColumnData;
 import org.anon.persistence.data.DatabaseConfig;
+import org.anon.persistence.data.ReductionMethodData;
+import org.anon.persistence.data.ReductionMethodReferencingTableData;
 import org.anon.persistence.data.audit.ExecutionColumnData;
 import org.anon.persistence.data.audit.ExecutionData;
 import org.anon.persistence.data.audit.ExecutionMessageData;
 import org.anon.persistence.data.audit.ExecutionMethodData;
+import org.anon.persistence.data.audit.ReductionExecutionData;
+import org.anon.persistence.data.audit.RefTableReductionExecutionData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -113,6 +119,36 @@ public class ExecAuditorImpl implements ExecAuditor{
 			return "Error : "+ methodExecution.getLastException().getMessage();
 		}
 		return null;
+		
+	}
+
+	@Override
+	public ReductionExecutionData auditReduction(ReductionMethod reductionMethod, int rowCount) {
+		ReductionExecutionData reductionExecutionData  = new ReductionExecutionData();
+
+		reductionExecutionData.setReductionMethodData((ReductionMethodData)reductionMethod);
+		reductionExecutionData.setExecutionData(executionData);
+		reductionExecutionData.setResultText("Row Count :" + rowCount);
+		reductionExecutionData.setRuntimeSec(0l);
+		reductionExecutionData.setStatusEnum(Status.REDUCED);
+
+		auditDao.save(reductionExecutionData);
+		
+		return reductionExecutionData;
+	}
+
+	@Override
+	public void auditRefTableReduction(ReductionExecutionData reductionExecutionData, ReductionMethodReferencingTable referencingTable, int rowCount) {
+		RefTableReductionExecutionData data = new RefTableReductionExecutionData();
+
+		data.setReductionExecutionData(reductionExecutionData);
+		data.setReductionMethodReferencingTableData((ReductionMethodReferencingTableData)referencingTable);
+		data.setResultText("Row Count :" + rowCount);
+		data.setRuntimeSec(0l);
+		data.setStatusEnum(Status.REDUCED);
+
+		auditDao.save(data);
+		
 		
 	}
 

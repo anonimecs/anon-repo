@@ -11,6 +11,7 @@ import org.anon.data.ReductionMethodDefinition;
 import org.anon.data.ReductionMethodReferencingTable;
 import org.anon.data.ReductionType;
 import org.anon.exec.AbstractExec;
+import org.anon.persistence.data.audit.ReductionExecutionData;
 import org.anon.vendor.constraint.Constraint;
 import org.anon.vendor.constraint.referential.ForeignKeyConstraintManager;
 
@@ -59,6 +60,8 @@ public abstract class ReductionExec extends AbstractExec{
 			allDeactivatedConstraints.addAll(deactivatedConstraints);
 			
 			int rowCount = executeReduction(reductionMethod);
+			ReductionExecutionData reductionExecutionData = execAuditor.auditReduction(reductionMethod, rowCount);
+			guiNotifier.refreshReductionExecGui();
 			
 			// run the reduction on all referencing tables
 			for (ReductionMethodReferencingTable referencingTable: reductionMethod.getReferencingTableDatas()) {
@@ -69,7 +72,10 @@ public abstract class ReductionExec extends AbstractExec{
 				
 				if(reductionMethod.getReductionType() != ReductionType.DEREFERENCE){
 					allDeactivatedConstraints.addAll(deactivatedConstraints);
-					executeReduction(referencingTable);
+					rowCount = executeReduction(referencingTable);
+					execAuditor.auditRefTableReduction(reductionExecutionData, referencingTable, rowCount);
+					guiNotifier.refreshReductionExecGui();
+
 				}
 
 					
