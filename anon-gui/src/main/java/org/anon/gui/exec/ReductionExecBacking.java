@@ -5,20 +5,24 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
-import javax.faces.bean.ViewScoped;
+import javax.faces.bean.SessionScoped;
 
 import org.anon.data.ReductionMethod;
+import org.anon.exec.audit.ExecAuditor;
 import org.anon.exec.reduction.ReductionExec;
+import org.anon.persistence.data.audit.ReductionExecutionData;
 import org.anon.service.reduce.ReduceService;
 
 @ManagedBean
-@ViewScoped
+@SessionScoped
 public class ReductionExecBacking extends AbstractExecBacking{
 	
 	@ManagedProperty(value="#{reduceService}")
 	private ReduceService reduceService;
 
-	
+	@ManagedProperty(value="#{execAuditorImpl}")
+	private ExecAuditor execAuditor;
+
 	private List<? extends ReductionMethod> allReductionMethods;
 	private int tableCount;
 	
@@ -26,6 +30,15 @@ public class ReductionExecBacking extends AbstractExecBacking{
 	public void postConstruct(){
 		allReductionMethods = reduceService.loadPersistedReductions();
 		tableCount = calcTableCount();
+	}
+	
+	public ReductionExecutionData loadReductionExecutionData(ReductionMethod reductionMethod){
+		if(executionData != null){
+			return execAuditor.loadReductionExecutionData(executionData, reductionMethod);
+		}
+		else {
+			return execAuditor.loadLastReductionExecutionData(reductionMethod);
+		}
 	}
 	
 	private int calcTableCount() {
@@ -71,4 +84,9 @@ public class ReductionExecBacking extends AbstractExecBacking{
 		return tableCount;
 	}
 	
+	public void setExecAuditor(ExecAuditor execAuditor) {
+		this.execAuditor = execAuditor;
+	}
+	
+
 }

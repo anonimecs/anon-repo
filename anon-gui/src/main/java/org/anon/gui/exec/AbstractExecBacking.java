@@ -9,6 +9,7 @@ import org.anon.exec.ExecFactory;
 import org.anon.exec.GuiNotifier;
 import org.anon.gui.BackingBase;
 import org.anon.gui.admin.InfoBacking;
+import org.anon.persistence.data.audit.ExecutionData;
 import org.anon.service.DbConnectionFactory;
 
 public class AbstractExecBacking extends BackingBase{
@@ -28,14 +29,18 @@ public class AbstractExecBacking extends BackingBase{
 	@ManagedProperty(value="#{guiNotifierImpl}")
 	protected GuiNotifier guiNotifier;
 
+	protected ExecutionData executionData;
+
 	
 	protected void runAllBackground(final AbstractExec abstractExec) throws InterruptedException {
+		executionData = abstractExec.createExecution("Run all");
 		execBackingExecutor.execute(new Runnable() {
 			
 			@Override
 			public void run() {
 				try {
 					abstractExec.runAll();
+					executionData = null;
 				} catch (Exception e) {
 					logError(e.getMessage(), e);
 				} finally {
@@ -66,6 +71,9 @@ public class AbstractExecBacking extends BackingBase{
 
 	public void setExecFactory(ExecFactory execFactory) {
 		this.execFactory = execFactory;
+	}
+	public ExecutionData getExecutionData() {
+		return executionData;
 	}
 
 }

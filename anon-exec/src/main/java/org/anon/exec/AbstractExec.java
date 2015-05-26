@@ -7,6 +7,7 @@ import javax.sql.DataSource;
 import org.anon.exec.audit.ExecAuditor;
 import org.anon.license.LicenseException;
 import org.anon.license.LicenseManager;
+import org.anon.persistence.data.audit.ExecutionData;
 import org.anon.service.DbConnectionFactory;
 import org.anon.vendor.DatabaseSpecifics;
 import org.anon.vendor.constraint.ConstraintBundleFactory;
@@ -40,11 +41,19 @@ public abstract class AbstractExec {
 	protected DataSource dataSource;
 	protected String userName;
 	protected int tablesProcessed;
+	protected ExecutionData executionData;
+
 
 	protected abstract DatabaseSpecifics getDatabaseSpecifics();
 
 	public abstract void runAll();
 	
+	public ExecutionData createExecution(String description) {
+		executionData = execAuditor.insertExecution(description, userName, dbConnectionFactory.getDatabaseConfig());
+		return executionData;
+	}
+
+
 	protected void assertDataSourceSet() {
 		if (dataSource == null){
 			throw new RuntimeException("Data Source was not set");

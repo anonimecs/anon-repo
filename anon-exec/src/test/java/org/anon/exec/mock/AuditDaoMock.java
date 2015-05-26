@@ -2,6 +2,7 @@ package org.anon.exec.mock;
 
 import java.util.List;
 
+import org.anon.data.ReductionMethod;
 import org.anon.persistence.dao.AuditDao;
 import org.anon.persistence.data.AnonymisedColumnData;
 import org.anon.persistence.data.audit.ExecutionColumnData;
@@ -70,6 +71,19 @@ public class AuditDaoMock implements AuditDao {
 	public void save(RefTableReductionExecutionData data) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public ReductionExecutionData loadReductionExecutionData(ReductionMethod reductionMethod,
+			ExecutionData executionData) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	@Override
+	public ReductionExecutionData loadLastReductionExecutionData(ReductionMethod reductionMethod) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

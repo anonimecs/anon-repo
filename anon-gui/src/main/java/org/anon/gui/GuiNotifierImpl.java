@@ -17,9 +17,9 @@ public class GuiNotifierImpl implements GuiNotifier{
 		eventBus.publish("/execEvent", "event");
 	}
 	
-	@Override
-	public void refreshReductionExecGui() {
-		EventBus eventBus = EventBusFactory.getDefault().eventBus();
-		eventBus.publish("/reductionExecEvent", "event");
-	}
+//	@Override
+//	public void refreshReductionExecGui() {
+//		EventBus eventBus = EventBusFactory.getDefault().eventBus();
+//		eventBus.publish("/reductionExecEvent", "event");
+//	}
 }

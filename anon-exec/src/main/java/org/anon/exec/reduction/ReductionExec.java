@@ -25,24 +25,30 @@ public abstract class ReductionExec extends AbstractExec{
 		tablesProcessed = 0; 
 		
 		try {
-			execAuditor.insertExecution("Run All Reductions", userName, dbConnectionFactory.getDatabaseConfig());
+			if(executionData == null){
+				createExecution("Run All Reductions");
+			}
 			for (ReductionMethod reductionMethod : reductionMethods) {
 				do_run(reductionMethod);
 			}
-			execAuditor.executionFinished();
+			execAuditor.executionFinished(executionData);
 		} catch (RuntimeException e){
-			execAuditor.executionFailed(e.getMessage());
+			execAuditor.executionFailed(executionData, e.getMessage());
 			throw e;
 		}	
 	}
+
 	
 	public void run(ReductionMethod reductionMethod) {
 		try {
-			execAuditor.insertExecution("Run One Reduction", userName, dbConnectionFactory.getDatabaseConfig());
+			if(executionData == null){
+				createExecution("Run One Reduction " + reductionMethod);
+			}
+
 			do_run(reductionMethod);
-			execAuditor.executionFinished();
+			execAuditor.executionFinished(executionData);
 		} catch (RuntimeException e){
-			execAuditor.executionFailed(e.getMessage());
+			execAuditor.executionFailed(executionData, e.getMessage());
 			throw e;
 		}
 	}
@@ -60,8 +66,8 @@ public abstract class ReductionExec extends AbstractExec{
 			allDeactivatedConstraints.addAll(deactivatedConstraints);
 			
 			int rowCount = executeReduction(reductionMethod);
-			ReductionExecutionData reductionExecutionData = execAuditor.auditReduction(reductionMethod, rowCount);
-			guiNotifier.refreshReductionExecGui();
+			ReductionExecutionData reductionExecutionData = execAuditor.auditReduction(executionData, reductionMethod, rowCount);
+			guiNotifier.refreshExecGui(null);
 			
 			// run the reduction on all referencing tables
 			for (ReductionMethodReferencingTable referencingTable: reductionMethod.getReferencingTableDatas()) {
@@ -74,7 +80,7 @@ public abstract class ReductionExec extends AbstractExec{
 					allDeactivatedConstraints.addAll(deactivatedConstraints);
 					rowCount = executeReduction(referencingTable);
 					execAuditor.auditRefTableReduction(reductionExecutionData, referencingTable, rowCount);
-					guiNotifier.refreshReductionExecGui();
+					guiNotifier.refreshExecGui(null);
 
 				}
 

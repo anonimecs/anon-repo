@@ -3,19 +3,19 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
 	xmlns:p="http://primefaces.org/ui"
 	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
 	template="/layout/layout.xhtml">
 
 
 	<ui:define name="insert-content">
-
 		<h:form id="execForm">
 		
 			<p:panel id="executionPanel" header="Run your reductions">	
 			
 				<h:panelGrid columns="3" style="padding-top:15px;">
-					<p:commandButton id="execAllBtn" value="Run All" action="#{reductionExecBacking.onRunAll()}" disabled=" #{reductionExecBacking.tableCount == 0}"/>
+					<p:commandButton id="execAllBtn" value="Run All" action="#{reductionExecBacking.onRunAll()}" disabled=" #{reductionExecBacking.tableCount == 0 or reductionExecBacking.executionData != null}"/>
 					<h:outputLabel for="execAllBtn" value="#{reductionExecBacking.allReductionMethods.size()} reductions of #{reductionExecBacking.tableCount} tables"/>
 					
 					<p:lightBox iframe="true" id="anonimexHomeLightBox1" rendered="#{licenseManager.reachedMaxTablesReduced(reductionExecBacking.tableCount)}" > 
@@ -27,6 +27,9 @@
 				
 				<p:accordionPanel id="reducePanel" value="#{reductionExecBacking.allReductionMethods}" var="reductionMethod" multiple="true" activeIndex="0,1,2,3,4,5,6,7,8,9,10">
 					<p:tab title="Reduction Type: #{reductionMethod.reductionType}" >
+						<c:set var="reductionExecutionData" value="#{reductionExecBacking.loadReductionExecutionData(reductionMethod)}" />
+
+					
 						<h:panelGrid columns="2" style="width:300px" >
 						
 							<h:outputLabel value="Table" for="tableName"/>
@@ -35,6 +38,12 @@
 							<h:outputText id="reductionType" value="#{reductionMethod.reductionType}"/>
 							<h:outputLabel value="Where Condition" for="whereCondition" rendered="#{'DELETE_WHERE' == reductionMethod.reductionType}"/>
 							<h:outputText id="whereCondition" value="#{reductionMethod.whereCondition}"  rendered="#{'DELETE_WHERE' == reductionMethod.reductionType}"/>
+							<h:outputLabel value="Status" for="status"/>
+							<h:outputText id="status" value="#{reductionExecutionData.status}" rendered="#{null != reductionExecutionData}"/>
+							<h:outputLabel value="Result" for="result" rendered="#{null != reductionExecutionData}"/>
+							<h:outputText id="result" value="#{reductionExecutionData.resultText}" rendered="#{null != reductionExecutionData}"/>
+							<h:outputText value="#{reductionExecutionData.executionData.startTime}" rendered="#{null != reductionExecutionData}" converter="weekTimestampConverter"/>
+							<h:outputText value="by #{reductionExecutionData.executionData.userName}" rendered="#{null != reductionExecutionData}"/>
 				
 			            </h:panelGrid>
 
@@ -52,7 +61,9 @@
 
 		</h:form>
 
-
+		<p:socket channel="/execEvent">
+        	<p:ajax event="message" update=":execForm:executionPanel" global="false" />
+        </p:socket>
 	
 	</ui:define>
 

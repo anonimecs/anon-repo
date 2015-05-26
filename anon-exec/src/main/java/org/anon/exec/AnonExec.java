@@ -30,24 +30,28 @@ public abstract class AnonExec extends AbstractExec{
 		tablesProcessed = 0; 
 		
 		try {
-			execAuditor.insertExecution("Run All", userName,dbConnectionFactory.getDatabaseConfig());
+			if(executionData == null){
+				createExecution("Run All");
+			}
 			for (AnonymisationMethod anonymisationMethod : execConfig.getAnonMethods()) {
 					do_run(anonymisationMethod);
 			}
-			execAuditor.executionFinished();
+			execAuditor.executionFinished(executionData);
 		} catch (RuntimeException e){
-			execAuditor.executionFailed(e.getMessage());
+			execAuditor.executionFailed(executionData, e.getMessage());
 			throw e;
 		}
 	}
 
 	public void run(AnonymisationMethod anonymisationMethod) {
 		try {
-			execAuditor.insertExecution("Run Method Only", userName,dbConnectionFactory.getDatabaseConfig());
+			if(executionData == null){
+				createExecution("Run Method Only "  +anonymisationMethod);
+			}
 			do_run(anonymisationMethod);
-			execAuditor.executionFinished();
+			execAuditor.executionFinished(executionData);
 		} catch (RuntimeException e){
-			execAuditor.executionFailed(e.getMessage());
+			execAuditor.executionFailed(executionData, e.getMessage());
 			throw e;
 		}
 	}
@@ -106,7 +110,7 @@ public abstract class AnonExec extends AbstractExec{
 		}
 		finally{
 			anonymisationMethod.cleanupInDb();
-			execAuditor.saveMethodExecution(methodExecution);
+			execAuditor.saveMethodExecution(executionData, methodExecution);
 		}
 	}
 	

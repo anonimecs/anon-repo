@@ -36,38 +36,43 @@ public class ExecAuditorImpl implements ExecAuditor{
 	@Autowired
 	protected EntitiesDao entitiesDao; 
 
-	ExecutionData executionData;
 	
 	@PostConstruct
 	public void init() {
 	}
 	
-	public void insertExecution(String description, String username, DatabaseConfig databaseConfig) {
-		executionData = new ExecutionData();
+	@Override
+	public ExecutionData insertExecution(String description, String username, DatabaseConfig databaseConfig) {
+		ExecutionData executionData = new ExecutionData();
 		executionData.setDescription(description);
 		executionData.setStartTime(new Date());
 		executionData.setUserName(username);
 		executionData.setStatusEnum(Status.RUNNING);
 		executionData.setDatabaseConfig(databaseConfig);
 		
-		auditDao.save(executionData);		
+		auditDao.save(executionData);
+		
+		return executionData;
 	}
 
-	public void executionFinished() {
+	@Override
+	public void executionFinished(ExecutionData executionData) {
 		executionData.setEndTime(new Date());
 		executionData.setStatusEnum(Status.ANONYMISED);
 		auditDao.merge(executionData);		
 		
 	}
 
-	public void executionFailed(String message) {
+	@Override
+	public void executionFailed(ExecutionData executionData, String message) {
 		executionData.setEndTime(new Date());
 		executionData.setStatusEnum(Status.FAILED);
 		executionData.addDescription(message);
 		auditDao.merge(executionData);		
 	}
-
-	public void saveMethodExecution(MethodExecution methodExecution) {
+	
+	@Override
+	public void saveMethodExecution(ExecutionData executionData, MethodExecution methodExecution) {
 		ExecutionMethodData executionMethodData  = new ExecutionMethodData();
 		AnonymisationMethodData anonymisationMethodData = entitiesDao.loadAnonymisationMethodData(methodExecution.getAnonymisationMethod().getId());
 		executionMethodData.setAnonymisationMethodData(anonymisationMethodData);
@@ -123,7 +128,7 @@ public class ExecAuditorImpl implements ExecAuditor{
 	}
 
 	@Override
-	public ReductionExecutionData auditReduction(ReductionMethod reductionMethod, int rowCount) {
+	public ReductionExecutionData auditReduction(ExecutionData executionData, ReductionMethod reductionMethod, int rowCount) {
 		ReductionExecutionData reductionExecutionData  = new ReductionExecutionData();
 
 		reductionExecutionData.setReductionMethodData((ReductionMethodData)reductionMethod);
@@ -150,6 +155,19 @@ public class ExecAuditorImpl implements ExecAuditor{
 		auditDao.save(data);
 		
 		
+	}
+
+	@Override
+	public ReductionExecutionData loadReductionExecutionData(ExecutionData executionData, ReductionMethod reductionMethod) {
+		if(executionData == null){
+			return null;
+		}
+		return auditDao.loadReductionExecutionData(reductionMethod, executionData);
+	}
+
+	@Override
+	public ReductionExecutionData loadLastReductionExecutionData(ReductionMethod reductionMethod) {
+		return auditDao.loadLastReductionExecutionData(reductionMethod);
 	}
 
 

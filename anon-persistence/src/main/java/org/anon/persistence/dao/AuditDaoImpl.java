@@ -2,6 +2,7 @@ package org.anon.persistence.dao;
 
 import java.util.List;
 
+import org.anon.data.ReductionMethod;
 import org.anon.persistence.data.AnonymisedColumnData;
 import org.anon.persistence.data.audit.ExecutionColumnData;
 import org.anon.persistence.data.audit.ExecutionData;
@@ -51,6 +52,29 @@ public class AuditDaoImpl implements AuditDao {
 	public void save(ExecutionColumnData executionColumnData) {
 		Long id = (Long)sessionFactory.getCurrentSession().save(executionColumnData);
 		executionColumnData.setId(id);
+	}
+
+
+	
+	@Override
+	public ReductionExecutionData loadReductionExecutionData(ReductionMethod reductionMethod, ExecutionData executionData) {
+		return (ReductionExecutionData)sessionFactory.getCurrentSession()
+				.createQuery("from ReductionExecutionData where reductionMethodData = ? and executionData = ?")
+				.setEntity(0, reductionMethod).setEntity(1, executionData)
+				.uniqueResult();
+	}
+
+	@Override
+	public ReductionExecutionData loadLastReductionExecutionData(ReductionMethod reductionMethod) {
+		List<ReductionExecutionData> list = sessionFactory.getCurrentSession()
+				.createQuery("from ReductionExecutionData where reductionMethodData = ? order by id desc")
+				.setEntity(0, reductionMethod)
+				.list();
+		if(! list.isEmpty()){
+			return list.get(0);
+		}
+		
+		return null;
 	}
 
 
