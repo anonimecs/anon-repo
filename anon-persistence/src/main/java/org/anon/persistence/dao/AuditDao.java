@@ -3,6 +3,7 @@ package org.anon.persistence.dao;
 import java.util.List;
 
 import org.anon.data.ReductionMethod;
+import org.anon.data.ReductionMethodReferencingTable;
 import org.anon.persistence.data.AnonymisedColumnData;
 import org.anon.persistence.data.audit.ExecutionColumnData;
 import org.anon.persistence.data.audit.ExecutionData;
@@ -35,5 +36,11 @@ public interface AuditDao {
 	ReductionExecutionData loadReductionExecutionData(ReductionMethod reductionMethod, ExecutionData executionData);
 
 	ReductionExecutionData loadLastReductionExecutionData(ReductionMethod reductionMethod);
+
+	RefTableReductionExecutionData loadRefTableReductionExecutionData(ReductionMethod reductionMethod,
+			ExecutionData executionData, ReductionMethodReferencingTable reductionMethodReferencingTable);
+
+	RefTableReductionExecutionData loadLastRefTableReductionExecutionData(ReductionMethod reductionMethod,
+			ReductionMethodReferencingTable reductionMethodReferencingTable);
 
 }

@@ -5,16 +5,18 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
-import javax.faces.bean.SessionScoped;
+import javax.faces.bean.ViewScoped;
 
 import org.anon.data.ReductionMethod;
+import org.anon.data.ReductionMethodReferencingTable;
 import org.anon.exec.audit.ExecAuditor;
 import org.anon.exec.reduction.ReductionExec;
 import org.anon.persistence.data.audit.ReductionExecutionData;
+import org.anon.persistence.data.audit.RefTableReductionExecutionData;
 import org.anon.service.reduce.ReduceService;
 
 @ManagedBean
-@SessionScoped
+@ViewScoped
 public class ReductionExecBacking extends AbstractExecBacking{
 	
 	@ManagedProperty(value="#{reduceService}")
@@ -37,8 +39,19 @@ public class ReductionExecBacking extends AbstractExecBacking{
 			return execAuditor.loadReductionExecutionData(executionData, reductionMethod);
 		}
 		else {
-			return execAuditor.loadLastReductionExecutionData(reductionMethod);
+			ReductionExecutionData executionData = execAuditor.loadLastReductionExecutionData(reductionMethod);
+			return executionData;
 		}
+	}
+	
+	public RefTableReductionExecutionData loadRefTableReductionExecutionData(ReductionMethodReferencingTable reductionMethodReferencingTable,ReductionMethod reductionMethod ){
+		if(executionData != null){
+			return execAuditor.loadRefTableReductionExecutionData(executionData, reductionMethod, reductionMethodReferencingTable);
+		}
+		else {
+			return  execAuditor.loadLastRefTableReductionExecutionData(reductionMethod, reductionMethodReferencingTable);
+		}
+		
 	}
 	
 	private int calcTableCount() {

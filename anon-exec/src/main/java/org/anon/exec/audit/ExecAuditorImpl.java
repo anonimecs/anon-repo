@@ -128,14 +128,14 @@ public class ExecAuditorImpl implements ExecAuditor{
 	}
 
 	@Override
-	public ReductionExecutionData auditReduction(ExecutionData executionData, ReductionMethod reductionMethod, int rowCount) {
+	public ReductionExecutionData auditReduction(ExecutionData executionData, ReductionMethod reductionMethod, String resultText, Status status) {
 		ReductionExecutionData reductionExecutionData  = new ReductionExecutionData();
 
 		reductionExecutionData.setReductionMethodData((ReductionMethodData)reductionMethod);
 		reductionExecutionData.setExecutionData(executionData);
-		reductionExecutionData.setResultText("Row Count :" + rowCount);
+		reductionExecutionData.setResultText(resultText);
 		reductionExecutionData.setRuntimeSec(0l);
-		reductionExecutionData.setStatusEnum(Status.REDUCED);
+		reductionExecutionData.setStatusEnum(status);
 
 		auditDao.save(reductionExecutionData);
 		
@@ -143,14 +143,14 @@ public class ExecAuditorImpl implements ExecAuditor{
 	}
 
 	@Override
-	public void auditRefTableReduction(ReductionExecutionData reductionExecutionData, ReductionMethodReferencingTable referencingTable, int rowCount) {
+	public void auditRefTableReduction(ReductionExecutionData reductionExecutionData, ReductionMethodReferencingTable referencingTable, String resultText, Status status) {
 		RefTableReductionExecutionData data = new RefTableReductionExecutionData();
 
 		data.setReductionExecutionData(reductionExecutionData);
 		data.setReductionMethodReferencingTableData((ReductionMethodReferencingTableData)referencingTable);
-		data.setResultText("Row Count :" + rowCount);
+		data.setResultText(resultText);
 		data.setRuntimeSec(0l);
-		data.setStatusEnum(Status.REDUCED);
+		data.setStatusEnum(status);
 
 		auditDao.save(data);
 		
@@ -168,6 +168,18 @@ public class ExecAuditorImpl implements ExecAuditor{
 	@Override
 	public ReductionExecutionData loadLastReductionExecutionData(ReductionMethod reductionMethod) {
 		return auditDao.loadLastReductionExecutionData(reductionMethod);
+	}
+
+	@Override
+	public RefTableReductionExecutionData loadRefTableReductionExecutionData(ExecutionData executionData,
+			ReductionMethod reductionMethod, ReductionMethodReferencingTable reductionMethodReferencingTable) {
+		return auditDao.loadRefTableReductionExecutionData(reductionMethod, executionData, reductionMethodReferencingTable);
+	}
+
+	@Override
+	public RefTableReductionExecutionData loadLastRefTableReductionExecutionData(ReductionMethod reductionMethod,
+			ReductionMethodReferencingTable reductionMethodReferencingTable) {
+		return  auditDao.loadLastRefTableReductionExecutionData(reductionMethod, reductionMethodReferencingTable);
 	}
 
 

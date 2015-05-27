@@ -91,8 +91,10 @@ public class EntitiesDaoImpl implements EntitiesDao {
 	
 	@Override
 	public List<ReductionMethodData> loadAllReductionMethods(DatabaseConfig databaseConfig) {
+		String hql = "from ReductionMethodData where databaseConfigId= :databaseConfigId";
 		@SuppressWarnings("unchecked")
-		List<ReductionMethodData> res = sessionFactory.getCurrentSession().createCriteria(ReductionMethodData.class).add(Restrictions.eq("databaseConfigId", databaseConfig.getId())).list();
+		List<ReductionMethodData> res = sessionFactory.getCurrentSession().createQuery(hql).setLong("databaseConfigId", databaseConfig.getId()).list();
+//		List<ReductionMethodData> res = sessionFactory.getCurrentSession().createCriteria(ReductionMethodData.class).add(Restrictions.eq("databaseConfigId", databaseConfig.getId())).list();
 		return res;
 	}
 	

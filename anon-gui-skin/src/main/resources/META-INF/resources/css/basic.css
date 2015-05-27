@@ -66,7 +66,7 @@ body {
 	background-color: #FFE2C9; /*orange*/
 }
 
-.panelBgColor_ANONYMISED {
+.panelBgColor_ANONYMISED, .panelBgColor_REDUCED {
 	background-color: #CCEECC;
 }
 

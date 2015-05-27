@@ -45,6 +45,12 @@
 				
 			</h:panelGrid>
 			
+			<h:panelGrid id="buttons" columns="3" cellpadding="5">
+				<p:commandButton value="Test" actionListener="#{reduceBacking.onTest()}" update="configureForm"/>
+				<p:commandButton value="Save" actionListener="#{reduceBacking.onSave()}" rendered="#{null == reduceBacking.reductionMethodData and null != reduceBacking.reduceTestResult}" update="buttons"/>
+				<p:commandButton value="Delete" actionListener="#{reduceBacking.onDelete()}" rendered="#{null != reduceBacking.reductionMethodData}" update="configureForm"/>
+			</h:panelGrid>
+			
 			<p:dataTable id="relatedTables"  
 	        	value="#{reduceBacking.relatedTables}" var="relatedTable"
 	        	scrollable="true"
@@ -83,11 +89,7 @@
 			</p:dataTable>
 		
 		
-			<h:panelGrid id="buttons" columns="3" cellpadding="5">
-				<p:commandButton value="Test" actionListener="#{reduceBacking.onTest()}" update="configureForm"/>
-				<p:commandButton value="Save" actionListener="#{reduceBacking.onSave()}" rendered="#{null == reduceBacking.reductionMethodData and null != reduceBacking.reduceTestResult}" update="buttons"/>
-				<p:commandButton value="Delete" actionListener="#{reduceBacking.onDelete()}" rendered="#{null != reduceBacking.reductionMethodData}" update="configureForm"/>
-			</h:panelGrid>
+
 		
 		</h:form>
 	

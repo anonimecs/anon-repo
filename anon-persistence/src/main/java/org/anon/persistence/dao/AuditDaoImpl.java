@@ -3,6 +3,7 @@ package org.anon.persistence.dao;
 import java.util.List;
 
 import org.anon.data.ReductionMethod;
+import org.anon.data.ReductionMethodReferencingTable;
 import org.anon.persistence.data.AnonymisedColumnData;
 import org.anon.persistence.data.audit.ExecutionColumnData;
 import org.anon.persistence.data.audit.ExecutionData;
@@ -65,6 +66,21 @@ public class AuditDaoImpl implements AuditDao {
 	}
 
 	@Override
+	public RefTableReductionExecutionData loadRefTableReductionExecutionData(ReductionMethod reductionMethod,
+			ExecutionData executionData, ReductionMethodReferencingTable reductionMethodReferencingTable) {
+		return (RefTableReductionExecutionData)sessionFactory.getCurrentSession()
+				.createQuery("from RefTableReductionExecutionData x "
+						   + "where x.reductionExecutionData.reductionMethodData = ? "
+						   + "and x.reductionExecutionData.executionData = ? "
+						   + "and x.reductionMethodReferencingTableData = ?")
+				.setEntity(0, reductionMethod).setEntity(1, executionData).setEntity(2, reductionMethodReferencingTable)
+				.uniqueResult();
+
+	}
+
+
+
+	@Override
 	public ReductionExecutionData loadLastReductionExecutionData(ReductionMethod reductionMethod) {
 		List<ReductionExecutionData> list = sessionFactory.getCurrentSession()
 				.createQuery("from ReductionExecutionData where reductionMethodData = ? order by id desc")
@@ -75,6 +91,23 @@ public class AuditDaoImpl implements AuditDao {
 		}
 		
 		return null;
+	}
+
+
+
+	@Override
+	public RefTableReductionExecutionData loadLastRefTableReductionExecutionData(ReductionMethod reductionMethod,
+			ReductionMethodReferencingTable reductionMethodReferencingTable) {
+		List<RefTableReductionExecutionData> list = sessionFactory.getCurrentSession()
+				.createQuery("from RefTableReductionExecutionData where reductionMethodReferencingTableData = ? order by id desc")
+				.setEntity(0, reductionMethodReferencingTable)
+				.list();
+		if(! list.isEmpty()){
+			return list.get(0);
+		}
+		
+		return null;
+
 	}
 
 

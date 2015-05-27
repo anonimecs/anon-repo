@@ -6,6 +6,7 @@ import java.util.List;
 import org.anon.AbstractDbConnection;
 import org.anon.data.DatabaseColumnInfo;
 import org.anon.data.DatabaseTableInfo;
+import org.anon.data.MethodExecution.Status;
 import org.anon.data.ReductionMethod;
 import org.anon.data.ReductionMethodDefinition;
 import org.anon.data.ReductionMethodReferencingTable;
@@ -60,27 +61,39 @@ public abstract class ReductionExec extends AbstractExec{
 		
 		try{
 			List<Constraint> allDeactivatedConstraints = new ArrayList<>();
-			
+			ReductionExecutionData reductionExecutionData = null;
 			ForeignKeyConstraintManager foreignKeyConstraintManager = constraintBundleFactory.createForeignKeyConstraintManager(getDatabaseSpecifics() , dataSource);
-			List<Constraint> deactivatedConstraints = foreignKeyConstraintManager.deactivateConstraints(reductionMethod.getTableName(), getColumns(reductionMethod.getTableName(), reductionMethod.getSchemaName()), reductionMethod.getSchemaName());
-			allDeactivatedConstraints.addAll(deactivatedConstraints);
 			
-			int rowCount = executeReduction(reductionMethod);
-			ReductionExecutionData reductionExecutionData = execAuditor.auditReduction(executionData, reductionMethod, rowCount);
-			guiNotifier.refreshExecGui(null);
+			try{
+				List<Constraint> deactivatedConstraints = foreignKeyConstraintManager.deactivateConstraints(reductionMethod.getTableName(), getColumns(reductionMethod.getTableName(), reductionMethod.getSchemaName()), reductionMethod.getSchemaName());
+				allDeactivatedConstraints.addAll(deactivatedConstraints);
+				int rowCount = executeReduction(reductionMethod);
+				reductionExecutionData = execAuditor.auditReduction(executionData, reductionMethod, "Row Count: " + rowCount, Status.REDUCED);
+			} catch (RuntimeException e){
+				reductionExecutionData = execAuditor.auditReduction(executionData, reductionMethod, e.getMessage(), Status.FAILED);
+				throw e;
+			} finally{
+				guiNotifier.refreshExecGui(null);
+			}
 			
 			// run the reduction on all referencing tables
 			for (ReductionMethodReferencingTable referencingTable: reductionMethod.getReferencingTableDatas()) {
 				assertFreeEditionReduceTables();
 				
-				deactivatedConstraints = foreignKeyConstraintManager.deactivateConstraints(referencingTable.getTableName(), getColumns(referencingTable.getTableName(), referencingTable.getSchemaName()), referencingTable.getSchemaName());
+				List<Constraint> deactivatedConstraints = foreignKeyConstraintManager.deactivateConstraints(referencingTable.getTableName(), getColumns(referencingTable.getTableName(), referencingTable.getSchemaName()), referencingTable.getSchemaName());
 				
 				
 				if(reductionMethod.getReductionType() != ReductionType.DEREFERENCE){
-					allDeactivatedConstraints.addAll(deactivatedConstraints);
-					rowCount = executeReduction(referencingTable);
-					execAuditor.auditRefTableReduction(reductionExecutionData, referencingTable, rowCount);
-					guiNotifier.refreshExecGui(null);
+					try{
+						allDeactivatedConstraints.addAll(deactivatedConstraints);
+						int rowCount = executeReduction(referencingTable);
+						execAuditor.auditRefTableReduction(reductionExecutionData, referencingTable, "Row Count: " + rowCount, Status.REDUCED);
+					} catch (RuntimeException e){
+						execAuditor.auditRefTableReduction(reductionExecutionData, referencingTable, e.getMessage(), Status.FAILED);
+						throw e;
+					} finally{
+						guiNotifier.refreshExecGui(null);
+					}
 
 				}
 
