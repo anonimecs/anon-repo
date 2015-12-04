@@ -1,1 +1,6 @@
 language: java
+
+before_install:
+ - wget https://raw.githubusercontent.com/anonimecs/m2_repository/master/com/oracle/ojdbc14/11.2.0.2.0/ojdbc14-11.2.0.2.0.jar
+ - wget https://raw.githubusercontent.com/anonimecs/m2_repository/master/com/oracle/ojdbc14/11.2.0.2.0/ojdbc14-11.2.0.2.0.pom
+ - mvn install:install-file -Dfile=ojdbc14-11.2.0.2.0.jar -DpomFile=ojdbc14-11.2.0.2.0.pom
