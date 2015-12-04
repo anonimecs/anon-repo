@@ -11,4 +11,4 @@ before_install:
  - wget https://raw.githubusercontent.com/anonimecs/m2_repository/master/com/microsoft/sqlserver/sqljdbc4/4.0/sqljdbc4-4.0.jar
  - mvn install:install-file -Dfile=sqljdbc4-4.0.jar -DpomFile=sqljdbc4-4.0.pom
  
- install: "mvn install -P free"
+ script: "mvn install -P free"
