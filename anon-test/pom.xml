@@ -14,32 +14,32 @@
 		<skipITs>true</skipITs>
 	</properties>
 
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.robotframework</groupId>
-				<artifactId>robotframework-maven-plugin</artifactId>
-				<version>1.4.3</version>
-				<configuration>
-					<skipITs>${skipITs}</skipITs>
-					<tests>
-						<test>*</test>
-					</tests>
-					<variableFiles>
-						<variableFile>src/test/robotframework/conf/dev.py</variableFile>
-					</variableFiles>
-				</configuration>
-				<executions>
-					<execution>
-						<goals>
-							<goal>run</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
+<!-- 	<build> -->
+<!-- 		<plugins> -->
+<!-- 			<plugin> -->
+<!-- 				<groupId>org.robotframework</groupId> -->
+<!-- 				<artifactId>robotframework-maven-plugin</artifactId> -->
+<!-- 				<version>1.4.3</version> -->
+<!-- 				<configuration> -->
+<!-- 					<skipITs>${skipITs}</skipITs> -->
+<!-- 					<tests> -->
+<!-- 						<test>*</test> -->
+<!-- 					</tests> -->
+<!-- 					<variableFiles> -->
+<!-- 						<variableFile>src/test/robotframework/conf/dev.py</variableFile> -->
+<!-- 					</variableFiles> -->
+<!-- 				</configuration> -->
+<!-- 				<executions> -->
+<!-- 					<execution> -->
+<!-- 						<goals> -->
+<!-- 							<goal>run</goal> -->
+<!-- 						</goals> -->
+<!-- 					</execution> -->
+<!-- 				</executions> -->
+<!-- 			</plugin> -->
 
-		</plugins>
-	</build>
+<!-- 		</plugins> -->
+<!-- 	</build> -->
 
 
 	<dependencies>
@@ -80,31 +80,20 @@
 			<scope>test</scope>
 		</dependency>
 
-		<dependency>
-			<groupId>com.github.markusbernhardt</groupId>
-			<artifactId>robotframework-selenium2library-java</artifactId>
-			<version>1.4.0.6</version>
-			<scope>test</scope>
-		</dependency>
+<!-- 		<dependency> -->
+<!-- 			<groupId>com.github.markusbernhardt</groupId> -->
+<!-- 			<artifactId>robotframework-selenium2library-java</artifactId> -->
+<!-- 			<version>1.4.0.6</version> -->
+<!-- 			<scope>test</scope> -->
+<!-- 		</dependency> -->
 		<!-- needed for the maven robot plugin -->
-		<dependency>
-			<groupId>com.sun</groupId>
-			<artifactId>tools</artifactId>
-			<version>1.6.0</version>
-			<scope>system</scope>
-			<systemPath>${systempath.tools.jar}/tools.jar</systemPath>
-			<!-- set this path in your maven/conf/settings.xml -->
-			<!-- <profile> -->
-			<!-- <id>local-paths</id> -->
-			<!-- <properties> -->
-			<!-- <systempath.tools.jar>/Library/Java/JavaVirtualMachines/jdk1.7.0_55.jdk/Contents/Home/lib</systempath.tools.jar> -->
-			<!-- </properties> -->
-			<!-- </profile> -->
-			<!-- <activeProfiles> -->
-			<!-- <activeProfile>local-paths</activeProfile> -->
-			<!-- </activeProfiles> -->
-
-		</dependency>
+<!-- 		<dependency> -->
+<!-- 			<groupId>com.sun</groupId> -->
+<!-- 			<artifactId>tools</artifactId> -->
+<!-- 			<version>1.6.0</version> -->
+<!-- 			<scope>system</scope> -->
+<!-- 			<systemPath>${systempath.tools.jar}/tools.jar</systemPath> -->
+<!-- 		</dependency> -->
 	</dependencies>
 
 </project>
