@@ -12,6 +12,8 @@ before_install:
  - mvn install:install-file -Dfile=sqljdbc4-4.0.jar -DpomFile=sqljdbc4-4.0.pom
  - wget http://apache.mirror.digionline.de/tomcat/tomcat-7/v7.0.65/bin/apache-tomcat-7.0.65.zip
  - mvn install:install-file -Dfile=apache-tomcat-7.0.65.zip -DgroupId=org.apache -DartifactId=tomcat -Dversion=7.0.65 -Dpackaging=zip -DgeneratePom=true
+ - wget http://mirror.netcologne.de/apache.org/db/derby/db-derby-10.11.1.1/db-derby-10.11.1.1-bin.zip
+ - mvn install:install-file -Dfile=db-derby-10.11.1.1-bin.zip -DgroupId=org.apache -DartifactId=derby -Dversion=10.11.1.1 -Dpackaging=zip -DgeneratePom=true
 install: true
  
 script: 
